@@ -4,13 +4,19 @@ import { GlobalStyle } from "./GlobalStyle";
 import { Container } from "../../styled";
 import { themeLight, themeDark } from "./theme";
 import { Homepage } from "../../features/Homepage";
+import { useSelector } from "react-redux";
+import { selectDarkTheme } from "../../common/themeSlice";
 
-export const App = () => (
-  <ThemeProvider theme={themeLight}>
-    <Normalize />
-    <GlobalStyle />
-    <Container>
-      <Homepage />
-    </Container>
-  </ThemeProvider>
-);
+export const App = () => {
+  const isDarkTheme = useSelector(selectDarkTheme);
+
+  return (
+    <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
+      <Normalize />
+      <GlobalStyle />
+      <Container>
+        <Homepage />
+      </Container>
+    </ThemeProvider>
+  );
+};
