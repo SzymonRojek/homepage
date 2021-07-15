@@ -1,19 +1,16 @@
 import { ThemeProvider } from "styled-components";
-import Normalize from "react-normalize";
+import { Normalize } from "styled-normalize";
 import { GlobalStyle } from "./GlobalStyle";
-import { Wrapper } from "./components/Wrapper";
+import { Container } from "./styled";
 import theme from "./theme";
+import { Homepage } from "./Homepage";
 
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Normalize />
-      <GlobalStyle />
-      <Wrapper>
-        <h1>Szymon Rojek</h1>
-      </Wrapper>
-    </ThemeProvider>
-  );
-}
-
-export default App;
+export const App = () => (
+  <ThemeProvider theme={theme}>
+    <Normalize />
+    <GlobalStyle />
+    <Container>
+      <Homepage />
+    </Container>
+  </ThemeProvider>
+);
