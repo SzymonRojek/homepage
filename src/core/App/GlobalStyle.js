@@ -7,16 +7,24 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     *,
-    ::before,
-    ::after {
-        box-sizing: inherit;
-    }
+        ::before,
+        ::after {
+            box-sizing: inherit;
+        }
 
     body {
-        overflow-wrap: anywhere;
-        font-family: 'Inter', sans-serif;
-        letter-spacing: 0.05em;
+        font-family: "inter", sans-serif;
+        transition: background .3s;
+        background: ${({ theme }) => theme.colors.site.background};
+        color: ${({ theme }) => theme.colors.site.text};
         font-size: 18px;
-        margin: 0;
+        letter-spacing: 0.05em;
+        word-break: break-word;
+        overflow-y: scroll;
+        padding-bottom: 108px;
+
+        @media(max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+            padding-bottom: 32px;
+        }
     }
- `;
+`;
