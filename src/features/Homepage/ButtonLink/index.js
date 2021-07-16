@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ButtonLink = styled.a`
+export const ButtonLink = styled.a`
   padding: 12px 16px;
   font-size: 20px;
   font-weight: 600;
@@ -19,5 +19,3 @@ const ButtonLink = styled.a`
     font-size: 18px;
   }
 `;
-
-export default ButtonLink;
