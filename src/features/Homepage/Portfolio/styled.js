@@ -10,7 +10,7 @@ export const Section = styled.section`
 `;
 
 export const StyledGithubIcon = styled(GithubIcon)`
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.colors.primary};
   margin-bottom: 8px;
 `;
 
