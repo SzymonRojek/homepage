@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/homepage/static/js/main.e04ee61d.chunk.js",
-    "main.js.map": "/homepage/static/js/main.e04ee61d.chunk.js.map",
+    "main.js": "/homepage/static/js/main.af0bc002.chunk.js",
+    "main.js.map": "/homepage/static/js/main.af0bc002.chunk.js.map",
     "runtime-main.js": "/homepage/static/js/runtime-main.32128a87.js",
     "runtime-main.js.map": "/homepage/static/js/runtime-main.32128a87.js.map",
     "static/js/2.1ea8494b.chunk.js": "/homepage/static/js/2.1ea8494b.chunk.js",
@@ -10,13 +10,17 @@
     "static/js/3.055cb758.chunk.js.map": "/homepage/static/js/3.055cb758.chunk.js.map",
     "index.html": "/homepage/index.html",
     "static/js/2.1ea8494b.chunk.js.LICENSE.txt": "/homepage/static/js/2.1ea8494b.chunk.js.LICENSE.txt",
-    "static/media/message-icon.bec00aed.svg": "/homepage/static/media/message-icon.bec00aed.svg",
+    "static/media/envelope.6e2dda49.svg": "/homepage/static/media/envelope.6e2dda49.svg",
+    "static/media/facebook.256a8e27.svg": "/homepage/static/media/facebook.256a8e27.svg",
+    "static/media/github.75c1f5fa.svg": "/homepage/static/media/github.75c1f5fa.svg",
+    "static/media/linkedin.1bf7280c.svg": "/homepage/static/media/linkedin.1bf7280c.svg",
+    "static/media/person.74d6306f.png": "/homepage/static/media/person.74d6306f.png",
     "static/media/sun.2a250746.svg": "/homepage/static/media/sun.2a250746.svg",
     "static/media/szymonRojekProfile.c687511b.jpg": "/homepage/static/media/szymonRojekProfile.c687511b.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.32128a87.js",
     "static/js/2.1ea8494b.chunk.js",
-    "static/js/main.e04ee61d.chunk.js"
+    "static/js/main.af0bc002.chunk.js"
   ]
 }
