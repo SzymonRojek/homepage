@@ -18,21 +18,11 @@ export const Repositories = ({ repositories }) => {
           <Name>{name}</Name>
           <Description>{description}</Description>
           <Links>
-            {!!homepage && (
-              <LinksRow>
-                <dt>Commits:</dt>
-                <LinksValue>
-                  <Link target="_blank" rel="noreferrer" href={homepage}>
-                    {homepage}
-                  </Link>
-                </LinksValue>
-              </LinksRow>
-            )}
             <LinksRow>
               <dt>Code:</dt>
               <LinksValue>
                 <Link target="_blank" rel="noreferrer" href={html_url}>
-                  {html_url}
+                  GitHub Repository
                 </Link>
               </LinksValue>
             </LinksRow>
