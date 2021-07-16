@@ -1,10 +1,12 @@
 import { WrapperHomepage } from "./styled";
-import { Header } from "./Header";
 import { ThemeSwitch } from "../../common/ThemeSwitch";
+import { MainHeader } from "./MainHeader";
+import { Footer } from "./Footer";
 
 export const Homepage = () => (
   <WrapperHomepage>
     <ThemeSwitch />
-    <Header />;
+    <MainHeader />
+    <Footer />
   </WrapperHomepage>
 );
