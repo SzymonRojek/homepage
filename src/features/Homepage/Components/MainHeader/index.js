@@ -22,8 +22,8 @@ export const MainHeader = () => {
         <Name>Szymon Rojek</Name>
         <Summary>
           <Icon src={personIcon} alt="" />
-          I'm a passionate Junior Frontend Developer in love with JavaScript &
-          React, currently looking for first job opportunities.
+          I'm passionate about JavaScript and React, ready for my Junior Front
+          End Developer role.
         </Summary>
         <StyledButtonLink href={`mailto:${email}`} title={email}>
           <ButtonIcon />

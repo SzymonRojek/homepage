@@ -17,9 +17,8 @@ export const Footer = () => (
         <EmailLink href={`mailto:${email}`}>{email}</EmailLink>
       </EmailWrapper>
       <Paragraph>
-        I'm always open to new projects whenever I have time. If you have
-        a&nbsp; website, dashboard or a mobil app in mind and need some help to
-        make your ideas come to life, feel free to contact me
+        Thank you for viewing my personal homepage portflio. <br />
+        I'm very excited to talk about the new opportunity ahead.
       </Paragraph>
       <SocialIcons />
     </Address>
