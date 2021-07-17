@@ -8,7 +8,7 @@ import {
   ThisIs,
   Name,
   Summary,
-  Icon,
+  PersonIcon,
   StyledButtonLink,
   ButtonIcon,
 } from "./styled";
@@ -21,7 +21,7 @@ export const MainHeader = () => {
         <ThisIs>this is</ThisIs>
         <Name>Szymon Rojek</Name>
         <Summary>
-          <Icon src={personIcon} alt="" />
+          <PersonIcon src={personIcon} alt="" />
           I'm passionate about JavaScript and React, ready for my Junior Front
           End Developer role.
         </Summary>

@@ -75,7 +75,7 @@ export const Summary = styled.p`
   }
 `;
 
-export const Icon = styled.img`
+export const PersonIcon = styled.img`
   height: 20px;
   margin-right: 4px;
   vertical-align: text-top;
