@@ -4,9 +4,10 @@ import { MainHeader } from "./Components/MainHeader";
 import { Skills } from "./Components/Skills";
 import { Portfolio } from "./Components/Portfolio";
 import { Footer } from "./Components/Footer";
-import toolsIcon from "./tools.png";
-import rocketIcon from "./rocket.png";
-import { skills, nextSkills } from "./skillsData";
+import technologiesIcon from "./technologies.svg";
+import technologiesNextIcon from "./technologiesNext.svg";
+import softSkillsIcon from "./softSkills.svg";
+import { skills, nextSkills, softSkills } from "./skillsData";
 
 export const Homepage = () => (
   <Container>
@@ -16,8 +17,8 @@ export const Homepage = () => (
       <Skills
         title={
           <>
-            My skillset includes
-            <Icon src={toolsIcon} alt="" />
+            Technical skills
+            <Icon src={technologiesIcon} alt="" />
           </>
         }
         skills={skills}
@@ -27,10 +28,20 @@ export const Homepage = () => (
         title={
           <>
             What I want to learn next
-            <Icon src={rocketIcon} />
+            <Icon src={technologiesNextIcon} />
           </>
         }
         skills={nextSkills}
+      />
+
+      <Skills
+        title={
+          <>
+            Sfot skills
+            <Icon src={softSkillsIcon} />
+          </>
+        }
+        skills={softSkills}
       />
       <Portfolio />
     </main>
