@@ -17,6 +17,6 @@ export const Icon = styled.img`
   margin-left: 7px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    height: 20px;
+    height: 23px;
   }
 `;
