@@ -31,7 +31,7 @@ export const nextSkills = [
 export const softSkills = [
   "being coachable",
   "empathy",
-  "effective communiaction",
+  "effective communication",
   "critical thinking",
   "teamwork",
   "creativity",
