@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/homepage/static/js/main.2e3b154d.chunk.js",
-    "main.js.map": "/homepage/static/js/main.2e3b154d.chunk.js.map",
+    "main.js": "/homepage/static/js/main.b8fc379f.chunk.js",
+    "main.js.map": "/homepage/static/js/main.b8fc379f.chunk.js.map",
     "runtime-main.js": "/homepage/static/js/runtime-main.47d88ad9.js",
     "runtime-main.js.map": "/homepage/static/js/runtime-main.47d88ad9.js.map",
     "static/js/2.4416b144.chunk.js": "/homepage/static/js/2.4416b144.chunk.js",
@@ -15,14 +15,17 @@
     "static/media/github.75c1f5fa.svg": "/homepage/static/media/github.75c1f5fa.svg",
     "static/media/linkedin.1bf7280c.svg": "/homepage/static/media/linkedin.1bf7280c.svg",
     "static/media/person.74d6306f.png": "/homepage/static/media/person.74d6306f.png",
+    "static/media/softSkills.990d0a89.svg": "/homepage/static/media/softSkills.990d0a89.svg",
     "static/media/spinner.120dff0a.svg": "/homepage/static/media/spinner.120dff0a.svg",
     "static/media/sun.2a250746.svg": "/homepage/static/media/sun.2a250746.svg",
     "static/media/szymonRojekProfile.c687511b.jpg": "/homepage/static/media/szymonRojekProfile.c687511b.jpg",
+    "static/media/technologies.299009b5.svg": "/homepage/static/media/technologies.299009b5.svg",
+    "static/media/technologiesNext.fc2e712b.svg": "/homepage/static/media/technologiesNext.fc2e712b.svg",
     "static/media/warning.a7d3c1a3.svg": "/homepage/static/media/warning.a7d3c1a3.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.47d88ad9.js",
     "static/js/2.4416b144.chunk.js",
-    "static/js/main.2e3b154d.chunk.js"
+    "static/js/main.b8fc379f.chunk.js"
   ]
 }
