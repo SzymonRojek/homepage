@@ -7,6 +7,7 @@ export const Section = styled.section`
   background: ${({ theme }) => theme.colors.boxBackground};
   box-shadow: ${({ theme }) => theme.boxShadow};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  transition: background 0.3s;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 48px;
@@ -53,7 +54,8 @@ export const Dot = styled.img`
   color: ${({ theme }) => theme.colors.primary};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    width: 6px;
+    height: 7px;
+    width: 7px;
     margin-right: 8px;
   }
 `;
