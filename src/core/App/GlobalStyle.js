@@ -13,15 +13,15 @@ export const GlobalStyle = createGlobalStyle`
         }
 
     body {
+        padding-bottom: 108px;
         font-family: "Inter", sans-serif;
-        transition: background .3s;
-        background: ${({ theme }) => theme.colors.site.background};
-        color: ${({ theme }) => theme.colors.site.text};
         font-size: 18px;
+        color: ${({ theme }) => theme.colors.site.text};
+        background: ${({ theme }) => theme.colors.site.background};
         letter-spacing: 0.05em;
         word-break: break-word;
         overflow-y: scroll;
-        padding-bottom: 108px;
+        transition: background .3s;
 
         @media(max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
             padding-bottom: 32px;
