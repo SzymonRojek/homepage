@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.footer`
+  padding: 0 5px 0 5px;
   margin-top: 120px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -44,11 +45,12 @@ export const EmailLink = styled.a`
 `;
 
 export const Paragraph = styled.p`
-  max-width: 670px;
+  max-width: 430px;
   font-size: 18px;
   line-height: 1.4;
-  /* color: ${({ theme }) => theme.colors.textPrimary}; */
   margin: 0;
+  text-align: justify;
+  /* text-justify: inter-word; */
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 14px;
