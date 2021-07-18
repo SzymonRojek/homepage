@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Icon } from "../../Icon";
 
 export const Wrapper = styled.footer`
   padding: 0 5px 0 5px;
@@ -14,6 +15,10 @@ export const LetsTalk = styled.h2`
   text-transform: uppercase;
   letter-spacing: initial;
   margin: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding-bottom: 4px;
+  }
 `;
 
 export const Address = styled.address`
@@ -24,11 +29,12 @@ export const EmailWrapper = styled.div`
   margin: 24px 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin: 12px 0;
+    margin: 18px 0;
   }
 `;
 
 export const EmailLink = styled.a`
+  margin-top: 10px;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-size: 32px;
   font-weight: 900;
@@ -50,9 +56,12 @@ export const Paragraph = styled.p`
   line-height: 1.4;
   margin: 0;
   text-align: justify;
-  /* text-justify: inter-word; */
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
+`;
+
+export const StyledIcon = styled(Icon)`
+  vertical-align: bottom;
 `;

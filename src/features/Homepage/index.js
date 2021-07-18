@@ -1,9 +1,10 @@
-import { Container, Icon } from "./styled";
+import { Container } from "./styled";
 import { ThemeSwitch } from "../../common/ThemeSwitch";
 import { MainHeader } from "./Components/MainHeader";
 import { Skills } from "./Components/Skills";
 import { Portfolio } from "./Components/Portfolio";
 import { Footer } from "./Components/Footer";
+import { Icon } from "./Icon";
 import technologiesIcon from "./technologies.svg";
 import technologiesNextIcon from "./technologiesNext.svg";
 import softSkillsIcon from "./softSkills.svg";
