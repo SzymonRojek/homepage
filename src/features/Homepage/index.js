@@ -37,7 +37,7 @@ export const Homepage = () => (
       <Skills
         title={
           <>
-            Sfot skills
+            Soft skills
             <Icon src={softSkillsIcon} />
           </>
         }
