@@ -6,7 +6,7 @@ export const Skills = ({ title, skills }) => (
     <StyledHeader>{title}</StyledHeader>
     <List>
       {skills.map((skill) => (
-        <Item>
+        <Item key={skill}>
           <Dot src={blueDot} />
           {skill}
         </Item>
