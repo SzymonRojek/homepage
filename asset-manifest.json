@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/homepage/static/js/main.6a86febd.chunk.js",
-    "main.js.map": "/homepage/static/js/main.6a86febd.chunk.js.map",
+    "main.js": "/homepage/static/js/main.326b14b3.chunk.js",
+    "main.js.map": "/homepage/static/js/main.326b14b3.chunk.js.map",
     "runtime-main.js": "/homepage/static/js/runtime-main.47d88ad9.js",
     "runtime-main.js.map": "/homepage/static/js/runtime-main.47d88ad9.js.map",
     "static/js/2.4416b144.chunk.js": "/homepage/static/js/2.4416b144.chunk.js",
@@ -19,6 +19,7 @@
     "static/media/spinner.120dff0a.svg": "/homepage/static/media/spinner.120dff0a.svg",
     "static/media/sun.2a250746.svg": "/homepage/static/media/sun.2a250746.svg",
     "static/media/szymonRojekProfile.c687511b.jpg": "/homepage/static/media/szymonRojekProfile.c687511b.jpg",
+    "static/media/talk.4971119e.svg": "/homepage/static/media/talk.4971119e.svg",
     "static/media/technologies.299009b5.svg": "/homepage/static/media/technologies.299009b5.svg",
     "static/media/technologiesNext.fc2e712b.svg": "/homepage/static/media/technologiesNext.fc2e712b.svg",
     "static/media/warning.a7d3c1a3.svg": "/homepage/static/media/warning.a7d3c1a3.svg"
@@ -26,6 +27,6 @@
   "entrypoints": [
     "static/js/runtime-main.47d88ad9.js",
     "static/js/2.4416b144.chunk.js",
-    "static/js/main.6a86febd.chunk.js"
+    "static/js/main.326b14b3.chunk.js"
   ]
 }
