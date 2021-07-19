@@ -1,6 +1,6 @@
 export const skills = [
   "Semantic & accessible HTML",
-  "CSS BEM convention",
+  "BEM convention",
   "CSS Grid",
   "CSS Flexbox",
   "JavaScript ES6+",
@@ -20,12 +20,12 @@ export const skills = [
 ];
 
 export const nextSkills = [
-  "Typescript",
-  "Node.js",
   "React Context",
   "Classes",
   "Unit testing",
   "Cypress",
+  "Typescript",
+  "Node.js",
 ];
 
 export const softSkills = [
