@@ -1,6 +1,6 @@
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
 import personIcon from "./person.png";
-import { email } from "../../email";
+import { email } from "../email";
 import {
   Wrapper,
   Avatar,

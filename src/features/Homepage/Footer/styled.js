@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Icon } from "../../Icon";
+import { Icon } from "../Icon";
 
 export const Wrapper = styled.footer`
   padding: 0 5px 0 5px;

@@ -1,4 +1,4 @@
-import { email } from "../../email";
+import { email } from "../email";
 import { SocialIcons } from "./SocialIcons";
 import talkIcon from "./talk.svg";
 import { StyledIcon } from "./styled";

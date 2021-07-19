@@ -3,7 +3,7 @@ import { ThemeSwitch } from "../../common/ThemeSwitch";
 import { MainHeader } from "./MainHeader";
 import { Skills } from "./Skills";
 import { Portfolio } from "./Portfolio";
-import { Footer } from "./Components/Footer";
+import { Footer } from "./Footer";
 import { Icon } from "./Icon";
 import technologiesIcon from "./technologies.svg";
 import technologiesNextIcon from "./technologiesNext.svg";
