@@ -51,6 +51,7 @@ export const themeLight = {
     },
     themeSwitch: {
       background: colorNames.mercury,
+      border: colorNames.scienceBlue,
       icon: colorNames.white,
     },
   },
