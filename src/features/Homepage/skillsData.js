@@ -29,13 +29,13 @@ export const nextSkills = [
 ];
 
 export const softSkills = [
-  "being coachable",
-  "empathy",
-  "effective communication",
-  "critical thinking",
-  "teamwork",
-  "creativity",
-  "problem-solving",
-  "managing conflicts",
-  "curiosity",
+  "Being coachable",
+  "Empathy",
+  "Effective communication",
+  "Critical thinking",
+  "Teamwork",
+  "Creativity",
+  "Problem-solving",
+  "Managing conflicts",
+  "Curiosity",
 ];
