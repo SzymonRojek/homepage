@@ -8,7 +8,7 @@ import {
   fetchRepositories,
   selectRepositories,
   selectRepositoriesStatus,
-} from "../../homepageSlice";
+} from "../homepageSlice";
 
 export const Portfolio = () => {
   const dispatch = useDispatch();

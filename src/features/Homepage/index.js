@@ -1,8 +1,8 @@
 import { Container } from "./styled";
 import { ThemeSwitch } from "../../common/ThemeSwitch";
-import { MainHeader } from "./Components/MainHeader";
-import { Skills } from "./Components/Skills";
-import { Portfolio } from "./Components/Portfolio";
+import { MainHeader } from "./MainHeader";
+import { Skills } from "./Skills";
+import { Portfolio } from "./Portfolio";
 import { Footer } from "./Components/Footer";
 import { Icon } from "./Icon";
 import technologiesIcon from "./technologies.svg";
@@ -28,7 +28,7 @@ export const Homepage = () => (
       <Skills
         title={
           <>
-            What I want to learn next
+            Next to learn
             <Icon src={technologiesNextIcon} />
           </>
         }
