@@ -32,7 +32,7 @@ export const Box = styled.span`
   width: 48px;
   padding: 2px;
   background: ${({ theme }) => theme.colors.themeSwitch.background};
-  border: 1px solid;
+  border: 1px solid ${({ theme }) => theme.colors.themeSwitch.border};
   border-radius: 12px;
 `;
 
