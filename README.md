@@ -1,44 +1,58 @@
-# Getting Started with Create React App
+# Szymon Rojek: personal homepage
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+My portfolio site: **[szymonrojek.github.io/homepage](https://szymonrojek.github.io/homepage/)**
 
-## DEMO
+[![CI](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml)
 
-https://szymonrojek.github.io/homepage/
+I'm a Software Test Engineer working on data migration, SQL and API testing. This site shows my experience and selected projects. It is also a small example of how I build and test front-end code.
 
-## Available Scripts
+## Tech stack
 
-In the project directory, you can run:
+- React 19 and TypeScript (strict), built with Vite
+- Redux Toolkit and Redux-Saga for state and the GitHub API call
+- styled-components with a light and a dark theme (follows the OS setting until you choose one)
+- Vitest and Testing Library for unit and component tests
+- Playwright and axe for end-to-end and accessibility tests
+- GitHub Actions for CI and deployment to GitHub Pages
 
-### `npm start`
+## Getting started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Requires Node 20.19+ or 22.12+.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+npm install
+npm run dev        # http://localhost:3000/homepage/
+```
 
-### `npm test`
+| Script              | What it does                                      |
+| ------------------- | ------------------------------------------------- |
+| `npm run dev`       | Start the dev server                              |
+| `npm run build`     | Build the site into `dist/`                       |
+| `npm run preview`   | Serve the production build                        |
+| `npm test`          | Vitest in watch mode (`npx vitest run` runs once) |
+| `npm run test:e2e`  | Playwright tests against the production build     |
+| `npm run typecheck` | TypeScript check                                  |
+| `npm run lint`      | ESLint                                            |
+| `npm run format`    | Prettier                                          |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How it is tested
 
-### `npm run build`
+- **Unit and component tests** (`src/**/*.test.ts(x)`): the Redux slices, the saga, the API module, theme persistence, and every state of the projects section (loading, error and success).
+- **End-to-end tests** (`e2e/`): run in desktop and mobile Chrome against the production build. They cover the header and contact links, the curated projects, the error state and the theme switch, including persistence and the OS preference. The GitHub API is always mocked, so the tests are stable.
+- **Accessibility**: axe scans the page in light and dark mode. Any serious or critical violation fails the build.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+On macOS 12 Playwright can't install its own Chromium, so local runs use the installed Google Chrome. CI uses Playwright's Chromium.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Deployment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Every push to `main` runs lint, type check, unit tests, the build and the end-to-end tests in GitHub Actions. If they all pass, `dist/` is published to the `gh-pages` branch, which GitHub Pages serves. `npm run deploy` does a manual deploy.
 
-### `npm run eject`
+## Content
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Text lives in data files, not in components:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- `src/features/Homepage/profile.ts`: name, title, bio, LinkedIn and CV link
+- `src/features/Homepage/skillsData.ts`: skill groups and current learning
+- `src/features/Homepage/experienceData.ts`: experience and education
+- `src/features/Homepage/Portfolio/featuredRepositories.ts`: which GitHub repos to show, with optional description and demo link overrides
+- `src/features/Homepage/qualityData.ts`: the "How this site is tested" section
