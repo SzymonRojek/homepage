@@ -16,6 +16,12 @@ export const featuredRepositories: FeaturedRepository[] = [
       "End-to-end test suite for a ferry booking site, written with Gherkin, Cucumber and TestCafe across the UK, German and Italian sites.",
   },
   {
+    name: "email-campaign-react-airtable",
+    category: "Testing",
+    description:
+      "Email campaign CRUD app on the Airtable REST API, with an Express proxy that keeps the API key out of the browser. Every endpoint is covered by Postman API tests for valid, invalid, authorised and unauthorised requests, automated with the Postman Collection Runner.",
+  },
+  {
     name: "counter-testing",
     category: "Testing",
     description:
@@ -30,6 +36,9 @@ export const featuredRepositories: FeaturedRepository[] = [
     demoUrl: "https://szymonrojek.github.io/homepage/",
   },
   { name: "react-sign-in-up", category: "Front-end" },
-  { name: "email-campaign-react-airtable", category: "Front-end" },
-  { name: "my-music-website", category: "Front-end" },
+  {
+    name: "my-music-website",
+    category: "Front-end",
+    demoUrl: "https://szymonrojek.github.io/my-music-website/",
+  },
 ];

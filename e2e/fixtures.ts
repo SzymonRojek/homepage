@@ -18,6 +18,7 @@ export const repositories = [
   repository(3, "counter-testing"),
   repository(4, "homepage"),
   repository(5, "df-automation-tests"),
+  repository(8, "email-campaign-react-airtable"),
   repository(6, "not-featured"),
   repository(7, "forked-repo", { fork: true }),
 ];

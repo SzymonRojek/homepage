@@ -8,6 +8,7 @@ test("shows featured projects grouped by category", async ({ page }) => {
 
   await expect(testing.getByRole("heading", { level: 4 })).toHaveText([
     "df-automation-tests",
+    "email-campaign-react-airtable",
     "counter-testing",
   ]);
   await expect(frontEnd.getByRole("heading", { level: 4 })).toHaveText([
