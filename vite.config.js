@@ -6,4 +6,8 @@ export default defineConfig({
   base: "/homepage/",
   plugins: [react(), svgr()],
   server: { port: 3000 },
+  test: {
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.js",
+  },
 });
