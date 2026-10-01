@@ -1,8 +1,14 @@
 import { ErrorBox } from "./ErrorBox";
 import { Loading } from "./Loading";
 import { Repositories } from "./Repositories";
+import type { RepositoriesStatus, Repository } from "../../homepageSlice";
 
-export const Content = ({ status, repositories }) => {
+interface ContentProps {
+  status: RepositoriesStatus;
+  repositories: Repository[] | null;
+}
+
+export const Content = ({ status, repositories }: ContentProps) => {
   switch (status) {
     case "initial":
       return null;
@@ -14,7 +20,7 @@ export const Content = ({ status, repositories }) => {
       return <ErrorBox />;
 
     case "success":
-      return <Repositories repositories={repositories} />;
+      return <Repositories repositories={repositories ?? []} />;
 
     default:
       throw new Error(`incorrect status: ${status}`);

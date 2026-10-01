@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../core/hooks";
 import { Content } from "./Content";
 import { Section, Header, StyledGithubIcon, MyRecentProjects } from "./styled";
 import { SubHeader } from "../SubHeader";
@@ -11,10 +11,10 @@ import {
 } from "../homepageSlice";
 
 export const Portfolio = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const repositoriesStatus = useSelector(selectRepositoriesStatus);
-  const repositories = useSelector(selectRepositories);
+  const repositoriesStatus = useAppSelector(selectRepositoriesStatus);
+  const repositories = useAppSelector(selectRepositories);
 
   useEffect(() => {
     dispatch(fetchRepositories(githubUserName));

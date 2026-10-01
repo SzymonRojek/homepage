@@ -1,5 +1,6 @@
-import { runSaga } from "redux-saga";
-import { takeLatest } from "redux-saga/effects";
+import { runSaga, type Saga } from "redux-saga";
+import { takeLatest, type ForkEffect } from "redux-saga/effects";
+import type { PayloadAction, UnknownAction } from "@reduxjs/toolkit";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { homepageSaga } from "./homepageSaga";
 import { getRepositories } from "./homepageAPI";
@@ -8,16 +9,22 @@ import {
   fetchRepositoriesError,
   fetchRepositoriesSuccess,
 } from "./homepageSlice";
+import { createRepository } from "./repositoryFixture";
 
 vi.mock("./homepageAPI");
 
-const runHandler = async (action) => {
-  const dispatched = [];
-  const handler = homepageSaga().next().value.payload.args[1];
+const getHandler = () => {
+  const effect = homepageSaga().next().value as ForkEffect;
+
+  return effect.payload.args[1] as Saga<[PayloadAction<string>]>;
+};
+
+const runHandler = async (action: PayloadAction<string>) => {
+  const dispatched: UnknownAction[] = [];
 
   await runSaga(
-    { dispatch: (a) => dispatched.push(a) },
-    handler,
+    { dispatch: (a: UnknownAction) => dispatched.push(a) },
+    getHandler(),
     action,
   ).toPromise();
 
@@ -30,16 +37,14 @@ describe("homepageSaga", () => {
   });
 
   it("handles fetchRepositories with takeLatest", () => {
-    const effect = homepageSaga().next().value;
-
-    expect(effect).toEqual(
-      takeLatest(fetchRepositories.type, effect.payload.args[1]),
+    expect(homepageSaga().next().value).toEqual(
+      takeLatest(fetchRepositories.type, getHandler()),
     );
   });
 
   it("dispatches success with fetched repositories", async () => {
-    const repositories = [{ id: 1, name: "homepage" }];
-    getRepositories.mockResolvedValue(repositories);
+    const repositories = [createRepository()];
+    vi.mocked(getRepositories).mockResolvedValue(repositories);
 
     const dispatched = await runHandler(fetchRepositories("user"));
 
@@ -48,7 +53,7 @@ describe("homepageSaga", () => {
   });
 
   it("dispatches error when the request fails", async () => {
-    getRepositories.mockRejectedValue(new Error("Network Error"));
+    vi.mocked(getRepositories).mockRejectedValue(new Error("Network Error"));
 
     const dispatched = await runHandler(fetchRepositories("user"));
 

@@ -18,7 +18,10 @@ const store = configureStore({
 sagaMiddleware.run(saga);
 
 store.subscribe(() => {
-  localStorage.setItem("dark", store.getState().theme.isDarkTheme);
+  localStorage.setItem("dark", String(store.getState().theme.isDarkTheme));
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

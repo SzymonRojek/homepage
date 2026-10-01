@@ -57,7 +57,7 @@ export const themeLight = {
   },
 };
 
-export const themeDark = {
+export const themeDark: typeof themeLight = {
   ...common,
   colors: {
     primary: colorNames.dodgerBlue,

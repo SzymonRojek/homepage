@@ -1,10 +1,11 @@
 import axios from "axios";
+import type { Repository } from "./homepageSlice";
 
 const githubAPIBaseURL = "https://api.github.com";
 
-export const getRepositories = (username) =>
+export const getRepositories = (username: string) =>
   axios
-    .get(`${githubAPIBaseURL}/users/${username}/repos`, {
+    .get<Repository[]>(`${githubAPIBaseURL}/users/${username}/repos`, {
       params: { sort: "updated", per_page: 100 },
     })
     .then((response) => response.data.filter(({ fork }) => !fork));

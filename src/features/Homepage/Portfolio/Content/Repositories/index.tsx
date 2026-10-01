@@ -8,8 +8,13 @@ import {
   Name,
   LinksValue,
 } from "./styled";
+import type { Repository } from "../../../homepageSlice";
 
-export const Repositories = ({ repositories }) => (
+export const Repositories = ({
+  repositories,
+}: {
+  repositories: Repository[];
+}) => (
   <List>
     {repositories.map(({ id, name, description, html_url }) => (
       <Tile key={id}>

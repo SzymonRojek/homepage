@@ -6,8 +6,9 @@ import homepageReducer, {
   selectRepositories,
   selectRepositoriesStatus,
 } from "./homepageSlice";
+import { createRepository } from "./repositoryFixture";
 
-const repositories = [{ id: 1, name: "homepage" }];
+const repositories = [createRepository()];
 
 describe("homepageSlice", () => {
   it("has an initial state", () => {
@@ -45,7 +46,7 @@ describe("homepageSlice", () => {
   });
 
   it("selects repositories and status", () => {
-    const state = { homepage: { status: "success", repositories } };
+    const state = { homepage: { status: "success" as const, repositories } };
 
     expect(selectRepositories(state)).toBe(repositories);
     expect(selectRepositoriesStatus(state)).toBe("success");

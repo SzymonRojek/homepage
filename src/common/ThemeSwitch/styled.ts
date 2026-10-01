@@ -36,7 +36,7 @@ export const Box = styled.span`
   border-radius: 12px;
 `;
 
-export const IconWrapper = styled.span`
+export const IconWrapper = styled.span<{ $moveToRight: boolean }>`
   display: flex;
   background: currentColor;
   border-radius: 50%;

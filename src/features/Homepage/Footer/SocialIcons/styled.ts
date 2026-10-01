@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from "react";
 import styled from "styled-components";
 
 export const List = styled.ul`
@@ -29,7 +30,9 @@ export const Link = styled.a`
   }
 `;
 
-export const styleIcon = (Icon) => styled(Icon)`
+export const styleIcon = (
+  Icon: ComponentType<SVGProps<SVGSVGElement>>,
+) => styled(Icon)`
   height: auto;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
