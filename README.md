@@ -13,8 +13,9 @@ I'm a Software Test Engineer with four years' experience in data migration, SQL 
 
 ## Features
 
-- **Profile, core skills and experience**, written for a Software Test Engineer role
-- **Curated projects** loaded live from the GitHub API, grouped into Testing and Front-end, with language, stars and demo links
+- **Recruiter-first header**: open-to-work status, a short bio and key skills visible without scrolling
+- **Experience and test projects up front**, with front-end work as a short "Also built" list
+- **Projects loaded live from the GitHub API**, with readable titles, language, stars and demo links
 - **Light and dark theme** that follows the operating system, including live changes, until the visitor picks one. That choice is then remembered.
 - **Accessible and responsive**: semantic headings and landmarks, WCAG AA colour contrast, tested on desktop and mobile
 - **"How this site is tested"** section with the live CI status
@@ -62,16 +63,16 @@ npm run dev          # http://localhost:3000/homepage/
 
 ## CI and deployment
 
-Every push and pull request to `main` runs lint, type check, unit tests, the build and the end-to-end tests in [GitHub Actions](.github/workflows/ci.yml). On `main`, the site is deployed to GitHub Pages only if every step passes.
+Work happens on the `dev` branch. Every push to `dev` or `main` and every pull request runs lint, type check, unit tests, the build and the end-to-end tests in [GitHub Actions](.github/workflows/ci.yml). `main` is production and is protected: changes reach it only through a pull request from `dev` with passing checks, and only `main` deploys to GitHub Pages.
 
 ## Editing content
 
 All text lives in data files, not in components:
 
-| File                                                      | Content                                        |
-| --------------------------------------------------------- | ---------------------------------------------- |
-| `src/features/Homepage/profile.ts`                        | Name, title, bio, contact text, LinkedIn, CV   |
-| `src/features/Homepage/skillsData.ts`                     | Skill groups and current learning              |
-| `src/features/Homepage/experienceData.ts`                 | Experience and education                       |
-| `src/features/Homepage/Portfolio/featuredRepositories.ts` | Which repositories to show and their overrides |
-| `src/features/Homepage/qualityData.ts`                    | The "How this site is tested" section          |
+| File                                                      | Content                                                                       |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                        | Name, title, open-to-work status, bio, key skills, contact text, LinkedIn, CV |
+| `src/features/Homepage/skillsData.ts`                     | Skill groups and tools                                                        |
+| `src/features/Homepage/experienceData.ts`                 | Experience and education                                                      |
+| `src/features/Homepage/Portfolio/featuredRepositories.ts` | Which repositories to show, readable titles and overrides                     |
+| `src/features/Homepage/qualityData.ts`                    | The "How this site is tested" section                                         |
