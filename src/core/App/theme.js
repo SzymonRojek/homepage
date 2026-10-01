@@ -80,6 +80,7 @@ export const themeDark = {
     },
     themeSwitch: {
       background: colorNames.doveGray,
+      border: colorNames.dodgerBlue,
       icon: colorNames.mineShaft,
     },
   },
