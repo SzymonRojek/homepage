@@ -1,4 +1,4 @@
-import { takeLatest, call, put, delay } from "redux-saga/effects";
+import { takeLatest, call, put } from "redux-saga/effects";
 import { getRepositories } from "./homepageAPI";
 import {
   fetchRepositories,
@@ -6,11 +6,8 @@ import {
   fetchRepositoriesSuccess,
 } from "./homepageSlice";
 
-const loadingDelay = 2_000;
-
 function* fetchRepositoriesHandler({ payload: username }) {
   try {
-    yield delay(loadingDelay);
     const repositories = yield call(getRepositories, username);
     yield put(fetchRepositoriesSuccess(repositories));
   } catch (error) {

@@ -15,7 +15,7 @@ export const Repositories = ({ repositories }) => (
     {repositories.map(({ id, name, description, html_url }) => (
       <Tile key={id}>
         <Name>{name}</Name>
-        <Description>{description}</Description>
+        {description && <Description>{description}</Description>}
         <Links>
           <LinksRow>
             <dt>Code:</dt>
