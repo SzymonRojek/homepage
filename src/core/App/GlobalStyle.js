@@ -20,7 +20,6 @@ export const GlobalStyle = createGlobalStyle`
         background: ${({ theme }) => theme.colors.site.background};
         letter-spacing: 0.05em;
         word-break: break-word;
-        overflow-y: scroll;
         transition: background .3s;
 
         @media(max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

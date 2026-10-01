@@ -24,10 +24,6 @@ export const List = styled.ul`
   @media (max-width: ${({ theme }) =>
       theme.breakpoints.tabletHorizontalMax}px) {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: ${({ theme }) =>
-      theme.breakpoints.tabletHorizontalMax}px) {
     font-size: 16px;
   }
 
