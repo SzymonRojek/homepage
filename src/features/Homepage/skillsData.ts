@@ -5,71 +5,54 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Testing",
+    title: "Testing & QA",
     skills: [
-      "Functional & regression testing",
-      "Integration testing",
-      "Database testing",
-      "REST API testing",
+      "Functional & regression",
+      "Integration & database",
       "Positive & negative test design",
+      "Requirements analysis & traceability",
+      "Defect lifecycle & root-cause analysis",
+      "Agile delivery",
     ],
   },
   {
-    title: "Data & SQL",
+    title: "SQL & data",
     skills: [
-      "T-SQL",
-      "Complex multi-table joins",
+      "T-SQL & multi-table joins",
       "Data validation & reconciliation",
-      "Test data creation",
+      "Migration & conversion",
+      "Mapping & transformation rules",
       "Stored Procedure analysis",
+      "Test data creation",
     ],
   },
   {
-    title: "Data migration",
+    title: "API testing",
     skills: [
-      "Migration testing",
-      "Conversion & deconversion testing",
-      "Mapping validation",
-      "Transformation rule validation",
-    ],
-  },
-  {
-    title: "Quality engineering",
-    skills: [
-      "Requirements analysis",
-      "Effort estimation",
-      "Defect lifecycle",
-      "Root-cause analysis",
-      "Traceability",
-    ],
-  },
-  {
-    title: "Tools",
-    skills: [
-      "Azure DevOps",
-      "SQL Server Management Studio",
-      "Postman",
-      "Git & GitHub",
-      "VS Code",
-      "GitHub Copilot",
+      "REST APIs",
+      "Postman collections & Collection Runner",
+      "Authorised & unauthorised requests",
+      "Response and status validation",
     ],
   },
   {
     title: "Automation & code",
     skills: [
-      "Playwright & TypeScript (in progress)",
+      "JavaScript",
       "Cypress",
       "Jest",
-      "JavaScript",
-      "React",
-      "HTML & CSS",
+      "TestCafe & Cucumber",
+      "Playwright & TypeScript (learning)",
+      "Git & GitHub Actions",
+      "React, HTML & CSS",
     ],
   },
 ];
 
-export const learningSkills = [
-  "End-to-end UI automation with Playwright",
-  "TypeScript",
-  "Maintainable, scalable test frameworks",
-  "Agentic, AI-assisted testing",
+export const tools = [
+  "Azure DevOps",
+  "SQL Server Management Studio",
+  "Postman",
+  "VS Code",
+  "GitHub Copilot",
 ];

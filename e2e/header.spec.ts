@@ -12,6 +12,22 @@ test("shows name, title and page title", async ({ page }) => {
   await expect(page.getByText("Software Test Engineer").first()).toBeVisible();
 });
 
+test("tells recruiters at a glance what I'm looking for", async ({ page }) => {
+  const header = page.getByRole("banner");
+
+  await expect(
+    header.getByText("Open to QA & test automation roles"),
+  ).toBeVisible();
+  await expect(
+    header.getByRole("list", { name: "Key skills" }).getByRole("listitem"),
+  ).toHaveText([
+    "4 years in QA",
+    "SQL & data validation",
+    "REST API testing",
+    "JavaScript · Cypress · Playwright",
+  ]);
+});
+
 test("has contact links", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Get in touch" }),
@@ -24,16 +40,15 @@ test("has contact links", async ({ page }) => {
   await expect(linkedin).toHaveAttribute("target", "_blank");
 });
 
-test("shows the main sections", async ({ page }) => {
-  for (const name of [
-    "Core skills",
+test("shows the main sections in recruiter order", async ({ page }) => {
+  await expect(
+    page.getByRole("main").getByRole("heading", { level: 2 }),
+  ).toHaveText([
     "Experience",
-    "Currently learning",
-    "Projects",
+    "Test projects",
     "How this site is tested",
-  ]) {
-    await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
-  }
+    "Skills",
+  ]);
 });
 
 test("footer offers email and LinkedIn without showing the address", async ({

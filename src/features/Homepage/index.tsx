@@ -3,24 +3,29 @@ import { ThemeSwitch } from "../../common/ThemeSwitch";
 import { MainHeader } from "./MainHeader";
 import { Section, SectionHeader } from "./Section";
 import { Skills } from "./Skills";
-import { Grid } from "./Skills/styled";
+import { Grid, Tools } from "./Skills/styled";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
 import { Quality } from "./Quality";
 import { Footer } from "./Footer";
 import { Icon } from "./Icon";
 import technologiesIcon from "./technologies.svg";
-import technologiesNextIcon from "./technologiesNext.svg";
-import { skillGroups, learningSkills } from "./skillsData";
+import { skillGroups, tools } from "./skillsData";
 
 export const Homepage = () => (
   <Container>
     <ThemeSwitch />
     <MainHeader />
     <main>
-      <Section aria-labelledby="core-skills">
-        <SectionHeader id="core-skills">
-          Core skills
+      <Experience />
+
+      <Portfolio />
+
+      <Quality />
+
+      <Section aria-labelledby="skills">
+        <SectionHeader id="skills">
+          Skills
           <Icon src={technologiesIcon} alt="" />
         </SectionHeader>
         <Grid>
@@ -28,21 +33,10 @@ export const Homepage = () => (
             <Skills key={title} title={title} skills={skills} />
           ))}
         </Grid>
+        <Tools>
+          <strong>Tools:</strong> {tools.join(" · ")}
+        </Tools>
       </Section>
-
-      <Experience />
-
-      <Section aria-labelledby="learning">
-        <SectionHeader id="learning">
-          Currently learning
-          <Icon src={technologiesNextIcon} alt="" />
-        </SectionHeader>
-        <Skills skills={learningSkills} />
-      </Section>
-
-      <Portfolio />
-
-      <Quality />
     </main>
     <Footer />
   </Container>

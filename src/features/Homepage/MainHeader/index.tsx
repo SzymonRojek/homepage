@@ -5,11 +5,12 @@ import {
   Wrapper,
   Avatar,
   Details,
-  ThisIs,
+  Availability,
   Name,
   Title,
   Summary,
-  Location,
+  Highlights,
+  Highlight,
 } from "./styled";
 import {
   ButtonLink,
@@ -22,11 +23,17 @@ export const MainHeader = () => (
   <Wrapper>
     <Avatar src={szymonRojekProfile} alt={profile.name} />
     <Details>
-      <ThisIs>this is</ThisIs>
+      <Availability>
+        {profile.availability} · {profile.location}
+      </Availability>
       <Name>{profile.name}</Name>
       <Title>{profile.title}</Title>
       <Summary>{profile.bio}</Summary>
-      <Location>{profile.location}</Location>
+      <Highlights aria-label="Key skills">
+        {profile.highlights.map((highlight) => (
+          <Highlight key={highlight}>{highlight}</Highlight>
+        ))}
+      </Highlights>
       <ButtonLinks>
         <ButtonLink href={`mailto:${email}`} title={email}>
           <EnvelopeIcon />

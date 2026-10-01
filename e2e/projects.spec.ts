@@ -1,21 +1,28 @@
 import { test, expect, mockRepositoriesError } from "./fixtures";
 
-test("shows featured projects grouped by category", async ({ page }) => {
+test("shows test projects first and front-end work as Also built", async ({
+  page,
+}) => {
   await page.goto("./");
 
-  const testing = page.getByRole("region", { name: "Testing" });
-  const frontEnd = page.getByRole("region", { name: "Front-end" });
+  const tiles = page.getByRole("list", { name: "Test projects" });
+  await expect(tiles.getByRole("heading", { level: 3 })).toHaveText([
+    "Ferry booking E2E suite",
+    "Email campaign API tests",
+    "React counter: unit to E2E",
+  ]);
 
-  await expect(testing.getByRole("heading", { level: 4 })).toHaveText([
-    "df-automation-tests",
-    "email-campaign-react-airtable",
-    "counter-testing",
-  ]);
-  await expect(frontEnd.getByRole("heading", { level: 4 })).toHaveText([
-    "homepage",
-    "react-sign-in-up",
-    "my-music-website",
-  ]);
+  const alsoBuilt = page.getByRole("region", { name: "Also built" });
+  await expect(alsoBuilt.getByRole("listitem")).toHaveCount(2);
+  await expect(alsoBuilt).toContainText("Role-based sign-in app");
+  await expect(alsoBuilt).toContainText("Guitar music website");
+  await expect(
+    alsoBuilt
+      .getByRole("listitem")
+      .filter({ hasText: "Guitar music website" })
+      .getByRole("link", { name: "Live demo" }),
+  ).toHaveAttribute("href", "https://szymonrojek.github.io/my-music-website/");
+
   await expect(page.getByText("not-featured")).toHaveCount(0);
   await expect(page.getByText("forked-repo")).toHaveCount(0);
 });
@@ -25,7 +32,7 @@ test("shows curated details on a tile", async ({ page }) => {
 
   const tile = page
     .getByRole("listitem")
-    .filter({ hasText: "counter-testing" });
+    .filter({ hasText: "React counter: unit to E2E" });
   await expect(tile).toContainText("Cypress end-to-end tests");
   await expect(tile.getByRole("link", { name: "Live demo" })).toHaveAttribute(
     "href",

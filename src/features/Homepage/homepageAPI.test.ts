@@ -47,6 +47,16 @@ describe("pickFeatured", () => {
     expect(project.homepage).toBe("https://second.dev");
   });
 
+  it("uses the readable title, or the repository name without one", () => {
+    const [withTitle, withoutTitle] = pickFeatured(repositories, [
+      { name: "first", category: "Testing", title: "First project" },
+      { name: "second", category: "Testing" },
+    ]);
+
+    expect(withTitle.title).toBe("First project");
+    expect(withoutTitle.title).toBe("second");
+  });
+
   it("keeps GitHub values when there is no override", () => {
     const [project] = pickFeatured(repositories, [
       { name: "first", category: "Front-end" },
@@ -59,8 +69,12 @@ describe("pickFeatured", () => {
 
 describe("getRepositories", () => {
   it("requests sorted repositories and skips forks", async () => {
-    const own = createRepository({ id: 1, name: "homepage" });
-    const forked = createRepository({ id: 2, name: "homepage", fork: true });
+    const own = createRepository({ id: 1, name: "counter-testing" });
+    const forked = createRepository({
+      id: 2,
+      name: "counter-testing",
+      fork: true,
+    });
     vi.mocked(axios.get).mockResolvedValue({ data: [forked, own] });
 
     const projects = await getRepositories("user");

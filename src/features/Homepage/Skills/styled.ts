@@ -2,12 +2,8 @@ import styled from "styled-components";
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 24px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-template-columns: 1fr;
@@ -80,5 +76,19 @@ export const Dot = styled.img`
     height: 7px;
     width: 7px;
     margin-right: 8px;
+  }
+`;
+
+export const Tools = styled.p`
+  margin: 24px 0 0;
+  line-height: 1.5;
+
+  strong {
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 16px;
+    font-size: 14px;
   }
 `;
