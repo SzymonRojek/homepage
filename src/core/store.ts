@@ -17,8 +17,15 @@ const store = configureStore({
 
 sagaMiddleware.run(saga);
 
+let isDarkTheme = store.getState().theme.isDarkTheme;
+
 store.subscribe(() => {
-  localStorage.setItem("dark", String(store.getState().theme.isDarkTheme));
+  const nextIsDarkTheme = store.getState().theme.isDarkTheme;
+
+  if (nextIsDarkTheme !== isDarkTheme) {
+    isDarkTheme = nextIsDarkTheme;
+    localStorage.setItem("dark", String(isDarkTheme));
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

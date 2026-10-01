@@ -4,10 +4,18 @@ interface ThemeState {
   isDarkTheme: boolean;
 }
 
-const savedTheme = localStorage.getItem("dark");
+export const getInitialDarkTheme = (): boolean => {
+  const savedTheme = localStorage.getItem("dark");
+
+  if (savedTheme !== null) {
+    return savedTheme === "true";
+  }
+
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+};
 
 const initialState: ThemeState = {
-  isDarkTheme: savedTheme ? JSON.parse(savedTheme) : false,
+  isDarkTheme: getInitialDarkTheme(),
 };
 
 const themeSlice = createSlice({
