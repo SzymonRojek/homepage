@@ -55,6 +55,12 @@ export const themeLight = {
       border: colorNames.scienceBlue,
       icon: colorNames.white,
     },
+    contact: {
+      background: colorNames.scienceBlue,
+      text: colorNames.white,
+      buttonBackground: colorNames.white,
+      buttonText: colorNames.scienceBlue,
+    },
   },
 };
 
@@ -83,6 +89,12 @@ export const themeDark: typeof themeLight = {
       background: colorNames.doveGray,
       border: colorNames.dodgerBlue,
       icon: colorNames.mineShaft,
+    },
+    contact: {
+      background: colorNames.blumine,
+      text: colorNames.white,
+      buttonBackground: colorNames.white,
+      buttonText: colorNames.blumine,
     },
   },
 };

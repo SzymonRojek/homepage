@@ -7,10 +7,8 @@ export const quality = {
   workflowURL: `${repositoryURL}/actions/workflows/ci.yml`,
   testsURL: `${repositoryURL}/tree/main/e2e`,
   checks: [
-    "TypeScript in strict mode, type-checked on every push",
-    "Unit and component tests with Vitest and Testing Library",
-    "End-to-end tests with Playwright on desktop and mobile, with the GitHub API mocked",
-    "Accessibility scans with axe in light and dark mode",
-    "Lint, type checks and all tests in GitHub Actions before each deploy",
+    "Vitest unit and component tests with a coverage gate",
+    "Playwright end-to-end tests on desktop and mobile, with axe accessibility scans",
+    "GitHub Actions gate every deploy",
   ],
 };

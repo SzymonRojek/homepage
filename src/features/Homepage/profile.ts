@@ -1,10 +1,16 @@
 export const profile = {
   name: "Szymon Rojek",
   title: "Software Test Engineer",
-  location: "Based in Hove, UK",
-  bio: "For four years I've tested financial and shareholder data at Equiniti, across migration, conversion and deconversion projects. I turn mapping documents and transformation rules into traceable test cases, and use SQL to reconcile data and find the root cause of defects. I also build for the web: this site is written in React and TypeScript and tested end to end with Playwright.",
-  contactText:
-    "Whether it's testing, data quality or a new role, I'm happy to talk. Send me an email or message me on LinkedIn.",
+  availability: "Open to QA & test automation roles",
+  relocation: "Willing to relocate",
+  bio: "I test data migrations in financial services at Equiniti: mapping documents to traceable test cases, SQL reconciliation and root-cause analysis. Now growing into test automation with Playwright and TypeScript.",
+  highlights: [
+    "4 years in software testing",
+    "Data migration testing",
+    "REST API testing",
+    "JavaScript · Cypress · Playwright",
+  ],
+  contactText: "I'm open to QA and test automation roles.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
   // Set to the CV path in public/ (for example "Szymon_Rojek_CV.pdf") once the file is added.
   cvFile: null as string | null,

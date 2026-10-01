@@ -7,9 +7,14 @@ import {
   Company,
   Period,
   Groups,
+  Group,
   GroupTitle,
   Points,
-  Education,
+  EducationList,
+  EducationItem,
+  EducationTitle,
+  School,
+  Year,
 } from "./styled";
 
 export const Experience = () => (
@@ -24,29 +29,35 @@ export const Experience = () => (
               {company} · {details}
             </Company>
           </div>
-          <Period>{period}</Period>
+          <Period $current={period.endsWith("present")}>{period}</Period>
         </JobHeader>
         <Groups>
           {groups.map(({ title, points }) => (
-            <div key={title}>
+            <Group key={title}>
               <GroupTitle>{title}</GroupTitle>
               <Points>
                 {points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </Points>
-            </div>
+            </Group>
           ))}
         </Groups>
       </Card>
     ))}
     <Card>
       <Role>Education and professional development</Role>
-      <Education>
-        {education.map((item) => (
-          <li key={item}>{item}</li>
+      <EducationList>
+        {education.map(({ title, school, year }) => (
+          <EducationItem key={title}>
+            <div>
+              <EducationTitle>{title}</EducationTitle>
+              <School>{school}</School>
+            </div>
+            {year && <Year>{year}</Year>}
+          </EducationItem>
         ))}
-      </Education>
+      </EducationList>
     </Card>
   </Section>
 );

@@ -1,48 +1,63 @@
 import { test, expect, mockRepositoriesError } from "./fixtures";
 
-test("shows featured projects grouped by category", async ({ page }) => {
-  await page.goto("./");
+test.describe("Test projects", () => {
+  test("shows test projects first and front-end work as Also built", async ({
+    page,
+  }) => {
+    await page.goto("./");
 
-  const testing = page.getByRole("region", { name: "Testing" });
-  const frontEnd = page.getByRole("region", { name: "Front-end" });
+    await test.step("test project tiles in curated order", async () => {
+      const tiles = page.getByRole("list", { name: "Test projects" });
+      await expect(tiles.getByRole("heading", { level: 3 })).toHaveText([
+        "This portfolio, tested end to end",
+        "Ferry booking E2E suite",
+        "Email campaign API tests",
+      ]);
+    });
 
-  await expect(testing.getByRole("heading", { level: 4 })).toHaveText([
-    "df-automation-tests",
-    "email-campaign-react-airtable",
-    "counter-testing",
-  ]);
-  await expect(frontEnd.getByRole("heading", { level: 4 })).toHaveText([
-    "homepage",
-    "react-sign-in-up",
-    "my-music-website",
-  ]);
-  await expect(page.getByText("not-featured")).toHaveCount(0);
-  await expect(page.getByText("forked-repo")).toHaveCount(0);
-});
+    await test.step("front-end work in Also built", async () => {
+      const alsoBuilt = page.getByRole("region", { name: "Also built" });
+      await expect(alsoBuilt.getByRole("listitem")).toHaveCount(2);
+      await expect(alsoBuilt).toContainText("Role-based sign-in app");
+      await expect(alsoBuilt).toContainText("Guitar music website");
+      await expect(
+        alsoBuilt
+          .getByRole("listitem")
+          .filter({ hasText: "Guitar music website" })
+          .getByRole("link", { name: "Live demo" }),
+      ).toHaveAttribute(
+        "href",
+        "https://szymonrojek.github.io/my-music-website/",
+      );
+    });
 
-test("shows curated details on a tile", async ({ page }) => {
-  await page.goto("./");
+    await test.step("unfeatured repos and forks are hidden", async () => {
+      await expect(page.getByText("not-featured")).toHaveCount(0);
+      await expect(page.getByText("forked-repo")).toHaveCount(0);
+    });
+  });
 
-  const tile = page
-    .getByRole("listitem")
-    .filter({ hasText: "counter-testing" });
-  await expect(tile).toContainText("Cypress end-to-end tests");
-  await expect(tile.getByRole("link", { name: "Live demo" })).toHaveAttribute(
-    "href",
-    "https://szymonrojek.github.io/counter-testing/",
-  );
-  await expect(
-    tile.getByRole("link", { name: "GitHub Repository" }),
-  ).toHaveAttribute("href", "https://github.com/SzymonRojek/counter-testing");
-});
+  test("shows curated details on a tile", async ({ page }) => {
+    await page.goto("./");
 
-test("shows the error box when GitHub fails", async ({ page }) => {
-  await page.unrouteAll();
-  await mockRepositoriesError(page);
-  await page.goto("./");
+    const tile = page
+      .getByRole("listitem")
+      .filter({ hasText: "This portfolio, tested end to end" });
+    await expect(tile).toContainText("Playwright end-to-end tests");
+    await expect(tile.getByRole("link", { name: "Live demo" })).toHaveCount(0);
+    await expect(
+      tile.getByRole("link", { name: "GitHub Repository" }),
+    ).toHaveAttribute("href", "https://github.com/SzymonRojek/homepage");
+  });
 
-  await expect(page.getByText(/something went/i)).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Go to GitHub" }),
-  ).toHaveAttribute("href", "https://github.com/SzymonRojek");
+  test("shows the error box when GitHub fails", async ({ page }) => {
+    await page.unrouteAll();
+    await mockRepositoriesError(page);
+    await page.goto("./");
+
+    await expect(page.getByText(/something went/i)).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Go to GitHub" }),
+    ).toHaveAttribute("href", "https://github.com/SzymonRojek");
+  });
 });

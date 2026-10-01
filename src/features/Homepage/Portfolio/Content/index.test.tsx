@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
@@ -40,30 +40,35 @@ describe("Content", () => {
     );
   });
 
-  it("renders project tiles grouped by category", () => {
+  it("renders test projects as tiles and front-end work as a list", () => {
     renderContent({
       status: "success",
       repositories: [
-        createProject({ id: 1, name: "e2e-tests", category: "Testing" }),
-        createProject({ id: 2, name: "homepage", category: "Front-end" }),
+        createProject({ id: 1, title: "E2E suite", category: "Testing" }),
+        createProject({ id: 2, title: "Sign-in app", category: "Front-end" }),
       ],
     });
 
-    const groups = screen
-      .getAllByRole("heading", { level: 3 })
-      .map((heading) => heading.textContent);
-    expect(groups).toEqual(["Testing", "Front-end"]);
-    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    const tiles = screen.getByRole("list", { name: "Test projects" });
+    expect(
+      within(tiles).getByRole("heading", { name: "E2E suite" }),
+    ).toBeVisible();
+
+    const alsoBuilt = screen.getByRole("region", { name: "Also built" });
+    expect(within(alsoBuilt).getByText("Sign-in app")).toBeInTheDocument();
+    expect(
+      within(alsoBuilt).getByRole("link", { name: "Code" }),
+    ).toHaveAttribute("href", "https://github.com/user/homepage");
   });
 
-  it("skips a category with no projects", () => {
+  it("leaves out the Also built list when there is no front-end work", () => {
     renderContent({
       status: "success",
-      repositories: [createProject({ category: "Front-end" })],
+      repositories: [createProject({ category: "Testing" })],
     });
 
     expect(
-      screen.queryByRole("heading", { name: "Testing" }),
+      screen.queryByRole("region", { name: "Also built" }),
     ).not.toBeInTheDocument();
   });
 
@@ -72,19 +77,22 @@ describe("Content", () => {
       status: "success",
       repositories: [
         createProject({
+          category: "Testing",
+          name: "e2e-tests",
+          title: "E2E suite",
           language: "TypeScript",
           stargazers_count: 3,
-          homepage: "https://user.github.io/homepage/",
+          homepage: "https://user.github.io/e2e-tests/",
         }),
       ],
     });
 
     expect(screen.getByText("My homepage")).toBeInTheDocument();
-    expect(screen.getByText(/TypeScript/)).toBeInTheDocument();
+    expect(screen.getByText(/e2e-tests · TypeScript/)).toBeInTheDocument();
     expect(screen.getByLabelText("3 stars")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
       "href",
-      "https://user.github.io/homepage/",
+      "https://user.github.io/e2e-tests/",
     );
     expect(
       screen.getByRole("link", { name: "GitHub Repository" }),
@@ -96,15 +104,16 @@ describe("Content", () => {
       status: "success",
       repositories: [
         createProject({
+          category: "Testing",
           description: null,
-          language: null,
           stargazers_count: 0,
           homepage: null,
         }),
       ],
     });
 
-    expect(document.querySelectorAll("p")).toHaveLength(0);
+    expect(screen.queryByText(/My homepage/)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/stars/)).not.toBeInTheDocument();
     expect(
       screen.queryByRole("link", { name: "Live demo" }),
     ).not.toBeInTheDocument();

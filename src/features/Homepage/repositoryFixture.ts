@@ -17,5 +17,6 @@ export const createRepository = (
 export const createProject = (overrides: Partial<Project> = {}): Project => ({
   ...createRepository(),
   category: "Front-end",
+  title: "Homepage",
   ...overrides,
 });

@@ -7,23 +7,29 @@ test.describe("with a light OS theme", () => {
   test.use({ colorScheme: "light" });
 
   test("starts light, toggles and remembers the choice", async ({ page }) => {
-    await page.goto("./");
-    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
-    const lightBackground = await page
-      .locator("body")
-      .evaluate((body) => getComputedStyle(body).backgroundColor);
+    const lightBackground = await test.step("starts light", async () => {
+      await page.goto("./");
+      await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
+      return page
+        .locator("body")
+        .evaluate((body) => getComputedStyle(body).backgroundColor);
+    });
 
-    await themeSwitch(page).click();
+    await test.step("switches to dark", async () => {
+      await themeSwitch(page).click();
 
-    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator("body")).not.toHaveCSS(
-      "background-color",
-      lightBackground,
-    );
+      await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator("body")).not.toHaveCSS(
+        "background-color",
+        lightBackground,
+      );
+    });
 
-    await page.reload();
+    await test.step("keeps dark after a reload", async () => {
+      await page.reload();
 
-    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+      await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    });
   });
 });
 

@@ -11,7 +11,7 @@ export const pickFeatured = (
   repositories: Repository[],
   featured: FeaturedRepository[],
 ): Project[] =>
-  featured.flatMap(({ name, category, description, demoUrl }) => {
+  featured.flatMap(({ name, category, title, description, demoUrl }) => {
     const repository = repositories.find(
       (repository) => repository.name === name,
     );
@@ -21,6 +21,7 @@ export const pickFeatured = (
           {
             ...repository,
             category,
+            title: title ?? repository.name,
             description: description ?? repository.description,
             homepage: demoUrl ?? repository.homepage,
           },

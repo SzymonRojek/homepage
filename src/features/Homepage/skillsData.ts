@@ -5,71 +5,65 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Testing",
+    title: "Data migration testing",
     skills: [
-      "Functional & regression testing",
-      "Integration testing",
-      "Database testing",
-      "REST API testing",
-      "Positive & negative test design",
-    ],
-  },
-  {
-    title: "Data & SQL",
-    skills: [
-      "T-SQL",
-      "Complex multi-table joins",
-      "Data validation & reconciliation",
-      "Test data creation",
-      "Stored Procedure analysis",
-    ],
-  },
-  {
-    title: "Data migration",
-    skills: [
-      "Migration testing",
+      "Mapping & transformation rule validation",
       "Conversion & deconversion testing",
-      "Mapping validation",
-      "Transformation rule validation",
+      "Trial migrations & cutover validation",
+      "Source-to-target reconciliation",
+      "Data quality checks (nulls, duplicates, referential integrity)",
+      "Extract, output file & report validation",
+      "Complex T-SQL & stored procedure analysis (SQL Server)",
     ],
   },
   {
-    title: "Quality engineering",
+    title: "Software testing",
     skills: [
-      "Requirements analysis",
-      "Effort estimation",
-      "Defect lifecycle",
-      "Root-cause analysis",
-      "Traceability",
+      "Requirements analysis & traceability",
+      "Test case design, prep & execution (positive & negative)",
+      "Test data preparation",
+      "Functional, integration & regression testing",
+      "Defect lifecycle & root-cause analysis",
+      "Agile delivery",
     ],
   },
   {
-    title: "Tools",
+    title: "API testing",
     skills: [
-      "Azure DevOps",
-      "SQL Server Management Studio",
-      "Postman",
-      "Git & GitHub",
-      "VS Code",
-      "GitHub Copilot",
+      "REST APIs",
+      "Postman collections & Collection Runner",
+      "Authorised & unauthorised requests",
+      "Response and status validation",
     ],
   },
   {
     title: "Automation & code",
     skills: [
-      "Playwright & TypeScript (in progress)",
-      "Cypress",
-      "Jest",
-      "JavaScript",
-      "React",
-      "HTML & CSS",
+      "Cypress, TestCafe",
+      "Gherkin, Cucumber",
+      "Playwright & TypeScript",
+      "Jest, Vitest & React Testing Library",
+      "Accessibility testing (axe)",
+      "HTML & CSS, JavaScript, React",
+      "Git, GitHub Actions (CI/CD)",
+    ],
+  },
+  {
+    title: "AI-assisted testing",
+    skills: [
+      "GitHub Copilot for test code & SQL",
+      "Prompt engineering for test cases & test data",
+      "Human review & CI test gates for AI-generated code",
+      "Pilot user of in-house AI agents that write tests from user stories",
     ],
   },
 ];
 
-export const learningSkills = [
-  "End-to-end UI automation with Playwright",
-  "TypeScript",
-  "Maintainable, scalable test frameworks",
-  "Agentic, AI-assisted testing",
+export const tools = [
+  "Azure DevOps",
+  "SQL Server Management Studio",
+  "Postman",
+  "VS Code",
+  "GitHub Copilot",
+  "Claude",
 ];

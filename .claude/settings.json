@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(git push *main*)",
+      "Bash(gh pr merge)",
+      "Bash(gh pr merge *)"
+    ],
+    "ask": ["Bash(git push)", "Bash(git push *)"]
+  }
+}

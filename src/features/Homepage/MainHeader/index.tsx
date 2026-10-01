@@ -5,31 +5,39 @@ import {
   Wrapper,
   Avatar,
   Details,
-  ThisIs,
+  Availability,
   Name,
   Title,
   Summary,
-  Location,
+  Highlights,
+  Highlight,
 } from "./styled";
 import {
   ButtonLink,
   ButtonLinks,
   SecondaryButtonLink,
   EnvelopeIcon,
+  LinkedInIcon,
 } from "../ButtonLink";
 
 export const MainHeader = () => (
   <Wrapper>
     <Avatar src={szymonRojekProfile} alt={profile.name} />
     <Details>
-      <ThisIs>this is</ThisIs>
       <Name>{profile.name}</Name>
       <Title>{profile.title}</Title>
+      <Availability>
+        {profile.availability} · {profile.relocation}
+      </Availability>
       <Summary>{profile.bio}</Summary>
-      <Location>{profile.location}</Location>
+      <Highlights aria-label="Key skills">
+        {profile.highlights.map((highlight) => (
+          <Highlight key={highlight}>{highlight}</Highlight>
+        ))}
+      </Highlights>
       <ButtonLinks>
         <ButtonLink href={`mailto:${email}`} title={email}>
-          <EnvelopeIcon />
+          <EnvelopeIcon aria-hidden="true" />
           Get in touch
         </ButtonLink>
         <SecondaryButtonLink
@@ -37,6 +45,7 @@ export const MainHeader = () => (
           target="_blank"
           rel="noreferrer"
         >
+          <LinkedInIcon aria-hidden="true" />
           LinkedIn
         </SecondaryButtonLink>
         {profile.cvFile && (

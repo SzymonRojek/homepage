@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import a from "color-alpha";
 
-export const Group = styled.section`
+export const AlsoBuilt = styled.section`
   margin-top: 48px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -22,7 +22,7 @@ export const GroupTitle = styled.h3`
 
 export const List = styled.ul`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
   margin-top: 24px;
   padding: 0;
@@ -36,7 +36,7 @@ export const List = styled.ul`
 
 export const Tile = styled.li`
   margin: 0;
-  padding: 56px;
+  padding: 32px;
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 6px solid ${({ theme }) => theme.colors.tile.border};
   transition: border-color 0.3s;
@@ -52,7 +52,7 @@ export const Tile = styled.li`
   }
 `;
 
-export const Name = styled.h4`
+export const Name = styled.h3`
   font-size: 24px;
   color: ${({ theme }) => theme.colors.tile.header};
   margin: 0;
@@ -114,3 +114,34 @@ export const Link = styled.a`
     border-color: unset;
   }
 `;
+
+export const AlsoBuiltIntro = styled.p`
+  margin: 12px 0 0;
+  line-height: 1.5;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 15px;
+  }
+`;
+
+export const AlsoBuiltList = styled.ul`
+  display: grid;
+  grid-gap: 12px;
+  margin: 16px 0 0;
+  padding-left: 20px;
+  line-height: 1.5;
+
+  strong {
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  a {
+    margin-left: 8px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 14px;
+  }
+`;
+
+export const AlsoBuiltItem = styled.li``;

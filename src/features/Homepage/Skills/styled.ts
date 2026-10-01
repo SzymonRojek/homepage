@@ -2,12 +2,8 @@ import styled from "styled-components";
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 24px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-template-columns: 1fr;
@@ -21,6 +17,11 @@ export const Card = styled.article`
   box-shadow: ${({ theme }) => theme.boxShadow};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transition: background 0.3s;
+
+  /* An odd card out spans both columns instead of leaving a gap. */
+  &:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 16px;
@@ -80,5 +81,19 @@ export const Dot = styled.img`
     height: 7px;
     width: 7px;
     margin-right: 8px;
+  }
+`;
+
+export const Tools = styled.p`
+  margin: 24px 0 0;
+  line-height: 1.5;
+
+  strong {
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 16px;
+    font-size: 14px;
   }
 `;

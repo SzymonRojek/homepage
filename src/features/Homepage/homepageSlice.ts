@@ -15,6 +15,7 @@ export type ProjectCategory = "Testing" | "Front-end";
 
 export interface Project extends Repository {
   category: ProjectCategory;
+  title: string;
 }
 
 export type RepositoriesStatus = "initial" | "loading" | "success" | "error";

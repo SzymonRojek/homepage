@@ -7,7 +7,9 @@ for (const colorScheme of ["light", "dark"] as const) {
 
     test("has no serious accessibility violations", async ({ page }) => {
       await page.goto("./");
-      await expect(page.getByRole("region", { name: "Testing" })).toBeVisible();
+      await expect(
+        page.getByRole("list", { name: "Test projects" }),
+      ).toBeVisible();
 
       const { violations } = await new AxeBuilder({ page }).analyze();
       const serious = violations

@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import Envelope from "./envelope.svg?react";
+import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
 export const ButtonLink = styled.a`
   display: inline-flex;
   align-items: center;
-  padding: 12px 16px;
-  font-size: 20px;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 17px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.buttonLink.text};
   text-decoration: none;
@@ -19,7 +21,8 @@ export const ButtonLink = styled.a`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 18px;
+    padding: 10px 16px;
+    font-size: 15px;
   }
 `;
 
@@ -30,7 +33,15 @@ export const SecondaryButtonLink = styled(ButtonLink)`
 `;
 
 export const EnvelopeIcon = styled(Envelope)`
-  margin-right: 16px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+`;
+
+export const LinkedInIcon = styled(LinkedIn)`
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 `;
 
 export const ButtonLinks = styled.div`

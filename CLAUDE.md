@@ -7,15 +7,14 @@ Guidance for AI agents (Claude Code) working in this repository.
 Personal portfolio homepage of **Szymon Rojek**, Software Test Engineer (data migration, SQL and API testing) who also builds front-end.
 Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in `package.json`).
 
-A single page with these parts, in order:
+A single page aimed at recruiters for QA / test automation roles, with these parts in order:
 
-- **Header:** avatar, name, title, bio, and "Get in touch", LinkedIn and an optional "Download CV" button.
-- **Core skills:** six skill-group cards.
+- **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and "Get in touch", LinkedIn and an optional "Download CV" button.
 - **Experience:** job and education.
-- **Currently learning.**
-- **Projects:** curated GitHub repositories grouped into Testing and Front-end.
+- **Test projects:** curated testing repositories as tiles with readable titles, then front-end work as a compact "Also built" list.
 - **How this site is tested:** CI badge and the list of checks.
-- **Footer:** email, GitHub and LinkedIn.
+- **Skills:** four skill-group cards and a tools row.
+- **Footer:** "Let's talk" card with email and LinkedIn buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
 
@@ -32,8 +31,23 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Vitest** + **Testing Library** (jsdom): setup in `src/setupTests.ts`, config in the `test` block of `vite.config.ts`
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
-  - Every push and PR to `main` runs lint, typecheck, unit tests, build and e2e.
-  - Pushes to `main` also deploy `dist/` to the `gh-pages` branch.
+  - Every push to `main` or `dev` and every PR to `main` runs lint, typecheck, unit tests with a coverage gate, build and e2e.
+  - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
+
+## Git workflow (mandatory)
+
+`main` is production: every push to it deploys the live site. These rules are fixed; do not change or skip them, and do not treat an earlier approval as permission for a later step.
+
+1. Work and commit on the **`dev`** branch only. Never commit on `main`.
+2. **Always ask the user before any `git push`**, including to `dev`. Wait for an explicit yes.
+3. Changes reach `main` only through a **Pull Request `dev → main`** that **the user merges** on GitHub. Open the PR only when the user asks; never merge it yourself.
+4. `main` always comes last: local checks → push to `dev` (CI runs lint, typecheck and tests, no deploy) → user reviews → PR → user merges → deploy.
+
+This is enforced in three places:
+
+- **GitHub ruleset on `main`:** no direct pushes, PR required, CI must pass, no bypass (not even for the admin account the agent uses).
+- **`.claude/settings.json`:** `deny` blocks `git push` to `main` and `gh pr merge`; `ask` requires approval for every other `git push`.
+- **CI:** `.github/workflows/ci.yml` deploys only from `main`.
 
 ## Commands
 
@@ -42,6 +56,7 @@ npm run dev        # dev server on http://localhost:3000/homepage/ (npm start is
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
 npm test           # Vitest in watch mode (npx vitest run for a single run)
+npm run test:coverage  # single Vitest run with v8 coverage and thresholds (CI runs this)
 npm run test:e2e   # Playwright: builds, serves on :4173, runs desktop + mobile projects
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
@@ -68,8 +83,8 @@ src/
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, bio, LinkedIn, cvFile (CONTENT)
-    skillsData.ts             # skillGroups, learningSkills (CONTENT)
+    profile.ts                # name, title, availability, relocation, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
+    skillsData.ts             # skillGroups, tools (CONTENT)
     experienceData.ts         # jobs, education (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)
     email.ts                  # contact email (CONTENT)
@@ -80,10 +95,10 @@ src/
     MainHeader/, Skills/, Experience/, Quality/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
-      featuredRepositories.ts # which repos to show, category, optional description/demoUrl (CONTENT)
-      Content/                # switch on status -> Loading | ErrorBox | Repositories (grouped by category)
+      featuredRepositories.ts # which repos to show, category, optional title/description/demoUrl (CONTENT)
+      Content/                # switch on status -> Loading | ErrorBox | Repositories (test tiles + Also built)
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
-    Section/, ButtonLink/, SubHeader/, Icon/   # shared styled primitives
+    Section/, ButtonLink/, SubHeader/   # shared styled primitives
 e2e/
   fixtures.ts                 # `test` with the GitHub API auto-mocked; mockRepositoriesError
   *.spec.ts                   # header, projects, theme, accessibility
@@ -98,7 +113,7 @@ e2e/
 
 ## Conventions (follow these)
 
-- **Component layout:** `ComponentName/index.tsx` holds the JSX and `ComponentName/styled.ts` holds the styled-components. Small style-only primitives can live in `index.ts` alone (`ButtonLink`, `SubHeader`, `Icon`, `Section`).
+- **Component layout:** `ComponentName/index.tsx` holds the JSX and `ComponentName/styled.ts` holds the styled-components. Small style-only primitives can live in `index.ts` alone (`ButtonLink`, `SubHeader`, `Section`).
 - **Named exports** for components (`export const Footer = () => ...`). Slices default-export their reducer and name-export actions and selectors.
 - **Selectors:** each slice defines a private `selectXState` and exports `selectX` helpers built on it.
 - **Types:** strict TypeScript, no `any`. Type props with an interface next to the component. Unused function arguments are prefixed with `_`.
@@ -141,7 +156,7 @@ Do these phases one at a time, in separate commits or PRs. Do not mix tooling ch
 
 ## Verification checklist
 
-- `npm run typecheck`, `npm run lint`, `npx vitest run`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
+- `npm run typecheck`, `npm run lint`, `npm run test:coverage`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
 - Check in the browser in **both light and dark mode** at mobile (≤767px), tablet (≤991px / ≤1199px) and desktop widths.
 - Projects: the loading spinner shows, then the grouped tiles. The e2e suite covers the error state with a mocked 500.
 - The theme follows the OS on a first visit and when the OS theme changes, and a chosen theme survives a page reload and wins over the OS.
