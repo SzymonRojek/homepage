@@ -2,6 +2,7 @@ import axios from "axios";
 import { describe, expect, it, vi } from "vitest";
 import { getRepositories, pickFeatured } from "./homepageAPI";
 import { createRepository } from "./repositoryFixture";
+import { featuredRepositories } from "./Portfolio/featuredRepositories";
 
 vi.mock("axios");
 
@@ -69,12 +70,10 @@ describe("pickFeatured", () => {
 
 describe("getRepositories", () => {
   it("requests sorted repositories and skips forks", async () => {
-    const own = createRepository({ id: 1, name: "counter-testing" });
-    const forked = createRepository({
-      id: 2,
-      name: "counter-testing",
-      fork: true,
-    });
+    // Any featured name works; use the first one so content edits don't break this test.
+    const [{ name }] = featuredRepositories;
+    const own = createRepository({ id: 1, name });
+    const forked = createRepository({ id: 2, name, fork: true });
     vi.mocked(axios.get).mockResolvedValue({ data: [forked, own] });
 
     const projects = await getRepositories("user");

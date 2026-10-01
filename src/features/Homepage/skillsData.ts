@@ -5,6 +5,20 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
+    title: "Data migration testing",
+    skills: [
+      "Conversion & deconversion testing",
+      "Trial migrations & cutover validation",
+      "Source-to-target reconciliation",
+      "Mapping & transformation rule validation",
+      "Data quality checks (nulls, duplicates, integrity)",
+      "Extract, output file & report validation",
+      "Complex T-SQL (SQL Server)",
+      "Stored Procedure analysis",
+      "Test data creation",
+    ],
+  },
+  {
     title: "Testing & QA",
     skills: [
       "Functional & regression",
@@ -13,17 +27,6 @@ export const skillGroups: SkillGroup[] = [
       "Requirements analysis & traceability",
       "Defect lifecycle & root-cause analysis",
       "Agile delivery",
-    ],
-  },
-  {
-    title: "SQL & data",
-    skills: [
-      "T-SQL & multi-table joins",
-      "Data validation & reconciliation",
-      "Migration & conversion",
-      "Mapping & transformation rules",
-      "Stored Procedure analysis",
-      "Test data creation",
     ],
   },
   {

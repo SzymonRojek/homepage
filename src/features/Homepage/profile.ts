@@ -6,7 +6,7 @@ export const profile = {
   bio: "At Equiniti, in financial services, I validate data migrations end to end: I turn mapping documents into traceable test cases, reconcile data across systems with SQL and trace defects to their root cause. I code in JavaScript and I'm growing into test automation with Playwright and TypeScript.",
   highlights: [
     "4 years in QA",
-    "SQL & data validation",
+    "Data migration testing",
     "REST API testing",
     "JavaScript · Cypress · Playwright",
   ],

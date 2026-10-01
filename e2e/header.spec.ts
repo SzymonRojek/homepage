@@ -22,7 +22,7 @@ test("tells recruiters at a glance what I'm looking for", async ({ page }) => {
     header.getByRole("list", { name: "Key skills" }).getByRole("listitem"),
   ).toHaveText([
     "4 years in QA",
-    "SQL & data validation",
+    "Data migration testing",
     "REST API testing",
     "JavaScript · Cypress · Playwright",
   ]);

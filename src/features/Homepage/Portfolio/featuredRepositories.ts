@@ -12,6 +12,13 @@ export interface FeaturedRepository {
 
 export const featuredRepositories: FeaturedRepository[] = [
   {
+    name: "homepage",
+    category: "Testing",
+    title: "This portfolio, tested end to end",
+    description:
+      "Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.",
+  },
+  {
     name: "df-automation-tests",
     category: "Testing",
     title: "Ferry booking E2E suite",
@@ -24,14 +31,6 @@ export const featuredRepositories: FeaturedRepository[] = [
     title: "Email campaign API tests",
     description:
       "Email campaign CRUD app on the Airtable REST API, with an Express proxy that keeps the API key out of the browser. Every endpoint is covered by Postman API tests for valid, invalid, authorised and unauthorised requests, automated with the Postman Collection Runner.",
-  },
-  {
-    name: "counter-testing",
-    category: "Testing",
-    title: "React counter: unit to E2E",
-    description:
-      "A React counter covered by Jest snapshot, Enzyme unit and Cypress end-to-end tests.",
-    demoUrl: "https://szymonrojek.github.io/counter-testing/",
   },
   {
     name: "react-sign-in-up",

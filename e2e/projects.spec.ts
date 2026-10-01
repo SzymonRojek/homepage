@@ -7,9 +7,9 @@ test("shows test projects first and front-end work as Also built", async ({
 
   const tiles = page.getByRole("list", { name: "Test projects" });
   await expect(tiles.getByRole("heading", { level: 3 })).toHaveText([
+    "This portfolio, tested end to end",
     "Ferry booking E2E suite",
     "Email campaign API tests",
-    "React counter: unit to E2E",
   ]);
 
   const alsoBuilt = page.getByRole("region", { name: "Also built" });
@@ -32,15 +32,12 @@ test("shows curated details on a tile", async ({ page }) => {
 
   const tile = page
     .getByRole("listitem")
-    .filter({ hasText: "React counter: unit to E2E" });
-  await expect(tile).toContainText("Cypress end-to-end tests");
-  await expect(tile.getByRole("link", { name: "Live demo" })).toHaveAttribute(
-    "href",
-    "https://szymonrojek.github.io/counter-testing/",
-  );
+    .filter({ hasText: "This portfolio, tested end to end" });
+  await expect(tile).toContainText("Playwright end-to-end tests");
+  await expect(tile.getByRole("link", { name: "Live demo" })).toHaveCount(0);
   await expect(
     tile.getByRole("link", { name: "GitHub Repository" }),
-  ).toHaveAttribute("href", "https://github.com/SzymonRojek/counter-testing");
+  ).toHaveAttribute("href", "https://github.com/SzymonRojek/homepage");
 });
 
 test("shows the error box when GitHub fails", async ({ page }) => {
