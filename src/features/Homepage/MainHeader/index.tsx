@@ -8,7 +8,6 @@ import {
   ThisIs,
   Name,
   Title,
-  Subtitle,
   Summary,
   Location,
   Buttons,
@@ -24,7 +23,6 @@ export const MainHeader = () => (
       <ThisIs>this is</ThisIs>
       <Name>{profile.name}</Name>
       <Title>{profile.title}</Title>
-      <Subtitle>{profile.subtitle}</Subtitle>
       <Summary>{profile.bio}</Summary>
       <Location>{profile.location}</Location>
       <Buttons>

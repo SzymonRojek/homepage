@@ -70,15 +70,6 @@ export const Title = styled.p`
   }
 `;
 
-export const Subtitle = styled.p`
-  margin: 8px 0 0;
-  font-size: 16px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 14px;
-  }
-`;
-
 export const Summary = styled.p`
   font-size: 18px;
   font-weight: 400;
