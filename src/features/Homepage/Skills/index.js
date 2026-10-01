@@ -7,7 +7,7 @@ export const Skills = ({ title, skills }) => (
     <List>
       {skills.map((skill) => (
         <Item key={skill}>
-          <Dot src={blueDot} />
+          <Dot src={blueDot} alt="" />
           {skill}
         </Item>
       ))}

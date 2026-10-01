@@ -29,7 +29,7 @@ export const Homepage = () => (
         title={
           <>
             Next to learn
-            <Icon src={technologiesNextIcon} />
+            <Icon src={technologiesNextIcon} alt="" />
           </>
         }
         skills={nextSkills}
@@ -39,7 +39,7 @@ export const Homepage = () => (
         title={
           <>
             Soft skills
-            <Icon src={softSkillsIcon} />
+            <Icon src={softSkillsIcon} alt="" />
           </>
         }
         skills={softSkills}

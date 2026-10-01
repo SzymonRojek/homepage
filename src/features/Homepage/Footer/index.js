@@ -15,7 +15,7 @@ export const Footer = () => (
   <Wrapper>
     <LetsTalk>
       Let's talk!
-      <StyledIcon src={talkIcon} />
+      <StyledIcon src={talkIcon} alt="" />
     </LetsTalk>
     <Address>
       <EmailWrapper>

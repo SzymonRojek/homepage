@@ -11,7 +11,11 @@ export const ErrorBox = () => (
       Sorry, failed to load GitHub&nbsp;projects. <br />
       You can check them directly&nbsp;on&nbsp;GitHub
     </Paragraph>
-    <ButtonLink href={`https://github.com/${githubUserName}`} target="_blank">
+    <ButtonLink
+      href={`https://github.com/${githubUserName}`}
+      target="_blank"
+      rel="noreferrer"
+    >
       Go to GitHub
     </ButtonLink>
   </Wrapper>
