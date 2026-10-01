@@ -50,6 +50,56 @@ test.describe("with a dark OS theme", () => {
   });
 });
 
+test.describe("on reload with a saved dark choice", () => {
+  test.use({ colorScheme: "light" });
+
+  test("never paints a light background", async ({ page }) => {
+    // Record the visible page background on every frame from the first paint.
+    await page.addInitScript(() => {
+      localStorage.setItem("dark", "true");
+      const frames: string[] = [];
+      const transparent = "rgba(0, 0, 0, 0)";
+      const record = () => {
+        const html = document.documentElement;
+        const body = document.body;
+        const bodyColor = body && getComputedStyle(body).backgroundColor;
+        const htmlColor = html && getComputedStyle(html).backgroundColor;
+        frames.push(
+          bodyColor && bodyColor !== transparent
+            ? bodyColor
+            : htmlColor && htmlColor !== transparent
+              ? htmlColor
+              : "rgb(255, 255, 255)",
+        );
+        requestAnimationFrame(record);
+      };
+      requestAnimationFrame(record);
+      Object.assign(window, { backgroundFrames: frames });
+    });
+    // Slow the app script down so the time before React renders is visible.
+    await page.route("**/assets/*.js", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await route.continue();
+    });
+
+    await page.goto("./");
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    await page.waitForTimeout(500);
+
+    const frames = await page.evaluate(
+      () =>
+        (window as unknown as { backgroundFrames: string[] }).backgroundFrames,
+    );
+    const lightFrames = frames.filter((color) => {
+      const [red, green, blue] = (color.match(/\d+/g) ?? []).map(Number);
+      return red + green + blue > 3 * 128;
+    });
+
+    expect(frames.length).toBeGreaterThan(0);
+    expect(lightFrames).toEqual([]);
+  });
+});
+
 test.describe("when the OS theme changes while the page is open", () => {
   test.use({ colorScheme: "light" });
 

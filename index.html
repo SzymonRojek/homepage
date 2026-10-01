@@ -3,6 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Paint the saved or OS theme before the app loads, so a dark-mode reload
+      never flashes light. Same rule as getInitialDarkTheme in themeSlice.ts;
+      the colours match theme.colors.site.background (checked in theme.test.ts).
+    -->
+    <style>
+      html {
+        background: #fbfbfe;
+      }
+      html[data-theme="dark"] {
+        background: #252525;
+        color-scheme: dark;
+      }
+    </style>
+    <script>
+      try {
+        const saved = localStorage.getItem("dark");
+        const isDark =
+          saved !== null
+            ? saved === "true"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = isDark ? "dark" : "light";
+      } catch {
+        // Storage blocked: the app sets the theme once it loads.
+      }
+    </script>
     <title>Szymon Rojek | Software Test Engineer</title>
     <meta
       name="description"
