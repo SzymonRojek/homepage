@@ -10,11 +10,13 @@ import {
   Title,
   Summary,
   Location,
-  Buttons,
-  StyledButtonLink,
-  SecondaryButtonLink,
-  ButtonIcon,
 } from "./styled";
+import {
+  ButtonLink,
+  ButtonLinks,
+  SecondaryButtonLink,
+  EnvelopeIcon,
+} from "../ButtonLink";
 
 export const MainHeader = () => (
   <Wrapper>
@@ -25,11 +27,11 @@ export const MainHeader = () => (
       <Title>{profile.title}</Title>
       <Summary>{profile.bio}</Summary>
       <Location>{profile.location}</Location>
-      <Buttons>
-        <StyledButtonLink href={`mailto:${email}`} title={email}>
-          <ButtonIcon />
+      <ButtonLinks>
+        <ButtonLink href={`mailto:${email}`} title={email}>
+          <EnvelopeIcon />
           Get in touch
-        </StyledButtonLink>
+        </ButtonLink>
         <SecondaryButtonLink
           href={profile.linkedinUrl}
           target="_blank"
@@ -45,7 +47,7 @@ export const MainHeader = () => (
             Download CV
           </SecondaryButtonLink>
         )}
-      </Buttons>
+      </ButtonLinks>
     </Details>
   </Wrapper>
 );

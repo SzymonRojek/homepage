@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { Icon } from "../Icon";
+import { SubHeader } from "../SubHeader";
+import { ButtonLinks } from "../ButtonLink";
 
 export const Wrapper = styled.footer`
-  padding: 0 5px 0 5px;
   margin-top: 120px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -10,58 +11,56 @@ export const Wrapper = styled.footer`
   }
 `;
 
-export const LetsTalk = styled.h2`
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: initial;
-  margin: 0;
+export const Card = styled.section`
+  padding: 56px 32px;
+  text-align: center;
+  background: ${({ theme }) => theme.colors.boxBackground};
+  box-shadow: ${({ theme }) => theme.boxShadow};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  transition: background 0.3s;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding-bottom: 4px;
+    padding: 32px 16px;
+    text-align: left;
   }
 `;
 
-export const Address = styled.address`
-  font-style: unset;
-`;
-
-export const EmailWrapper = styled.div`
-  margin: 24px 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin: 18px 0;
-  }
-`;
-
-export const EmailLink = styled.a`
-  margin-top: 10px;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: 32px;
-  font-weight: 900;
-  text-decoration: none;
-  transition: color 0.3s;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 18px;
-  }
-`;
-
-export const Paragraph = styled.p`
-  max-width: 430px;
-  font-size: 18px;
-  line-height: 1.4;
-  margin: 0;
-  text-align: justify;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 14px;
-  }
-`;
+export const Heading = styled(SubHeader)``;
 
 export const StyledIcon = styled(Icon)`
   vertical-align: bottom;
+`;
+
+export const Paragraph = styled.p`
+  max-width: 560px;
+  margin: 16px auto 0;
+  font-size: 18px;
+  line-height: 1.5;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-left: 0;
+    font-size: 15px;
+  }
+`;
+
+export const Buttons = styled(ButtonLinks)`
+  justify-content: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    justify-content: flex-start;
+  }
+`;
+
+export const Bottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  padding: 0 4px;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  }
 `;

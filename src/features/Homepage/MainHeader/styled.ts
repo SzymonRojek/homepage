@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { ButtonLink } from "../ButtonLink";
-import EnvelopeIcon from "./envelope.svg?react";
 
 export const Wrapper = styled.header`
   margin-top: -30px; // that's the height of the theme switcher
@@ -94,30 +92,4 @@ export const Location = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`;
-
-export const Buttons = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 32px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 12px;
-    margin-top: 24px;
-  }
-`;
-
-export const StyledButtonLink = styled(ButtonLink)`
-  display: inline-flex;
-  align-items: center;
-`;
-
-export const SecondaryButtonLink = styled(StyledButtonLink)`
-  color: ${({ theme }) => theme.colors.primary};
-  background: transparent;
-  border-color: ${({ theme }) => theme.colors.primary};
-`;
-export const ButtonIcon = styled(EnvelopeIcon)`
-  margin-right: 16px;
 `;

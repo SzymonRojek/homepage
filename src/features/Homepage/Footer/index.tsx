@@ -1,32 +1,45 @@
 import { email } from "../email";
+import { profile } from "../profile";
 import { SocialIcons } from "./SocialIcons";
 import talkIcon from "./talk.svg";
-import { StyledIcon } from "./styled";
+import { ButtonLink, SecondaryButtonLink, EnvelopeIcon } from "../ButtonLink";
 import {
-  Address,
-  LetsTalk,
-  EmailWrapper,
-  EmailLink,
-  Paragraph,
   Wrapper,
+  Card,
+  Heading,
+  StyledIcon,
+  Paragraph,
+  Buttons,
+  Bottom,
 } from "./styled";
 
 export const Footer = () => (
   <Wrapper>
-    <LetsTalk>
-      Let's talk!
-      <StyledIcon src={talkIcon} alt="" />
-    </LetsTalk>
-    <Address>
-      <EmailWrapper>
-        <EmailLink href={`mailto:${email}`}>{email}</EmailLink>
-      </EmailWrapper>
-      <Paragraph>
-        Thanks for visiting. If you would like to talk about testing, data
-        quality or a new opportunity, send me an email or message me on
-        LinkedIn.
-      </Paragraph>
+    <Card aria-labelledby="contact">
+      <Heading id="contact">
+        Let's talk
+        <StyledIcon src={talkIcon} alt="" />
+      </Heading>
+      <Paragraph>{profile.contactText}</Paragraph>
+      <Buttons>
+        <ButtonLink href={`mailto:${email}`}>
+          <EnvelopeIcon />
+          Send me an email
+        </ButtonLink>
+        <SecondaryButtonLink
+          href={profile.linkedinUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Message me on LinkedIn
+        </SecondaryButtonLink>
+      </Buttons>
+    </Card>
+    <Bottom>
+      <p>
+        © {new Date().getFullYear()} {profile.name}
+      </p>
       <SocialIcons />
-    </Address>
+    </Bottom>
   </Wrapper>
 );

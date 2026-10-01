@@ -35,3 +35,17 @@ test("shows the main sections", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
   }
 });
+
+test("footer offers email and LinkedIn without showing the address", async ({
+  page,
+}) => {
+  const footer = page.getByRole("contentinfo");
+
+  await expect(
+    footer.getByRole("link", { name: "Send me an email" }),
+  ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
+  await expect(
+    footer.getByRole("link", { name: "Message me on LinkedIn" }),
+  ).toHaveAttribute("href", /linkedin\.com\/in\//);
+  await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
+});
