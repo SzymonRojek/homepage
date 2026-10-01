@@ -6,10 +6,12 @@ import { Homepage } from "../../features/Homepage";
 import { useAppSelector } from "../hooks";
 import { selectDarkTheme } from "../../common/themeSlice";
 import { useSystemTheme } from "../../common/useSystemTheme";
+import { useDocumentTheme } from "../../common/useDocumentTheme";
 
 export const App = () => {
   const isDarkTheme = useAppSelector(selectDarkTheme);
   useSystemTheme();
+  useDocumentTheme(isDarkTheme);
 
   return (
     <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
