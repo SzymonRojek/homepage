@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ButtonLink } from "../ButtonLink";
-import { ReactComponent as EnvelopeIcon } from "./envelope.svg";
+import EnvelopeIcon from "./envelope.svg?react";
 
 export const Wrapper = styled.header`
   margin-top: -30px; // that's the height of the theme switcher

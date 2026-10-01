@@ -11,7 +11,8 @@ const store = configureStore({
     homepage: homepageReducer,
     theme: themeReducer,
   },
-  middleware: [sagaMiddleware],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(saga);

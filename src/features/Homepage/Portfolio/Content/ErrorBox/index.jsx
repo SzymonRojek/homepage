@@ -1,7 +1,7 @@
 import { ButtonLink } from "../../../ButtonLink";
 import { githubUserName } from "../../githubUserName";
 import { Header, Paragraph, Wrapper } from "./styled";
-import { ReactComponent as WarningIcon } from "./warning.svg";
+import WarningIcon from "./warning.svg?react";
 
 export const ErrorBox = () => (
   <Wrapper>

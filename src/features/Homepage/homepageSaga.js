@@ -10,7 +10,7 @@ function* fetchRepositoriesHandler({ payload: username }) {
   try {
     const repositories = yield call(getRepositories, username);
     yield put(fetchRepositoriesSuccess(repositories));
-  } catch (error) {
+  } catch {
     yield put(fetchRepositoriesError());
   }
 }
