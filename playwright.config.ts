@@ -14,14 +14,17 @@ export default defineConfig({
     baseURL: "http://localhost:4173/homepage/",
     trace: "on-first-retry",
   },
+  // Tests tagged @desktop or @mobile run only in the matching project.
   projects: [
     {
       name: "desktop",
       use: { ...devices["Desktop Chrome"], channel },
+      grepInvert: /@mobile/,
     },
     {
       name: "mobile",
       use: { ...devices["Pixel 7"], channel },
+      grepInvert: /@desktop/,
     },
   ],
   webServer: {
