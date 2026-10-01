@@ -43,3 +43,31 @@ test.describe("with a dark OS theme", () => {
     await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
   });
 });
+
+test.describe("when the OS theme changes while the page is open", () => {
+  test.use({ colorScheme: "light" });
+
+  test("follows it until the visitor chooses", async ({ page }) => {
+    await page.goto("./");
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
+
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+
+    await page.emulateMedia({ colorScheme: "light" });
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
+
+    const saved = await page.evaluate(() => localStorage.getItem("dark"));
+    expect(saved).toBeNull();
+  });
+
+  test("is ignored after the visitor chooses", async ({ page }) => {
+    await page.goto("./");
+    await themeSwitch(page).click();
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+
+    await page.emulateMedia({ colorScheme: "light" });
+
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+  });
+});

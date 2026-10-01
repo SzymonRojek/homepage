@@ -17,7 +17,7 @@ A single page with these parts, in order:
 - **How this site is tested:** CI badge and the list of checks.
 - **Footer:** email, GitHub and LinkedIn.
 
-The theme follows the OS setting until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")`.
+The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
 
 The site itself is a showcase: it is built in React + TypeScript and tested with Vitest, Playwright and axe in CI. Keep it that way. New behaviour gets tests.
 
@@ -58,12 +58,13 @@ src/
   index.tsx                   # createRoot, Redux <Provider> + <App/>
   styled.d.ts                 # DefaultTheme = typeof themeLight
   core/
-    store.ts                  # configureStore + saga; RootState, AppDispatch; saves theme only when it changes
+    store.ts                  # configureStore + saga; RootState, AppDispatch; saves the theme only when the visitor chose it
     hooks.ts                  # useAppDispatch, useAppSelector (use these, not the plain hooks)
     saga.ts                   # root saga -> homepageSaga
     App/                      # ThemeProvider, Normalize, GlobalStyle, theme.ts (palette + themes)
   common/
-    themeSlice.ts             # getInitialDarkTheme (saved choice, else OS), toggleTheme, selectDarkTheme
+    themeSlice.ts             # getInitialDarkTheme (saved choice, else OS), hasUserChoice, toggleTheme, systemThemeChanged
+    useSystemTheme.ts         # listens to prefers-color-scheme changes (used in App)
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
@@ -143,4 +144,4 @@ Do these phases one at a time, in separate commits or PRs. Do not mix tooling ch
 - `npm run typecheck`, `npm run lint`, `npx vitest run`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
 - Check in the browser in **both light and dark mode** at mobile (≤767px), tablet (≤991px / ≤1199px) and desktop widths.
 - Projects: the loading spinner shows, then the grouped tiles. The e2e suite covers the error state with a mocked 500.
-- The theme follows the OS on a first visit, and a chosen theme survives a page reload.
+- The theme follows the OS on a first visit and when the OS theme changes, and a chosen theme survives a page reload and wins over the OS.

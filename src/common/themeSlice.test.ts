@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import themeReducer, {
   getInitialDarkTheme,
   selectDarkTheme,
+  selectHasUserChoice,
+  systemThemeChanged,
   toggleTheme,
 } from "./themeSlice";
 
@@ -43,15 +45,39 @@ describe("themeSlice", () => {
     expect(getInitialDarkTheme()).toBe(false);
   });
 
-  it("toggles the theme", () => {
-    const dark = themeReducer({ isDarkTheme: false }, toggleTheme());
+  it("toggles the theme and marks it as the visitor's choice", () => {
+    const dark = themeReducer(
+      { isDarkTheme: false, hasUserChoice: false },
+      toggleTheme(),
+    );
     const light = themeReducer(dark, toggleTheme());
 
-    expect(dark.isDarkTheme).toBe(true);
+    expect(dark).toEqual({ isDarkTheme: true, hasUserChoice: true });
     expect(light.isDarkTheme).toBe(false);
   });
 
-  it("selects the dark theme flag", () => {
-    expect(selectDarkTheme({ theme: { isDarkTheme: true } })).toBe(true);
+  it("follows OS theme changes until the visitor chooses", () => {
+    const state = themeReducer(
+      { isDarkTheme: false, hasUserChoice: false },
+      systemThemeChanged(true),
+    );
+
+    expect(state).toEqual({ isDarkTheme: true, hasUserChoice: false });
+  });
+
+  it("ignores OS theme changes after the visitor chooses", () => {
+    const state = themeReducer(
+      { isDarkTheme: false, hasUserChoice: true },
+      systemThemeChanged(true),
+    );
+
+    expect(state.isDarkTheme).toBe(false);
+  });
+
+  it("selects the theme flags", () => {
+    const state = { theme: { isDarkTheme: true, hasUserChoice: false } };
+
+    expect(selectDarkTheme(state)).toBe(true);
+    expect(selectHasUserChoice(state)).toBe(false);
   });
 });

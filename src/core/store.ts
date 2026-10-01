@@ -19,12 +19,17 @@ sagaMiddleware.run(saga);
 
 let isDarkTheme = store.getState().theme.isDarkTheme;
 
+// Save only the visitor's own choice, so OS theme changes are never stored.
 store.subscribe(() => {
-  const nextIsDarkTheme = store.getState().theme.isDarkTheme;
+  const { isDarkTheme: nextIsDarkTheme, hasUserChoice } =
+    store.getState().theme;
 
   if (nextIsDarkTheme !== isDarkTheme) {
     isDarkTheme = nextIsDarkTheme;
-    localStorage.setItem("dark", String(isDarkTheme));
+
+    if (hasUserChoice) {
+      localStorage.setItem("dark", String(isDarkTheme));
+    }
   }
 });
 
