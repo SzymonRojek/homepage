@@ -33,14 +33,15 @@ I'm a Software Test Engineer with four years' experience in data migration, SQL 
 
 ## How it is tested
 
-| Layer         | What is covered                                                                                                                                           |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unit          | Redux slices, the saga, the GitHub API module and project selection, theme persistence (`src/**/*.test.ts`)                                               |
-| Component     | Every state of the projects section: loading, error and success (`*.test.tsx`)                                                                            |
-| End-to-end    | Playwright in desktop and mobile Chrome against the production build: header and contact links, projects, error state, theme switch and OS theme (`e2e/`) |
-| Accessibility | axe scans in light and dark mode. Any serious or critical violation fails the build.                                                                      |
+| Layer         | What is covered                                                                                                                                                               |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit          | Redux slices, the saga, the GitHub API module and project selection, theme persistence and the OS theme listener (`src/**/*.test.ts`)                                         |
+| Component     | Every state of the projects section, the theme switch and the header's optional CV button (`*.test.tsx`)                                                                      |
+| End-to-end    | Playwright in desktop and mobile Chrome against the production build: header and contact links, experience, projects, error state, skills, theme switch and OS theme (`e2e/`) |
+| Accessibility | axe scans in light and dark mode. Any serious or critical violation fails the build.                                                                                          |
+| Coverage      | v8 coverage with minimum thresholds. CI fails if coverage drops below them.                                                                                                   |
 
-The GitHub API is mocked in all tests, so they are fast and stable.
+The GitHub API is mocked in all tests, so they are fast and stable. End-to-end tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only.
 
 ## Getting started
 
@@ -51,19 +52,20 @@ npm install
 npm run dev          # http://localhost:3000/homepage/
 ```
 
-| Script              | What it does                           |
-| ------------------- | -------------------------------------- |
-| `npm run dev`       | Start the dev server                   |
-| `npm run build`     | Build the site into `dist/`            |
-| `npm run preview`   | Serve the production build locally     |
-| `npm test`          | Unit and component tests in watch mode |
-| `npm run test:e2e`  | Playwright end-to-end tests            |
-| `npm run typecheck` | TypeScript check                       |
-| `npm run lint`      | ESLint                                 |
+| Script                  | What it does                           |
+| ----------------------- | -------------------------------------- |
+| `npm run dev`           | Start the dev server                   |
+| `npm run build`         | Build the site into `dist/`            |
+| `npm run preview`       | Serve the production build locally     |
+| `npm test`              | Unit and component tests in watch mode |
+| `npm run test:coverage` | Single test run with a coverage report |
+| `npm run test:e2e`      | Playwright end-to-end tests            |
+| `npm run typecheck`     | TypeScript check                       |
+| `npm run lint`          | ESLint                                 |
 
 ## CI and deployment
 
-Work happens on the `dev` branch. Every push to `dev` or `main` and every pull request runs lint, type check, unit tests, the build and the end-to-end tests in [GitHub Actions](.github/workflows/ci.yml). `main` is production and is protected: changes reach it only through a pull request from `dev` with passing checks, and only `main` deploys to GitHub Pages.
+Work happens on the `dev` branch. Every push to `dev` or `main` and every pull request runs lint, type check, unit tests with a coverage threshold, the build and the end-to-end tests in [GitHub Actions](.github/workflows/ci.yml). `main` is production and is protected: changes reach it only through a pull request from `dev` with passing checks, and only `main` deploys to GitHub Pages.
 
 ## Editing content
 
