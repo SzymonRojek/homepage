@@ -1,33 +1,53 @@
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
-import personIcon from "./person.png";
 import { email } from "../email";
+import { profile } from "../profile";
 import {
   Wrapper,
   Avatar,
   Details,
   ThisIs,
   Name,
+  Title,
+  Subtitle,
   Summary,
-  PersonIcon,
+  Location,
+  Buttons,
   StyledButtonLink,
+  SecondaryButtonLink,
   ButtonIcon,
 } from "./styled";
 
 export const MainHeader = () => (
   <Wrapper>
-    <Avatar src={szymonRojekProfile} alt="Szymon Rojek" />
+    <Avatar src={szymonRojekProfile} alt={profile.name} />
     <Details>
       <ThisIs>this is</ThisIs>
-      <Name>Szymon Rojek</Name>
-      <Summary>
-        <PersonIcon src={personIcon} alt="" />
-        I'm passionate about JavaScript and React, ready for my Junior Front End
-        Developer role.
-      </Summary>
-      <StyledButtonLink href={`mailto:${email}`} title={email}>
-        <ButtonIcon />
-        Hire Me
-      </StyledButtonLink>
+      <Name>{profile.name}</Name>
+      <Title>{profile.title}</Title>
+      <Subtitle>{profile.subtitle}</Subtitle>
+      <Summary>{profile.bio}</Summary>
+      <Location>{profile.location}</Location>
+      <Buttons>
+        <StyledButtonLink href={`mailto:${email}`} title={email}>
+          <ButtonIcon />
+          Get in touch
+        </StyledButtonLink>
+        <SecondaryButtonLink
+          href={profile.linkedinUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </SecondaryButtonLink>
+        {profile.cvFile && (
+          <SecondaryButtonLink
+            href={`${import.meta.env.BASE_URL}${profile.cvFile}`}
+            download
+          >
+            Download CV
+          </SecondaryButtonLink>
+        )}
+      </Buttons>
     </Details>
   </Wrapper>
 );

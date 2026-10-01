@@ -1,15 +1,14 @@
-import type { ReactNode } from "react";
-import { Section, StyledHeader, List, Item, Dot } from "./styled";
+import { Card, Title, List, Item, Dot } from "./styled";
 import blueDot from "./dot.png";
 
 interface SkillsProps {
-  title: ReactNode;
+  title?: string;
   skills: string[];
 }
 
 export const Skills = ({ title, skills }: SkillsProps) => (
-  <Section>
-    <StyledHeader>{title}</StyledHeader>
+  <Card>
+    {title && <Title>{title}</Title>}
     <List>
       {skills.map((skill) => (
         <Item key={skill}>
@@ -18,5 +17,5 @@ export const Skills = ({ title, skills }: SkillsProps) => (
         </Item>
       ))}
     </List>
-  </Section>
+  </Card>
 );

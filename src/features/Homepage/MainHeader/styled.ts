@@ -8,7 +8,6 @@ export const Wrapper = styled.header`
   grid-template-columns: auto 1fr;
   grid-gap: 64px;
   align-items: center;
-  text-align: justify;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-gap: 32px;
@@ -59,12 +58,32 @@ export const Name = styled.h1`
   }
 `;
 
+export const Title = styled.p`
+  margin: 16px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.primary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 8px;
+    font-size: 17px;
+  }
+`;
+
+export const Subtitle = styled.p`
+  margin: 8px 0 0;
+  font-size: 16px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 14px;
+  }
+`;
+
 export const Summary = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 1px;
-  margin: 36px 0 0 0;
+  line-height: 1.5;
+  margin: 24px 0 0;
   max-width: 650px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -72,27 +91,42 @@ export const Summary = styled.p`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 16px;
-    max-width: 570px;
+    font-size: 15px;
   }
 `;
 
-export const PersonIcon = styled.img`
-  height: 20px;
-  margin-right: 4px;
-  vertical-align: text-top;
+export const Location = styled.p`
+  margin: 16px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 14px;
+  }
+`;
+
+export const Buttons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    gap: 12px;
+    margin-top: 24px;
+  }
 `;
 
 export const StyledButtonLink = styled(ButtonLink)`
   display: inline-flex;
   align-items: center;
-  margin-top: 32px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 24px;
-  }
 `;
 
+export const SecondaryButtonLink = styled(StyledButtonLink)`
+  color: ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  border-color: ${({ theme }) => theme.colors.primary};
+`;
 export const ButtonIcon = styled(EnvelopeIcon)`
   margin-right: 16px;
 `;

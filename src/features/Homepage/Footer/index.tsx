@@ -22,8 +22,9 @@ export const Footer = () => (
         <EmailLink href={`mailto:${email}`}>{email}</EmailLink>
       </EmailWrapper>
       <Paragraph>
-        Thank you for viewing my personal homepage portfolio. I'm very excited
-        to talk about new opportunities ahead.
+        Thanks for visiting. If you would like to talk about testing, data
+        quality or a new opportunity, send me an email or message me on
+        LinkedIn.
       </Paragraph>
       <SocialIcons />
     </Address>

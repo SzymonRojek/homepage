@@ -1,22 +1,18 @@
 import { styleIcon } from "./styled";
+import { profile } from "../../profile";
+import { githubUserName } from "../../Portfolio/githubUserName";
 import GithubIcon from "./icons/github.svg?react";
 import LinkedinIcon from "./icons/linkedin.svg?react";
-import FacebookIcon from "./icons/facebook.svg?react";
 
 export const socials = [
   {
-    name: "Github",
-    url: "https://github.com/SzymonRojek",
+    name: "GitHub",
+    url: `https://github.com/${githubUserName}`,
     Icon: styleIcon(GithubIcon),
   },
   {
-    name: "Linkedin",
-    url: "https://www.linkedin.com/in/szymon--rojek/",
+    name: "LinkedIn",
+    url: profile.linkedinUrl,
     Icon: styleIcon(LinkedinIcon),
-  },
-  {
-    name: "Facebook",
-    url: "https://www.facebook.com/szymon.rojek.5",
-    Icon: styleIcon(FacebookIcon),
   },
 ];
