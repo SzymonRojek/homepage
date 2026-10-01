@@ -1,39 +1,44 @@
 import { email } from "../email";
 import { profile } from "../profile";
 import { SocialIcons } from "./SocialIcons";
-import talkIcon from "./talk.svg";
-import { ButtonLink, SecondaryButtonLink, EnvelopeIcon } from "../ButtonLink";
 import {
   Wrapper,
   Card,
+  Content,
   Heading,
-  StyledIcon,
+  HeadingIcon,
   Paragraph,
   Buttons,
+  ContactButton,
+  SecondaryContactButton,
   Bottom,
 } from "./styled";
+import { EnvelopeIcon, LinkedInIcon } from "../ButtonLink";
 
 export const Footer = () => (
   <Wrapper>
     <Card aria-labelledby="contact">
-      <Heading id="contact">
-        Let's talk
-        <StyledIcon src={talkIcon} alt="" />
-      </Heading>
-      <Paragraph>{profile.contactText}</Paragraph>
-      <Buttons>
-        <ButtonLink href={`mailto:${email}`}>
-          <EnvelopeIcon />
-          Send me an email
-        </ButtonLink>
-        <SecondaryButtonLink
-          href={profile.linkedinUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Message me on LinkedIn
-        </SecondaryButtonLink>
-      </Buttons>
+      <Content>
+        <Heading id="contact">
+          Let's talk
+          <HeadingIcon aria-hidden="true" />
+        </Heading>
+        <Paragraph>{profile.contactText}</Paragraph>
+        <Buttons>
+          <ContactButton href={`mailto:${email}`}>
+            <EnvelopeIcon aria-hidden="true" />
+            Send me an email
+          </ContactButton>
+          <SecondaryContactButton
+            href={profile.linkedinUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <LinkedInIcon aria-hidden="true" />
+            Message me on LinkedIn
+          </SecondaryContactButton>
+        </Buttons>
+      </Content>
     </Card>
     <Bottom>
       <p>

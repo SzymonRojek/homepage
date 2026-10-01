@@ -8,8 +8,6 @@ import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
 import { Quality } from "./Quality";
 import { Footer } from "./Footer";
-import { Icon } from "./Icon";
-import technologiesIcon from "./technologies.svg";
 import { skillGroups, tools } from "./skillsData";
 
 export const Homepage = () => (
@@ -24,10 +22,7 @@ export const Homepage = () => (
       <Quality />
 
       <Section aria-labelledby="skills">
-        <SectionHeader id="skills">
-          Skills
-          <Icon src={technologiesIcon} alt="" />
-        </SectionHeader>
+        <SectionHeader id="skills">Skills</SectionHeader>
         <Grid>
           {skillGroups.map(({ title, skills }) => (
             <Skills key={title} title={title} skills={skills} />

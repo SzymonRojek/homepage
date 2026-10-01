@@ -9,7 +9,7 @@ Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in
 
 A single page aimed at recruiters for QA / test automation roles, with these parts in order:
 
-- **Header:** open-to-work pill with location, avatar, name, title, short bio, key-skill chips, and "Get in touch", LinkedIn and an optional "Download CV" button.
+- **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and "Get in touch", LinkedIn and an optional "Download CV" button.
 - **Experience:** job and education.
 - **Test projects:** curated testing repositories as tiles with readable titles, then front-end work as a compact "Also built" list.
 - **How this site is tested:** CI badge and the list of checks.
@@ -82,7 +82,7 @@ src/
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
+    profile.ts                # name, title, availability, relocation, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
     skillsData.ts             # skillGroups, tools (CONTENT)
     experienceData.ts         # jobs, education (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)
@@ -97,7 +97,7 @@ src/
       featuredRepositories.ts # which repos to show, category, optional title/description/demoUrl (CONTENT)
       Content/                # switch on status -> Loading | ErrorBox | Repositories (test tiles + Also built)
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
-    Section/, ButtonLink/, SubHeader/, Icon/   # shared styled primitives
+    Section/, ButtonLink/, SubHeader/   # shared styled primitives
 e2e/
   fixtures.ts                 # `test` with the GitHub API auto-mocked; mockRepositoriesError
   *.spec.ts                   # header, projects, theme, accessibility
@@ -112,7 +112,7 @@ e2e/
 
 ## Conventions (follow these)
 
-- **Component layout:** `ComponentName/index.tsx` holds the JSX and `ComponentName/styled.ts` holds the styled-components. Small style-only primitives can live in `index.ts` alone (`ButtonLink`, `SubHeader`, `Icon`, `Section`).
+- **Component layout:** `ComponentName/index.tsx` holds the JSX and `ComponentName/styled.ts` holds the styled-components. Small style-only primitives can live in `index.ts` alone (`ButtonLink`, `SubHeader`, `Section`).
 - **Named exports** for components (`export const Footer = () => ...`). Slices default-export their reducer and name-export actions and selectors.
 - **Selectors:** each slice defines a private `selectXState` and exports `selectX` helpers built on it.
 - **Types:** strict TypeScript, no `any`. Type props with an interface next to the component. Unused function arguments are prefixed with `_`.

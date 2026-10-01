@@ -17,17 +17,18 @@ import {
   ButtonLinks,
   SecondaryButtonLink,
   EnvelopeIcon,
+  LinkedInIcon,
 } from "../ButtonLink";
 
 export const MainHeader = () => (
   <Wrapper>
     <Avatar src={szymonRojekProfile} alt={profile.name} />
     <Details>
-      <Availability>
-        {profile.availability} · {profile.location}
-      </Availability>
       <Name>{profile.name}</Name>
       <Title>{profile.title}</Title>
+      <Availability>
+        {profile.availability} · {profile.relocation}
+      </Availability>
       <Summary>{profile.bio}</Summary>
       <Highlights aria-label="Key skills">
         {profile.highlights.map((highlight) => (
@@ -36,7 +37,7 @@ export const MainHeader = () => (
       </Highlights>
       <ButtonLinks>
         <ButtonLink href={`mailto:${email}`} title={email}>
-          <EnvelopeIcon />
+          <EnvelopeIcon aria-hidden="true" />
           Get in touch
         </ButtonLink>
         <SecondaryButtonLink
@@ -44,6 +45,7 @@ export const MainHeader = () => (
           target="_blank"
           rel="noreferrer"
         >
+          <LinkedInIcon aria-hidden="true" />
           LinkedIn
         </SecondaryButtonLink>
         {profile.cvFile && (

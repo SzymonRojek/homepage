@@ -18,6 +18,11 @@ export const Card = styled.article`
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transition: background 0.3s;
 
+  /* An odd card out spans both columns instead of leaving a gap. */
+  &:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 16px;
   }

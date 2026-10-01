@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.header`
-  margin-top: -30px; // that's the height of the theme switcher
+  margin-top: 16px;
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: 64px;
+  grid-gap: 56px;
   align-items: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -13,43 +13,48 @@ export const Wrapper = styled.header`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-template-columns: 1fr;
-    /* grid-gap: 12px; */
+    grid-gap: 20px;
   }
 `;
 
 export const Avatar = styled.img`
-  width: 30vw;
-  max-width: 384px;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid ${({ theme }) => theme.colors.boxBackground};
+  box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    width: 180px;
+    height: 180px;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    width: 132px;
+    width: 112px;
+    height: 112px;
+    border-width: 4px;
   }
 `;
 
 export const Details = styled.div`
-  margin-left: 66px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin: 0;
-  }
+  min-width: 0;
 `;
 
 export const Name = styled.h1`
-  font-size: 38px;
+  font-size: 44px;
   font-weight: 900;
+  line-height: 1.1;
   color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 16px 0 0 0;
+  margin: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 18px;
-    margin-top: 8px;
+    font-size: 28px;
   }
 `;
 
 export const Title = styled.p`
-  margin: 16px 0 0;
+  margin: 8px 0 0;
   font-size: 24px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
@@ -80,7 +85,7 @@ export const Availability = styled.p`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0;
+  margin: 16px 0 0;
   padding: 6px 14px;
   font-size: 14px;
   font-weight: 600;

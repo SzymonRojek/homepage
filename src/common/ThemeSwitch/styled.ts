@@ -20,17 +20,6 @@ export const Button = styled.button`
   pointer-events: auto;
 `;
 
-export const Text = styled.span`
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-right: 12px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    display: none;
-  }
-`;
-
 export const Box = styled.span`
   display: flex;
   width: 48px;
