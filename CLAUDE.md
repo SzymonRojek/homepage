@@ -31,7 +31,7 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Vitest** + **Testing Library** (jsdom): setup in `src/setupTests.ts`, config in the `test` block of `vite.config.ts`
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
-  - Every push to `main` or `dev` and every PR to `main` runs lint, typecheck, unit tests, build and e2e.
+  - Every push to `main` or `dev` and every PR to `main` runs lint, typecheck, unit tests with a coverage gate, build and e2e.
   - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
 
 ## Git workflow (mandatory)
@@ -56,6 +56,7 @@ npm run dev        # dev server on http://localhost:3000/homepage/ (npm start is
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
 npm test           # Vitest in watch mode (npx vitest run for a single run)
+npm run test:coverage  # single Vitest run with v8 coverage and thresholds (CI runs this)
 npm run test:e2e   # Playwright: builds, serves on :4173, runs desktop + mobile projects
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
@@ -155,7 +156,7 @@ Do these phases one at a time, in separate commits or PRs. Do not mix tooling ch
 
 ## Verification checklist
 
-- `npm run typecheck`, `npm run lint`, `npx vitest run`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
+- `npm run typecheck`, `npm run lint`, `npm run test:coverage`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
 - Check in the browser in **both light and dark mode** at mobile (≤767px), tablet (≤991px / ≤1199px) and desktop widths.
 - Projects: the loading spinner shows, then the grouped tiles. The e2e suite covers the error state with a mocked 500.
 - The theme follows the OS on a first visit and when the OS theme changes, and a chosen theme survives a page reload and wins over the OS.
