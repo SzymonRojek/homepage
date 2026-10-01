@@ -20,6 +20,13 @@ jobs:
       - run: npm run typecheck
       - run: npx vitest run
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
       - uses: actions/upload-artifact@v7
         with:
           name: dist

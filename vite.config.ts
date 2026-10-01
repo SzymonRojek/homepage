@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
@@ -8,6 +8,7 @@ export default defineConfig({
   server: { port: 3000 },
   test: {
     environment: "jsdom",
-    setupFiles: "./src/setupTests.js",
+    setupFiles: "./src/setupTests.ts",
+    exclude: [...configDefaults.exclude, "e2e/**"],
   },
 });

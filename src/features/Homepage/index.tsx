@@ -6,6 +6,7 @@ import { Skills } from "./Skills";
 import { Grid } from "./Skills/styled";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
+import { Quality } from "./Quality";
 import { Footer } from "./Footer";
 import { Icon } from "./Icon";
 import technologiesIcon from "./technologies.svg";
@@ -40,6 +41,8 @@ export const Homepage = () => (
       </Section>
 
       <Portfolio />
+
+      <Quality />
     </main>
     <Footer />
   </Container>

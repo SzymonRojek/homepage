@@ -2,6 +2,7 @@ const colorNames = {
   scienceBlue: "#0366D6",
   blumine: "#1F5189",
   dodgerBlue: "#2188FF",
+  mayaBlue: "#58A6FF",
   shipCove: "#6D93BE",
   anakiwa: "#8CC2FF",
   tropicalBlue: "#CDE0F7",
@@ -10,7 +11,7 @@ const colorNames = {
   whiteLilac: "#FBFBFE",
   porcelain: "#F2F3F4",
   mercury: "#E5E5E5",
-  slateGray: "#6E7E91",
+  shuttleGray: "#5E6E80",
   doveGray: "#6D6D6D",
   tundora: "#414141",
   mineShaft: "#252525",
@@ -35,7 +36,7 @@ export const themeLight = {
     textPrimary: colorNames.mineShaft,
     site: {
       background: colorNames.whiteLilac,
-      text: colorNames.slateGray,
+      text: colorNames.shuttleGray,
     },
     buttonLink: {
       text: colorNames.white,
@@ -60,14 +61,14 @@ export const themeLight = {
 export const themeDark: typeof themeLight = {
   ...common,
   colors: {
-    primary: colorNames.dodgerBlue,
+    primary: colorNames.mayaBlue,
     textPrimary: colorNames.white,
     site: {
       background: colorNames.mineShaft,
       text: colorNames.white,
     },
     buttonLink: {
-      text: colorNames.white,
+      text: colorNames.mineShaft,
       border: colorNames.ironTransparent,
       shadow: colorNames.shipCove,
     },

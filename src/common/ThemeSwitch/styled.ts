@@ -2,8 +2,11 @@ import styled, { css } from "styled-components";
 import SunIcon from "./sun.svg?react";
 
 export const Wrapper = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: flex-end;
+  pointer-events: none;
 `;
 
 export const Button = styled.button`
@@ -14,6 +17,7 @@ export const Button = styled.button`
   color: inherit;
   outline-offset: 8px;
   cursor: pointer;
+  pointer-events: auto;
 `;
 
 export const Text = styled.span`

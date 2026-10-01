@@ -8,8 +8,12 @@ export const ThemeSwitch = () => {
 
   return (
     <Wrapper>
-      <Button onClick={() => dispatch(toggleTheme())}>
-        <Text>Dark mode {isDarkTheme ? "on" : "off"}</Text>
+      <Button
+        aria-label="Dark mode"
+        aria-pressed={isDarkTheme}
+        onClick={() => dispatch(toggleTheme())}
+      >
+        <Text aria-hidden>Dark mode {isDarkTheme ? "on" : "off"}</Text>
         <Box>
           <IconWrapper $moveToRight={isDarkTheme}>
             <Icon />

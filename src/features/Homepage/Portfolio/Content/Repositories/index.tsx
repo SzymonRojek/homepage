@@ -24,8 +24,8 @@ export const Repositories = ({ repositories }: { repositories: Project[] }) => (
 
       return (
         projects.length > 0 && (
-          <Group key={category}>
-            <GroupTitle>{category}</GroupTitle>
+          <Group key={category} aria-labelledby={`projects-${category}`}>
+            <GroupTitle id={`projects-${category}`}>{category}</GroupTitle>
             <List>
               {projects.map(
                 ({
