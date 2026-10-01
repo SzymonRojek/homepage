@@ -5,13 +5,22 @@ export interface Repository {
   name: string;
   description: string | null;
   html_url: string;
+  homepage: string | null;
+  language: string | null;
+  stargazers_count: number;
   fork: boolean;
+}
+
+export type ProjectCategory = "Testing" | "Front-end";
+
+export interface Project extends Repository {
+  category: ProjectCategory;
 }
 
 export type RepositoriesStatus = "initial" | "loading" | "success" | "error";
 
 interface HomepageState {
-  repositories: Repository[] | null;
+  repositories: Project[] | null;
   status: RepositoriesStatus;
 }
 
@@ -30,7 +39,7 @@ const homepageSlice = createSlice({
     }),
     fetchRepositoriesSuccess: (
       _,
-      { payload: repositories }: PayloadAction<Repository[]>,
+      { payload: repositories }: PayloadAction<Project[]>,
     ): HomepageState => ({
       status: "success",
       repositories,

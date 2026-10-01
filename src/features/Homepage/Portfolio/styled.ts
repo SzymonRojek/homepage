@@ -17,7 +17,7 @@ export const StyledGithubIcon = styled(GithubIcon)`
 export const Header = styled.header`
   text-align: center;
 `;
-export const MyRecentProjects = styled.h3`
+export const MyRecentProjects = styled.p`
   font-weight: normal;
   margin-top: 8px;
   font-size: 20px;

@@ -1,6 +1,25 @@
 import styled from "styled-components";
 import a from "color-alpha";
 
+export const Group = styled.section`
+  margin-top: 48px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 32px;
+  }
+`;
+
+export const GroupTitle = styled.h3`
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  color: ${({ theme }) => theme.colors.textPrimary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 17px;
+  }
+`;
+
 export const List = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -33,13 +52,23 @@ export const Tile = styled.li`
   }
 `;
 
-export const Name = styled.h3`
+export const Name = styled.h4`
   font-size: 24px;
   color: ${({ theme }) => theme.colors.tile.header};
   margin: 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 16px;
+  }
+`;
+
+export const Meta = styled.p`
+  margin: 12px 0 0;
+  font-size: 15px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 8px;
+    font-size: 13px;
   }
 `;
 

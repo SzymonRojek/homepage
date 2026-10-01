@@ -4,7 +4,7 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import { Content } from ".";
-import { createRepository } from "../../repositoryFixture";
+import { createProject } from "../../repositoryFixture";
 import type { RepositoriesStatus } from "../../homepageSlice";
 
 const renderContent = (props: ComponentProps<typeof Content>) =>
@@ -40,26 +40,74 @@ describe("Content", () => {
     );
   });
 
-  it("renders repository tiles", () => {
+  it("renders project tiles grouped by category", () => {
     renderContent({
       status: "success",
       repositories: [
-        createRepository(),
-        createRepository({
-          id: 2,
-          name: "no-description",
-          description: null,
-          html_url: "https://github.com/user/no-description",
+        createProject({ id: 1, name: "e2e-tests", category: "Testing" }),
+        createProject({ id: 2, name: "homepage", category: "Front-end" }),
+      ],
+    });
+
+    const groups = screen
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+    expect(groups).toEqual(["Testing", "Front-end"]);
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+  });
+
+  it("skips a category with no projects", () => {
+    renderContent({
+      status: "success",
+      repositories: [createProject({ category: "Front-end" })],
+    });
+
+    expect(
+      screen.queryByRole("heading", { name: "Testing" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders tile details and links", () => {
+    renderContent({
+      status: "success",
+      repositories: [
+        createProject({
+          language: "TypeScript",
+          stargazers_count: 3,
+          homepage: "https://user.github.io/homepage/",
         }),
       ],
     });
 
-    expect(screen.getAllByRole("listitem")).toHaveLength(2);
     expect(screen.getByText("My homepage")).toBeInTheDocument();
+    expect(screen.getByText(/TypeScript/)).toBeInTheDocument();
+    expect(screen.getByLabelText("3 stars")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+      "href",
+      "https://user.github.io/homepage/",
+    );
     expect(
-      screen.getAllByRole("link", { name: "GitHub Repository" })[0],
+      screen.getByRole("link", { name: "GitHub Repository" }),
     ).toHaveAttribute("href", "https://github.com/user/homepage");
-    expect(document.querySelectorAll("p")).toHaveLength(1);
+  });
+
+  it("leaves out empty details", () => {
+    renderContent({
+      status: "success",
+      repositories: [
+        createProject({
+          description: null,
+          language: null,
+          stargazers_count: 0,
+          homepage: null,
+        }),
+      ],
+    });
+
+    expect(document.querySelectorAll("p")).toHaveLength(0);
+    expect(
+      screen.queryByRole("link", { name: "Live demo" }),
+    ).not.toBeInTheDocument();
   });
 
   it("throws on an unknown status", () => {

@@ -24,8 +24,8 @@ export const Portfolio = () => {
     <Section>
       <Header>
         <StyledGithubIcon />
-        <SubHeader>Portfolio</SubHeader>
-        <MyRecentProjects>My recent projects</MyRecentProjects>
+        <SubHeader>Projects</SubHeader>
+        <MyRecentProjects>Selected testing and front-end work</MyRecentProjects>
       </Header>
 
       <Content status={repositoriesStatus} repositories={repositories} />

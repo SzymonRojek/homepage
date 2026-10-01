@@ -1,11 +1,11 @@
 import { ErrorBox } from "./ErrorBox";
 import { Loading } from "./Loading";
 import { Repositories } from "./Repositories";
-import type { RepositoriesStatus, Repository } from "../../homepageSlice";
+import type { Project, RepositoriesStatus } from "../../homepageSlice";
 
 interface ContentProps {
   status: RepositoriesStatus;
-  repositories: Repository[] | null;
+  repositories: Project[] | null;
 }
 
 export const Content = ({ status, repositories }: ContentProps) => {

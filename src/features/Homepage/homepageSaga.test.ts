@@ -9,7 +9,7 @@ import {
   fetchRepositoriesError,
   fetchRepositoriesSuccess,
 } from "./homepageSlice";
-import { createRepository } from "./repositoryFixture";
+import { createProject } from "./repositoryFixture";
 
 vi.mock("./homepageAPI");
 
@@ -43,7 +43,7 @@ describe("homepageSaga", () => {
   });
 
   it("dispatches success with fetched repositories", async () => {
-    const repositories = [createRepository()];
+    const repositories = [createProject()];
     vi.mocked(getRepositories).mockResolvedValue(repositories);
 
     const dispatched = await runHandler(fetchRepositories("user"));

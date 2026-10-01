@@ -6,9 +6,9 @@ import homepageReducer, {
   selectRepositories,
   selectRepositoriesStatus,
 } from "./homepageSlice";
-import { createRepository } from "./repositoryFixture";
+import { createProject } from "./repositoryFixture";
 
-const repositories = [createRepository()];
+const repositories = [createProject()];
 
 describe("homepageSlice", () => {
   it("has an initial state", () => {
