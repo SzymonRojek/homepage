@@ -3,6 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Paint the saved or OS theme before the app loads, so a dark-mode reload
+      never flashes light. Same rule as getInitialDarkTheme in themeSlice.ts;
+      the colours match theme.colors.site.background (checked in theme.test.ts).
+    -->
+    <style>html{background:#fbfbfe}html[data-theme=dark]{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;background:#252525}</style>
+    <script>
+      try {
+        const saved = localStorage.getItem("dark");
+        const isDark =
+          saved !== null
+            ? saved === "true"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = isDark ? "dark" : "light";
+      } catch {
+        // Storage blocked: the app sets the theme once it loads.
+      }
+    </script>
     <title>Szymon Rojek | Software Test Engineer</title>
     <meta
       name="description"
@@ -41,7 +59,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/homepage/assets/index-t4HC6Vio.js"></script>
+    <script type="module" crossorigin src="/homepage/assets/index-DfSb2opS.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
