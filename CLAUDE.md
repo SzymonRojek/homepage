@@ -9,12 +9,12 @@ Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in
 
 A single page aimed at recruiters for QA / test automation roles, with these parts in order:
 
-- **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and "Get in touch", LinkedIn and an optional "Download CV" button.
+- **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
 - **Experience:** job and education.
 - **Test projects:** curated testing repositories as tiles with readable titles, then front-end work as a compact "Also built" list.
 - **How this site is tested:** CI badge and the list of checks.
 - **Skills:** four skill-group cards and a tools row.
-- **Footer:** "Let's talk" card with email and LinkedIn buttons (the address is not shown), GitHub and LinkedIn icons.
+- **Footer:** "Let's talk" card with Email, LinkedIn and CV buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
 
@@ -135,8 +135,7 @@ e2e/
 
 ## Open items
 
-1. The "Download CV" button stays hidden until a CV **without the phone number** is added to `public/` and `profile.cvFile` is set to its file name.
-2. The LinkedIn URL in `profile.ts` comes from the CV (`/in/szymonrojek/`). The old site used `/in/szymon--rojek/`. Confirm which one is live.
+1. The LinkedIn URL in `profile.ts` comes from the CV (`/in/szymonrojek/`). The old site used `/in/szymon--rojek/`. Confirm which one is live.
 
 ## Roadmap
 

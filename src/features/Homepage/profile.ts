@@ -12,6 +12,6 @@ export const profile = {
   ],
   contactText: "I'm open to QA and test automation roles.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
-  // Set to the CV path in public/ (for example "Szymon_Rojek_CV.pdf") once the file is added.
-  cvFile: null as string | null,
+  // CV in public/, without the phone number. Set to null to hide the button.
+  cvFile: "Szymon_Rojek_CV.pdf" as string | null,
 };

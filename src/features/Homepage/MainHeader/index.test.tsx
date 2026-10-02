@@ -43,7 +43,7 @@ describe("MainHeader", () => {
   it("links to email and LinkedIn", () => {
     renderHeader();
 
-    expect(screen.getByRole("link", { name: "Get in touch" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute(
       "href",
       expect.stringMatching(/^mailto:/),
     );
