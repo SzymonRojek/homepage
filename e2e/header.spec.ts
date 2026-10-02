@@ -21,15 +21,20 @@ test.describe("Header and footer", () => {
     const header = page.getByRole("banner");
 
     await expect(
-      header.getByText("Open to QA & test automation roles"),
+      header.getByText("Open to QA Engineer & Data/ETL Test Analyst roles"),
+    ).toBeVisible();
+    await expect(
+      header.getByText(
+        "Based in Hove, UK · Full right to work in the UK · Open to relocation",
+      ),
     ).toBeVisible();
     await expect(
       header.getByRole("list", { name: "Key skills" }).getByRole("listitem"),
     ).toHaveText([
       "4 years in software testing",
-      "Data migration testing",
+      "Data migration & ETL testing",
+      "SQL reconciliation",
       "REST API testing",
-      "JavaScript · Cypress · Playwright",
     ]);
   });
 

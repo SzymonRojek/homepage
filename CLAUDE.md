@@ -9,7 +9,7 @@ Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in
 
 A single page aimed at recruiters for QA / test automation roles, with these parts in order:
 
-- **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
+- **Header:** round avatar, name, title, open-to-work pill with target roles, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
 - **Experience:** job and education.
 - **Test projects:** curated testing projects as tiles with readable titles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
 - **How this site is tested:** CI badge and the list of checks.
@@ -82,7 +82,7 @@ src/
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, availability, relocation, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
+    profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
     skillsData.ts             # skillGroups, tools (CONTENT)
     experienceData.ts         # jobs, education (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)

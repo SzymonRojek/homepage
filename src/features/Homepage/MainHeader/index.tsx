@@ -7,6 +7,7 @@ import {
   Avatar,
   Details,
   Availability,
+  Location,
   Name,
   Title,
   Summary,
@@ -32,9 +33,8 @@ export const MainHeader = () => {
       <Details>
         <Name>{profile.name}</Name>
         <Title>{profile.title}</Title>
-        <Availability>
-          {profile.availability} · {profile.relocation}
-        </Availability>
+        <Availability>{profile.availability}</Availability>
+        <Location>{profile.location.join(" · ")}</Location>
         <Summary>{profile.bio}</Summary>
         <Highlights aria-label="Key skills">
           {profile.highlights.map((highlight) => (
