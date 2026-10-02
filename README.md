@@ -74,7 +74,7 @@ All text lives in data files, not in components:
 | File                                              | Content                                                                       |
 | ------------------------------------------------- | ----------------------------------------------------------------------------- |
 | `src/features/Homepage/profile.ts`                | Name, title, open-to-work status, bio, key skills, contact text, LinkedIn, CV |
-| `src/features/Homepage/skillsData.ts`             | Skill groups and tools                                                        |
+| `src/features/Homepage/skillsData.ts`             | Core skills (eight chips) and tools                                           |
 | `src/features/Homepage/experienceData.ts`         | Experience and education                                                      |
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects: titles, descriptions, language, category and demo links             |
 | `src/features/Homepage/qualityData.ts`            | The "How this site is tested" section                                         |

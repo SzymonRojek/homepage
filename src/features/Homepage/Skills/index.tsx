@@ -1,21 +1,19 @@
-import { Card, Title, List, Item, Dot } from "./styled";
-import blueDot from "./dot.png";
+import { Section, SectionHeader } from "../Section";
+import { keySkills, tools } from "../skillsData";
+import { Card, SkillList, Skill, Tools } from "./styled";
 
-interface SkillsProps {
-  title?: string;
-  skills: string[];
-}
-
-export const Skills = ({ title, skills }: SkillsProps) => (
-  <Card>
-    {title && <Title>{title}</Title>}
-    <List>
-      {skills.map((skill) => (
-        <Item key={skill}>
-          <Dot src={blueDot} alt="" />
-          {skill}
-        </Item>
-      ))}
-    </List>
-  </Card>
+export const Skills = () => (
+  <Section aria-labelledby="skills">
+    <SectionHeader id="skills">Skills</SectionHeader>
+    <Card>
+      <SkillList aria-label="Core skills">
+        {keySkills.map((skill) => (
+          <Skill key={skill}>{skill}</Skill>
+        ))}
+      </SkillList>
+      <Tools>
+        <strong>Tools:</strong> {tools.join(" · ")}
+      </Tools>
+    </Card>
+  </Section>
 );

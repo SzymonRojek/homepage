@@ -13,7 +13,7 @@ A single page aimed at recruiters for QA / test automation roles, with these par
 - **Experience:** job and education.
 - **Test projects:** curated testing projects as tiles with readable titles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
 - **How this site is tested:** CI badge and the list of checks.
-- **Skills:** four skill-group cards and a tools row.
+- **Skills:** one card with eight core-skill chips (data and SQL first) and a tools row.
 - **Footer:** "Let's talk" card with Email, LinkedIn and CV buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
@@ -83,7 +83,7 @@ src/
   features/Homepage/
     index.tsx                 # page composition
     profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
-    skillsData.ts             # skillGroups, tools (CONTENT)
+    skillsData.ts             # keySkills (8), tools (CONTENT)
     experienceData.ts         # jobs, education (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)
     email.ts                  # contact email (CONTENT)
