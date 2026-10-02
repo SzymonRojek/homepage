@@ -34,15 +34,30 @@ test.describe("Header and footer", () => {
   });
 
   test("has contact links", async ({ page }) => {
-    await expect(
-      page.getByRole("link", { name: "Get in touch" }),
-    ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
+    await expect(page.getByRole("link", { name: "Email me" })).toHaveAttribute(
+      "href",
+      "mailto:sz.rojek@gmail.com",
+    );
 
     const linkedin = page
       .getByRole("banner")
       .getByRole("link", { name: "LinkedIn", exact: true });
     await expect(linkedin).toHaveAttribute("href", /linkedin\.com\/in\//);
     await expect(linkedin).toHaveAttribute("target", "_blank");
+  });
+
+  test("offers the CV as a PDF download", async ({ page, request }) => {
+    const cv = page
+      .getByRole("banner")
+      .getByRole("link", { name: "Download CV" });
+
+    await expect(cv).toHaveAttribute("download");
+    const href = await cv.getAttribute("href");
+    expect(href).toMatch(/^\/homepage\/.+\.pdf$/);
+
+    const response = await request.get(href ?? "");
+    expect(response.ok()).toBe(true);
+    expect(response.headers()["content-type"]).toContain("application/pdf");
   });
 
   test("shows the main sections in recruiter order", async ({ page }) => {
@@ -56,7 +71,7 @@ test.describe("Header and footer", () => {
     ]);
   });
 
-  test("footer offers email and LinkedIn without showing the address", async ({
+  test("footer offers email, LinkedIn and CV without showing the address", async ({
     page,
   }) => {
     const footer = page.getByRole("contentinfo");
@@ -67,6 +82,9 @@ test.describe("Header and footer", () => {
     await expect(
       footer.getByRole("link", { name: "Message me on LinkedIn" }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
+    await expect(
+      footer.getByRole("link", { name: "Download CV" }),
+    ).toHaveAttribute("href", /\.pdf$/);
     await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
   });
 });

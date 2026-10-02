@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import Envelope from "./envelope.svg?react";
+import Download from "./download.svg?react";
 import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
 export const ButtonLink = styled.a`
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  font-size: 17px;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 15px;
+  line-height: 20px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.buttonLink.text};
   text-decoration: none;
@@ -21,8 +23,8 @@ export const ButtonLink = styled.a`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 10px 16px;
-    font-size: 15px;
+    padding: 8px 14px;
+    font-size: 14px;
   }
 `;
 
@@ -32,26 +34,41 @@ export const SecondaryButtonLink = styled(ButtonLink)`
   border-color: ${({ theme }) => theme.colors.primary};
 `;
 
+// Square button with only an icon; give it an aria-label.
+export const IconButtonLink = styled(SecondaryButtonLink)`
+  padding: 9px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding: 8px;
+  }
+`;
+
 export const EnvelopeIcon = styled(Envelope)`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+`;
+
+export const DownloadIcon = styled(Download)`
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 `;
 
 export const LinkedInIcon = styled(LinkedIn)`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 `;
 
 export const ButtonLinks = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
   margin-top: 32px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 12px;
+    gap: 10px;
     margin-top: 24px;
   }
 `;
