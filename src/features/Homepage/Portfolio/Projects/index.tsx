@@ -1,0 +1,88 @@
+import {
+  OtherProjects,
+  OtherIntro,
+  OtherItem,
+  OtherList,
+  GroupTitle,
+  Description,
+  Tile,
+  Link,
+  Links,
+  LinksRow,
+  List,
+  Name,
+  LinksValue,
+  Meta,
+} from "./styled";
+import { repoUrl, type Project } from "../projectsData";
+
+const otherIntro =
+  "A front-end background helps me understand what I test and write maintainable UI automation.";
+
+export const Projects = ({ projects }: { projects: Project[] }) => {
+  const testProjects = projects.filter(
+    ({ category }) => category === "Testing",
+  );
+  const otherProjects = projects.filter(({ category }) => category === "Other");
+
+  return (
+    <>
+      <List aria-label="Test projects">
+        {testProjects.map(({ title, repo, language, description, demoUrl }) => (
+          <Tile key={repo}>
+            <Name>{title}</Name>
+            <Meta>
+              {repo} · {language}
+            </Meta>
+            <Description>{description}</Description>
+            <Links>
+              {demoUrl && (
+                <LinksRow>
+                  <dt>Demo:</dt>
+                  <LinksValue>
+                    <Link target="_blank" rel="noreferrer" href={demoUrl}>
+                      Live demo
+                    </Link>
+                  </LinksValue>
+                </LinksRow>
+              )}
+              <LinksRow>
+                <dt>Code:</dt>
+                <LinksValue>
+                  <Link target="_blank" rel="noreferrer" href={repoUrl(repo)}>
+                    GitHub Repository
+                  </Link>
+                </LinksValue>
+              </LinksRow>
+            </Links>
+          </Tile>
+        ))}
+      </List>
+
+      {otherProjects.length > 0 && (
+        <OtherProjects aria-labelledby="other-projects">
+          <GroupTitle id="other-projects">Other projects</GroupTitle>
+          <OtherIntro>{otherIntro}</OtherIntro>
+          <OtherList>
+            {otherProjects.map(({ title, repo, description, demoUrl }) => (
+              <OtherItem key={repo}>
+                <strong>{title}</strong>
+                <span> · {description}</span>{" "}
+                {demoUrl && (
+                  <>
+                    <Link target="_blank" rel="noreferrer" href={demoUrl}>
+                      Live demo
+                    </Link>{" "}
+                  </>
+                )}
+                <Link target="_blank" rel="noreferrer" href={repoUrl(repo)}>
+                  Code
+                </Link>
+              </OtherItem>
+            ))}
+          </OtherList>
+        </OtherProjects>
+      )}
+    </>
+  );
+};

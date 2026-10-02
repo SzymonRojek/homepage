@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import a from "color-alpha";
 
-export const AlsoBuilt = styled.section`
+export const OtherProjects = styled.section`
   margin-top: 48px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -115,7 +115,7 @@ export const Link = styled.a`
   }
 `;
 
-export const AlsoBuiltIntro = styled.p`
+export const OtherIntro = styled.p`
   margin: 12px 0 0;
   line-height: 1.5;
 
@@ -124,7 +124,7 @@ export const AlsoBuiltIntro = styled.p`
   }
 `;
 
-export const AlsoBuiltList = styled.ul`
+export const OtherList = styled.ul`
   display: grid;
   grid-gap: 12px;
   margin: 16px 0 0;
@@ -144,4 +144,4 @@ export const AlsoBuiltList = styled.ul`
   }
 `;
 
-export const AlsoBuiltItem = styled.li``;
+export const OtherItem = styled.li``;

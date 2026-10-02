@@ -11,7 +11,7 @@ A single page aimed at recruiters for QA / test automation roles, with these par
 
 - **Header:** round avatar, name, title, open-to-work pill with relocation note, short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
 - **Experience:** job and education.
-- **Test projects:** curated testing repositories as tiles with readable titles, then front-end work as a compact "Also built" list.
+- **Test projects:** curated testing projects as tiles with readable titles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
 - **How this site is tested:** CI badge and the list of checks.
 - **Skills:** four skill-group cards and a tools row.
 - **Footer:** "Let's talk" card with Email, LinkedIn and CV buttons (the address is not shown), GitHub and LinkedIn icons.
@@ -24,9 +24,9 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 
 - **React 19** + **TypeScript** (strict), mounted with `createRoot` in `src/index.tsx`
 - **Vite 8** (`@vitejs/plugin-react`, `vite-plugin-svgr`), `base: "/homepage/"`
-- **Redux Toolkit 2** + **react-redux 9** + **redux-saga 1** for state and side effects
+- **Redux Toolkit 2** + **react-redux 9** for the theme state
 - **styled-components 6** with `ThemeProvider` (`themeLight` / `themeDark`) and `styled-normalize`. `DefaultTheme` is typed from `themeLight` in `src/styled.d.ts`.
-- **axios 1** for HTTP and **color-alpha** for transparent colours (typed in `src/vite-env.d.ts`)
+- **color-alpha** for transparent colours (typed in `src/vite-env.d.ts`)
 - **ESLint 9** with typescript-eslint (`eslint.config.js`) and **Prettier 3**
 - **Vitest** + **Testing Library** (jsdom): setup in `src/setupTests.ts`, config in the `test` block of `vite.config.ts`
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
@@ -73,9 +73,8 @@ src/
   index.tsx                   # createRoot, Redux <Provider> + <App/>
   styled.d.ts                 # DefaultTheme = typeof themeLight
   core/
-    store.ts                  # configureStore + saga; RootState, AppDispatch; saves the theme only when the visitor chose it
+    store.ts                  # configureStore (theme); RootState, AppDispatch; saves the theme only when the visitor chose it
     hooks.ts                  # useAppDispatch, useAppSelector (use these, not the plain hooks)
-    saga.ts                   # root saga -> homepageSaga
     App/                      # ThemeProvider, Normalize, GlobalStyle, theme.ts (palette + themes)
   common/
     themeSlice.ts             # getInitialDarkTheme (saved choice, else OS), hasUserChoice, toggleTheme, systemThemeChanged
@@ -88,28 +87,20 @@ src/
     experienceData.ts         # jobs, education (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)
     email.ts                  # contact email (CONTENT)
-    homepageSlice.ts          # Repository, Project, status: initial | loading | success | error
-    homepageSaga.ts           # takeLatest(fetchRepositories) -> getRepositories
-    homepageAPI.ts            # GET /users/:user/repos, skip forks, pickFeatured() by the featured list
-    repositoryFixture.ts      # createRepository / createProject for tests
+    cv.ts                     # getCvUrl() for the header and footer CV buttons
     MainHeader/, Skills/, Experience/, Quality/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
-      featuredRepositories.ts # which repos to show, category, optional title/description/demoUrl (CONTENT)
-      Content/                # switch on status -> Loading | ErrorBox | Repositories (test tiles + Also built)
+      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl (CONTENT)
+      Projects/               # test project tiles + "Other projects" list
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
     Section/, ButtonLink/, SubHeader/   # shared styled primitives
 e2e/
-  fixtures.ts                 # `test` with the GitHub API auto-mocked; mockRepositoriesError
-  *.spec.ts                   # header, projects, theme, accessibility
+  fixtures.ts                 # `test` that fails if the page calls api.github.com (projects must stay static)
+  *.spec.ts                   # header, experience, projects, skills, theme, accessibility
 ```
 
-**Projects data flow:**
-
-1. `Portfolio` mounts and dispatches `fetchRepositories(githubUserName)`.
-2. `homepageSaga` (`takeLatest`) calls `getRepositories`. It fetches the repos, drops forks, then `pickFeatured` keeps and orders the repos in `featuredRepositories` and applies their overrides.
-3. The saga dispatches `fetchRepositoriesSuccess(projects)` or `fetchRepositoriesError()`.
-4. `Content` renders according to `selectRepositoriesStatus`.
+**Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 
 ## Conventions (follow these)
 
@@ -128,7 +119,7 @@ e2e/
 - **Headings:** h1 is the name, h2 is a page section (`SectionHeader`), h3 is a card or group, h4 is a project tile. Sections use `aria-labelledby` pointing to their heading `id`.
 - External links: `target="_blank" rel="noreferrer"`. Decorative images: `alt=""`.
 - **Privacy:** never put a phone number on the site. The CV download must be a version without it.
-- **Unit tests** live next to the code as `*.test.ts(x)`. Components that use styled-components must be rendered inside `<ThemeProvider theme={themeLight}>`. Mock the API module or axios with `vi.mock` / `vi.mocked`. Use the fixtures in `repositoryFixture.ts`.
+- **Unit tests** live next to the code as `*.test.ts(x)`. Components that use styled-components must be rendered inside `<ThemeProvider theme={themeLight}>`. Mock data modules with `vi.mock` when a test needs specific content.
 - **E2E tests** import `test`/`expect` from `e2e/fixtures.ts`, so GitHub is always mocked. Use role-based locators, and add new page behaviour to the e2e suite.
 - Formatting: 2 spaces, double quotes, semicolons (Prettier defaults). Run `npm run lint`, `npm run typecheck` and `npm run format` before committing.
 - Commits: short, lowercase, imperative English messages, matching the history (e.g. `fix tile background in dark theme`).
@@ -140,7 +131,7 @@ e2e/
 ## Roadmap
 
 - **Phase 1, quick fixes:** done.
-- **Phase 2, modernise tooling:** done (Vite 8, React 19, Redux Toolkit 2, react-redux 9, styled-components 6, axios 1, ESLint 9, Prettier 3).
+- **Phase 2, modernise tooling:** done (Vite 8, React 19, Redux Toolkit 2, react-redux 9, styled-components 6, ESLint 9, Prettier 3).
 - **Phase 3, quality:** done (Vitest tests, GitHub Actions CI with deploy to Pages).
 - **Phase 4, product:** done:
   - TypeScript migration.
@@ -157,5 +148,5 @@ Do these phases one at a time, in separate commits or PRs. Do not mix tooling ch
 
 - `npm run typecheck`, `npm run lint`, `npm run test:coverage`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
 - Check in the browser in **both light and dark mode** at mobile (≤767px), tablet (≤991px / ≤1199px) and desktop widths.
-- Projects: the loading spinner shows, then the grouped tiles. The e2e suite covers the error state with a mocked 500.
+- Projects: the tiles and "Other projects" render at once, with no request to `api.github.com`.
 - The theme follows the OS on a first visit and when the OS theme changes, and a chosen theme survives a page reload and wins over the OS.

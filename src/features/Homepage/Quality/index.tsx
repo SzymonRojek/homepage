@@ -1,5 +1,5 @@
 import { Section, SectionHeader } from "../Section";
-import { Link } from "../Portfolio/Content/Repositories/styled";
+import { Link } from "../Portfolio/Projects/styled";
 import { quality } from "../qualityData";
 import { Card, Intro, Checks, Footer } from "./styled";
 
