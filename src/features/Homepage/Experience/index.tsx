@@ -1,5 +1,6 @@
 import { Section, SectionHeader } from "../Section";
-import { education, jobs } from "../experienceData";
+import { education, interests, jobs, languages } from "../experienceData";
+import { Link } from "../Portfolio/Projects/styled";
 import {
   Card,
   JobHeader,
@@ -57,6 +58,39 @@ export const Experience = () => (
             {year && <Year>{year}</Year>}
           </EducationItem>
         ))}
+      </EducationList>
+    </Card>
+    <Card>
+      <Role>Languages & interests</Role>
+      <EducationList aria-label="Languages and interests">
+        {languages.map(({ name, level }) => (
+          <EducationItem key={name}>
+            <EducationTitle>{name}</EducationTitle>
+            <Year>{level}</Year>
+          </EducationItem>
+        ))}
+        <EducationItem>
+          <div>
+            <EducationTitle>Interests</EducationTitle>
+            <School>
+              {interests.map(({ name, url, linkText }, index) => (
+                <span key={name}>
+                  {index > 0 && ", "}
+                  {name}
+                  {url && (
+                    <>
+                      {" ("}
+                      <Link href={url} target="_blank" rel="noreferrer">
+                        {linkText ?? url}
+                      </Link>
+                      {")"}
+                    </>
+                  )}
+                </span>
+              ))}
+            </School>
+          </div>
+        </EducationItem>
       </EducationList>
     </Card>
   </Section>

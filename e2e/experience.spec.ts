@@ -36,7 +36,28 @@ test.describe("Experience", () => {
       experience.getByRole("listitem").filter({ hasText: "ISTQB" }),
     ).toContainText("In progress");
     await expect(
-      experience.getByRole("article").last().getByRole("listitem").first(),
+      experience
+        .getByRole("article")
+        .filter({ hasText: "Education" })
+        .getByRole("listitem")
+        .first(),
     ).toContainText("ISTQB");
+  });
+
+  test("lists languages and interests", async ({ page }) => {
+    const list = page
+      .getByRole("region", { name: "Experience" })
+      .getByRole("list", { name: "Languages and interests" });
+
+    await expect(list).toContainText("Polish");
+    await expect(list).toContainText("Native");
+    await expect(list).toContainText("English");
+    await expect(list).toContainText("Professional working proficiency");
+    await expect(
+      list.getByRole("link", { name: "my guitar website" }),
+    ).toHaveAttribute(
+      "href",
+      "https://szymonrojek.github.io/my-music-website/",
+    );
   });
 });

@@ -16,16 +16,16 @@ export const jobs: Job[] = [
       {
         title: "Data migration & SQL",
         points: [
-          "Turn requirements, mapping documents and transformation rules into traceable test scenarios.",
-          "Validate financial and shareholder data across migration, conversion and deconversion projects, comparing databases, extracts and reconciliation reports.",
+          "Turn requirements, mapping documents and transformation rules into test plans and traceable test scenarios.",
+          "Validate financial and shareholder data across data migration and ETL projects, including conversion and deconversion, comparing databases, extracts and reconciliation reports.",
           "Write complex SQL to surface discrepancies, produce evidence and build test data.",
-          "Trace defects to their source: data, transformation logic, Stored Procedures or the requirements themselves.",
+          "Trace defects to their source: data, transformation logic, stored procedures or the requirements themselves.",
         ],
       },
       {
         title: "Quality process",
         points: [
-          "Estimate effort and design positive and negative cases, peer-reviewed before execution.",
+          "Estimate effort and design positive and negative manual test cases, peer-reviewed before execution.",
           "Log and retest defects in Azure DevOps with clear reproduction steps.",
           "Work with developers, architects and stakeholders in an Agile team to verify fixes.",
         ],
@@ -69,4 +69,31 @@ export const education: EducationItem[] = [
     school: "Nicolaus Copernicus University, Toruń",
     year: "2012",
   },
+];
+
+export interface Language {
+  name: string;
+  level: string;
+}
+
+export const languages: Language[] = [
+  { name: "Polish", level: "Native" },
+  { name: "English", level: "Professional working proficiency" },
+];
+
+export interface Interest {
+  name: string;
+  // Optional link, for example to a project built around the interest.
+  url?: string;
+  linkText?: string;
+}
+
+export const interests: Interest[] = [
+  {
+    name: "Classical guitar",
+    url: "https://szymonrojek.github.io/my-music-website/",
+    linkText: "my guitar website",
+  },
+  { name: "Swimming" },
+  { name: "Cycling" },
 ];

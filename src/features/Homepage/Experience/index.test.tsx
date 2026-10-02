@@ -25,6 +25,11 @@ vi.mock("../experienceData", () => ({
     { title: "Certificate", school: "Board", year: "2025" },
     { title: "Course", school: "School" },
   ],
+  languages: [{ name: "Polish", level: "Native" }],
+  interests: [
+    { name: "Guitar", url: "https://example.com/guitar", linkText: "site" },
+    { name: "Swimming" },
+  ],
 }));
 
 const renderExperience = () =>
@@ -57,5 +62,19 @@ describe("Experience", () => {
 
     expect(items[0]).toHaveTextContent("2025");
     expect(items[1]).toHaveTextContent(/^CourseSchool$/);
+  });
+
+  it("shows languages with their level and links interests that have a site", () => {
+    renderExperience();
+
+    const list = screen.getByRole("list", { name: "Languages and interests" });
+    expect(within(list).getByText("Polish")).toBeVisible();
+    expect(within(list).getByText("Native")).toBeVisible();
+    expect(within(list).getByText(/Guitar/)).toHaveTextContent("Guitar (site)");
+    expect(within(list).getByRole("link", { name: "site" })).toHaveAttribute(
+      "href",
+      "https://example.com/guitar",
+    );
+    expect(within(list).getAllByRole("link")).toHaveLength(1);
   });
 });
