@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Envelope from "./envelope.svg?react";
-import Download from "./download.svg?react";
 import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
 export const ButtonLink = styled.a`
@@ -44,12 +43,6 @@ export const IconButtonLink = styled(SecondaryButtonLink)`
 `;
 
 export const EnvelopeIcon = styled(Envelope)`
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-`;
-
-export const DownloadIcon = styled(Download)`
   width: 18px;
   height: 18px;
   flex-shrink: 0;

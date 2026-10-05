@@ -107,6 +107,16 @@ export const Availability = styled.p`
   }
 `;
 
+export const Location = styled.p`
+  margin: 12px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 13px;
+  }
+`;
+
 export const Highlights = styled.ul`
   display: flex;
   flex-wrap: wrap;

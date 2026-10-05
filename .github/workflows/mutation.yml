@@ -1,0 +1,59 @@
+name: Mutation testing
+
+# Started by hand from the Actions tab ("Run workflow"). Stryker runs the whole
+# unit test suite once per mutant, so it is too slow for every push.
+on:
+  workflow_dispatch:
+    inputs:
+      mutate:
+        description: "Only mutate these files (glob, e.g. src/common/themeSlice.ts). Empty = whole project."
+        required: false
+        default: ""
+
+jobs:
+  stryker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run Stryker
+        env:
+          MUTATE: ${{ inputs.mutate }}
+        run: |
+          if [ -n "$MUTATE" ]; then
+            npx stryker run --concurrency 4 --mutate "$MUTATE"
+          else
+            npx stryker run --concurrency 4
+          fi
+      - name: Write the score to the run summary
+        if: always()
+        run: |
+          node -e '
+          const fs = require("fs");
+          const file = "reports/mutation/mutation.json";
+          if (!fs.existsSync(file)) { console.log("No report"); process.exit(0); }
+          const { files } = JSON.parse(fs.readFileSync(file, "utf8"));
+          const detected = ["Killed", "Timeout"];
+          const counted = [...detected, "Survived", "NoCoverage"];
+          let rows = "| File | Score | Killed | Survived | No coverage |\n|---|---|---|---|---|\n";
+          let all = { d: 0, c: 0 };
+          for (const [name, { mutants }] of Object.entries(files)) {
+            const n = (s) => mutants.filter((m) => m.status === s).length;
+            const d = detected.reduce((a, s) => a + n(s), 0);
+            const c = counted.reduce((a, s) => a + n(s), 0);
+            all.d += d; all.c += c;
+            if (c) rows += `| ${name} | ${((100 * d) / c).toFixed(1)}% | ${d} | ${n("Survived")} | ${n("NoCoverage")} |\n`;
+          }
+          const score = all.c ? ((100 * all.d) / all.c).toFixed(1) : "n/a";
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## Mutation score: ${score}%\n\n${rows}\nDownload the **mutation-report** artifact and open index.html to see each surviving mutant.\n`);
+          '
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mutation-report
+          path: reports/mutation

@@ -1,5 +1,5 @@
 import { Section, SectionHeader } from "../Section";
-import { Link } from "../Portfolio/Content/Repositories/styled";
+import { Link } from "../Portfolio/Projects/styled";
 import { quality } from "../qualityData";
 import { Card, Intro, Checks, Footer } from "./styled";
 
@@ -19,6 +19,9 @@ export const Quality = () => (
         </a>
         <Link href={quality.testsURL} target="_blank" rel="noreferrer">
           See the end-to-end tests
+        </Link>
+        <Link href={quality.caseStudyAnchor}>
+          Read how and why it's built this way
         </Link>
       </Footer>
     </Card>

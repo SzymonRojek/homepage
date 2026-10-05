@@ -11,6 +11,13 @@ for (const colorScheme of ["light", "dark"] as const) {
         page.getByRole("list", { name: "Test projects" }),
       ).toBeVisible();
 
+      // Scan the full case studies too, not only what is visible by default.
+      await page
+        .locator("details")
+        .evaluateAll((elements) =>
+          elements.forEach((element) => element.setAttribute("open", "")),
+        );
+
       const { violations } = await new AxeBuilder({ page }).analyze();
       const serious = violations
         .filter(({ impact }) => impact === "serious" || impact === "critical")

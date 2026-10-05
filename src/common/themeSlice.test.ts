@@ -39,6 +39,15 @@ describe("themeSlice", () => {
     expect(getInitialDarkTheme()).toBe(false);
   });
 
+  // Found by mutation testing: without this case, always returning false for a
+  // saved choice still passed.
+  it("prefers a saved dark choice over a light OS preference", () => {
+    mockColorScheme(false);
+    localStorage.setItem("dark", "true");
+
+    expect(getInitialDarkTheme()).toBe(true);
+  });
+
   it("falls back to light theme when matchMedia is unavailable", () => {
     vi.stubGlobal("matchMedia", undefined);
 
@@ -79,5 +88,38 @@ describe("themeSlice", () => {
 
     expect(selectDarkTheme(state)).toBe(true);
     expect(selectHasUserChoice(state)).toBe(false);
+  });
+
+  // Found by mutation testing: no test checked the state a page load starts
+  // from, because the other tests pass a state in themselves.
+  describe("initial state on page load", () => {
+    const loadReducer = async () => {
+      vi.resetModules();
+      const { default: reducer } = await import("./themeSlice");
+      return reducer;
+    };
+
+    it("starts from a saved choice and marks it as the visitor's", async () => {
+      mockColorScheme(false);
+      localStorage.setItem("dark", "true");
+
+      const reducer = await loadReducer();
+
+      expect(reducer(undefined, { type: "@@INIT" })).toEqual({
+        isDarkTheme: true,
+        hasUserChoice: true,
+      });
+    });
+
+    it("starts from the OS theme with no visitor choice", async () => {
+      mockColorScheme(true);
+
+      const reducer = await loadReducer();
+
+      expect(reducer(undefined, { type: "@@INIT" })).toEqual({
+        isDarkTheme: true,
+        hasUserChoice: false,
+      });
+    });
   });
 });

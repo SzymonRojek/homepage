@@ -4,9 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const loadStore = async () => {
   const { default: store } = await import("./store");
   const theme = await import("../common/themeSlice");
-  const homepage = await import("../features/Homepage/homepageSlice");
 
-  return { store, ...theme, ...homepage };
+  return { store, ...theme };
 };
 
 describe("store theme persistence", () => {
@@ -40,10 +39,10 @@ describe("store theme persistence", () => {
   });
 
   it("does not write to localStorage for other actions", async () => {
-    const { store, fetchRepositoriesError } = await loadStore();
+    const { store } = await loadStore();
     const setItem = vi.spyOn(Storage.prototype, "setItem");
 
-    store.dispatch(fetchRepositoriesError());
+    store.dispatch({ type: "unrelated/action" });
 
     expect(setItem).not.toHaveBeenCalled();
   });

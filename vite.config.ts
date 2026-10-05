@@ -20,11 +20,10 @@ export default defineConfig({
         "src/index.tsx",
         "src/setupTests.ts",
         "src/**/*.d.ts",
-        "src/features/Homepage/repositoryFixture.ts",
       ],
       reporter: ["text-summary", "html"],
       // Raise these as tests are added; CI fails if coverage drops below them.
-      thresholds: { statements: 70, branches: 80, functions: 65, lines: 70 },
+      thresholds: { statements: 80, branches: 80, functions: 80, lines: 80 },
     },
   },
 });

@@ -21,15 +21,20 @@ test.describe("Header and footer", () => {
     const header = page.getByRole("banner");
 
     await expect(
-      header.getByText("Open to QA & test automation roles"),
+      header.getByText("Open to QA Engineer & Data/ETL Test Analyst roles"),
+    ).toBeVisible();
+    await expect(
+      header.getByText(
+        "Based in Hove, UK · Full right to work in the UK · Open to relocation",
+      ),
     ).toBeVisible();
     await expect(
       header.getByRole("list", { name: "Key skills" }).getByRole("listitem"),
     ).toHaveText([
       "4 years in software testing",
-      "Data migration testing",
+      "Data migration & ETL testing",
+      "SQL reconciliation",
       "REST API testing",
-      "JavaScript · Cypress · Playwright",
     ]);
   });
 
@@ -46,20 +51,6 @@ test.describe("Header and footer", () => {
     await expect(linkedin).toHaveAttribute("target", "_blank");
   });
 
-  test("offers the CV as a PDF download", async ({ page, request }) => {
-    const cv = page
-      .getByRole("banner")
-      .getByRole("link", { name: "Download CV" });
-
-    await expect(cv).toHaveAttribute("download");
-    const href = await cv.getAttribute("href");
-    expect(href).toMatch(/^\/homepage\/.+\.pdf$/);
-
-    const response = await request.get(href ?? "");
-    expect(response.ok()).toBe(true);
-    expect(response.headers()["content-type"]).toContain("application/pdf");
-  });
-
   test("shows the main sections in recruiter order", async ({ page }) => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
@@ -71,7 +62,7 @@ test.describe("Header and footer", () => {
     ]);
   });
 
-  test("footer offers email, LinkedIn and CV without showing the address", async ({
+  test("footer offers email and LinkedIn without showing the address", async ({
     page,
   }) => {
     const footer = page.getByRole("contentinfo");
@@ -82,9 +73,6 @@ test.describe("Header and footer", () => {
     await expect(
       footer.getByRole("link", { name: "Message me on LinkedIn" }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
-    await expect(
-      footer.getByRole("link", { name: "Download CV" }),
-    ).toHaveAttribute("href", /\.pdf$/);
     await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
   });
 });

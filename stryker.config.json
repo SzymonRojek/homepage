@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "The vitest runner does not activate mutants with Vitest 5 (0 tests ran per mutant), so each mutant runs the whole suite through the command runner. Slow (about an hour locally) but correct; run it manually.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "npx vitest run --reporter=dot"
+  },
+  "coverageAnalysis": "off",
+  "mutate": [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.test.{ts,tsx}",
+    "!src/**/styled.ts",
+    "!src/**/*.d.ts",
+    "!src/index.tsx",
+    "!src/setupTests.ts",
+    "!src/features/Homepage/profile.ts",
+    "!src/features/Homepage/email.ts",
+    "!src/features/Homepage/skillsData.ts",
+    "!src/features/Homepage/experienceData.ts",
+    "!src/features/Homepage/qualityData.ts",
+    "!src/features/Homepage/Portfolio/projectsData.ts",
+    "!src/features/Homepage/Portfolio/githubUserName.ts",
+    "!src/features/Homepage/Footer/SocialIcons/social.ts"
+  ],
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": {
+    "fileName": "reports/mutation/index.html"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
+  },
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": null
+  },
+  "timeoutMS": 60000,
+  "timeoutFactor": 3,
+  "concurrency": 2,
+  "tempDirName": ".stryker-tmp"
+}
