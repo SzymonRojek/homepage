@@ -32,6 +32,7 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
   - Every push to `main` or `dev` and every PR to `main` runs `npm audit` (shipped deps, high+), lint, typecheck, unit tests with a coverage gate, build, e2e and Lighthouse budgets (`lighthouserc.json`, median of 3 runs).
+  - `.github/workflows/mutation.yml`: manual "Run workflow" (optional `mutate` glob) runs Stryker with 4 workers, writes the score per file to the run summary and uploads `reports/mutation` as the `mutation-report` artifact. Not part of the deploy gate.
   - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`.
   - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
 
