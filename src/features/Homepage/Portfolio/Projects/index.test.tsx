@@ -77,4 +77,31 @@ describe("Projects", () => {
       screen.queryByRole("region", { name: "Other projects" }),
     ).not.toBeInTheDocument();
   });
+
+  it("shows projects with a case study as articles, not as tiles", () => {
+    renderProjects([
+      createProject({ title: "Tile", repo: "tile" }),
+      createProject({
+        title: "Studied",
+        repo: "studied",
+        caseStudy: {
+          summary: "Summary.",
+          impact: [],
+          problem: [],
+          constraints: [],
+          diagrams: [],
+          decisions: [],
+          quality: [],
+          lessons: [],
+        },
+      }),
+    ]);
+
+    expect(
+      screen.getByRole("article", { name: "Studied" }),
+    ).toBeInTheDocument();
+    const tiles = screen.getByRole("list", { name: "Test projects" });
+    expect(within(tiles).queryByText("Studied")).not.toBeInTheDocument();
+    expect(within(tiles).getByText("Tile")).toBeInTheDocument();
+  });
 });

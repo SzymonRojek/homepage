@@ -22,9 +22,9 @@ export const GroupTitle = styled.h3`
 
 export const List = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 32px;
-  margin-top: 24px;
+  margin-top: 32px;
   padding: 0;
   list-style: none;
 

@@ -20,6 +20,9 @@ export const Quality = () => (
         <Link href={quality.testsURL} target="_blank" rel="noreferrer">
           See the end-to-end tests
         </Link>
+        <Link href={quality.caseStudyAnchor}>
+          Read how and why it's built this way
+        </Link>
       </Footer>
     </Card>
   </Section>
