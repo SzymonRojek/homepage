@@ -11,8 +11,8 @@ A single page aimed at recruiters for QA / test automation roles, with these par
 
 - **Header:** round avatar, name, title, open-to-work pill with target roles, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
 - **Experience:** job, education, and languages & interests (the guitar site is linked there).
-- **Test projects:** curated testing projects as tiles with readable titles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
-- **How this site is tested:** CI badge and the list of checks.
+- **Test projects:** projects with a `caseStudy` render first as full-width case-study cards (summary and impact numbers visible; problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons inside a `<details>`). Other testing projects render as tiles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
+- **How this site is tested:** CI badge, the list of checks and a link to the homepage case study.
 - **Skills:** one card with eight core-skill chips (data and SQL first) and a tools row.
 - **Footer:** "Let's talk" card with Email, LinkedIn and CV buttons (the address is not shown), GitHub and LinkedIn icons.
 
@@ -31,7 +31,8 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Vitest** + **Testing Library** (jsdom): setup in `src/setupTests.ts`, config in the `test` block of `vite.config.ts`
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
-  - Every push to `main` or `dev` and every PR to `main` runs lint, typecheck, unit tests with a coverage gate, build and e2e.
+  - Every push to `main` or `dev` and every PR to `main` runs `npm audit` (shipped deps, high+), lint, typecheck, unit tests with a coverage gate, build, e2e and Lighthouse budgets (`lighthouserc.json`, median of 3 runs).
+  - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`.
   - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
 
 ## Git workflow (mandatory)
@@ -58,6 +59,7 @@ npm run preview    # serve dist/ locally
 npm test           # Vitest in watch mode (npx vitest run for a single run)
 npm run test:coverage  # single Vitest run with v8 coverage and thresholds (CI runs this)
 npm run test:e2e   # Playwright: builds, serves on :4173, runs desktop + mobile projects
+npm run test:lighthouse  # Lighthouse CI budgets against dist/ (run npm run build first)
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
@@ -91,14 +93,18 @@ src/
     MainHeader/, Skills/, Experience/, Quality/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
-      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl (CONTENT)
-      Projects/               # test project tiles + "Other projects" list
+      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl and caseStudy (CONTENT)
+      Projects/               # case-study cards, test project tiles + "Other projects" list
+      CaseStudy/              # one case study: visible summary + impact, full write-up in <details>
+      FlowDiagram/            # data-driven step diagram (ordered list, decorative CSS arrows)
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
     Section/, ButtonLink/, SubHeader/   # shared styled primitives
 e2e/
   fixtures.ts                 # `test` that fails if the page calls api.github.com (projects must stay static)
-  *.spec.ts                   # header, experience, projects, skills, theme, accessibility
+  *.spec.ts                   # header, experience, projects (incl. case study), quality, skills, theme, accessibility (details expanded)
 ```
+
+**Case studies:** the README case study mirrors `homepageCaseStudy` in `projectsData.ts`; update both together. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
 
 **Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 
@@ -149,5 +155,6 @@ Do these phases one at a time, in separate commits or PRs. Do not mix tooling ch
 
 - `npm run typecheck`, `npm run lint`, `npm run test:coverage`, `npm run build` and `npm run test:e2e` all pass with no new warnings.
 - Check in the browser in **both light and dark mode** at mobile (≤767px), tablet (≤991px / ≤1199px) and desktop widths.
-- Projects: the tiles and "Other projects" render at once, with no request to `api.github.com`.
+- Projects: the case study, tiles and "Other projects" render at once, with no request to `api.github.com`. The case study opens from the keyboard and its decisions table stacks into cards on mobile.
+- `npm run build && npm run test:lighthouse` passes the budgets, and `npm audit --omit=dev --audit-level=high` is clean.
 - The theme follows the OS on a first visit and when the OS theme changes, and a chosen theme survives a page reload and wins over the OS.
