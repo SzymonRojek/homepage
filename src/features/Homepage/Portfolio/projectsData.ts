@@ -150,6 +150,7 @@ const homepageCaseStudy: CaseStudy = {
     "When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.",
     "End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.",
     "Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.",
+    "Mutation testing with Stryker found two real gaps in the theme tests that 80%+ coverage hid. Its first score was wrong too: a runner bug meant no tests ran for most mutants, so I check a tool's output before trusting it.",
   ],
 };
 

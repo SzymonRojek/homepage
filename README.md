@@ -17,7 +17,7 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 40 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
+| Automated tests       | 43 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
 | Coverage              | about 83%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
@@ -82,7 +82,7 @@ flowchart LR
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API.
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`) checks that the unit tests actually catch bugs: the theme logic scores 100%.
 
 **Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 104 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
 
@@ -104,6 +104,7 @@ flowchart LR
 - When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.
 - End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.
 - Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.
+- Mutation testing with Stryker found two real gaps in the theme tests that 80%+ coverage hid: a saved dark choice and the initial state on page load were never checked. The tool's own first score (13.6%) was wrong too, because a runner bug meant no tests ran for most mutants, so I check a tool's output before trusting it.
 
 ## Other test projects
 
@@ -118,14 +119,14 @@ Case studies for these are coming. Each appears on the site as soon as its write
 
 ### Tech stack
 
-| Area      | Tools                                                           |
-| --------- | --------------------------------------------------------------- |
-| Front-end | React 19, TypeScript (strict), Vite                             |
-| State     | Redux Toolkit (theme)                                           |
-| Styling   | styled-components with light and dark themes, self-hosted Inter |
-| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI    |
-| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot         |
-| Hosting   | GitHub Pages, deployed automatically from `main`                |
+| Area      | Tools                                                                 |
+| --------- | --------------------------------------------------------------------- |
+| Front-end | React 19, TypeScript (strict), Vite                                   |
+| State     | Redux Toolkit (theme)                                                 |
+| Styling   | styled-components with light and dark themes, self-hosted Inter       |
+| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker |
+| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot               |
+| Hosting   | GitHub Pages, deployed automatically from `main`                      |
 
 ### Getting started
 
@@ -136,17 +137,18 @@ npm install
 npm run dev          # http://localhost:3000/homepage/
 ```
 
-| Script                    | What it does                                             |
-| ------------------------- | -------------------------------------------------------- |
-| `npm run dev`             | Start the dev server                                     |
-| `npm run build`           | Build the site into `dist/`                              |
-| `npm run preview`         | Serve the production build locally                       |
-| `npm test`                | Unit and component tests in watch mode                   |
-| `npm run test:coverage`   | Single test run with a coverage report and thresholds    |
-| `npm run test:e2e`        | Playwright end-to-end tests (builds and serves the site) |
-| `npm run test:lighthouse` | Lighthouse budgets against `dist/` (run `build` first)   |
-| `npm run typecheck`       | TypeScript check                                         |
-| `npm run lint`            | ESLint                                                   |
+| Script                    | What it does                                                    |
+| ------------------------- | --------------------------------------------------------------- |
+| `npm run dev`             | Start the dev server                                            |
+| `npm run build`           | Build the site into `dist/`                                     |
+| `npm run preview`         | Serve the production build locally                              |
+| `npm test`                | Unit and component tests in watch mode                          |
+| `npm run test:coverage`   | Single test run with a coverage report and thresholds           |
+| `npm run test:e2e`        | Playwright end-to-end tests (builds and serves the site)        |
+| `npm run test:mutation`   | Stryker mutation testing of the unit tests (slow, run manually) |
+| `npm run test:lighthouse` | Lighthouse budgets against `dist/` (run `build` first)          |
+| `npm run typecheck`       | TypeScript check                                                |
+| `npm run lint`            | ESLint                                                          |
 
 ### CI and deployment
 

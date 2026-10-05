@@ -29,3 +29,7 @@ yarn-error.log*
 
 # lighthouse ci
 /.lighthouseci
+
+# mutation testing
+/.stryker-tmp
+/reports

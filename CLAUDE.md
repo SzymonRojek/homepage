@@ -60,11 +60,14 @@ npm test           # Vitest in watch mode (npx vitest run for a single run)
 npm run test:coverage  # single Vitest run with v8 coverage and thresholds (CI runs this)
 npm run test:e2e   # Playwright: builds, serves on :4173, runs desktop + mobile projects
 npm run test:lighthouse  # Lighthouse CI budgets against dist/ (run npm run build first)
+npm run test:mutation    # Stryker mutation testing; manual, about an hour locally (use --mutate <file> for one file)
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
 npm run deploy     # manual deploy: build, then gh-pages publishes dist/ (CI does this on push to main)
 ```
+
+> Stryker note: `@stryker-mutator/vitest-runner` does not activate mutants with Vitest 5 (0 tests ran per mutant, giving a false 13.6% score), so `stryker.config.json` uses the command runner with `coverageAnalysis: "off"` and long timeouts. Check `testsCompleted` in `reports/mutation/mutation.json` before trusting a low score.
 
 > Playwright note: on macOS 12 Playwright cannot install its own Chromium. Local runs therefore use the installed Google Chrome (`channel: "chrome"`), and CI uses the bundled Chromium.
 
