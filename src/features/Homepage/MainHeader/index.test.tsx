@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
-import { afterEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
-import { profile } from "../profile";
 import { MainHeader } from ".";
 
 const renderHeader = () =>
@@ -13,43 +12,40 @@ const renderHeader = () =>
   );
 
 describe("MainHeader", () => {
-  const { cvFile } = profile;
-
-  afterEach(() => {
-    profile.cvFile = cvFile;
-  });
-
-  it("hides the CV button until a CV file is set", () => {
-    profile.cvFile = null;
+  it("shows who I am, the roles I want and where I can work", () => {
     renderHeader();
 
     expect(
-      screen.queryByRole("link", { name: "Download CV" }),
-    ).not.toBeInTheDocument();
+      screen.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Open to QA Engineer & Data/ETL Test Analyst roles"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Based in Hove, UK · Full right to work in the UK · Open to relocation",
+      ),
+    ).toBeInTheDocument();
   });
 
-  it("offers the CV from the site base path as a download", () => {
-    profile.cvFile = "Szymon_Rojek_CV.pdf";
+  it("lists the key skills", () => {
     renderHeader();
 
-    const link = screen.getByRole("link", { name: "Download CV" });
-    expect(link).toHaveAttribute(
-      "href",
-      `${import.meta.env.BASE_URL}Szymon_Rojek_CV.pdf`,
-    );
-    expect(link).toHaveAttribute("download");
+    const skills = screen.getByRole("list", { name: "Key skills" });
+    expect(within(skills).getAllByRole("listitem")).toHaveLength(4);
   });
 
-  it("links to email and LinkedIn", () => {
+  it("links to email and LinkedIn only", () => {
     renderHeader();
 
     expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute(
       "href",
       expect.stringMatching(/^mailto:/),
     );
-    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
-      "rel",
-      "noreferrer",
-    );
+    const linkedin = screen.getByRole("link", { name: "LinkedIn" });
+    expect(linkedin).toHaveAttribute("href", expect.stringMatching(/linkedin/));
+    expect(linkedin).toHaveAttribute("target", "_blank");
+    expect(linkedin).toHaveAttribute("rel", "noreferrer");
+    expect(screen.getAllByRole("link")).toHaveLength(2);
   });
 });

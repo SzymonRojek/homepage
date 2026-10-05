@@ -59,7 +59,7 @@ const homepageCaseStudy: CaseStudy = {
   constraints: [
     "Free static hosting on GitHub Pages under /homepage/, with no server.",
     "One maintainer with limited time, so automation has to catch regressions.",
-    "Privacy: no phone number anywhere, including the downloadable CV.",
+    "Privacy: no phone number anywhere on the site.",
     "WCAG AA colour contrast in both the light and the dark theme.",
     "An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome.",
   ],

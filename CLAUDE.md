@@ -9,12 +9,12 @@ Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in
 
 A single page aimed at recruiters for QA / test automation roles, with these parts in order:
 
-- **Header:** round avatar, name, title, open-to-work pill with target roles, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary), "CV" download and an icon-only LinkedIn link. The CV is `public/Szymon_Rojek_CV.pdf` (no phone number); any replacement must also leave the phone number out.
+- **Header:** round avatar, name, title, open-to-work pill with target roles, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary) and an icon-only LinkedIn link. There is deliberately no CV download.
 - **Experience:** job, education, and languages & interests (the guitar site is linked there).
 - **Test projects:** projects with a `caseStudy` render first as full-width case-study cards (summary and impact numbers visible; problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons inside a `<details>`). Other testing projects render as tiles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
 - **How this site is tested:** CI badge, the list of checks and a link to the homepage case study.
 - **Skills:** one card with eight core-skill chips (data and SQL first) and a tools row.
-- **Footer:** "Let's talk" card with Email, LinkedIn and CV buttons (the address is not shown), GitHub and LinkedIn icons.
+- **Footer:** "Let's talk" card with Email and LinkedIn buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
 
@@ -84,12 +84,11 @@ src/
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn, cvFile (CONTENT)
+    profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn (CONTENT)
     skillsData.ts             # keySkills (8), tools (CONTENT)
     experienceData.ts         # jobs, education, languages, interests (CONTENT)
     qualityData.ts            # "How this site is tested" text and links (CONTENT)
     email.ts                  # contact email (CONTENT)
-    cv.ts                     # getCvUrl() for the header and footer CV buttons
     MainHeader/, Skills/, Experience/, Quality/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
@@ -124,7 +123,7 @@ e2e/
 - **Content changes** (profile, skills, experience, projects, quality, email, socials) go into the data files marked CONTENT above, not into JSX.
 - **Headings:** h1 is the name, h2 is a page section (`SectionHeader`), h3 is a card or group, h4 is a project tile. Sections use `aria-labelledby` pointing to their heading `id`.
 - External links: `target="_blank" rel="noreferrer"`. Decorative images: `alt=""`.
-- **Privacy:** never put a phone number on the site. The CV download must be a version without it.
+- **Privacy:** never put a phone number on the site.
 - **Unit tests** live next to the code as `*.test.ts(x)`. Components that use styled-components must be rendered inside `<ThemeProvider theme={themeLight}>`. Mock data modules with `vi.mock` when a test needs specific content.
 - **E2E tests** import `test`/`expect` from `e2e/fixtures.ts`, so GitHub is always mocked. Use role-based locators, and add new page behaviour to the e2e suite.
 - Formatting: 2 spaces, double quotes, semicolons (Prettier defaults). Run `npm run lint`, `npm run typecheck` and `npm run format` before committing.

@@ -17,6 +17,4 @@ export const profile = {
   contactText:
     "I'm open to QA Engineer and Data/ETL Test Analyst roles, based in Hove with full right to work in the UK.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
-  // CV in public/, without the phone number. Set to null to hide the button.
-  cvFile: "Szymon_Rojek_CV.pdf" as string | null,
 };

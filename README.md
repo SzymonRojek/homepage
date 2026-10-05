@@ -1,6 +1,6 @@
 # Szymon Rojek: Software Test Engineer
 
-**Live site: [szymonrojek.github.io/homepage](https://szymonrojek.github.io/homepage/)** · [Download CV (PDF)](https://szymonrojek.github.io/homepage/Szymon_Rojek_CV.pdf) · [LinkedIn](https://www.linkedin.com/in/szymonrojek/)
+**Live site: [szymonrojek.github.io/homepage](https://szymonrojek.github.io/homepage/)** · [LinkedIn](https://www.linkedin.com/in/szymonrojek/)
 
 [![CI](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml)
 
@@ -17,7 +17,7 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 42 unit and component tests, 54 end-to-end runs (desktop and mobile)                 |
+| Automated tests       | 40 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
 | Coverage              | about 83%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
@@ -36,7 +36,7 @@ The earlier version loaded my projects from the GitHub API in the visitor's brow
 
 - Free static hosting on GitHub Pages under `/homepage/`, with no server.
 - One maintainer with limited time, so automation has to catch regressions.
-- Privacy: no phone number anywhere, including the downloadable CV.
+- Privacy: no phone number anywhere on the site.
 - WCAG AA colour contrast in both the light and the dark theme.
 - An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome and CI uses Playwright's Chromium.
 
@@ -82,13 +82,13 @@ flowchart LR
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies, contact and CV buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API.
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API.
 
 **Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 104 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
 
 **Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks, labelled lists, a theme switch with `aria-pressed`, and decorative icons hidden from screen readers.
 
-**Security.** There are no secrets and no runtime API calls. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every week, targeted at `dev`. External links use `rel="noreferrer"`, and the CV is a version without a phone number. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
+**Security.** There are no secrets and no runtime API calls. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every week, targeted at `dev`. External links use `rel="noreferrer"`, and no phone number is published. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
 
 ### Outcomes
 
@@ -156,12 +156,12 @@ Work happens on the `dev` branch. Every push to `dev` or `main` and every pull r
 
 All text lives in data files, not in components:
 
-| File                                              | Content                                                                          |
-| ------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn, CV |
-| `src/features/Homepage/skillsData.ts`             | Core skills (eight chips) and tools                                              |
-| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                                   |
-| `src/features/Homepage/Portfolio/projectsData.ts` | Projects and their optional `caseStudy` write-ups                                |
-| `src/features/Homepage/qualityData.ts`            | The "How this site is tested" section                                            |
+| File                                              | Content                                                                      |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn |
+| `src/features/Homepage/skillsData.ts`             | Core skills (eight chips) and tools                                          |
+| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                               |
+| `src/features/Homepage/Portfolio/projectsData.ts` | Projects and their optional `caseStudy` write-ups                            |
+| `src/features/Homepage/qualityData.ts`            | The "How this site is tested" section                                        |
 
 To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project moves from a tile to a full case-study card on the site. Keep this README's case study in step with the homepage one.
