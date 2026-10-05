@@ -16,6 +16,8 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      # Fail on high-severity advisories in the dependencies shipped to visitors.
+      - run: npm audit --omit=dev --audit-level=high
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test:coverage
