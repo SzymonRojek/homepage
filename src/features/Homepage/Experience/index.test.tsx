@@ -29,6 +29,7 @@ vi.mock("../experienceData", () => ({
   interests: [
     { name: "Guitar", url: "https://example.com/guitar", linkText: "site" },
     { name: "Swimming" },
+    { name: "Cycling" },
   ],
 }));
 
@@ -62,6 +63,8 @@ describe("Experience", () => {
 
     expect(items[0]).toHaveTextContent("2025");
     expect(items[1]).toHaveTextContent(/^CourseSchool$/);
+    // No empty year badge is rendered for an item without a year.
+    expect(items[1].querySelector("span")).toBeNull();
   });
 
   it("shows languages with their level and links interests that have a site", () => {
@@ -76,5 +79,15 @@ describe("Experience", () => {
       "https://example.com/guitar",
     );
     expect(within(list).getAllByRole("link")).toHaveLength(1);
+  });
+
+  it("separates interests with commas", () => {
+    renderExperience();
+
+    const interests = screen
+      .getByRole("list", { name: "Languages and interests" })
+      .querySelector("li:last-child p:last-child");
+
+    expect(interests).toHaveTextContent(/^Guitar \(site\), Swimming, Cycling$/);
   });
 });

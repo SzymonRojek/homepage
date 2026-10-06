@@ -104,4 +104,47 @@ describe("Projects", () => {
     expect(within(tiles).queryByText("Studied")).not.toBeInTheDocument();
     expect(within(tiles).getByText("Tile")).toBeInTheDocument();
   });
+
+  it("explains Other projects and links to a demo when there is one", () => {
+    renderProjects([
+      createProject({
+        title: "Music site",
+        repo: "music",
+        category: "Other",
+        demoUrl: "https://example.com/music",
+      }),
+      createProject({ title: "Sign-in app", repo: "app", category: "Other" }),
+    ]);
+
+    const other = screen.getByRole("region", { name: "Other projects" });
+    expect(other).toHaveTextContent(/front-end background/i);
+    const demos = within(other).getAllByRole("link", { name: "Live demo" });
+    expect(demos).toHaveLength(1);
+    expect(demos[0]).toHaveAttribute("href", "https://example.com/music");
+    expect(within(other).getAllByRole("link", { name: "Code" })).toHaveLength(
+      2,
+    );
+  });
+
+  it("shows no empty tile list when every testing project is a case study", () => {
+    renderProjects([
+      createProject({
+        repo: "studied",
+        caseStudy: {
+          summary: "Summary.",
+          impact: [],
+          problem: [],
+          constraints: [],
+          diagrams: [],
+          decisions: [],
+          quality: [],
+          lessons: [],
+        },
+      }),
+    ]);
+
+    expect(
+      screen.queryByRole("list", { name: "Test projects" }),
+    ).not.toBeInTheDocument();
+  });
 });
