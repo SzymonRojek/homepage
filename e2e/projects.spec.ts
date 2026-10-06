@@ -8,12 +8,13 @@ test.describe("Test projects", () => {
   test("shows test projects first and other work separately", async ({
     page,
   }) => {
-    await test.step("projects without a case study as tiles", async () => {
-      const tiles = page.getByRole("list", { name: "Test projects" });
-      await expect(tiles.getByRole("heading", { level: 3 })).toHaveText([
-        "Ferry booking E2E suite",
-        "Email campaign API tests",
-      ]);
+    await test.step("testing projects as case studies, in order", async () => {
+      await expect(
+        page.getByRole("article").filter({ hasText: "Case study" }),
+      ).toHaveText([/This portfolio, tested end to end/, /Email campaign app/]);
+      await expect(
+        page.getByRole("list", { name: "Test projects" }),
+      ).toHaveCount(0);
     });
 
     await test.step("front-end work under Other projects", async () => {
@@ -27,19 +28,38 @@ test.describe("Test projects", () => {
     });
   });
 
-  test("shows curated details on a tile", async ({ page }) => {
-    const tile = page
-      .getByRole("listitem")
-      .filter({ hasText: "Ferry booking E2E suite" });
-    await expect(tile).toContainText("df-automation-tests · JavaScript");
-    await expect(tile).toContainText("Gherkin, Cucumber and TestCafe");
-    await expect(tile.getByRole("link", { name: "Live demo" })).toHaveCount(0);
+  test("the email campaign case study links to the code and the live demo", async ({
+    page,
+  }) => {
+    const caseStudy = page.getByRole("article", {
+      name: "Email campaign app, secured and tested",
+    });
+
+    await expect(caseStudy).toContainText(
+      "email-campaign-react-airtable · TypeScript",
+    );
+    await expect(caseStudy.getByLabel("Impact")).toContainText(
+      "end-to-end tests on the production build",
+    );
     await expect(
-      tile.getByRole("link", { name: "GitHub Repository" }),
+      caseStudy.getByRole("link", { name: "GitHub Repository" }),
     ).toHaveAttribute(
       "href",
-      "https://github.com/SzymonRojek/df-automation-tests",
+      "https://github.com/SzymonRojek/email-campaign-react-airtable",
     );
+    await expect(
+      caseStudy.getByRole("link", { name: "Live demo" }),
+    ).toHaveAttribute(
+      "href",
+      "https://email-campaign-react-airtable.onrender.com/",
+    );
+
+    await caseStudy.getByText("Read the full case study").click();
+    await expect(
+      caseStudy.getByRole("rowheader", {
+        name: "Move the login to the server with signed tokens",
+      }),
+    ).toBeVisible();
   });
 
   test("the homepage case study shows impact at a glance", async ({ page }) => {
@@ -107,7 +127,7 @@ test.describe("Test projects", () => {
       page.getByRole("article", { name: "This portfolio, tested end to end" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("list", { name: "Test projects" }).getByRole("listitem"),
+      page.getByRole("article").filter({ hasText: "Case study" }),
     ).toHaveCount(2);
     await expect(page.getByText(/projects are loading/i)).toHaveCount(0);
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);

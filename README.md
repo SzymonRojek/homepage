@@ -17,8 +17,8 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 43 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
-| Coverage              | about 83%, with an 80% gate that fails CI                                            |
+| Automated tests       | 50 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
+| Coverage              | about 86%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                 |
@@ -82,7 +82,7 @@ flowchart LR
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`) checks that the unit tests actually catch bugs: the theme logic scores 100%.
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
 
 **Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 104 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
 
@@ -104,14 +104,70 @@ flowchart LR
 - When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.
 - End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.
 - Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.
-- Mutation testing with Stryker found two real gaps in the theme tests that 80%+ coverage hid: a saved dark choice and the initial state on page load were never checked. The tool's own first score (13.6%) was wrong too, because a runner bug meant no tests ran for most mutants, so I check a tool's output before trusting it.
+- Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants, and slow runs on a busy machine can turn into timeouts that look like caught bugs.
+- A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
 
-## Other test projects
+## Case study: email campaign app, secured and tested
 
-Case studies for these are coming. Each appears on the site as soon as its write-up is added to the project data.
+**[Code](https://github.com/SzymonRojek/email-campaign-react-airtable)** · **[Live demo](https://email-campaign-react-airtable.onrender.com/)** (password `admin`; the free server can take up to a minute to wake up)
 
-- **[Ferry booking E2E suite](https://github.com/SzymonRojek/df-automation-tests)**: BDD end-to-end tests with Gherkin, Cucumber and TestCafe across the UK, German and Italian sites.
-- **[Email campaign API tests](https://github.com/SzymonRojek/email-campaign-react-airtable)**: Postman tests for every endpoint of an Airtable REST API app behind an Express proxy, covering valid, invalid, authorised and unauthorised requests.
+A full-stack React, Express and TypeScript app that manages subscribers and email campaigns in Airtable. I reviewed it like a tester, fixed what I found, and made it safe to change.
+
+| At a glance         |                                                                             |
+| ------------------- | --------------------------------------------------------------------------- |
+| API keys in browser | 0: the Express server is the only thing that talks to Airtable              |
+| Automated tests     | 70+ server and client unit tests, 27 Playwright end-to-end tests            |
+| Test data           | end-to-end tests run against a fake Airtable, so they never touch real data |
+| Bugs fixed          | 11 found and fixed in one review                                            |
+| Delivery            | pull request checks, then staging, then production, all automatic           |
+
+### Problem
+
+The Airtable key already stayed on the server, behind an Express proxy. But the login only ran in the browser, so anyone who called the API directly could read, change or delete every subscriber. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
+
+### Architecture
+
+```mermaid
+flowchart LR
+  react["React app"] --> api["Express API /api<br/>signed login token"]
+  api --> proxy["Server-side proxy<br/>Airtable key in env vars"]
+  proxy --> airtable["Airtable REST API"]
+```
+
+```mermaid
+flowchart LR
+  branch["Feature branch"] --> pr["PR to dev<br/>type check, unit tests, build"]
+  pr --> e2e["Playwright e2e<br/>fake Airtable"]
+  e2e --> staging["Merge, deploy<br/>to staging"]
+  staging --> main["PR dev → main<br/>CI again"]
+  main --> prod["Deploy to<br/>production"]
+```
+
+### Key decisions and trade-offs
+
+| Decision                                      | Why                                                             | Trade-off                                                                        |
+| --------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Server-side login with HMAC-signed tokens     | A browser-only login didn't protect the API at all              | One shared demo password; the lockout lives in memory and resets on restart      |
+| Lock an IP out after 5 wrong passwords        | Basic protection against password guessing                      | Visitors behind one shared IP can lock each other out                            |
+| End-to-end tests against a fake Airtable      | Tests must never touch real data, and CI needs no secrets       | The fake can drift from the real API, so it copies Airtable's records and errors |
+| Real email sending turned off in the demo     | With a public password, anyone could send email from my account | The demo marks a campaign as sent and says clearly that no email went out        |
+| Staging before production, with a hotfix path | Changes are checked on a live copy before users see them        | Two environments to keep in sync; a hotfix must be merged back into `dev`        |
+
+### What the review found
+
+- The Airtable token leaked in error responses.
+- Unchecking every subscriber sent the email to **all** of them: an empty selection was treated as "no filter".
+- Lists silently stopped at 100 records, because Airtable pages its results.
+- Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
+- Deleting a record didn't wait for Airtable, so a failure could crash the server.
+
+### Lessons learned
+
+- Anything a server returns on failure needs the same care as a success response.
+- Edge cases like an empty list deserve their own test.
+- Testing with more data than one page is cheap and catches paging bugs.
+- Test data should look like real users' data, including their alphabet.
+- A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
 
 ---
 

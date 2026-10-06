@@ -107,7 +107,7 @@ e2e/
   *.spec.ts                   # header, experience, projects (incl. case study), quality, skills, theme, accessibility (details expanded)
 ```
 
-**Case studies:** the README case study mirrors `homepageCaseStudy` in `projectsData.ts`; update both together. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
+**Case studies:** the README case studies mirror `homepageCaseStudy` and `emailCampaignCaseStudy` in `projectsData.ts`; update both together. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
 
 **Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 

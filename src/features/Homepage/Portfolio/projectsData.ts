@@ -150,7 +150,110 @@ const homepageCaseStudy: CaseStudy = {
     "When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.",
     "End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.",
     "Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.",
-    "Mutation testing with Stryker found two real gaps in the theme tests that 80%+ coverage hid. Its first score was wrong too: a runner bug meant no tests ran for most mutants, so I check a tool's output before trusting it.",
+    "Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. After targeted tests, every mutant in those files was caught. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants.",
+  ],
+};
+
+const emailCampaignCaseStudy: CaseStudy = {
+  summary:
+    "A full-stack email campaign app on the Airtable REST API. I reviewed it like a tester, fixed what I found, and made it safe to change: server-side login, 70+ unit tests, 27 end-to-end tests against a fake Airtable, and CI/CD through a staging environment.",
+  impact: [
+    { value: "0", label: "API keys or tokens reaching the browser" },
+    {
+      value: "27",
+      label: "end-to-end tests on the production build, with no real data",
+    },
+    { value: "70+", label: "server and client unit tests" },
+    { value: "11", label: "bugs found and fixed in one review" },
+  ],
+  problem: [
+    "The app manages subscribers and email campaigns in Airtable through an Express proxy, so the Airtable key stays on the server. But the login only ran in the browser: anyone who called the API directly could read, change or delete every subscriber.",
+    "Its API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting it ran on had ended. Every change was a risk to data I couldn't see breaking.",
+  ],
+  constraints: [
+    "Airtable is the database: a third-party REST API with rate limits and pages of 100 records.",
+    "A public demo with a public password, so it must not be able to send real emails or touch real data in tests.",
+    "Free hosting (Render) that sleeps after inactivity, so the first request can take up to a minute.",
+    "React 17 with react-scripts 4, which needs a legacy OpenSSL flag on Node 17 and later.",
+  ],
+  diagrams: [
+    {
+      title: "Runtime: the browser never talks to Airtable",
+      steps: [
+        "React app",
+        "Express API under /api with login token",
+        "Server-side proxy holding the Airtable key",
+        "Airtable REST API",
+      ],
+    },
+    {
+      title: "Delivery: feature branch to production",
+      steps: [
+        "Feature branch off dev",
+        "Pull request: type check, unit tests, build",
+        "Playwright e2e against a fake Airtable",
+        "Merge to dev, auto-deploy to staging",
+        "Check staging",
+        "Pull request dev to main, CI again",
+        "Auto-deploy to production",
+      ],
+    },
+  ],
+  decisions: [
+    {
+      decision: "Move the login to the server with signed tokens",
+      why: "A browser-only login didn't protect the API at all.",
+      tradeOff:
+        "A shared demo password and in-memory lockout, which resets when the free server restarts.",
+    },
+    {
+      decision: "Lock an IP out for 15 minutes after 5 wrong passwords",
+      why: "Basic protection against password guessing.",
+      tradeOff: "Visitors behind one shared IP can lock each other out.",
+    },
+    {
+      decision: "Run end-to-end tests against a fake Airtable",
+      why: "Tests must never touch real data, and CI shouldn't need secrets.",
+      tradeOff:
+        "The fake can drift from the real API, so it copies Airtable's record shape and errors.",
+    },
+    {
+      decision: "Turn off real email sending in the demo",
+      why: "With a public password, anyone could send email from my account.",
+      tradeOff:
+        "The demo marks a campaign as sent and says clearly that no email went out.",
+    },
+    {
+      decision: "Staging before production, with a hotfix path",
+      why: "Changes are checked on a live copy before real users see them.",
+      tradeOff:
+        "Two environments to keep in sync, and a hotfix must be merged back into dev.",
+    },
+  ],
+  quality: [
+    {
+      area: "Testing",
+      text: "Server tests with Jest and supertest cover login, tokens, the lockout, every endpoint and error handling, with Airtable mocked. Client tests with React Testing Library cover validation, the API client, hooks, the login form and choosing recipients. Playwright runs real user flows on the production build: logging in, adding, editing and removing subscribers, drafting and sending campaigns, and navigation.",
+    },
+    {
+      area: "Performance",
+      text: "The server follows Airtable's paging, so lists show every record and not only the first 100. On the free plan the main cost is a cold start of up to a minute, which the README tells visitors about.",
+    },
+    {
+      area: "Accessibility",
+      text: "End-to-end tests find controls by their role and accessible name, such as the send button and the edit toggle, so unlabelled controls fail the tests. There is no automated accessibility scan yet; adding axe is the next step.",
+    },
+    {
+      area: "Security",
+      text: "The Airtable key lives only in server environment variables and is sent in the Authorization header, not the URL. Error responses no longer leak it. Login tokens are HMAC-signed and expire after 8 hours, passwords and signatures are compared in constant time, and secrets are never committed.",
+    },
+  ],
+  lessons: [
+    "A review found the Airtable token leaking in error responses. Anything a server returns on failure needs the same care as a success response.",
+    "Unchecking every subscriber sent the email to all of them: an empty selection was treated as “no filter”. Edge cases like an empty list deserve their own test.",
+    "Lists silently stopped at 100 records because Airtable pages its results. Testing with more data than one page is cheap and catches this.",
+    "Sorting put Polish names such as Łukasz after “z” until it used a Polish locale. Test data should look like real users' data.",
+    "A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.",
   ],
 };
 
@@ -165,20 +268,14 @@ export const projects: Project[] = [
     caseStudy: homepageCaseStudy,
   },
   {
-    title: "Ferry booking E2E suite",
-    repo: "df-automation-tests",
-    language: "JavaScript",
-    category: "Testing",
-    description:
-      "End-to-end test suite for a ferry booking site, written with Gherkin, Cucumber and TestCafe across the UK, German and Italian sites.",
-  },
-  {
-    title: "Email campaign API tests",
+    title: "Email campaign app, secured and tested",
     repo: "email-campaign-react-airtable",
-    language: "JavaScript",
+    language: "TypeScript",
     category: "Testing",
     description:
-      "Email campaign CRUD app on the Airtable REST API, with an Express proxy that keeps the API key out of the browser. Every endpoint is covered by Postman API tests for valid, invalid, authorised and unauthorised requests, automated with the Postman Collection Runner.",
+      "Full-stack React, Express and TypeScript app on the Airtable REST API, with server-side login, unit and Playwright end-to-end tests against a fake Airtable, and CI/CD through staging to production.",
+    demoUrl: "https://email-campaign-react-airtable.onrender.com/",
+    caseStudy: emailCampaignCaseStudy,
   },
   {
     title: "Role-based sign-in app",
