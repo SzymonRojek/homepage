@@ -8,6 +8,15 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # eslint-plugin-react supports ESLint up to 9 only; ESLint 10 breaks npm ci.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
+      # typescript-eslint supports TypeScript below 6.1 only.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
       dev-dependencies:
         dependency-type: development
