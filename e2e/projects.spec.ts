@@ -11,7 +11,10 @@ test.describe("Test projects", () => {
     await test.step("testing projects as case studies, in order", async () => {
       await expect(
         page.getByRole("article").filter({ hasText: "Case study" }),
-      ).toHaveText([/This portfolio, tested end to end/, /Email campaign app/]);
+      ).toHaveText([
+        /This portfolio, tested end to end/,
+        /Email Campaign Dashboard/,
+      ]);
       await expect(
         page.getByRole("list", { name: "Test projects" }),
       ).toHaveCount(0);
@@ -32,11 +35,11 @@ test.describe("Test projects", () => {
     page,
   }) => {
     const caseStudy = page.getByRole("article", {
-      name: "Email campaign app, secured and tested",
+      name: "Email Campaign Dashboard, secured and tested",
     });
 
     await expect(caseStudy).toContainText(
-      "email-campaign-react-airtable · TypeScript",
+      "email-campaign-dashboard · TypeScript",
     );
     await expect(caseStudy.getByLabel("Impact")).toContainText(
       "end-to-end tests on the production build",
@@ -45,19 +48,19 @@ test.describe("Test projects", () => {
       caseStudy.getByRole("link", { name: "GitHub Repository" }),
     ).toHaveAttribute(
       "href",
-      "https://github.com/SzymonRojek/email-campaign-react-airtable",
+      "https://github.com/SzymonRojek/email-campaign-dashboard",
     );
     await expect(
       caseStudy.getByRole("link", { name: "Live demo" }),
     ).toHaveAttribute(
       "href",
-      "https://email-campaign-react-airtable.onrender.com/",
+      "https://email-campaign-dashboard-app.onrender.com/?utm_source=cv",
     );
 
     await caseStudy.getByText("Read the full case study").click();
     await expect(
       caseStudy.getByRole("rowheader", {
-        name: "Move the login to the server with signed tokens",
+        name: "An outbox instead of real sending in the demo",
       }),
     ).toBeVisible();
   });
