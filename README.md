@@ -109,7 +109,7 @@ flowchart LR
 
 ## Case study: Email Campaign Dashboard, secured and tested
 
-**[Code](https://github.com/SzymonRojek/email-campaign-dashboard)** · **[Live demo](https://email-campaign-dashboard-app.onrender.com/?utm_source=cv)** (password `admin`; the free server can take up to a minute to wake up, and the demo data resets every night)
+**[Code](https://github.com/SzymonRojek/email-campaign-dashboard)** · **[Live demo](https://email-campaign-dashboard-app.onrender.com/?utm_source=github)** (password `admin`; the free server can take up to a minute to wake up, and the demo data resets every night)
 
 A full-stack React, Express and TypeScript dashboard for email campaigns, with data in Airtable. It started in 2021 as a CRUD app; I reviewed it like a tester, fixed what I found and rebuilt it into a product that is safe to demo publicly and safe to change.
 

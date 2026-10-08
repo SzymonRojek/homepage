@@ -289,7 +289,8 @@ export const projects: Project[] = [
     category: "Testing",
     description:
       "Full-stack React, Express and TypeScript dashboard for email campaigns on Airtable, with server-side login, personalized emails, unit and Playwright end-to-end tests against a fake Airtable, and CI/CD through staging to production.",
-    demoUrl: "https://email-campaign-dashboard-app.onrender.com/?utm_source=cv",
+    demoUrl:
+      "https://email-campaign-dashboard-app.onrender.com/?utm_source=portfolio",
     caseStudy: emailCampaignCaseStudy,
   },
   {

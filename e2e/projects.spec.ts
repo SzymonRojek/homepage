@@ -54,7 +54,7 @@ test.describe("Test projects", () => {
       caseStudy.getByRole("link", { name: "Live demo" }),
     ).toHaveAttribute(
       "href",
-      "https://email-campaign-dashboard-app.onrender.com/?utm_source=cv",
+      "https://email-campaign-dashboard-app.onrender.com/?utm_source=portfolio",
     );
 
     await caseStudy.getByText("Read the full case study").click();
