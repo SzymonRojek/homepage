@@ -8,7 +8,9 @@ for (const colorScheme of ["light", "dark"] as const) {
     test("has no serious accessibility violations", async ({ page }) => {
       await page.goto("./");
       await expect(
-        page.getByRole("list", { name: "Test projects" }),
+        page.getByRole("article", {
+          name: "This portfolio, tested end to end",
+        }),
       ).toBeVisible();
 
       // Scan the full case studies too, not only what is visible by default.

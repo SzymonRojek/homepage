@@ -21,7 +21,6 @@ const otherIntro =
   "A front-end background helps me understand what I test and write maintainable UI automation.";
 
 export const Projects = ({ projects }: { projects: Project[] }) => {
-  const caseStudies = projects.filter(({ caseStudy }) => caseStudy);
   const testProjects = projects.filter(
     ({ category, caseStudy }) => category === "Testing" && !caseStudy,
   );
@@ -29,7 +28,7 @@ export const Projects = ({ projects }: { projects: Project[] }) => {
 
   return (
     <>
-      {caseStudies.map(
+      {projects.map(
         ({ title, repo, language, demoUrl, caseStudy }) =>
           caseStudy && (
             <CaseStudy

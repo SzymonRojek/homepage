@@ -5,7 +5,6 @@ const store = configureStore({
   reducer: {
     theme: themeReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }),
 });
 
 let isDarkTheme = store.getState().theme.isDarkTheme;

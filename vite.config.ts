@@ -9,7 +9,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/setupTests.ts",
-    exclude: [...configDefaults.exclude, "e2e/**"],
+    exclude: [...configDefaults.exclude, "e2e/**", ".stryker-tmp/**"],
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],

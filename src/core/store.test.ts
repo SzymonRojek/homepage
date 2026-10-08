@@ -46,4 +46,14 @@ describe("store theme persistence", () => {
 
     expect(setItem).not.toHaveBeenCalled();
   });
+
+  it("saves only when the theme changes, not on every later action", async () => {
+    const { store, toggleTheme } = await loadStore();
+    store.dispatch(toggleTheme());
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+
+    store.dispatch({ type: "unrelated/action" });
+
+    expect(setItem).not.toHaveBeenCalled();
+  });
 });

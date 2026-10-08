@@ -7,7 +7,16 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: ["dist", "playwright-report", "test-results"] },
+  {
+    ignores: [
+      "dist",
+      "playwright-report",
+      "test-results",
+      ".stryker-tmp",
+      "reports",
+      ".lighthouseci",
+    ],
+  },
   js.configs.recommended,
   tseslint.configs.recommended,
   {

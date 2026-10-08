@@ -31,9 +31,9 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Vitest** + **Testing Library** (jsdom): setup in `src/setupTests.ts`, config in the `test` block of `vite.config.ts`
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
-  - Every push to `main` or `dev` and every PR to `main` runs `npm audit` (shipped deps, high+), lint, typecheck, unit tests with a coverage gate, build, e2e and Lighthouse budgets (`lighthouserc.json`, median of 3 runs).
+  - Every push to `main` or `dev` and every PR to `main` or `dev` runs `npm audit` (shipped deps, high+), lint, typecheck, unit tests with a coverage gate, build, e2e and Lighthouse budgets (`lighthouserc.json`, median of 3 runs).
   - `.github/workflows/mutation.yml`: manual "Run workflow" (optional `mutate` glob) runs Stryker with 4 workers, writes the score per file to the run summary and uploads `reports/mutation` as the `mutation-report` artifact. Not part of the deploy gate.
-  - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`.
+  - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`. Major updates of `eslint`, `@eslint/js` and `typescript` are ignored: `eslint-plugin-react` supports ESLint 9 only and `typescript-eslint` supports TypeScript below 6.1. Merge a Dependabot PR only when its CI is green, and run `npm ci` locally after pulling dependency changes.
   - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
 
 ## Git workflow (mandatory)
@@ -107,7 +107,7 @@ e2e/
   *.spec.ts                   # header, experience, projects (incl. case study), quality, skills, theme, accessibility (details expanded)
 ```
 
-**Case studies:** the README case study mirrors `homepageCaseStudy` in `projectsData.ts`; update both together. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
+**Case studies:** the README case studies mirror `homepageCaseStudy` and `emailCampaignCaseStudy` in `projectsData.ts`; update both together. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
 
 **Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 

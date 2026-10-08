@@ -116,4 +116,14 @@ describe("CaseStudy", () => {
       }),
     ).toBeInTheDocument();
   });
+
+  it("shows the content of every part, not only the headings", () => {
+    renderCaseStudy();
+    fireEvent.click(screen.getByText("Read the full case study"));
+
+    expect(screen.getByText("Recruiters can't verify a CV.")).toBeVisible();
+    expect(screen.getByText("Static hosting.")).toBeVisible();
+    expect(screen.getByText("Unit and e2e tests.")).toBeVisible();
+    expect(screen.getByText("Write the failing test first.")).toBeVisible();
+  });
 });

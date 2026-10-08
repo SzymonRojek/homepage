@@ -43,10 +43,14 @@ describe("useSystemTheme", () => {
   });
 
   it("follows OS theme changes", () => {
-    const { matchMedia, changeTo } = mockMatchMedia();
+    const { matchMedia, mediaQuery, changeTo } = mockMatchMedia();
     const { store } = renderWithStore();
 
     expect(matchMedia).toHaveBeenCalledWith(darkSchemeQuery);
+    expect(mediaQuery.addEventListener).toHaveBeenCalledWith(
+      "change",
+      expect.any(Function),
+    );
 
     changeTo(true);
     expect(selectDarkTheme(store.getState())).toBe(true);
