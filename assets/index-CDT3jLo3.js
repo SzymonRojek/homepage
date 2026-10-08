@@ -312,13 +312,13 @@ Error generating stack: `+e.message+`
     padding-top: 12px;
     font-size: 14px;
   }
-`,ls=()=>(0,z.jsxs)(ts,{"aria-labelledby":`skills`,children:[(0,z.jsx)(ns,{id:`skills`,children:`Skills`}),(0,z.jsxs)(as,{children:[(0,z.jsx)(os,{"aria-label":`Core skills`,children:rs.map(e=>(0,z.jsx)(ss,{children:e},e))}),(0,z.jsxs)(cs,{children:[(0,z.jsx)(`strong`,{children:`Tools:`}),` `,is.join(` · `)]})]})]}),us=[{role:`Software Test Engineer`,company:`Equiniti, Worthing`,details:`Financial services and shareholder registry`,period:`Sep 2022 – present`,groups:[{title:`Data migration & SQL`,points:[`Turn requirements, mapping documents and transformation rules into test plans and traceable test scenarios.`,`Validate financial and shareholder data across data migration and ETL projects, including conversion and deconversion, comparing databases, extracts and reconciliation reports.`,`Write complex SQL to surface discrepancies, produce evidence and build test data.`,`Trace defects to their source: data, transformation logic, stored procedures or the requirements themselves.`]},{title:`Quality process`,points:[`Estimate effort and design positive and negative manual test cases, peer-reviewed before execution.`,`Log and retest defects in Azure DevOps with clear reproduction steps.`,`Work with developers, architects and stakeholders in an Agile team to verify fixes.`]},{title:`AI-assisted testing`,points:[`Use GitHub Copilot agents for code analysis, investigation and repetitive tasks.`,`Write agentic testing procedures for the test team, with validation steps and human oversight.`,`Pilot in-house AI agents that work together to write tests from user stories (PBIs) and mapping documents: find gaps in their output and review them with the senior engineers who build them.`]}]}],ds=[{title:`ISTQB Certified Tester Foundation Level (CTFL)`,school:`International Software Testing Qualifications Board`,year:`In progress`},{title:`Microsoft AI courses`,school:`Generative AI, Microsoft Copilot and responsible AI`,year:`2026`},{title:`Artificial Intelligence course`,school:`John Paul II Catholic University of Lublin`,year:`2025`},{title:`Master of Theology, First Class Honours`,school:`Nicolaus Copernicus University, Toruń`,year:`2012`}],fs=[{name:`Polish`,level:`Native`},{name:`English`,level:`Professional working proficiency`}],ps=[{name:`Classical guitar`,url:`https://szymonrojek.github.io/my-music-website/`,linkText:`my guitar website`},{name:`Swimming`},{name:`Cycling`}],ms=u(s(((e,t)=>{t.exports={aliceblue:[240,248,255],antiquewhite:[250,235,215],aqua:[0,255,255],aquamarine:[127,255,212],azure:[240,255,255],beige:[245,245,220],bisque:[255,228,196],black:[0,0,0],blanchedalmond:[255,235,205],blue:[0,0,255],blueviolet:[138,43,226],brown:[165,42,42],burlywood:[222,184,135],cadetblue:[95,158,160],chartreuse:[127,255,0],chocolate:[210,105,30],coral:[255,127,80],cornflowerblue:[100,149,237],cornsilk:[255,248,220],crimson:[220,20,60],cyan:[0,255,255],darkblue:[0,0,139],darkcyan:[0,139,139],darkgoldenrod:[184,134,11],darkgray:[169,169,169],darkgreen:[0,100,0],darkgrey:[169,169,169],darkkhaki:[189,183,107],darkmagenta:[139,0,139],darkolivegreen:[85,107,47],darkorange:[255,140,0],darkorchid:[153,50,204],darkred:[139,0,0],darksalmon:[233,150,122],darkseagreen:[143,188,143],darkslateblue:[72,61,139],darkslategray:[47,79,79],darkslategrey:[47,79,79],darkturquoise:[0,206,209],darkviolet:[148,0,211],deeppink:[255,20,147],deepskyblue:[0,191,255],dimgray:[105,105,105],dimgrey:[105,105,105],dodgerblue:[30,144,255],firebrick:[178,34,34],floralwhite:[255,250,240],forestgreen:[34,139,34],fuchsia:[255,0,255],gainsboro:[220,220,220],ghostwhite:[248,248,255],gold:[255,215,0],goldenrod:[218,165,32],gray:[128,128,128],green:[0,128,0],greenyellow:[173,255,47],grey:[128,128,128],honeydew:[240,255,240],hotpink:[255,105,180],indianred:[205,92,92],indigo:[75,0,130],ivory:[255,255,240],khaki:[240,230,140],lavender:[230,230,250],lavenderblush:[255,240,245],lawngreen:[124,252,0],lemonchiffon:[255,250,205],lightblue:[173,216,230],lightcoral:[240,128,128],lightcyan:[224,255,255],lightgoldenrodyellow:[250,250,210],lightgray:[211,211,211],lightgreen:[144,238,144],lightgrey:[211,211,211],lightpink:[255,182,193],lightsalmon:[255,160,122],lightseagreen:[32,178,170],lightskyblue:[135,206,250],lightslategray:[119,136,153],lightslategrey:[119,136,153],lightsteelblue:[176,196,222],lightyellow:[255,255,224],lime:[0,255,0],limegreen:[50,205,50],linen:[250,240,230],magenta:[255,0,255],maroon:[128,0,0],mediumaquamarine:[102,205,170],mediumblue:[0,0,205],mediumorchid:[186,85,211],mediumpurple:[147,112,219],mediumseagreen:[60,179,113],mediumslateblue:[123,104,238],mediumspringgreen:[0,250,154],mediumturquoise:[72,209,204],mediumvioletred:[199,21,133],midnightblue:[25,25,112],mintcream:[245,255,250],mistyrose:[255,228,225],moccasin:[255,228,181],navajowhite:[255,222,173],navy:[0,0,128],oldlace:[253,245,230],olive:[128,128,0],olivedrab:[107,142,35],orange:[255,165,0],orangered:[255,69,0],orchid:[218,112,214],palegoldenrod:[238,232,170],palegreen:[152,251,152],paleturquoise:[175,238,238],palevioletred:[219,112,147],papayawhip:[255,239,213],peachpuff:[255,218,185],peru:[205,133,63],pink:[255,192,203],plum:[221,160,221],powderblue:[176,224,230],purple:[128,0,128],rebeccapurple:[102,51,153],red:[255,0,0],rosybrown:[188,143,143],royalblue:[65,105,225],saddlebrown:[139,69,19],salmon:[250,128,114],sandybrown:[244,164,96],seagreen:[46,139,87],seashell:[255,245,238],sienna:[160,82,45],silver:[192,192,192],skyblue:[135,206,235],slateblue:[106,90,205],slategray:[112,128,144],slategrey:[112,128,144],snow:[255,250,250],springgreen:[0,255,127],steelblue:[70,130,180],tan:[210,180,140],teal:[0,128,128],thistle:[216,191,216],tomato:[255,99,71],turquoise:[64,224,208],violet:[238,130,238],wheat:[245,222,179],white:[255,255,255],whitesmoke:[245,245,245],yellow:[255,255,0],yellowgreen:[154,205,50]}}))(),1),hs=_s,gs={red:0,orange:60,yellow:120,green:180,blue:240,purple:300};function _s(e){var t,n=[],r=1,i;if(typeof e==`string`){if(ms.default[e])n=ms.default[e].slice(),i=`rgb`;else if(e===`transparent`)r=0,i=`rgb`,n=[0,0,0];else if(/^#[A-Fa-f0-9]+$/.test(e)){var a=e.slice(1),o=a.length,s=o<=4;r=1,s?(n=[parseInt(a[0]+a[0],16),parseInt(a[1]+a[1],16),parseInt(a[2]+a[2],16)],o===4&&(r=parseInt(a[3]+a[3],16)/255)):(n=[parseInt(a[0]+a[1],16),parseInt(a[2]+a[3],16),parseInt(a[4]+a[5],16)],o===8&&(r=parseInt(a[6]+a[7],16)/255)),n[0]||(n[0]=0),n[1]||(n[1]=0),n[2]||(n[2]=0),i=`rgb`}else if(t=/^((?:rgb|hs[lvb]|hwb|cmyk?|xy[zy]|gray|lab|lchu?v?|[ly]uv|lms)a?)\s*\(([^\)]*)\)/.exec(e)){var c=t[1],l=c===`rgb`,a=c.replace(/a$/,``);i=a;var o=a===`cmyk`?4:a===`gray`?1:3;n=t[2].trim().split(/\s*[,\/]\s*|\s+/).map(function(e,t){if(/%$/.test(e))return t===o?parseFloat(e)/100:a===`rgb`?parseFloat(e)*255/100:parseFloat(e);if(a[t]===`h`){if(/deg$/.test(e))return parseFloat(e);if(gs[e]!==void 0)return gs[e]}return parseFloat(e)}),c===a&&n.push(1),r=l||n[o]===void 0?1:n[o],n=n.slice(0,o)}else e.length>10&&/[0-9](?:\s|\/)/.test(e)&&(n=e.match(/([0-9]+)/g).map(function(e){return parseFloat(e)}),i=e.match(/([a-z])/gi).join(``).toLowerCase())}else isNaN(e)?Array.isArray(e)||e.length?(n=[e[0],e[1],e[2]],i=`rgb`,r=e.length===4?e[3]:1):e instanceof Object&&(e.r!=null||e.red!=null||e.R!=null?(i=`rgb`,n=[e.r||e.red||e.R||0,e.g||e.green||e.G||0,e.b||e.blue||e.B||0]):(i=`hsl`,n=[e.h||e.hue||e.H||0,e.s||e.saturation||e.S||0,e.l||e.lightness||e.L||e.b||e.brightness]),r=e.a||e.alpha||e.opacity||1,e.opacity!=null&&(r/=100)):(i=`rgb`,n=[e>>>16,(e&65280)>>>8,e&255]);return{space:i,values:n,alpha:r}}function vs(e,t){var n=hs(e);return t??=n.alpha,n.space[0]===`h`?n.space+[`a(`,n.values[0],`,`,n.values[1],`%,`,n.values[2],`%,`,t,`)`].join(``):n.space+[`a(`,n.values,`,`,t,`)`].join(``)}Xr();var ys=P.section`
+`,ls=()=>(0,z.jsxs)(ts,{"aria-labelledby":`skills`,children:[(0,z.jsx)(ns,{id:`skills`,children:`Skills`}),(0,z.jsxs)(as,{children:[(0,z.jsx)(os,{"aria-label":`Core skills`,children:rs.map(e=>(0,z.jsx)(ss,{children:e},e))}),(0,z.jsxs)(cs,{children:[(0,z.jsx)(`strong`,{children:`Tools:`}),` `,is.join(` · `)]})]})]}),us=[{role:`Software Test Engineer`,company:`Equiniti, Worthing`,details:`Financial services and shareholder registry`,period:`Sep 2022 – present`,groups:[{title:`Data migration & SQL`,points:[`Turn requirements, mapping documents and transformation rules into test plans and traceable test scenarios.`,`Validate financial and shareholder data across data migration and ETL projects, including conversion and deconversion, comparing databases, extracts and reconciliation reports.`,`Write complex SQL to surface discrepancies, produce evidence and build test data.`,`Trace defects to their source: data, transformation logic, stored procedures or the requirements themselves.`]},{title:`Quality process`,points:[`Estimate effort and design positive and negative manual test cases, peer-reviewed before execution.`,`Log and retest defects in Azure DevOps with clear reproduction steps.`,`Work with developers, architects and stakeholders in an Agile team to verify fixes.`]},{title:`AI-assisted testing`,points:[`Use GitHub Copilot agents for code analysis, investigation and repetitive tasks.`,`Write agentic testing procedures for the test team, with validation steps and human oversight.`,`Pilot in-house AI agents that work together to write tests from user stories (PBIs) and mapping documents: find gaps in their output and review them with the senior engineers who build them.`]}]}],ds=[{title:`ISTQB Certified Tester Foundation Level (CTFL)`,school:`International Software Testing Qualifications Board`,year:`In progress`},{title:`Microsoft AI courses`,school:`Generative AI, Microsoft Copilot and responsible AI`,year:`2026`},{title:`Artificial Intelligence course`,school:`John Paul II Catholic University of Lublin`,year:`2025`},{title:`Master of Theology, First Class Honours`,school:`Nicolaus Copernicus University, Toruń`,year:`2012`}],fs=[{name:`Polish`,level:`Native`},{name:`English`,level:`Professional working proficiency`}],ps=[{name:`Classical guitar`,url:`https://szymonrojek.github.io/my-music-website/`,linkText:`my guitar website`},{name:`Swimming`},{name:`Cycling`}],ms={aliceblue:[240,248,255],antiquewhite:[250,235,215],aqua:[0,255,255],aquamarine:[127,255,212],azure:[240,255,255],beige:[245,245,220],bisque:[255,228,196],black:[0,0,0],blanchedalmond:[255,235,205],blue:[0,0,255],blueviolet:[138,43,226],brown:[165,42,42],burlywood:[222,184,135],cadetblue:[95,158,160],chartreuse:[127,255,0],chocolate:[210,105,30],coral:[255,127,80],cornflowerblue:[100,149,237],cornsilk:[255,248,220],crimson:[220,20,60],cyan:[0,255,255],darkblue:[0,0,139],darkcyan:[0,139,139],darkgoldenrod:[184,134,11],darkgray:[169,169,169],darkgreen:[0,100,0],darkgrey:[169,169,169],darkkhaki:[189,183,107],darkmagenta:[139,0,139],darkolivegreen:[85,107,47],darkorange:[255,140,0],darkorchid:[153,50,204],darkred:[139,0,0],darksalmon:[233,150,122],darkseagreen:[143,188,143],darkslateblue:[72,61,139],darkslategray:[47,79,79],darkslategrey:[47,79,79],darkturquoise:[0,206,209],darkviolet:[148,0,211],deeppink:[255,20,147],deepskyblue:[0,191,255],dimgray:[105,105,105],dimgrey:[105,105,105],dodgerblue:[30,144,255],firebrick:[178,34,34],floralwhite:[255,250,240],forestgreen:[34,139,34],fuchsia:[255,0,255],gainsboro:[220,220,220],ghostwhite:[248,248,255],gold:[255,215,0],goldenrod:[218,165,32],gray:[128,128,128],green:[0,128,0],greenyellow:[173,255,47],grey:[128,128,128],honeydew:[240,255,240],hotpink:[255,105,180],indianred:[205,92,92],indigo:[75,0,130],ivory:[255,255,240],khaki:[240,230,140],lavender:[230,230,250],lavenderblush:[255,240,245],lawngreen:[124,252,0],lemonchiffon:[255,250,205],lightblue:[173,216,230],lightcoral:[240,128,128],lightcyan:[224,255,255],lightgoldenrodyellow:[250,250,210],lightgray:[211,211,211],lightgreen:[144,238,144],lightgrey:[211,211,211],lightpink:[255,182,193],lightsalmon:[255,160,122],lightseagreen:[32,178,170],lightskyblue:[135,206,250],lightslategray:[119,136,153],lightslategrey:[119,136,153],lightsteelblue:[176,196,222],lightyellow:[255,255,224],lime:[0,255,0],limegreen:[50,205,50],linen:[250,240,230],magenta:[255,0,255],maroon:[128,0,0],mediumaquamarine:[102,205,170],mediumblue:[0,0,205],mediumorchid:[186,85,211],mediumpurple:[147,112,219],mediumseagreen:[60,179,113],mediumslateblue:[123,104,238],mediumspringgreen:[0,250,154],mediumturquoise:[72,209,204],mediumvioletred:[199,21,133],midnightblue:[25,25,112],mintcream:[245,255,250],mistyrose:[255,228,225],moccasin:[255,228,181],navajowhite:[255,222,173],navy:[0,0,128],oldlace:[253,245,230],olive:[128,128,0],olivedrab:[107,142,35],orange:[255,165,0],orangered:[255,69,0],orchid:[218,112,214],palegoldenrod:[238,232,170],palegreen:[152,251,152],paleturquoise:[175,238,238],palevioletred:[219,112,147],papayawhip:[255,239,213],peachpuff:[255,218,185],peru:[205,133,63],pink:[255,192,203],plum:[221,160,221],powderblue:[176,224,230],purple:[128,0,128],rebeccapurple:[102,51,153],red:[255,0,0],rosybrown:[188,143,143],royalblue:[65,105,225],saddlebrown:[139,69,19],salmon:[250,128,114],sandybrown:[244,164,96],seagreen:[46,139,87],seashell:[255,245,238],sienna:[160,82,45],silver:[192,192,192],skyblue:[135,206,235],slateblue:[106,90,205],slategray:[112,128,144],slategrey:[112,128,144],snow:[255,250,250],springgreen:[0,255,127],steelblue:[70,130,180],tan:[210,180,140],teal:[0,128,128],thistle:[216,191,216],tomato:[255,99,71],turquoise:[64,224,208],violet:[238,130,238],wheat:[245,222,179],white:[255,255,255],whitesmoke:[245,245,245],yellow:[255,255,0],yellowgreen:[154,205,50]};for(let e in ms)Object.freeze(ms[e]);var hs=Object.freeze(ms),gs=vs,_s={red:0,orange:60,yellow:120,green:180,blue:240,purple:300};function vs(e){var t,n=[],r=1,i;if(typeof e==`number`)return{space:`rgb`,values:[e>>>16,(e&65280)>>>8,e&255],alpha:1};if(e=String(e).toLowerCase(),hs[e])n=hs[e].slice(),i=`rgb`;else if(e===`transparent`)r=0,i=`rgb`,n=[0,0,0];else if(e[0]===`#`){var a=e.slice(1),o=a.length;if(/^[0-9a-f]{3,8}$/.test(a)&&o!==5&&o!==7){var s=o<=4;r=1,s?(n=[parseInt(a[0]+a[0],16),parseInt(a[1]+a[1],16),parseInt(a[2]+a[2],16)],o===4&&(r=parseInt(a[3]+a[3],16)/255)):(n=[parseInt(a[0]+a[1],16),parseInt(a[2]+a[3],16),parseInt(a[4]+a[5],16)],o===8&&(r=parseInt(a[6]+a[7],16)/255)),i=`rgb`}}else if(t=/^((?:rgba?|hs[lvb]a?|hwba?|cmyk?|xy[zy]|gray|lab|lchu?v?|[ly]uv|lms|oklch|oklab|color))\s*\(([^\)]*)\)/.exec(e)){i=t[1].replace(/a$/,``);var c=i===`cmyk`?4:i===`gray`?1:3;n=t[2].trim().split(/\s*[,\/]\s*|\s+/),i===`color`&&(i=n.shift()),n=n.map(function(e,t){if(e[e.length-1]===`%`)return e=parseFloat(e)/100,t===3?e:i===`rgb`?e*255:i[0]===`h`||i[0]===`l`&&!t?e*100:i===`lab`?e*125:i===`lch`?t<2?e*150:e*360:i[0]===`o`&&!t?e:i===`oklab`?e*.4:i===`oklch`?t<2?e*.4:e*360:e;if(i[t]===`h`||t===2&&i[i.length-1]===`h`){if(_s[e]!==void 0)return _s[e];if(e.endsWith(`deg`))return parseFloat(e);if(e.endsWith(`turn`))return parseFloat(e)*360;if(e.endsWith(`grad`))return parseFloat(e)*360/400;if(e.endsWith(`rad`))return parseFloat(e)*180/Math.PI}return e===`none`?0:parseFloat(e)}),r=n.length>c?n.pop():1}else!/^[a-z][a-z0-9-]*\s*\(/.test(e)&&/[0-9](?:\s|\/|,)/.test(e)&&(n=e.match(/-?[0-9]*\.?[0-9]+/g).map(Number),i=e.replace(/grad|deg|rad|turn/g,``).match(/([a-z])/gi)?.join(``)?.toLowerCase()||`rgb`,i.length>3&&i[i.length-1]===`a`&&i.length===n.length?(i=i.slice(0,-1),r=n.pop()):i===`rgb`&&n.length===4&&(r=n.pop()));return{space:i,values:n,alpha:r}}var ys=/^(?:srgb|srgb-linear|display-p3|a98-rgb|prophoto-rgb|rec2020|xyz|xyz-d50|xyz-d65)$/;function bs(e,t){var{space:n,values:r,alpha:i}=gs(e);if(n)return t??=i,n[0]===`h`?`${n}a(${r[0]}, ${r[1]}%, ${r[2]}%, ${t})`:n===`rgb`?`rgba(${r}, ${t})`:ys.test(n)?`color(${n} ${r.join(` `)} / ${t})`:`${n}(${r.join(` `)} / ${t})`}Xr();var xs=P.section`
   margin-top: 48px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     margin-top: 32px;
   }
-`,bs=P.h3`
+`,Ss=P.h3`
   margin: 0;
   font-size: 22px;
   font-weight: 900;
@@ -327,7 +327,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 17px;
   }
-`,xs=P.ul`
+`,Cs=P.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 32px;
@@ -339,7 +339,7 @@ Error generating stack: `+e.message+`
     grid-template-columns: 1fr;
     grid-gap: 24px;
   }
-`,Ss=P.li`
+`,ws=P.li`
   margin: 0;
   padding: 32px;
   background: ${({theme:e})=>e.colors.boxBackground};
@@ -355,7 +355,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     padding: 20px;
   }
-`,Cs=P.h3`
+`,Ts=P.h3`
   font-size: 24px;
   color: ${({theme:e})=>e.colors.tile.header};
   margin: 0;
@@ -363,7 +363,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 16px;
   }
-`,ws=P.p`
+`,Es=P.p`
   margin: 12px 0 0;
   font-size: 15px;
 
@@ -371,7 +371,7 @@ Error generating stack: `+e.message+`
     margin-top: 8px;
     font-size: 13px;
   }
-`,Ts=P.p`
+`,Ds=P.p`
   margin-top: 24px;
   line-height: 1.4;
 
@@ -379,7 +379,7 @@ Error generating stack: `+e.message+`
     margin-top: 16px;
     font-size: 14px;
   }
-`,Es=P.dl`
+`,Os=P.dl`
   display: grid;
   grid-gap: 8px;
   line-height: 1.6;
@@ -390,28 +390,28 @@ Error generating stack: `+e.message+`
     margin-top: 16px;
     font-size: 14px;
   }
-`,Ds=P.div`
+`,ks=P.div`
   display: grid;
   grid-template-columns: 4em 1fr;
-`,Os=P.dd`
+`,As=P.dd`
   margin: 0;
-`,ks=P.a`
+`,js=P.a`
   color: ${({theme:e})=>e.colors.primary};
   text-decoration: none;
-  border-bottom: 1px solid ${({theme:e})=>vs(e.colors.primary,.3)};
+  border-bottom: 1px solid ${({theme:e})=>bs(e.colors.primary,.3)};
   padding-bottom: 1px;
 
   &:hover {
     border-color: unset;
   }
-`,As=P.p`
+`,Ms=P.p`
   margin: 12px 0 0;
   line-height: 1.5;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,js=P.ul`
+`,Ns=P.ul`
   display: grid;
   grid-gap: 12px;
   margin: 16px 0 0;
@@ -429,7 +429,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,Ms=P.li``;Xr();var Ns=P.article`
+`,Ps=P.li``;Xr();var Fs=P.article`
   padding: 32px;
   background: ${({theme:e})=>e.colors.boxBackground};
   box-shadow: ${({theme:e})=>e.boxShadow};
@@ -447,7 +447,7 @@ Error generating stack: `+e.message+`
       margin-top: 16px;
     }
   }
-`,Ps=P.header`
+`,Is=P.header`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -459,7 +459,7 @@ Error generating stack: `+e.message+`
     flex-direction: column;
     gap: 4px;
   }
-`,Fs=P.h3`
+`,Ls=P.h3`
   margin: 0;
   font-size: 22px;
   font-weight: 900;
@@ -468,14 +468,14 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 17px;
   }
-`,Is=P.p`
+`,Rs=P.p`
   margin: 8px 0 0;
   font-size: 16px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,Ls=P.p`
+`,zs=P.p`
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -504,7 +504,7 @@ Error generating stack: `+e.message+`
     font-size: 12px;
     padding: 2px 10px;
   }
-`,Rs=P.div`
+`,Bs=P.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 24px;
@@ -513,7 +513,7 @@ Error generating stack: `+e.message+`
     grid-template-columns: 1fr;
     margin-top: 0;
   }
-`,zs=P.div`
+`,Vs=P.div`
   padding: 0 24px;
 
   &:first-child {
@@ -545,7 +545,7 @@ Error generating stack: `+e.message+`
       margin-top: 16px;
     }
   }
-`,Bs=P.h4`
+`,Hs=P.h4`
   margin: 0;
   font-size: 13px;
   font-weight: 700;
@@ -556,7 +556,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 12px;
   }
-`,Vs=P.ul`
+`,Us=P.ul`
   margin: 12px 0 0;
   padding-left: 18px;
   font-size: 16px;
@@ -573,11 +573,11 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,Hs=P.ul`
+`,Ws=P.ul`
   margin: 16px 0 0;
   padding: 0;
   list-style: none;
-`,Us=P.li`
+`,Gs=P.li`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -595,7 +595,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     padding: 12px 0;
   }
-`,Ws=P.p`
+`,Ks=P.p`
   margin: 0;
   font-size: 17px;
   font-weight: 700;
@@ -604,14 +604,14 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,Gs=P.p`
+`,qs=P.p`
   margin: 4px 0 0;
   font-size: 16px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,Ks=P.span`
+`,Js=P.span`
   flex-shrink: 0;
   font-size: 16px;
   font-weight: 600;
@@ -620,9 +620,9 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,qs=()=>(0,z.jsxs)(ts,{"aria-labelledby":`experience`,children:[(0,z.jsx)(ns,{id:`experience`,children:`Experience`}),us.map(({role:e,company:t,details:n,period:r,groups:i})=>(0,z.jsxs)(Ns,{children:[(0,z.jsxs)(Ps,{children:[(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Fs,{children:e}),(0,z.jsxs)(Is,{children:[t,` · `,n]})]}),(0,z.jsx)(Ls,{$current:r.endsWith(`present`),children:r})]}),(0,z.jsx)(Rs,{children:i.map(({title:e,points:t})=>(0,z.jsxs)(zs,{children:[(0,z.jsx)(Bs,{children:e}),(0,z.jsx)(Vs,{children:t.map(e=>(0,z.jsx)(`li`,{children:e},e))})]},e))})]},`${e}-${t}`)),(0,z.jsxs)(Ns,{children:[(0,z.jsx)(Fs,{children:`Education and professional development`}),(0,z.jsx)(Hs,{children:ds.map(({title:e,school:t,year:n})=>(0,z.jsxs)(Us,{children:[(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Ws,{children:e}),(0,z.jsx)(Gs,{children:t})]}),n&&(0,z.jsx)(Ks,{children:n})]},e))})]}),(0,z.jsxs)(Ns,{children:[(0,z.jsx)(Fs,{children:`Languages & interests`}),(0,z.jsxs)(Hs,{"aria-label":`Languages and interests`,children:[fs.map(({name:e,level:t})=>(0,z.jsxs)(Us,{children:[(0,z.jsx)(Ws,{children:e}),(0,z.jsx)(Ks,{children:t})]},e)),(0,z.jsx)(Us,{children:(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Ws,{children:`Interests`}),(0,z.jsx)(Gs,{children:ps.map(({name:e,url:t,linkText:n},r)=>(0,z.jsxs)(`span`,{children:[r>0&&`, `,e,t&&(0,z.jsxs)(z.Fragment,{children:[` (`,(0,z.jsx)(ks,{href:t,target:`_blank`,rel:`noreferrer`,children:n??t}),`)`]})]},e))})]})})]})]})]}),Js=`SzymonRojek`,Ys=[{title:`This portfolio, tested end to end`,repo:`homepage`,language:`TypeScript`,category:`Testing`,description:`Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.`,caseStudy:{summary:`My portfolio is also a test project: a React and TypeScript site that ships only when unit, end-to-end, accessibility, performance and security checks all pass.`,impact:[{value:`0`,label:`runtime API calls, so nothing can fail for a visitor`},{value:`40+`,label:`end-to-end tests on desktop and mobile`},{value:`80%+`,label:`unit test coverage, enforced in CI`},{value:`95+`,label:`Lighthouse accessibility, SEO and best practices, enforced in CI`}],problem:[`A CV can say “Playwright” and “CI/CD”, but a recruiter can't check it. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.`,`The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.`],constraints:[`Free static hosting on GitHub Pages under /homepage/, with no server.`,`One maintainer with limited time, so automation has to catch regressions.`,`Privacy: no phone number anywhere on the site.`,`WCAG AA colour contrast in both the light and the dark theme.`,`An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome.`],diagrams:[{title:`Runtime: what a visitor's browser loads`,steps:[`Content in TypeScript data files`,`React components with light and dark themes`,`Vite production build`,`Static files on GitHub Pages`,`Browser: no API calls`]},{title:`Delivery: every change goes through these gates`,steps:[`Commit on dev`,`Dependency audit`,`Lint and type check`,`Unit tests with 80% coverage gate`,`Production build`,`Playwright and axe on desktop and mobile`,`Lighthouse budgets`,`Pull request to main, merged by me`,`Deploy to GitHub Pages`]}],decisions:[{decision:`Static project data instead of the GitHub API`,why:`Rate limits on shared networks could show recruiters an error.`,tradeOff:`Descriptions are updated by hand. An end-to-end fixture fails if the page ever calls the GitHub API again.`},{decision:`Test pyramid: Vitest for logic and components, Playwright for real-browser behaviour, axe for accessibility`,why:`Fast feedback on logic, and real confidence in what visitors see.`,tradeOff:`End-to-end tests take about a minute, so they cover only user-visible behaviour.`},{decision:`An 80% coverage gate that leaves out styles`,why:`Coverage should measure logic, not CSS.`,tradeOff:`Styles are checked by the end-to-end and axe tests instead.`},{decision:`Paint the theme before JavaScript loads`,why:`Reloading in dark mode briefly flashed a light page.`,tradeOff:`The background colours live in two places. A unit test keeps them in sync.`},{decision:`Self-hosted font and a right-sized photo`,why:`Google Fonts blocked rendering, and the photo was three times larger than displayed.`,tradeOff:`Font updates now come through npm instead of Google.`},{decision:`Protected main branch with pull requests I merge myself`,why:`Every push to main deploys. The rule also stops an AI coding assistant from shipping on its own.`,tradeOff:`Even a one-line fix needs a pull request and a green pipeline.`}],quality:[{area:`Testing`,text:`Vitest and Testing Library cover logic and components. Playwright runs against the production build in desktop and mobile Chrome, with tests grouped by page section and named steps. Role-based locators also check that every control has an accessible name.`},{area:`Performance`,text:`Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The page still waits for JavaScript to render, so prerendering is the next step.`},{area:`Accessibility`,text:`axe scans the page in the light and dark themes with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above. The page uses semantic headings, landmarks and labelled lists.`},{area:`Security`,text:`No secrets and no runtime API calls. npm audit fails CI on high-severity advisories in the code shipped to visitors, and Dependabot proposes updates every week. External links use rel=“noreferrer”. Development-only tools still carry some advisories, but they never reach the browser.`}],lessons:[`A bug I couldn't reproduce, a light flash on reload, became solvable once I wrote a failing test that recorded the background colour on every frame.`,`A fix can look broken because of browser caching. I now check what the server actually serves before changing the code again.`,`When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.`,`End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.`,`Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.`,`Mutation testing with Stryker found two real gaps in the theme tests that 80%+ coverage hid. Its first score was wrong too: a runner bug meant no tests ran for most mutants, so I check a tool's output before trusting it.`]}},{title:`Ferry booking E2E suite`,repo:`df-automation-tests`,language:`JavaScript`,category:`Testing`,description:`End-to-end test suite for a ferry booking site, written with Gherkin, Cucumber and TestCafe across the UK, German and Italian sites.`},{title:`Email campaign API tests`,repo:`email-campaign-react-airtable`,language:`JavaScript`,category:`Testing`,description:`Email campaign CRUD app on the Airtable REST API, with an Express proxy that keeps the API key out of the browser. Every endpoint is covered by Postman API tests for valid, invalid, authorised and unauthorised requests, automated with the Postman Collection Runner.`},{title:`Role-based sign-in app`,repo:`react-sign-in-up`,language:`JavaScript`,category:`Other`,description:`React login and registration with admin, editor and user roles.`}],Xs=e=>`https://github.com/${Js}/${e}`;Xr();var Zs=P.div`
+`,Ys=()=>(0,z.jsxs)(ts,{"aria-labelledby":`experience`,children:[(0,z.jsx)(ns,{id:`experience`,children:`Experience`}),us.map(({role:e,company:t,details:n,period:r,groups:i})=>(0,z.jsxs)(Fs,{children:[(0,z.jsxs)(Is,{children:[(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Ls,{children:e}),(0,z.jsxs)(Rs,{children:[t,` · `,n]})]}),(0,z.jsx)(zs,{$current:r.endsWith(`present`),children:r})]}),(0,z.jsx)(Bs,{children:i.map(({title:e,points:t})=>(0,z.jsxs)(Vs,{children:[(0,z.jsx)(Hs,{children:e}),(0,z.jsx)(Us,{children:t.map(e=>(0,z.jsx)(`li`,{children:e},e))})]},e))})]},`${e}-${t}`)),(0,z.jsxs)(Fs,{children:[(0,z.jsx)(Ls,{children:`Education and professional development`}),(0,z.jsx)(Ws,{children:ds.map(({title:e,school:t,year:n})=>(0,z.jsxs)(Gs,{children:[(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Ks,{children:e}),(0,z.jsx)(qs,{children:t})]}),n&&(0,z.jsx)(Js,{children:n})]},e))})]}),(0,z.jsxs)(Fs,{children:[(0,z.jsx)(Ls,{children:`Languages & interests`}),(0,z.jsxs)(Ws,{"aria-label":`Languages and interests`,children:[fs.map(({name:e,level:t})=>(0,z.jsxs)(Gs,{children:[(0,z.jsx)(Ks,{children:e}),(0,z.jsx)(Js,{children:t})]},e)),(0,z.jsx)(Gs,{children:(0,z.jsxs)(`div`,{children:[(0,z.jsx)(Ks,{children:`Interests`}),(0,z.jsx)(qs,{children:ps.map(({name:e,url:t,linkText:n},r)=>(0,z.jsxs)(`span`,{children:[r>0&&`, `,e,t&&(0,z.jsxs)(z.Fragment,{children:[` (`,(0,z.jsx)(js,{href:t,target:`_blank`,rel:`noreferrer`,children:n??t}),`)`]})]},e))})]})})]})]})]}),Xs=`SzymonRojek`,Zs=[{title:`This portfolio, tested end to end`,repo:`homepage`,language:`TypeScript`,category:`Testing`,description:`Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.`,caseStudy:{summary:`My portfolio is also a test project: a React and TypeScript site that ships only when unit, end-to-end, accessibility, performance and security checks all pass.`,impact:[{value:`0`,label:`runtime API calls, so nothing can fail for a visitor`},{value:`40+`,label:`end-to-end tests on desktop and mobile`},{value:`80%+`,label:`unit test coverage, enforced in CI`},{value:`95+`,label:`Lighthouse accessibility, SEO and best practices, enforced in CI`}],problem:[`A CV can say “Playwright” and “CI/CD”, but a recruiter can't check it. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.`,`The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.`],constraints:[`Free static hosting on GitHub Pages under /homepage/, with no server.`,`One maintainer with limited time, so automation has to catch regressions.`,`Privacy: no phone number anywhere on the site.`,`WCAG AA colour contrast in both the light and the dark theme.`,`An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome.`],diagrams:[{title:`Runtime: what a visitor's browser loads`,steps:[`Content in TypeScript data files`,`React components with light and dark themes`,`Vite production build`,`Static files on GitHub Pages`,`Browser: no API calls`]},{title:`Delivery: every change goes through these gates`,steps:[`Commit on dev`,`Dependency audit`,`Lint and type check`,`Unit tests with 80% coverage gate`,`Production build`,`Playwright and axe on desktop and mobile`,`Lighthouse budgets`,`Pull request to main, merged by me`,`Deploy to GitHub Pages`]}],decisions:[{decision:`Static project data instead of the GitHub API`,why:`Rate limits on shared networks could show recruiters an error.`,tradeOff:`Descriptions are updated by hand. An end-to-end fixture fails if the page ever calls the GitHub API again.`},{decision:`Test pyramid: Vitest for logic and components, Playwright for real-browser behaviour, axe for accessibility`,why:`Fast feedback on logic, and real confidence in what visitors see.`,tradeOff:`End-to-end tests take about a minute, so they cover only user-visible behaviour.`},{decision:`An 80% coverage gate that leaves out styles`,why:`Coverage should measure logic, not CSS.`,tradeOff:`Styles are checked by the end-to-end and axe tests instead.`},{decision:`Paint the theme before JavaScript loads`,why:`Reloading in dark mode briefly flashed a light page.`,tradeOff:`The background colours live in two places. A unit test keeps them in sync.`},{decision:`Self-hosted font and a right-sized photo`,why:`Google Fonts blocked rendering, and the photo was three times larger than displayed.`,tradeOff:`Font updates now come through npm instead of Google.`},{decision:`Protected main branch with pull requests I merge myself`,why:`Every push to main deploys. The rule also stops an AI coding assistant from shipping on its own.`,tradeOff:`Even a one-line fix needs a pull request and a green pipeline.`}],quality:[{area:`Testing`,text:`Vitest and Testing Library cover logic and components. Playwright runs against the production build in desktop and mobile Chrome, with tests grouped by page section and named steps. Role-based locators also check that every control has an accessible name.`},{area:`Performance`,text:`Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The page still waits for JavaScript to render, so prerendering is the next step.`},{area:`Accessibility`,text:`axe scans the page in the light and dark themes with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above. The page uses semantic headings, landmarks and labelled lists.`},{area:`Security`,text:`No secrets and no runtime API calls. npm audit fails CI on high-severity advisories in the code shipped to visitors, and Dependabot proposes updates every week. External links use rel=“noreferrer”. Development-only tools still carry some advisories, but they never reach the browser.`}],lessons:[`A bug I couldn't reproduce, a light flash on reload, became solvable once I wrote a failing test that recorded the background colour on every frame.`,`A fix can look broken because of browser caching. I now check what the server actually serves before changing the code again.`,`When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.`,`End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.`,`Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.`,`Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. After targeted tests, every mutant in those files was caught. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants.`]}},{title:`Email Campaign Dashboard, secured and tested`,repo:`email-campaign-dashboard`,language:`TypeScript`,category:`Testing`,description:`Full-stack React, Express and TypeScript dashboard for email campaigns on Airtable, with server-side login, personalized emails, unit and Playwright end-to-end tests against a fake Airtable, and CI/CD through staging to production.`,demoUrl:`https://email-campaign-dashboard-app.onrender.com/?utm_source=portfolio`,caseStudy:{summary:`A full-stack dashboard for email campaigns, rebuilt from a 2021 CRUD app into a secure, tested product: server-side login, personalized emails with signed unsubscribe links, 200+ unit tests, 63 end-to-end tests against a fake Airtable, and CI/CD through staging to production.`,impact:[{value:`0`,label:`secrets or personal data reaching the browser`},{value:`63`,label:`end-to-end tests on the production build, with no real data`},{value:`200+`,label:`server and client unit tests`},{value:`11`,label:`bugs found and fixed in the first review`}],problem:[`The app started in 2021 as a CRUD client that sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser: anyone who called the API directly could read, change or delete every subscriber.`,`The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended. I wanted a product a hiring manager could open and use: a public demo that stays safe with a public password, and code that is safe to change.`],constraints:[`Airtable is the database: a third-party REST API with rate limits and pages of 100 records.`,`A public demo with a public password: no real emails, visitors change the data, and only made-up data belongs in it.`,`Free hosting (Render) that sleeps after inactivity and blocks outgoing email (SMTP).`,`One maintainer, so every change has to be checked automatically and on staging before production.`],diagrams:[{title:`Runtime: the browser never talks to Airtable`,steps:[`React app`,`Express API under /api with a signed login token`,`Server picks recipients, escapes text, signs unsubscribe links`,`Airtable: subscribers, campaigns, outbox, feedback`]},{title:`Delivery: feature branch to production`,steps:[`Feature branch off dev`,`Pull request: type check, lint, unit tests, build`,`Playwright e2e against a fake Airtable`,`Merge to dev, auto-deploy to staging`,`Check staging`,`Release pull request dev to main, CI again`,`Auto-deploy to production`]}],decisions:[{decision:`Server-side login with signed tokens and a lockout after 5 wrong passwords`,why:`A browser-only login didn't protect the API at all.`,tradeOff:`One shared demo password, and the in-memory lockout resets when the free server restarts.`},{decision:`The server picks recipients and builds every email`,why:`The browser can't be trusted to decide who gets a campaign or what goes into an email.`,tradeOff:`The preview needs a server call, so it uses the same template as sending.`},{decision:`An outbox instead of real sending in the demo`,why:`With a public password anyone could send email from my account, and the free host blocks SMTP.`,tradeOff:`Nobody gets the emails; each one is saved and can be opened. Switching to a real email service is one setting.`},{decision:`End-to-end tests against a fake Airtable`,why:`Tests must never touch real data, and CI shouldn't need secrets.`,tradeOff:`The fake can drift from the real API, so it copies Airtable's record shape and errors.`},{decision:`Nightly reset of the demo data`,why:`Visitors change the data, and the next reviewer should see a working example.`,tradeOff:`New examples are created before the old ones are deleted, and the reset is skipped when nothing changed, to save API calls.`},{decision:`Error monitoring and visit statistics without personal data`,why:`I need to see failures on the live demo without collecting data I don't need.`,tradeOff:`Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce.`},{decision:`Staging before production, with a hotfix path`,why:`Changes are checked on a live copy before real users see them.`,tradeOff:`Two environments to keep in sync, and a hotfix must be merged back into dev.`}],quality:[{area:`Testing`,text:`Server tests with Jest and supertest cover login and tokens, every endpoint, sending and the outbox, templates and escaping, unsubscribe links, the CSV import, feedback limits and the demo reset, with Airtable mocked. Client tests with Vitest and React Testing Library cover CSV parsing, search, sorting, validation, the API client and choosing recipients. Playwright runs 63 user flows on the production build, from login and CSV import to sending, unsubscribing, dark mode, loading errors and phones.`},{area:`Performance`,text:`The server follows Airtable's paging, so lists show every record and not only the first 100. Approved feedback is kept in memory for 30 seconds and the nightly reset is skipped when nothing changed, both to stay within Airtable's API limits. On the free plan the main cost is a cold start of up to a minute, which the README tells visitors about.`},{area:`Accessibility`,text:`The UI is built on shadcn/ui and Radix primitives, which handle keyboard and screen-reader support for dialogs, menus and side panels. End-to-end tests find controls by their role and accessible name, and phone layouts have their own tests. There is no automated accessibility scan yet; adding axe is the next step.`},{area:`Security`,text:`The Airtable token lives only on the server and error responses no longer leak it. Login tokens are HMAC-signed and expire after 8 hours, with constant-time comparisons and an IP lockout. Unsubscribe links have their own signature, user text is escaped in every email, the server has no open CORS, and public feedback has a bot trap, a rate limit and moderation.`}],lessons:[`A review found the Airtable token leaking in error responses. Anything a server returns on failure needs the same care as a success response.`,`Unchecking every subscriber sent the email to all of them: an empty selection was treated as “no filter”. Edge cases like an empty list deserve their own test.`,`Lists silently stopped at 100 records because Airtable pages its results. Testing with more data than one page is cheap and catches this.`,`Monitoring can leak too: unsubscribe tokens in page addresses had to be removed from error reports before they were sent.`,`A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset and a request for made-up data.`,`A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.`]}},{title:`Role-based sign-in app`,repo:`react-sign-in-up`,language:`JavaScript`,category:`Other`,description:`React login and registration with admin, editor and user roles.`}],Qs=e=>`https://github.com/${Xs}/${e}`;Xr();var $s=P.div`
   margin-top: 16px;
-`,Qs=P.p`
+`,ec=P.p`
   margin: 0;
   font-size: 15px;
   font-weight: 700;
@@ -631,7 +631,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,$s=P.ol`
+`,tc=P.ol`
   display: flex;
   flex-wrap: wrap;
   gap: 12px 32px;
@@ -643,7 +643,7 @@ Error generating stack: `+e.message+`
     flex-direction: column;
     gap: 24px;
   }
-`,ec=P.li`
+`,nc=P.li`
   position: relative;
   padding: 8px 12px;
   font-size: 14px;
@@ -673,7 +673,7 @@ Error generating stack: `+e.message+`
       transform: none;
     }
   }
-`,tc=({title:e,steps:t})=>{let n=(0,x.useId)();return(0,z.jsxs)(Zs,{children:[(0,z.jsx)(Qs,{id:n,children:e}),(0,z.jsx)($s,{"aria-labelledby":n,children:t.map(e=>(0,z.jsx)(ec,{children:e},e))})]})};Xr();var nc=P.article`
+`,rc=({title:e,steps:t})=>{let n=(0,x.useId)();return(0,z.jsxs)($s,{children:[(0,z.jsx)(ec,{id:n,children:e}),(0,z.jsx)(tc,{"aria-labelledby":n,children:t.map(e=>(0,z.jsx)(nc,{children:e},e))})]})};Xr();var ic=P.article`
   margin-top: 32px;
   padding: 40px;
   background: ${({theme:e})=>e.colors.boxBackground};
@@ -685,14 +685,14 @@ Error generating stack: `+e.message+`
     margin-top: 24px;
     padding: 20px;
   }
-`,rc=P.p`
+`,ac=P.p`
   margin: 0;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: ${({theme:e})=>e.colors.primary};
-`,ic=P.h3`
+`,oc=P.h3`
   margin: 8px 0 0;
   font-size: 28px;
   color: ${({theme:e})=>e.colors.tile.header};
@@ -700,14 +700,14 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 20px;
   }
-`,ac=P.p`
+`,sc=P.p`
   margin: 8px 0 0;
   font-size: 15px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 13px;
   }
-`,oc=P.p`
+`,cc=P.p`
   max-width: 760px;
   margin: 20px 0 0;
   font-size: 18px;
@@ -716,7 +716,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,sc=P.dl`
+`,lc=P.dl`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
@@ -730,7 +730,7 @@ Error generating stack: `+e.message+`
     gap: 12px;
     margin-top: 20px;
   }
-`,cc=P.div`
+`,uc=P.div`
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
@@ -738,7 +738,7 @@ Error generating stack: `+e.message+`
   padding: 16px;
   background: ${({theme:e})=>e.colors.site.background};
   border-radius: ${({theme:e})=>e.borderRadiusSmall};
-`,lc=P.dd`
+`,dc=P.dd`
   margin: 0;
   font-size: 32px;
   font-weight: 900;
@@ -747,23 +747,23 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 24px;
   }
-`,uc=P.dt`
+`,fc=P.dt`
   font-size: 14px;
   line-height: 1.4;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 13px;
   }
-`,dc=P.p`
+`,pc=P.p`
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   margin: 24px 0 0;
-`,fc=P.details`
+`,mc=P.details`
   margin-top: 24px;
   padding-top: 20px;
   border-top: 1px solid ${({theme:e})=>e.colors.headerLine};
-`,pc=P.summary`
+`,hc=P.summary`
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -790,13 +790,13 @@ Error generating stack: `+e.message+`
     outline: 2px solid ${({theme:e})=>e.colors.primary};
     outline-offset: 4px;
   }
-`,mc=P.section`
+`,gc=P.section`
   margin-top: 32px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     margin-top: 24px;
   }
-`,hc=P.h4`
+`,_c=P.h4`
   margin: 0;
   font-size: 20px;
   color: ${({theme:e})=>e.colors.textPrimary};
@@ -804,7 +804,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 17px;
   }
-`,gc=P.p`
+`,vc=P.p`
   max-width: 760px;
   margin: 12px 0 0;
   line-height: 1.6;
@@ -812,7 +812,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,_c=P.ul`
+`,yc=P.ul`
   max-width: 760px;
   margin: 12px 0 0;
   padding-left: 20px;
@@ -825,14 +825,14 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,vc=P.div`
+`,bc=P.div`
   margin-top: 12px;
   overflow-x: auto;
 
   &:focus-visible {
     outline: 2px solid ${({theme:e})=>e.colors.primary};
   }
-`,yc=P.table`
+`,xc=P.table`
   width: 100%;
   min-width: 640px;
   border-collapse: collapse;
@@ -900,7 +900,7 @@ Error generating stack: `+e.message+`
       border-bottom: 1px solid ${({theme:e})=>e.colors.headerLine};
     }
   }
-`,bc=P.dl`
+`,Sc=P.dl`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
@@ -929,18 +929,18 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,xc=({title:e,repo:t,language:n,demoUrl:r,caseStudy:i})=>{let a=`case-study-${t}`,{summary:o,impact:s,problem:c,constraints:l,diagrams:u,decisions:d,quality:f,lessons:p}=i;return(0,z.jsxs)(nc,{id:a,"aria-labelledby":`${a}-title`,children:[(0,z.jsx)(rc,{children:`Case study`}),(0,z.jsx)(ic,{id:`${a}-title`,children:e}),(0,z.jsxs)(ac,{children:[t,` · `,n]}),(0,z.jsx)(oc,{children:o}),(0,z.jsx)(sc,{"aria-label":`Impact`,children:s.map(({value:e,label:t})=>(0,z.jsxs)(cc,{children:[(0,z.jsx)(uc,{children:t}),(0,z.jsx)(lc,{children:e})]},t))}),(0,z.jsxs)(dc,{children:[(0,z.jsx)(ks,{href:Xs(t),target:`_blank`,rel:`noreferrer`,children:`GitHub Repository`}),r&&(0,z.jsx)(ks,{href:r,target:`_blank`,rel:`noreferrer`,children:`Live demo`})]}),(0,z.jsxs)(fc,{children:[(0,z.jsx)(pc,{children:`Read the full case study`}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Problem`}),c.map(e=>(0,z.jsx)(gc,{children:e},e))]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Constraints`}),(0,z.jsx)(_c,{children:l.map(e=>(0,z.jsx)(`li`,{children:e},e))})]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Architecture`}),u.map(({title:e,steps:t})=>(0,z.jsx)(tc,{title:e,steps:t},e))]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Key decisions and trade-offs`}),(0,z.jsx)(vc,{tabIndex:0,role:`region`,"aria-label":`Key decisions and trade-offs`,children:(0,z.jsxs)(yc,{children:[(0,z.jsx)(`thead`,{children:(0,z.jsxs)(`tr`,{children:[(0,z.jsx)(`th`,{scope:`col`,children:`Decision`}),(0,z.jsx)(`th`,{scope:`col`,children:`Why`}),(0,z.jsx)(`th`,{scope:`col`,children:`Trade-off`})]})}),(0,z.jsx)(`tbody`,{children:d.map(({decision:e,why:t,tradeOff:n})=>(0,z.jsxs)(`tr`,{children:[(0,z.jsx)(`th`,{scope:`row`,children:e}),(0,z.jsx)(`td`,{"data-label":`Why`,children:t}),(0,z.jsx)(`td`,{"data-label":`Trade-off`,children:n})]},e))})]})})]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Testing, performance, accessibility and security`}),(0,z.jsx)(bc,{children:f.map(({area:e,text:t})=>(0,z.jsxs)(`div`,{children:[(0,z.jsx)(`dt`,{children:e}),(0,z.jsx)(`dd`,{children:t})]},e))})]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Lessons learned`}),(0,z.jsx)(_c,{children:p.map(e=>(0,z.jsx)(`li`,{children:e},e))})]})]})]})},Sc=`A front-end background helps me understand what I test and write maintainable UI automation.`,Cc=({projects:e})=>{let t=e.filter(({caseStudy:e})=>e),n=e.filter(({category:e,caseStudy:t})=>e===`Testing`&&!t),r=e.filter(({category:e})=>e===`Other`);return(0,z.jsxs)(z.Fragment,{children:[t.map(({title:e,repo:t,language:n,demoUrl:r,caseStudy:i})=>i&&(0,z.jsx)(xc,{title:e,repo:t,language:n,demoUrl:r,caseStudy:i},t)),n.length>0&&(0,z.jsx)(xs,{"aria-label":`Test projects`,children:n.map(({title:e,repo:t,language:n,description:r,demoUrl:i})=>(0,z.jsxs)(Ss,{children:[(0,z.jsx)(Cs,{children:e}),(0,z.jsxs)(ws,{children:[t,` · `,n]}),(0,z.jsx)(Ts,{children:r}),(0,z.jsxs)(Es,{children:[i&&(0,z.jsxs)(Ds,{children:[(0,z.jsx)(`dt`,{children:`Demo:`}),(0,z.jsx)(Os,{children:(0,z.jsx)(ks,{target:`_blank`,rel:`noreferrer`,href:i,children:`Live demo`})})]}),(0,z.jsxs)(Ds,{children:[(0,z.jsx)(`dt`,{children:`Code:`}),(0,z.jsx)(Os,{children:(0,z.jsx)(ks,{target:`_blank`,rel:`noreferrer`,href:Xs(t),children:`GitHub Repository`})})]})]})]},t))}),r.length>0&&(0,z.jsxs)(ys,{"aria-labelledby":`other-projects`,children:[(0,z.jsx)(bs,{id:`other-projects`,children:`Other projects`}),(0,z.jsx)(As,{children:Sc}),(0,z.jsx)(js,{children:r.map(({title:e,repo:t,description:n,demoUrl:r})=>(0,z.jsxs)(Ms,{children:[(0,z.jsx)(`strong`,{children:e}),(0,z.jsxs)(`span`,{children:[` · `,n]}),` `,r&&(0,z.jsxs)(z.Fragment,{children:[(0,z.jsx)(ks,{target:`_blank`,rel:`noreferrer`,href:r,children:`Live demo`}),` `]}),(0,z.jsx)(ks,{target:`_blank`,rel:`noreferrer`,href:Xs(t),children:`Code`})]},t))})]})]})},wc=e=>(0,z.jsx)(`svg`,{width:48,height:48,viewBox:`0 0 48 48`,fill:`currentColor`,xmlns:`http://www.w3.org/2000/svg`,...e,children:(0,z.jsx)(`path`,{d:`M24.0432 0.179932C10.8147 0.179932 0.0876465 11.0878 0.0876465 24.5445C0.0876465 35.3096 6.95165 44.4426 16.4699 47.6643C17.6672 47.8899 18.1067 47.1358 18.1067 46.4922C18.1067 45.9112 18.0845 43.9919 18.0742 41.956C11.4097 43.4299 10.0034 39.0812 10.0034 39.0812C8.9137 36.265 7.34358 35.5161 7.34358 35.5161C5.17009 34.0039 7.50742 34.035 7.50742 34.035C9.91297 34.2065 11.1796 36.5458 11.1796 36.5458C13.3162 40.2707 16.7837 39.1938 18.1507 38.5712C18.3657 36.9969 18.9866 35.9212 19.6716 35.3132C14.3508 34.6971 8.7574 32.6079 8.7574 23.2719C8.7574 20.6118 9.6932 18.4383 11.2256 16.732C10.9769 16.1179 10.1569 13.6402 11.4577 10.2841C11.4577 10.2841 13.4693 9.62928 18.0472 12.7816C19.9581 12.2418 22.0074 11.971 24.0432 11.9618C26.0791 11.971 28.13 12.2418 30.0444 12.7816C34.6167 9.62928 36.6256 10.2841 36.6256 10.2841C37.9295 13.6402 37.1091 16.1179 36.8604 16.732C38.3964 18.4383 39.3259 20.6118 39.3259 23.2719C39.3259 32.6301 33.7218 34.6906 28.3874 35.2938C29.2467 36.0499 30.0123 37.5327 30.0123 39.8059C30.0123 43.0655 29.9845 45.6893 29.9845 46.4922C29.9845 47.1406 30.4157 47.9003 31.63 47.6611C41.1431 44.4357 47.9984 35.3059 47.9984 24.5445C47.9984 11.0878 37.273 0.179932 24.0432 0.179932Z`})});Xr();var Tc=P.section`
+`,Cc=({title:e,repo:t,language:n,demoUrl:r,caseStudy:i})=>{let a=`case-study-${t}`,{summary:o,impact:s,problem:c,constraints:l,diagrams:u,decisions:d,quality:f,lessons:p}=i;return(0,z.jsxs)(ic,{id:a,"aria-labelledby":`${a}-title`,children:[(0,z.jsx)(ac,{children:`Case study`}),(0,z.jsx)(oc,{id:`${a}-title`,children:e}),(0,z.jsxs)(sc,{children:[t,` · `,n]}),(0,z.jsx)(cc,{children:o}),(0,z.jsx)(lc,{"aria-label":`Impact`,children:s.map(({value:e,label:t})=>(0,z.jsxs)(uc,{children:[(0,z.jsx)(fc,{children:t}),(0,z.jsx)(dc,{children:e})]},t))}),(0,z.jsxs)(pc,{children:[(0,z.jsx)(js,{href:Qs(t),target:`_blank`,rel:`noreferrer`,children:`GitHub Repository`}),r&&(0,z.jsx)(js,{href:r,target:`_blank`,rel:`noreferrer`,children:`Live demo`})]}),(0,z.jsxs)(mc,{children:[(0,z.jsx)(hc,{children:`Read the full case study`}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Problem`}),c.map(e=>(0,z.jsx)(vc,{children:e},e))]}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Constraints`}),(0,z.jsx)(yc,{children:l.map(e=>(0,z.jsx)(`li`,{children:e},e))})]}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Architecture`}),u.map(({title:e,steps:t})=>(0,z.jsx)(rc,{title:e,steps:t},e))]}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Key decisions and trade-offs`}),(0,z.jsx)(bc,{tabIndex:0,role:`region`,"aria-label":`Key decisions and trade-offs`,children:(0,z.jsxs)(xc,{children:[(0,z.jsx)(`thead`,{children:(0,z.jsxs)(`tr`,{children:[(0,z.jsx)(`th`,{scope:`col`,children:`Decision`}),(0,z.jsx)(`th`,{scope:`col`,children:`Why`}),(0,z.jsx)(`th`,{scope:`col`,children:`Trade-off`})]})}),(0,z.jsx)(`tbody`,{children:d.map(({decision:e,why:t,tradeOff:n})=>(0,z.jsxs)(`tr`,{children:[(0,z.jsx)(`th`,{scope:`row`,children:e}),(0,z.jsx)(`td`,{"data-label":`Why`,children:t}),(0,z.jsx)(`td`,{"data-label":`Trade-off`,children:n})]},e))})]})})]}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Testing, performance, accessibility and security`}),(0,z.jsx)(Sc,{children:f.map(({area:e,text:t})=>(0,z.jsxs)(`div`,{children:[(0,z.jsx)(`dt`,{children:e}),(0,z.jsx)(`dd`,{children:t})]},e))})]}),(0,z.jsxs)(gc,{children:[(0,z.jsx)(_c,{children:`Lessons learned`}),(0,z.jsx)(yc,{children:p.map(e=>(0,z.jsx)(`li`,{children:e},e))})]})]})]})},wc=`A front-end background helps me understand what I test and write maintainable UI automation.`,Tc=({projects:e})=>{let t=e.filter(({category:e,caseStudy:t})=>e===`Testing`&&!t),n=e.filter(({category:e})=>e===`Other`);return(0,z.jsxs)(z.Fragment,{children:[e.map(({title:e,repo:t,language:n,demoUrl:r,caseStudy:i})=>i&&(0,z.jsx)(Cc,{title:e,repo:t,language:n,demoUrl:r,caseStudy:i},t)),t.length>0&&(0,z.jsx)(Cs,{"aria-label":`Test projects`,children:t.map(({title:e,repo:t,language:n,description:r,demoUrl:i})=>(0,z.jsxs)(ws,{children:[(0,z.jsx)(Ts,{children:e}),(0,z.jsxs)(Es,{children:[t,` · `,n]}),(0,z.jsx)(Ds,{children:r}),(0,z.jsxs)(Os,{children:[i&&(0,z.jsxs)(ks,{children:[(0,z.jsx)(`dt`,{children:`Demo:`}),(0,z.jsx)(As,{children:(0,z.jsx)(js,{target:`_blank`,rel:`noreferrer`,href:i,children:`Live demo`})})]}),(0,z.jsxs)(ks,{children:[(0,z.jsx)(`dt`,{children:`Code:`}),(0,z.jsx)(As,{children:(0,z.jsx)(js,{target:`_blank`,rel:`noreferrer`,href:Qs(t),children:`GitHub Repository`})})]})]})]},t))}),n.length>0&&(0,z.jsxs)(xs,{"aria-labelledby":`other-projects`,children:[(0,z.jsx)(Ss,{id:`other-projects`,children:`Other projects`}),(0,z.jsx)(Ms,{children:wc}),(0,z.jsx)(Ns,{children:n.map(({title:e,repo:t,description:n,demoUrl:r})=>(0,z.jsxs)(Ps,{children:[(0,z.jsx)(`strong`,{children:e}),(0,z.jsxs)(`span`,{children:[` · `,n]}),` `,r&&(0,z.jsxs)(z.Fragment,{children:[(0,z.jsx)(js,{target:`_blank`,rel:`noreferrer`,href:r,children:`Live demo`}),` `]}),(0,z.jsx)(js,{target:`_blank`,rel:`noreferrer`,href:Qs(t),children:`Code`})]},t))})]})]})},Ec=e=>(0,z.jsx)(`svg`,{width:48,height:48,viewBox:`0 0 48 48`,fill:`currentColor`,xmlns:`http://www.w3.org/2000/svg`,...e,children:(0,z.jsx)(`path`,{d:`M24.0432 0.179932C10.8147 0.179932 0.0876465 11.0878 0.0876465 24.5445C0.0876465 35.3096 6.95165 44.4426 16.4699 47.6643C17.6672 47.8899 18.1067 47.1358 18.1067 46.4922C18.1067 45.9112 18.0845 43.9919 18.0742 41.956C11.4097 43.4299 10.0034 39.0812 10.0034 39.0812C8.9137 36.265 7.34358 35.5161 7.34358 35.5161C5.17009 34.0039 7.50742 34.035 7.50742 34.035C9.91297 34.2065 11.1796 36.5458 11.1796 36.5458C13.3162 40.2707 16.7837 39.1938 18.1507 38.5712C18.3657 36.9969 18.9866 35.9212 19.6716 35.3132C14.3508 34.6971 8.7574 32.6079 8.7574 23.2719C8.7574 20.6118 9.6932 18.4383 11.2256 16.732C10.9769 16.1179 10.1569 13.6402 11.4577 10.2841C11.4577 10.2841 13.4693 9.62928 18.0472 12.7816C19.9581 12.2418 22.0074 11.971 24.0432 11.9618C26.0791 11.971 28.13 12.2418 30.0444 12.7816C34.6167 9.62928 36.6256 10.2841 36.6256 10.2841C37.9295 13.6402 37.1091 16.1179 36.8604 16.732C38.3964 18.4383 39.3259 20.6118 39.3259 23.2719C39.3259 32.6301 33.7218 34.6906 28.3874 35.2938C29.2467 36.0499 30.0123 37.5327 30.0123 39.8059C30.0123 43.0655 29.9845 45.6893 29.9845 46.4922C29.9845 47.1406 30.4157 47.9003 31.63 47.6611C41.1431 44.4357 47.9984 35.3059 47.9984 24.5445C47.9984 11.0878 37.273 0.179932 24.0432 0.179932Z`})});Xr();var Dc=P.section`
   margin-top: 72px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     margin-top: 40px;
   }
-`,Ec=P(wc)`
+`,Oc=P(Ec)`
   color: ${({theme:e})=>e.colors.primary};
   margin-bottom: 8px;
-`,Dc=P.header`
+`,kc=P.header`
   text-align: center;
-`,Oc=P.p`
+`,Ac=P.p`
   font-weight: normal;
   margin-top: 8px;
   font-size: 20px;
@@ -949,7 +949,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 17px;
   }
-`,kc=()=>(0,z.jsxs)(Tc,{children:[(0,z.jsxs)(Dc,{children:[(0,z.jsx)(Ec,{}),(0,z.jsx)(es,{children:`Test projects`}),(0,z.jsx)(Oc,{children:`Automation, API and end-to-end work`})]}),(0,z.jsx)(Cc,{projects:Ys})]}),Ac=`https://github.com/SzymonRojek/homepage`,jc={intro:`I test this site the way I test at work: every push to GitHub runs the checks below, and nothing is deployed unless they all pass.`,badgeURL:`${Ac}/actions/workflows/ci.yml/badge.svg`,workflowURL:`${Ac}/actions/workflows/ci.yml`,testsURL:`${Ac}/tree/main/e2e`,caseStudyAnchor:`#case-study-homepage`,checks:[`Vitest unit and component tests with a coverage gate`,`Playwright end-to-end tests on desktop and mobile, with axe accessibility scans`,`Lighthouse budgets for performance, accessibility, best practices and SEO`,`Dependency audit on every push and weekly Dependabot updates`,`GitHub Actions gate every deploy`]};Xr();var Mc=P.article`
+`,jc=()=>(0,z.jsxs)(Dc,{children:[(0,z.jsxs)(kc,{children:[(0,z.jsx)(Oc,{}),(0,z.jsx)(es,{children:`Test projects`}),(0,z.jsx)(Ac,{children:`Automation, API and end-to-end work`})]}),(0,z.jsx)(Tc,{projects:Zs})]}),Mc=`https://github.com/SzymonRojek/homepage`,Nc={intro:`I test this site the way I test at work: every push to GitHub runs the checks below, and nothing is deployed unless they all pass.`,badgeURL:`${Mc}/actions/workflows/ci.yml/badge.svg`,workflowURL:`${Mc}/actions/workflows/ci.yml`,testsURL:`${Mc}/tree/main/e2e`,caseStudyAnchor:`#case-study-homepage`,checks:[`Vitest unit and component tests with a coverage gate`,`Playwright end-to-end tests on desktop and mobile, with axe accessibility scans`,`Lighthouse budgets for performance, accessibility, best practices and SEO`,`Dependency audit on every push and weekly Dependabot updates`,`GitHub Actions gate every deploy`]};Xr();var Pc=P.article`
   padding: 32px;
   background: ${({theme:e})=>e.colors.boxBackground};
   box-shadow: ${({theme:e})=>e.boxShadow};
@@ -959,7 +959,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     padding: 16px;
   }
-`,Nc=P.p`
+`,Fc=P.p`
   margin: 0;
   max-width: 760px;
   line-height: 1.5;
@@ -967,7 +967,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,Pc=P.ul`
+`,Ic=P.ul`
   display: grid;
   grid-gap: 8px;
   margin: 24px 0 0;
@@ -978,7 +978,7 @@ Error generating stack: `+e.message+`
     margin-top: 16px;
     font-size: 14px;
   }
-`,Fc=P.div`
+`,Lc=P.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -988,13 +988,13 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 14px;
   }
-`,Ic=()=>(0,z.jsxs)(ts,{"aria-labelledby":`quality`,children:[(0,z.jsx)(ns,{id:`quality`,children:`How this site is tested`}),(0,z.jsxs)(Mc,{children:[(0,z.jsx)(Nc,{children:jc.intro}),(0,z.jsx)(Pc,{children:jc.checks.map(e=>(0,z.jsx)(`li`,{children:e},e))}),(0,z.jsxs)(Fc,{children:[(0,z.jsx)(`a`,{href:jc.workflowURL,target:`_blank`,rel:`noreferrer`,children:(0,z.jsx)(`img`,{src:jc.badgeURL,alt:`CI status`,height:20})}),(0,z.jsx)(ks,{href:jc.testsURL,target:`_blank`,rel:`noreferrer`,children:`See the end-to-end tests`}),(0,z.jsx)(ks,{href:jc.caseStudyAnchor,children:`Read how and why it's built this way`})]})]})]});Xr();var Lc=P.ul`
+`,Rc=()=>(0,z.jsxs)(ts,{"aria-labelledby":`quality`,children:[(0,z.jsx)(ns,{id:`quality`,children:`How this site is tested`}),(0,z.jsxs)(Pc,{children:[(0,z.jsx)(Fc,{children:Nc.intro}),(0,z.jsx)(Ic,{children:Nc.checks.map(e=>(0,z.jsx)(`li`,{children:e},e))}),(0,z.jsxs)(Lc,{children:[(0,z.jsx)(`a`,{href:Nc.workflowURL,target:`_blank`,rel:`noreferrer`,children:(0,z.jsx)(`img`,{src:Nc.badgeURL,alt:`CI status`,height:20})}),(0,z.jsx)(js,{href:Nc.testsURL,target:`_blank`,rel:`noreferrer`,children:`See the end-to-end tests`}),(0,z.jsx)(js,{href:Nc.caseStudyAnchor,children:`Read how and why it's built this way`})]})]})]});Xr();var zc=P.ul`
   display: flex;
   gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
-`,Rc=P.li``,zc=P.a`
+`,Bc=P.li``,Vc=P.a`
   display: flex;
   color: ${({theme:e})=>e.colors.textPrimary};
   transition: color 0.3s;
@@ -1002,16 +1002,16 @@ Error generating stack: `+e.message+`
   &:hover {
     color: ${({theme:e})=>e.colors.primary};
   }
-`,Bc=e=>P(e)`
+`,Hc=e=>P(e)`
   width: 28px;
   height: auto;
-`,Vc=[{name:`GitHub`,url:`https://github.com/${Js}`,Icon:Bc(e=>(0,z.jsx)(`svg`,{width:48,height:48,viewBox:`0 0 48 48`,fill:`currentColor`,xmlns:`http://www.w3.org/2000/svg`,...e,children:(0,z.jsx)(`path`,{d:`M24.0432 0.179932C10.8147 0.179932 0.0876465 11.0878 0.0876465 24.5445C0.0876465 35.3096 6.95165 44.4426 16.4699 47.6643C17.6672 47.8899 18.1067 47.1358 18.1067 46.4922C18.1067 45.9112 18.0845 43.9919 18.0742 41.956C11.4097 43.4299 10.0034 39.0812 10.0034 39.0812C8.9137 36.265 7.34358 35.5161 7.34358 35.5161C5.17009 34.0039 7.50742 34.035 7.50742 34.035C9.91297 34.2065 11.1796 36.5458 11.1796 36.5458C13.3162 40.2707 16.7837 39.1938 18.1507 38.5712C18.3657 36.9969 18.9866 35.9212 19.6716 35.3132C14.3508 34.6971 8.7574 32.6079 8.7574 23.2719C8.7574 20.6118 9.6932 18.4383 11.2256 16.732C10.9769 16.1179 10.1569 13.6402 11.4577 10.2841C11.4577 10.2841 13.4693 9.62928 18.0472 12.7816C19.9581 12.2418 22.0074 11.971 24.0432 11.9618C26.0791 11.971 28.13 12.2418 30.0444 12.7816C34.6167 9.62928 36.6256 10.2841 36.6256 10.2841C37.9295 13.6402 37.1091 16.1179 36.8604 16.732C38.3964 18.4383 39.3259 20.6118 39.3259 23.2719C39.3259 32.6301 33.7218 34.6906 28.3874 35.2938C29.2467 36.0499 30.0123 37.5327 30.0123 39.8059C30.0123 43.0655 29.9845 45.6893 29.9845 46.4922C29.9845 47.1406 30.4157 47.9003 31.63 47.6611C41.1431 44.4357 47.9984 35.3059 47.9984 24.5445C47.9984 11.0878 37.273 0.179932 24.0432 0.179932Z`})}))},{name:`LinkedIn`,url:Lo.linkedinUrl,Icon:Bc(qo)}],Hc=()=>(0,z.jsx)(Lc,{children:Vc.map(({name:e,url:t,Icon:n})=>(0,z.jsx)(Rc,{children:(0,z.jsx)(zc,{href:t,title:e,target:`_blank`,rel:`noreferrer`,children:(0,z.jsx)(n,{})})},e))}),Uc=e=>(0,z.jsx)(`svg`,{xmlns:`http://www.w3.org/2000/svg`,viewBox:`0 0 30.333 30.333`,fill:`currentColor`,...e,children:(0,z.jsx)(`path`,{d:`M0,26.75V11.908c0-4.59,3.735-8.325,8.325-8.325h13.681c4.591,0,8.327,3.735,8.327,8.325v2.56 c0,4.59-3.735,8.325-8.325,8.325H8.518L0,26.75z M8.325,5.439c-3.567,0-6.469,2.902-6.469,6.469v11.933l6.253-2.905h13.899 c3.567,0,6.469-2.902,6.469-6.469v-2.56c0-3.567-2.903-6.469-6.471-6.469H8.325V5.439z M8.937,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S7.962,11.767,8.937,11.767z M21.395,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S20.42,11.767,21.395,11.767z M15.165,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S14.19,11.767,15.165,11.767z`})});Xr();var Wc=P.footer`
+`,Uc=[{name:`GitHub`,url:`https://github.com/${Xs}`,Icon:Hc(e=>(0,z.jsx)(`svg`,{width:48,height:48,viewBox:`0 0 48 48`,fill:`currentColor`,xmlns:`http://www.w3.org/2000/svg`,...e,children:(0,z.jsx)(`path`,{d:`M24.0432 0.179932C10.8147 0.179932 0.0876465 11.0878 0.0876465 24.5445C0.0876465 35.3096 6.95165 44.4426 16.4699 47.6643C17.6672 47.8899 18.1067 47.1358 18.1067 46.4922C18.1067 45.9112 18.0845 43.9919 18.0742 41.956C11.4097 43.4299 10.0034 39.0812 10.0034 39.0812C8.9137 36.265 7.34358 35.5161 7.34358 35.5161C5.17009 34.0039 7.50742 34.035 7.50742 34.035C9.91297 34.2065 11.1796 36.5458 11.1796 36.5458C13.3162 40.2707 16.7837 39.1938 18.1507 38.5712C18.3657 36.9969 18.9866 35.9212 19.6716 35.3132C14.3508 34.6971 8.7574 32.6079 8.7574 23.2719C8.7574 20.6118 9.6932 18.4383 11.2256 16.732C10.9769 16.1179 10.1569 13.6402 11.4577 10.2841C11.4577 10.2841 13.4693 9.62928 18.0472 12.7816C19.9581 12.2418 22.0074 11.971 24.0432 11.9618C26.0791 11.971 28.13 12.2418 30.0444 12.7816C34.6167 9.62928 36.6256 10.2841 36.6256 10.2841C37.9295 13.6402 37.1091 16.1179 36.8604 16.732C38.3964 18.4383 39.3259 20.6118 39.3259 23.2719C39.3259 32.6301 33.7218 34.6906 28.3874 35.2938C29.2467 36.0499 30.0123 37.5327 30.0123 39.8059C30.0123 43.0655 29.9845 45.6893 29.9845 46.4922C29.9845 47.1406 30.4157 47.9003 31.63 47.6611C41.1431 44.4357 47.9984 35.3059 47.9984 24.5445C47.9984 11.0878 37.273 0.179932 24.0432 0.179932Z`})}))},{name:`LinkedIn`,url:Lo.linkedinUrl,Icon:Hc(qo)}],Wc=()=>(0,z.jsx)(zc,{children:Uc.map(({name:e,url:t,Icon:n})=>(0,z.jsx)(Bc,{children:(0,z.jsx)(Vc,{href:t,title:e,target:`_blank`,rel:`noreferrer`,children:(0,z.jsx)(n,{})})},e))}),Gc=e=>(0,z.jsx)(`svg`,{xmlns:`http://www.w3.org/2000/svg`,viewBox:`0 0 30.333 30.333`,fill:`currentColor`,...e,children:(0,z.jsx)(`path`,{d:`M0,26.75V11.908c0-4.59,3.735-8.325,8.325-8.325h13.681c4.591,0,8.327,3.735,8.327,8.325v2.56 c0,4.59-3.735,8.325-8.325,8.325H8.518L0,26.75z M8.325,5.439c-3.567,0-6.469,2.902-6.469,6.469v11.933l6.253-2.905h13.899 c3.567,0,6.469-2.902,6.469-6.469v-2.56c0-3.567-2.903-6.469-6.471-6.469H8.325V5.439z M8.937,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S7.962,11.767,8.937,11.767z M21.395,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S20.42,11.767,21.395,11.767z M15.165,11.767 c0.975,0,1.765,0.79,1.765,1.765s-0.79,1.765-1.765,1.765s-1.765-0.79-1.765-1.765S14.19,11.767,15.165,11.767z`})});Xr();var Kc=P.footer`
   margin-top: 120px;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     margin-top: 48px;
   }
-`,Gc=P.section`
+`,qc=P.section`
   padding: 56px;
   color: ${({theme:e})=>e.colors.contact.text};
   background: ${({theme:e})=>e.colors.contact.background};
@@ -1023,14 +1023,14 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     padding: 32px 16px;
   }
-`,Kc=P.div`
+`,Jc=P.div`
   max-width: 640px;
-`,qc=P(es)`
+`,Yc=P(es)`
   display: flex;
   align-items: center;
   gap: 12px;
   color: inherit;
-`,Jc=P(Uc)`
+`,Xc=P(Gc)`
   flex-shrink: 0;
   width: 32px;
   height: 32px;
@@ -1039,7 +1039,7 @@ Error generating stack: `+e.message+`
     width: 22px;
     height: 22px;
   }
-`,Yc=P.p`
+`,Zc=P.p`
   margin: 16px 0 0;
   font-size: 18px;
   line-height: 1.5;
@@ -1047,7 +1047,7 @@ Error generating stack: `+e.message+`
   @media (max-width: ${({theme:e})=>e.breakpoints.mobileMax}px) {
     font-size: 15px;
   }
-`,Xc=P(Qo)``,Zc=P(Jo)`
+`,Qc=P(Qo)``,$c=P(Jo)`
   color: ${({theme:e})=>e.colors.contact.buttonText};
   background: ${({theme:e})=>e.colors.contact.buttonBackground};
   border-color: ${({theme:e})=>e.colors.contact.buttonBackground};
@@ -1060,7 +1060,7 @@ Error generating stack: `+e.message+`
     outline: 2px solid ${({theme:e})=>e.colors.contact.text};
     outline-offset: 3px;
   }
-`,Qc=P(Zc)`
+`,el=P($c)`
   color: ${({theme:e})=>e.colors.contact.text};
   background: transparent;
   border-color: ${({theme:e})=>e.colors.contact.text};
@@ -1068,7 +1068,7 @@ Error generating stack: `+e.message+`
   &:hover {
     box-shadow: inset 0 0 0 1px ${({theme:e})=>e.colors.contact.text};
   }
-`,$c=P.div`
+`,tl=P.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1080,4 +1080,4 @@ Error generating stack: `+e.message+`
   p {
     margin: 0;
   }
-`,el=()=>(0,z.jsxs)(Wc,{children:[(0,z.jsx)(Gc,{"aria-labelledby":`contact`,children:(0,z.jsxs)(Kc,{children:[(0,z.jsxs)(qc,{id:`contact`,children:[`Let's talk`,(0,z.jsx)(Jc,{"aria-hidden":`true`})]}),(0,z.jsx)(Yc,{children:Lo.contactText}),(0,z.jsxs)(Xc,{children:[(0,z.jsxs)(Zc,{href:`mailto:${Io}`,"aria-label":`Send me an email`,children:[(0,z.jsx)(Zo,{"aria-hidden":`true`}),`Email`]}),(0,z.jsxs)(Qc,{href:Lo.linkedinUrl,target:`_blank`,rel:`noreferrer`,"aria-label":`Message me on LinkedIn`,children:[(0,z.jsx)(H,{"aria-hidden":`true`}),`LinkedIn`]})]})]})}),(0,z.jsxs)($c,{children:[(0,z.jsxs)(`p`,{children:[`© `,new Date().getFullYear(),` `,Lo.name]}),(0,z.jsx)(Hc,{})]})]}),tl=()=>(0,z.jsxs)(ni,{children:[(0,z.jsx)(Po,{}),(0,z.jsx)($o,{}),(0,z.jsxs)(`main`,{children:[(0,z.jsx)(qs,{}),(0,z.jsx)(kc,{}),(0,z.jsx)(Ic,{}),(0,z.jsx)(ls,{})]}),(0,z.jsx)(el,{})]}),nl=()=>{let e=ri();(0,x.useEffect)(()=>{let t=window.matchMedia?.(bo);if(!t)return;let n=t=>e(Co(t.matches));return t.addEventListener(`change`,n),()=>t.removeEventListener(`change`,n)},[e])},rl=e=>{(0,x.useEffect)(()=>{document.documentElement.dataset.theme=e?`dark`:`light`},[e])};Xr();var il=()=>{let e=ii(To);return nl(),rl(e),(0,z.jsxs)(ln,{theme:e?ti:ei,children:[(0,z.jsx)(Zr.Normalize,{}),(0,z.jsx)(Qr,{}),(0,z.jsx)(tl,{})]})},al=Xa({reducer:{theme:Eo},middleware:e=>e({thunk:!1})}),ol=al.getState().theme.isDarkTheme;al.subscribe(()=>{let{isDarkTheme:e,hasUserChoice:t}=al.getState().theme;e!==ol&&(ol=e,t&&localStorage.setItem(`dark`,String(ol)))}),(0,te.createRoot)(document.getElementById(`root`)).render((0,z.jsx)(x.StrictMode,{children:(0,z.jsx)(pe,{store:al,children:(0,z.jsx)(il,{})})}));
+`,nl=()=>(0,z.jsxs)(Kc,{children:[(0,z.jsx)(qc,{"aria-labelledby":`contact`,children:(0,z.jsxs)(Jc,{children:[(0,z.jsxs)(Yc,{id:`contact`,children:[`Let's talk`,(0,z.jsx)(Xc,{"aria-hidden":`true`})]}),(0,z.jsx)(Zc,{children:Lo.contactText}),(0,z.jsxs)(Qc,{children:[(0,z.jsxs)($c,{href:`mailto:${Io}`,"aria-label":`Send me an email`,children:[(0,z.jsx)(Zo,{"aria-hidden":`true`}),`Email`]}),(0,z.jsxs)(el,{href:Lo.linkedinUrl,target:`_blank`,rel:`noreferrer`,"aria-label":`Message me on LinkedIn`,children:[(0,z.jsx)(H,{"aria-hidden":`true`}),`LinkedIn`]})]})]})}),(0,z.jsxs)(tl,{children:[(0,z.jsxs)(`p`,{children:[`© `,new Date().getFullYear(),` `,Lo.name]}),(0,z.jsx)(Wc,{})]})]}),rl=()=>(0,z.jsxs)(ni,{children:[(0,z.jsx)(Po,{}),(0,z.jsx)($o,{}),(0,z.jsxs)(`main`,{children:[(0,z.jsx)(Ys,{}),(0,z.jsx)(jc,{}),(0,z.jsx)(Rc,{}),(0,z.jsx)(ls,{})]}),(0,z.jsx)(nl,{})]}),il=()=>{let e=ri();(0,x.useEffect)(()=>{let t=window.matchMedia?.(bo);if(!t)return;let n=t=>e(Co(t.matches));return t.addEventListener(`change`,n),()=>t.removeEventListener(`change`,n)},[e])},al=e=>{(0,x.useEffect)(()=>{document.documentElement.dataset.theme=e?`dark`:`light`},[e])};Xr();var ol=()=>{let e=ii(To);return il(),al(e),(0,z.jsxs)(ln,{theme:e?ti:ei,children:[(0,z.jsx)(Zr.Normalize,{}),(0,z.jsx)(Qr,{}),(0,z.jsx)(rl,{})]})},sl=Xa({reducer:{theme:Eo}}),cl=sl.getState().theme.isDarkTheme;sl.subscribe(()=>{let{isDarkTheme:e,hasUserChoice:t}=sl.getState().theme;e!==cl&&(cl=e,t&&localStorage.setItem(`dark`,String(cl)))}),(0,te.createRoot)(document.getElementById(`root`)).render((0,z.jsx)(x.StrictMode,{children:(0,z.jsx)(pe,{store:sl,children:(0,z.jsx)(ol,{})})}));
