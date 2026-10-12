@@ -16,6 +16,7 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByText("I build software, then I try to break it."),
     ).toBeVisible();
+    await expect(page.getByText("· self-taught developer")).toBeVisible();
   });
 
   test("tells recruiters at a glance what I'm looking for", async ({

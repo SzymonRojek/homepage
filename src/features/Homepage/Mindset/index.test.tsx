@@ -22,7 +22,7 @@ describe("Mindset", () => {
       within(section)
         .getAllByRole("heading", { level: 3 })
         .map(({ textContent }) => textContent),
-    ).toEqual(["Developer mindset", "Tester mindset"]);
+    ).toEqual(["Tester mindset", "Developer mindset"]);
   });
 
   it("backs each side with points and a tool list", () => {
@@ -34,6 +34,8 @@ describe("Mindset", () => {
     const tester = screen.getByRole("article", { name: "Tester mindset" });
 
     expect(developer).toHaveTextContent("Build");
+    expect(tester).toHaveTextContent("My profession: 4 years at Equiniti");
+    expect(developer).toHaveTextContent("Self-taught: my own projects");
     expect(tester).toHaveTextContent("Protect");
     expect(tester).toHaveTextContent(/4 years testing financial data/);
     expect(

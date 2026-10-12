@@ -111,6 +111,11 @@ export const Title = styled.p`
   }
 `;
 
+export const SecondaryTitle = styled.span`
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
 // Darker gradient stops in the light theme keep the text at 4.5:1.
 export const Tagline = styled.p`
   width: fit-content;

@@ -13,10 +13,6 @@ import {
   Title,
   Meta,
   Summary,
-  Impact,
-  Stat,
-  StatValue,
-  StatLabel,
   Lenses,
   LensCard,
   LensLabel,
@@ -96,7 +92,6 @@ export const CaseStudy = ({
   const id = `case-study-${repo}`;
   const {
     summary,
-    impact,
     story,
     developer,
     tester,
@@ -115,25 +110,6 @@ export const CaseStudy = ({
       <Meta>
         {repo} · {language}
       </Meta>
-      {/* With a story, its brief says the same thing in plainer words. */}
-      {!story && <Summary>{summary}</Summary>}
-
-      <Impact aria-label="Impact">
-        {impact.map(({ value, label }) => (
-          <Stat key={label}>
-            <StatLabel>{label}</StatLabel>
-            <StatValue>{value}</StatValue>
-          </Stat>
-        ))}
-      </Impact>
-
-      {story && <Story story={story} />}
-
-      <Lenses $single={view !== "both"}>
-        {view !== "tester" && <LensColumn side="developer" lens={developer} />}
-        {view !== "developer" && <LensColumn side="tester" lens={tester} />}
-      </Lenses>
-
       <Links>
         {demoUrl && (
           <PrimaryLink href={demoUrl} target="_blank" rel="noreferrer">
@@ -144,6 +120,15 @@ export const CaseStudy = ({
           GitHub Repository
         </SecondaryLink>
       </Links>
+      {/* With a story, its brief says the same thing in plainer words. */}
+      {!story && <Summary>{summary}</Summary>}
+
+      {story && <Story story={story} />}
+
+      <Lenses $single={view !== "both"}>
+        {view !== "tester" && <LensColumn side="developer" lens={developer} />}
+        {view !== "developer" && <LensColumn side="tester" lens={tester} />}
+      </Lenses>
 
       <Details>
         <Toggle>Read the full case study</Toggle>

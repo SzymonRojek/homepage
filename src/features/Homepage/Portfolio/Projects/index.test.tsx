@@ -87,7 +87,6 @@ describe("Projects", () => {
         repo: "studied",
         caseStudy: {
           summary: "Summary.",
-          impact: [],
           developer: { headline: "Built.", points: [], stack: [] },
           tester: { headline: "Tested.", points: [], stack: [] },
           problem: [],
@@ -135,7 +134,6 @@ describe("Projects", () => {
         repo: "studied",
         caseStudy: {
           summary: "Summary.",
-          impact: [],
           developer: { headline: "Built.", points: [], stack: [] },
           tester: { headline: "Tested.", points: [], stack: [] },
           problem: [],
@@ -160,7 +158,6 @@ describe("Projects", () => {
           repo: "studied",
           caseStudy: {
             summary: "Summary.",
-            impact: [],
             developer: { headline: "Built.", points: [], stack: [] },
             tester: { headline: "Tested.", points: [], stack: [] },
             problem: [],

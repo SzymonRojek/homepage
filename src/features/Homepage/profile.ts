@@ -1,6 +1,8 @@
 export const profile = {
   name: "Szymon Rojek",
   title: "Software Test Engineer",
+  // Shown next to the title: the coding side is self-taught, not a job.
+  secondaryTitle: "self-taught developer",
   tagline: "I build software, then I try to break it.",
   availability: "Open to QA Engineer & Data/ETL Test Analyst roles",
   location: [

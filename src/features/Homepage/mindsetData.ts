@@ -5,6 +5,8 @@ export interface Mindset {
   // Short label shown in the card's corner, e.g. "Build".
   label: string;
   title: string;
+  // Where this side comes from, e.g. "My profession: 4 years at Equiniti".
+  context: string;
   summary: string;
   points: string[];
   stack: string[];
@@ -14,34 +16,14 @@ export interface Mindset {
 
 // Every point must be backed by the experience section or a project's repo.
 export const mindsetIntro =
-  "Most testers read code; I also write it. Code I build is designed to be tested, and the tests are written by someone who knows how the code works.";
+  "Testing is my profession. I also taught myself to code, so I understand what I test and can automate it, and I build my own projects to practise.";
 
 export const mindsets: Mindset[] = [
-  {
-    side: "developer",
-    label: "Build",
-    title: "Developer mindset",
-    summary: "I build full-stack products and ship them through CI/CD.",
-    points: [
-      "Full-stack TypeScript: React 19 in the browser, Node.js and Express on the server.",
-      "Secure by design: secrets stay on the server, logins use signed tokens and user text is escaped.",
-      "Team-style delivery: feature branches, pull requests, staging before production.",
-      "Fast, accessible UI with light and dark themes on phones and desktops.",
-    ],
-    stack: [
-      "React",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "Redux Toolkit",
-      "Tailwind CSS",
-      "Vite",
-    ],
-  },
   {
     side: "tester",
     label: "Protect",
     title: "Tester mindset",
+    context: "My profession: 4 years at Equiniti",
     summary: "I find what breaks before users do, and prove that it's fixed.",
     points: [
       "4 years testing financial data migrations and ETL at Equiniti.",
@@ -62,5 +44,28 @@ export const mindsets: Mindset[] = [
       text: "See it in practice: this site's CI pipeline",
       href: "#case-study-homepage",
     },
+  },
+  {
+    side: "developer",
+    label: "Build",
+    title: "Developer mindset",
+    context: "Self-taught: my own projects",
+    summary:
+      "I learned to code to understand what I test, and I build my own projects to practise.",
+    points: [
+      "Full-stack TypeScript in my projects: React 19 in the browser, Node.js and Express on the server.",
+      "Secure by design: secrets stay on the server, logins use signed tokens and user text is escaped.",
+      "A team-style workflow even when working alone: feature branches, pull requests, staging before production.",
+      "Accessible UI with light and dark themes on phones and desktops, checked in CI.",
+    ],
+    stack: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "Redux Toolkit",
+      "Tailwind CSS",
+      "Vite",
+    ],
   },
 ];

@@ -49,9 +49,7 @@ export interface Lens {
 export interface CaseStudy {
   // The problem in one or two sentences, visible without expanding.
   summary: string;
-  // 2–4 numbers a recruiter can scan. Prefer thresholds CI enforces, so they stay true.
-  impact: { value: string; label: string }[];
-  // Shown before everything else except the impact numbers.
+  // Shown first, right under the title.
   story?: Story;
   // The same project seen by a developer and by a tester, shown side by side.
   developer: Lens;
@@ -78,36 +76,28 @@ export interface Project {
 const homepageCaseStudy: CaseStudy = {
   summary:
     "My portfolio is also a test project: a React and TypeScript site that ships only when unit, end-to-end, accessibility, performance and security checks all pass.",
-  impact: [
-    {
-      value: "0",
-      label: "runtime API calls, so nothing can fail for a visitor",
-    },
-    { value: "40+", label: "end-to-end tests on desktop and mobile" },
-    { value: "80%+", label: "unit test coverage, enforced in CI" },
-    {
-      value: "95+",
-      label: "Lighthouse accessibility, SEO and best practices, enforced in CI",
-    },
-  ],
   story: {
     brief:
-      "Recruiters and hiring managers need to check, in 30 seconds and without help, that a tester really can do what the CV says.",
-    researchAgainst: "Typical CVs and portfolios",
+      "My first website, from 2021, was a learning project: it had no tests, and its project list could fail for a visitor. I rebuilt it to show my testing skills in practice, on a site that never breaks.",
+    researchAgainst: "Before the rebuild",
     research: [
       {
         market:
-          "A CV lists tools like Playwright and CI/CD, but nobody can check them.",
-        mine: "Every claim links to the running tests, the CI pipeline and a live status badge.",
-      },
-      {
-        market:
-          "Portfolios that load projects from the GitHub API can show an error on shared office networks (60 requests an hour per address).",
+          "Projects loaded from the GitHub API, which allows 60 requests an hour per address, so a visitor on a shared office network could see an error.",
         mine: "All content is static, so there is nothing to time out or rate-limit.",
       },
       {
-        market: "Portfolios show what was built, not why.",
-        mine: "Each project is told as a brief, research, solution and value, with the decisions and trade-offs behind it.",
+        market: "No automated tests and no CI.",
+        mine: "Every change passes unit, end-to-end, accessibility and Lighthouse checks before it can deploy.",
+      },
+      {
+        market: "Reloading in dark mode flashed a white page.",
+        mine: "The theme is painted before JavaScript loads.",
+      },
+      {
+        market:
+          "Google Fonts blocked rendering, and the photo was three times larger than displayed.",
+        mine: "A self-hosted font and a right-sized photo raised mobile performance from 0.84 to about 0.9.",
       },
     ],
     solution: [
@@ -260,19 +250,6 @@ const homepageCaseStudy: CaseStudy = {
 const talentOutreachCaseStudy: CaseStudy = {
   summary:
     "A recruitment tool rebuilt from a 2021 email app: job offers go to the right candidates by role and budget, personalized, never too often and only with consent, with tests at every level and CI/CD through staging to production.",
-  impact: [
-    { value: "0", label: "secrets or personal data reaching the browser" },
-    {
-      value: "100",
-      label:
-        "Lighthouse accessibility, best practices and SEO on 7 screens, enforced in CI",
-    },
-    {
-      value: "63",
-      label: "end-to-end tests on the production build, with no real data",
-    },
-    { value: "200+", label: "server and client unit tests" },
-  ],
   story: {
     brief:
       "A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing “Dear candidate”, with the risk of leaking addresses or contacting the same people too often.",
@@ -480,7 +457,7 @@ const talentOutreachCaseStudy: CaseStudy = {
 };
 
 export const projectsIntro =
-  "Two products I built and tested end to end. Each one is shown from both sides: how I built it as a developer, and how I proved it works as a tester.";
+  "Two projects I built in my own time to practise development, and tested the way I test at work. Each one is shown from both sides: how I built it, and how I proved it works.";
 
 export const projects: Project[] = [
   {
@@ -494,7 +471,7 @@ export const projects: Project[] = [
     caseStudy: talentOutreachCaseStudy,
   },
   {
-    title: "This portfolio, tested end to end",
+    title: "This website: built and tested like a real product",
     repo: "homepage",
     language: "TypeScript",
     category: "Testing",

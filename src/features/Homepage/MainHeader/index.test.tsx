@@ -36,6 +36,7 @@ describe("MainHeader", () => {
     expect(
       screen.getByText("I build software, then I try to break it."),
     ).toBeInTheDocument();
+    expect(screen.getByText("· self-taught developer")).toBeInTheDocument();
   });
 
   it("lists the key skills", () => {

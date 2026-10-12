@@ -24,7 +24,7 @@
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                 |
 | Deploys               | only from `main`, only after every check passes, only through a PR I merge           |
 
-## Case study: this portfolio, tested like a production app
+## Case study: this website, built and tested like a real product
 
 ### Problem
 

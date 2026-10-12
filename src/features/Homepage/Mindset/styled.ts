@@ -65,6 +65,14 @@ export const Label = styled.span<{ $side: MindsetSide }>`
   border-radius: 6px;
 `;
 
+export const Context = styled.p<{ $side: MindsetSide }>`
+  margin: 6px 0 0;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
+`;
+
 export const SideSummary = styled.p`
   margin: 12px 0 0;
   font-size: 18px;

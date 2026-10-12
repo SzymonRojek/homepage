@@ -8,10 +8,6 @@ import { CaseStudy } from ".";
 
 const caseStudy: CaseStudyData = {
   summary: "A tested site.",
-  impact: [
-    { value: "0", label: "API calls" },
-    { value: "40+", label: "e2e tests" },
-  ],
   developer: {
     headline: "Built static.",
     points: ["React and TypeScript."],
@@ -47,17 +43,14 @@ const renderCaseStudy = (demoUrl?: string, view?: ProjectView) =>
   );
 
 describe("CaseStudy", () => {
-  it("shows the summary and impact without expanding", () => {
+  it("shows the summary without expanding, with no stat boxes", () => {
     renderCaseStudy();
 
     const article = screen.getByRole("article", { name: "This portfolio" });
     expect(article).toHaveAttribute("id", "case-study-homepage");
     expect(within(article).getByText("A tested site.")).toBeVisible();
 
-    const impact = within(article).getByLabelText("Impact");
-    expect(within(impact).getByText("0")).toBeVisible();
-    expect(within(impact).getByText("API calls")).toBeVisible();
-    expect(within(impact).getByText("40+")).toBeVisible();
+    expect(within(article).queryByLabelText("Impact")).not.toBeInTheDocument();
   });
 
   it("links to the repository, and to a demo only when there is one", () => {

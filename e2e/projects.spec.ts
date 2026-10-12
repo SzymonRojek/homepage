@@ -11,7 +11,7 @@ test.describe("Projects", () => {
     await test.step("testing projects as case studies, in order", async () => {
       await expect(
         page.getByRole("article").filter({ hasText: "Case study" }),
-      ).toHaveText([/Talent Outreach/, /This portfolio, tested end to end/]);
+      ).toHaveText([/Talent Outreach/, /This website: built and tested/]);
       await expect(
         page.getByRole("list", { name: "Test projects" }),
       ).toHaveCount(0);
@@ -36,9 +36,6 @@ test.describe("Projects", () => {
     });
 
     await expect(caseStudy).toContainText("talent-outreach · TypeScript");
-    await expect(caseStudy.getByLabel("Impact")).toContainText(
-      "end-to-end tests on the production build",
-    );
     await expect(
       caseStudy.getByRole("link", { name: "GitHub Repository" }),
     ).toHaveAttribute("href", "https://github.com/SzymonRojek/talent-outreach");
@@ -57,16 +54,18 @@ test.describe("Projects", () => {
     ).toBeVisible();
   });
 
-  test("the homepage case study shows impact at a glance", async ({ page }) => {
+  test("the homepage case study opens with its story, not stat boxes", async ({
+    page,
+  }) => {
     const caseStudy = page.getByRole("article", {
-      name: "This portfolio, tested end to end",
+      name: "This website: built and tested like a real product",
     });
 
     await expect(caseStudy).toContainText("Case study");
-    await expect(caseStudy.getByLabel("Impact")).toContainText(
-      "runtime API calls",
-    );
-    await expect(caseStudy.getByLabel("Impact").locator("dd")).toHaveCount(4);
+    await expect(caseStudy.getByLabel("Impact")).toHaveCount(0);
+    await expect(
+      caseStudy.getByRole("list", { name: "How I solved it" }),
+    ).toContainText("My first website, from 2021, was a learning project");
     await expect(
       caseStudy.getByRole("heading", { name: "Problem" }),
     ).toBeHidden();
@@ -74,7 +73,7 @@ test.describe("Projects", () => {
 
   test("the full case study opens with every part", async ({ page }) => {
     const caseStudy = page.getByRole("article", {
-      name: "This portfolio, tested end to end",
+      name: "This website: built and tested like a real product",
     });
 
     await caseStudy.getByText("Read the full case study").click();
@@ -239,7 +238,7 @@ test.describe("Projects", () => {
     page,
   }) => {
     const caseStudy = page.getByRole("article", {
-      name: "This portfolio, tested end to end",
+      name: "This website: built and tested like a real product",
     });
     const checks = caseStudy
       .getByRole("list", { name: "CI checks" })
@@ -276,14 +275,18 @@ test.describe("Projects", () => {
 
     await expect(page).toHaveURL(/#case-study-homepage$/);
     await expect(
-      page.getByRole("article", { name: "This portfolio, tested end to end" }),
+      page.getByRole("article", {
+        name: "This website: built and tested like a real product",
+      }),
     ).toBeInViewport();
   });
 
   test("renders without loading or error states", async ({ page }) => {
     // The noGithubApi fixture also fails this test if the page calls GitHub.
     await expect(
-      page.getByRole("article", { name: "This portfolio, tested end to end" }),
+      page.getByRole("article", {
+        name: "This website: built and tested like a real product",
+      }),
     ).toBeVisible();
     await expect(
       page.getByRole("article").filter({ hasText: "Case study" }),

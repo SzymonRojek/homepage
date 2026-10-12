@@ -9,7 +9,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       await page.goto("./");
       await expect(
         page.getByRole("article", {
-          name: "This portfolio, tested end to end",
+          name: "This website: built and tested like a real product",
         }),
       ).toBeVisible();
 

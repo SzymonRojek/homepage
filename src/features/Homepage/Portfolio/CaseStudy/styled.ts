@@ -69,64 +69,6 @@ export const Summary = styled.p`
   }
 `;
 
-export const Impact = styled.dl`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin: 28px 0 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 10px;
-    margin-top: 20px;
-  }
-`;
-
-// The label comes first in the markup (dt before dd); the number is shown on top.
-export const Stat = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 18px;
-  background: ${({ theme }) => theme.colors.site.background};
-  border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 12px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 14px;
-  }
-`;
-
-export const StatValue = styled.dd`
-  width: fit-content;
-  margin: 0;
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1.1;
-  color: ${({ theme }) => theme.colors.dev.accent};
-  background: ${({ theme }) => theme.colors.gradientText};
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 28px;
-  }
-`;
-
-export const StatLabel = styled.dt`
-  font-size: 14px;
-  line-height: 1.4;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 13px;
-  }
-`;
-
 // Developer and tester side by side; one full-width column when filtered.
 export const Lenses = styled.div<{ $single: boolean }>`
   display: grid;
@@ -227,7 +169,7 @@ export const Links = styled.p`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 28px 0 0;
+  margin: 20px 0 0;
 `;
 
 export const PrimaryLink = styled(ButtonLink)``;

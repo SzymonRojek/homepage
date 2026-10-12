@@ -9,6 +9,7 @@ import {
   Location,
   Name,
   Title,
+  SecondaryTitle,
   Tagline,
   Summary,
   Highlights,
@@ -28,7 +29,10 @@ export const MainHeader = () => (
     <Details>
       <Availability>{profile.availability}</Availability>
       <Name>{profile.name}</Name>
-      <Title>{profile.title}</Title>
+      <Title>
+        {profile.title}
+        <SecondaryTitle> · {profile.secondaryTitle}</SecondaryTitle>
+      </Title>
       <Tagline>{profile.tagline}</Tagline>
       <Location>{profile.location.join(" · ")}</Location>
       <Summary>{profile.bio}</Summary>
