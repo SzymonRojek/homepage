@@ -55,6 +55,11 @@ export const education: EducationItem[] = [
     year: "In progress",
   },
   {
+    title: "LinkedIn Learning courses",
+    school: "Programming, software testing and AI, alongside my job",
+    year: "2023 – present",
+  },
+  {
     title: "Microsoft AI courses",
     school: "Generative AI, Microsoft Copilot and responsible AI",
     year: "2026",
@@ -65,35 +70,9 @@ export const education: EducationItem[] = [
     year: "2025",
   },
   {
-    title: "Master of Theology, First Class Honours",
-    school: "Nicolaus Copernicus University, Toruń",
-    year: "2012",
+    title: "React.js workshops, final exam passed",
+    school:
+      "React School: components, state, forms, custom hooks, REST APIs, component testing and TypeScript",
+    year: "2022",
   },
-];
-
-export interface Language {
-  name: string;
-  level: string;
-}
-
-export const languages: Language[] = [
-  { name: "Polish", level: "Native" },
-  { name: "English", level: "Professional working proficiency" },
-];
-
-export interface Interest {
-  name: string;
-  // Optional link, for example to a project built around the interest.
-  url?: string;
-  linkText?: string;
-}
-
-export const interests: Interest[] = [
-  {
-    name: "Classical guitar",
-    url: "https://szymonrojek.github.io/my-music-website/",
-    linkText: "my guitar website",
-  },
-  { name: "Swimming" },
-  { name: "Cycling" },
 ];

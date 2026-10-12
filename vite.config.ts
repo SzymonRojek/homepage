@@ -9,6 +9,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: "./src/setupTests.ts",
+    // The first test in a file renders styled-components cold; under coverage on
+    // a slow machine that alone can pass the 5 s default.
+    testTimeout: 15000,
     exclude: [...configDefaults.exclude, "e2e/**", ".stryker-tmp/**"],
     coverage: {
       provider: "v8",

@@ -1,44 +1,56 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Envelope from "./envelope.svg?react";
 import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
-export const ButtonLink = styled.a`
+const buttonStyles = css`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 16px;
+  padding: 11px 20px;
   font-size: 15px;
   line-height: 20px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.buttonLink.text};
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.onPrimary};
   text-decoration: none;
-  border: 1px solid ${({ theme }) => theme.colors.buttonLink.border};
+  border: none;
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   background: ${({ theme }) => theme.colors.primary};
-  transition: box-shadow 0.3s;
+  transition: background 0.2s;
 
   &:hover {
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.buttonLink.shadow};
+    background: ${({ theme }) => theme.colors.primaryHover};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 8px 14px;
+    padding: 10px 16px;
     font-size: 14px;
   }
 `;
 
-export const SecondaryButtonLink = styled(ButtonLink)`
-  color: ${({ theme }) => theme.colors.primary};
-  background: transparent;
-  border-color: ${({ theme }) => theme.colors.primary};
+export const ButtonLink = styled.a`
+  ${buttonStyles}
 `;
 
-// Square button with only an icon; give it an aria-label.
-export const IconButtonLink = styled(SecondaryButtonLink)`
-  padding: 9px;
+// The same look for an action that stays on the page, e.g. opening a section.
+export const Button = styled.button`
+  ${buttonStyles}
+  font-family: inherit;
+  cursor: pointer;
+`;
+
+export const SecondaryButtonLink = styled(ButtonLink)`
+  padding: 10px 19px;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  background: ${({ theme }) => theme.colors.boxBackground};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.boxBackground};
+    border-color: ${({ theme }) => theme.colors.textPrimary};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 8px;
+    padding: 9px 15px;
   }
 `;
 
@@ -58,10 +70,10 @@ export const ButtonLinks = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 32px;
+  margin-top: 28px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     gap: 10px;
-    margin-top: 24px;
+    margin-top: 20px;
   }
 `;

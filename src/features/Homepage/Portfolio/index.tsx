@@ -1,15 +1,11 @@
 import { Projects } from "./Projects";
-import { Section, Header, StyledGithubIcon, MyRecentProjects } from "./styled";
-import { SubHeader } from "../SubHeader";
-import { projects } from "./projectsData";
+import { Section, SectionHeader, SectionIntro } from "../Section";
+import { projects, projectsIntro } from "./projectsData";
 
 export const Portfolio = () => (
-  <Section>
-    <Header>
-      <StyledGithubIcon />
-      <SubHeader>Test projects</SubHeader>
-      <MyRecentProjects>Automation, API and end-to-end work</MyRecentProjects>
-    </Header>
+  <Section aria-labelledby="projects">
+    <SectionHeader id="projects">Projects</SectionHeader>
+    <SectionIntro>{projectsIntro}</SectionIntro>
 
     <Projects projects={projects} />
   </Section>

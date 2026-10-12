@@ -1,20 +1,18 @@
 export const profile = {
   name: "Szymon Rojek",
   title: "Software Test Engineer",
-  availability: "Open to QA Engineer & Data/ETL Test Analyst roles",
+  tagline: "I find what breaks before your users do.",
+  // The word in the tagline that gets the hand-drawn underline.
+  taglineHighlight: "breaks",
+  availability: "Open to Test Automation & QA Engineer roles",
+  // A row of three facts under the bio, so HR sees them at once.
   location: [
-    "Based in Hove, UK",
-    "Full right to work in the UK",
-    "Open to relocation",
+    { label: "Based in", value: "Hove, UK" },
+    { label: "Right to work", value: "UK, full" },
+    { label: "Relocation", value: "Open" },
   ],
-  bio: "I test data migrations and ETL in financial services at Equiniti: turning mapping documents into traceable test cases, reconciling source and target data with SQL and tracing defects to their root cause. Now growing into test automation with Playwright and TypeScript.",
-  highlights: [
-    "4 years in software testing",
-    "Data migration & ETL testing",
-    "SQL reconciliation",
-    "REST API testing",
-  ],
+  bio: "Four years testing financial data migrations at Equiniti: SQL reconciliation, business logic and root-cause analysis. I taught myself to code, so I automate tests with Playwright and build full-stack apps to practise.",
   contactText:
-    "I'm open to QA Engineer and Data/ETL Test Analyst roles, based in Hove with full right to work in the UK.",
+    "I'm open to Test Automation and QA Engineer roles, based in Hove with full right to work in the UK. If your team wants a tester who also reads and writes the code, I'd like to hear from you.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
 };

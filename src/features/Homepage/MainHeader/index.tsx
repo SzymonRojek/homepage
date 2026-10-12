@@ -1,55 +1,62 @@
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
-import { email } from "../email";
 import { profile } from "../profile";
+import { SplitPortrait } from "./SplitPortrait";
 import {
   Wrapper,
-  Avatar,
+  Band,
+  BandInner,
   Details,
   Availability,
-  Location,
   Name,
-  Title,
-  Summary,
-  Highlights,
+  Headline,
   Highlight,
+  Underline,
+  Summary,
+  Where,
+  WhereItem,
 } from "./styled";
-import {
-  ButtonLink,
-  ButtonLinks,
-  IconButtonLink,
-  EnvelopeIcon,
-  LinkedInIcon,
-} from "../ButtonLink";
 
+// The tagline is the big headline, with a hand-drawn underline under one word.
+const [before, after] = profile.tagline.split(profile.taglineHighlight);
+
+// The deep-green brand band: the tagline as the headline, where I can work,
+// and the photo rising from the band's bottom edge. Contact lives in the top
+// bar and the footer, so the hero has no button of its own. The name
+// and title are in the top bar right above, so here they are the h1 for
+// search engines and screen readers only.
 export const MainHeader = () => (
-  <Wrapper>
-    <Avatar src={szymonRojekProfile} alt={profile.name} />
-    <Details>
-      <Name>{profile.name}</Name>
-      <Title>{profile.title}</Title>
-      <Availability>{profile.availability}</Availability>
-      <Location>{profile.location.join(" · ")}</Location>
-      <Summary>{profile.bio}</Summary>
-      <Highlights aria-label="Key skills">
-        {profile.highlights.map((highlight) => (
-          <Highlight key={highlight}>{highlight}</Highlight>
-        ))}
-      </Highlights>
-      <ButtonLinks>
-        <ButtonLink href={`mailto:${email}`} title={email}>
-          <EnvelopeIcon aria-hidden="true" />
-          Email me
-        </ButtonLink>
-        <IconButtonLink
-          href={profile.linkedinUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="LinkedIn"
-          title="LinkedIn"
-        >
-          <LinkedInIcon aria-hidden="true" />
-        </IconButtonLink>
-      </ButtonLinks>
-    </Details>
+  <Wrapper id="top">
+    <Band>
+      <BandInner>
+        <Details>
+          <Availability>{profile.availability}</Availability>
+          <Name>{profile.name}</Name>
+          <Headline>
+            {before}
+            <Highlight>
+              {profile.taglineHighlight}
+              <Underline
+                viewBox="0 0 200 20"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path d="M3 14 C 50 4, 120 4, 197 10" />
+              </Underline>
+            </Highlight>
+            {after}
+          </Headline>
+          <Summary>{profile.bio}</Summary>
+          <Where aria-label="Location and right to work">
+            {profile.location.map(({ label, value }) => (
+              <WhereItem key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </WhereItem>
+            ))}
+          </Where>
+        </Details>
+        <SplitPortrait src={szymonRojekProfile} name={profile.name} />
+      </BandInner>
+    </Band>
   </Wrapper>
 );

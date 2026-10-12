@@ -1,8 +1,11 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
-import type { Project } from "../projectsData";
+import type { CaseStudy, Project } from "../projectsData";
+import projectViewReducer from "../projectViewSlice";
 import { Projects } from ".";
 
 const createProject = (overrides: Partial<Project> = {}): Project => ({
@@ -14,14 +17,42 @@ const createProject = (overrides: Partial<Project> = {}): Project => ({
   ...overrides,
 });
 
+const caseStudy = (headline: string): CaseStudy => ({
+  summary: "Summary.",
+  developer: { headline: `${headline}, built.`, points: [], stack: [] },
+  tester: { headline: `${headline}, tested.`, points: [], stack: [] },
+  problem: [],
+  constraints: [],
+  diagrams: [],
+  decisions: [],
+  quality: [],
+  lessons: [],
+});
+
 const renderProjects = (projects: Project[]) =>
   render(
-    <ThemeProvider theme={themeLight}>
-      <Projects projects={projects} />
-    </ThemeProvider>,
+    <Provider
+      store={configureStore({
+        reducer: { projectView: projectViewReducer },
+        preloadedState: { projectView: { openRepo: null, side: null } },
+      })}
+    >
+      <ThemeProvider theme={themeLight}>
+        <Projects projects={projects} />
+      </ThemeProvider>
+    </Provider>,
   );
 
 describe("Projects", () => {
+  beforeEach(() => {
+    // jsdom has no layout, so scrollIntoView does not exist there.
+    Element.prototype.scrollIntoView = () => {};
+  });
+
+  afterEach(() => {
+    window.history.replaceState(null, "", "/");
+  });
+
   it("shows test projects as tiles in data order", () => {
     renderProjects([
       createProject({ title: "First", repo: "first" }),
@@ -78,33 +109,6 @@ describe("Projects", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("shows projects with a case study as articles, not as tiles", () => {
-    renderProjects([
-      createProject({ title: "Tile", repo: "tile" }),
-      createProject({
-        title: "Studied",
-        repo: "studied",
-        caseStudy: {
-          summary: "Summary.",
-          impact: [],
-          problem: [],
-          constraints: [],
-          diagrams: [],
-          decisions: [],
-          quality: [],
-          lessons: [],
-        },
-      }),
-    ]);
-
-    expect(
-      screen.getByRole("article", { name: "Studied" }),
-    ).toBeInTheDocument();
-    const tiles = screen.getByRole("list", { name: "Test projects" });
-    expect(within(tiles).queryByText("Studied")).not.toBeInTheDocument();
-    expect(within(tiles).getByText("Tile")).toBeInTheDocument();
-  });
-
   it("explains Other projects and links to a demo when there is one", () => {
     renderProjects([
       createProject({
@@ -130,21 +134,163 @@ describe("Projects", () => {
     renderProjects([
       createProject({
         repo: "studied",
-        caseStudy: {
-          summary: "Summary.",
-          impact: [],
-          problem: [],
-          constraints: [],
-          diagrams: [],
-          decisions: [],
-          quality: [],
-          lessons: [],
-        },
+        caseStudy: caseStudy("Studied"),
       }),
     ]);
 
     expect(
       screen.queryByRole("list", { name: "Test projects" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows case studies as cards, all closed", () => {
+    renderProjects([
+      createProject({ title: "Tile", repo: "tile" }),
+      createProject({
+        title: "Studied",
+        repo: "studied",
+        caseStudy: caseStudy("Studied"),
+      }),
+    ]);
+
+    const cards = screen.getByRole("list", { name: "Case studies" });
+    expect(
+      within(cards).getByRole("heading", { name: "Studied" }),
+    ).toBeVisible();
+    expect(
+      within(cards).getByRole("button", { name: "Read the case study" }),
+    ).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("article")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("group", { name: "View projects as" }),
+    ).not.toBeInTheDocument();
+    const tiles = screen.getByRole("list", { name: "Test projects" });
+    expect(within(tiles).queryByText("Studied")).not.toBeInTheDocument();
+  });
+
+  it("opens one case study at a time and closes it", () => {
+    renderProjects([
+      createProject({
+        title: "First",
+        repo: "first",
+        caseStudy: caseStudy("First"),
+      }),
+      createProject({
+        title: "Second",
+        repo: "second",
+        caseStudy: caseStudy("Second"),
+      }),
+    ]);
+    const [first, second] = screen.getAllByRole("button", {
+      name: "Read the case study",
+    });
+
+    fireEvent.click(first);
+    expect(screen.getByRole("article", { name: "First" })).toBeVisible();
+    expect(first).toHaveAttribute("aria-expanded", "true");
+    expect(first).toHaveAttribute("aria-controls", "case-study-first");
+    expect(first).toHaveTextContent("Close the case study");
+    expect(window.location.hash).toBe("#case-study-first");
+
+    fireEvent.click(second);
+    expect(screen.queryByRole("article", { name: "First" })).toBeNull();
+    expect(screen.getByRole("article", { name: "Second" })).toBeVisible();
+    expect(window.location.hash).toBe("#case-study-second");
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Close the case study" }),
+    );
+    expect(screen.queryByRole("article")).not.toBeInTheDocument();
+    expect(window.location.hash).toBe("#projects");
+  });
+
+  it("moves focus to the case study that was opened", () => {
+    renderProjects([
+      createProject({
+        title: "First",
+        repo: "first",
+        caseStudy: caseStudy("First"),
+      }),
+    ]);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Read the case study" }),
+    );
+
+    expect(screen.getByRole("article", { name: "First" })).toHaveFocus();
+  });
+
+  it("shows both sides of the open case study, tester first", () => {
+    renderProjects([
+      createProject({
+        title: "First",
+        repo: "first",
+        caseStudy: caseStudy("First"),
+      }),
+    ]);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Read the case study" }),
+    );
+
+    const article = screen.getByRole("article", { name: "First" });
+    expect(article).toHaveTextContent(/First, tested\..*First, built\./);
+    expect(
+      screen.queryByRole("group", { name: "View projects as" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("opens the case study in an address typed while the page is open", () => {
+    renderProjects([
+      createProject({
+        title: "Talent",
+        repo: "talent-outreach",
+        caseStudy: caseStudy("Talent"),
+      }),
+    ]);
+    expect(screen.queryByRole("article")).toBeNull();
+
+    window.history.replaceState(
+      null,
+      "",
+      "/#case-study-talent-outreach-tester",
+    );
+    fireEvent(window, new HashChangeEvent("hashchange"));
+
+    expect(screen.getByRole("article", { name: "Talent" })).toBeVisible();
+  });
+
+  it("opens a case study whose address arrived before the page was ready", () => {
+    // The store was created with no case study open; the address changed
+    // before the listener existed, so no hashchange will reach it.
+    window.history.replaceState(
+      null,
+      "",
+      "/#case-study-talent-outreach-developer",
+    );
+
+    renderProjects([
+      createProject({
+        title: "Talent",
+        repo: "talent-outreach",
+        caseStudy: caseStudy("Talent"),
+      }),
+    ]);
+
+    expect(screen.getByRole("article", { name: "Talent" })).toBeVisible();
+  });
+
+  it("ignores an address change that names no case study", () => {
+    renderProjects([
+      createProject({
+        title: "Talent",
+        repo: "talent-outreach",
+        caseStudy: caseStudy("Talent"),
+      }),
+    ]);
+
+    window.history.replaceState(null, "", "/#skills");
+    fireEvent(window, new HashChangeEvent("hashchange"));
+
+    expect(screen.queryByRole("article")).toBeNull();
   });
 });

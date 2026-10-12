@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "../common/themeSlice";
+import projectViewReducer from "../features/Homepage/Portfolio/projectViewSlice";
 
 const store = configureStore({
   reducer: {
     theme: themeReducer,
+    projectView: projectViewReducer,
   },
 });
 

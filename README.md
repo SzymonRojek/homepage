@@ -6,25 +6,35 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: name, role, open-to-work status, location, bio and contact buttons" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'I find what breaks before your users do.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
 </picture>
 
 ## Why this site exists (30-second summary)
 
 - **Who:** Software Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
-- **Looking for:** QA Engineer and Data/ETL Test Analyst roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
+- **Looking for:** Test Automation and QA Engineer roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 50 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
-| Coverage              | about 86%, with an 80% gate that fails CI                                            |
+| Automated tests       | 100 unit and component tests, 88 end-to-end runs (desktop and mobile)                |
+| Coverage              | about 95%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                 |
 | Deploys               | only from `main`, only after every check passes, only through a PR I merge           |
 
-## Case study: this portfolio, tested like a production app
+## Links for job applications
+
+The case studies start closed. A link can open one at a chosen side, so each CV points to the part that matters for that role:
+
+| Applying for        | Link                                                                         |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Test automation, QA | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-tester    |
+| Developer           | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-developer |
+| The whole page      | https://szymonrojek.github.io/homepage/                                      |
+
+## Case study: this website, built and tested like a real product
 
 ### Problem
 
@@ -70,21 +80,23 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                 | Why                                                                                          | Trade-off                                                                                          |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again |
-| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                 | E2E takes about a minute, so it covers only user-visible behaviour                                 |
-| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                       | Styles are checked by the e2e and axe tests instead                                                |
-| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                          | The background colours live in two places. A unit test keeps them in sync                          |
-| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates come through npm instead of Google                                                    |
-| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                       | Slower CI, and a stricter budget on a page that still renders with JavaScript                      |
-| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own | Even a one-line fix needs a PR and a green pipeline                                                |
+| Decision                                                 | Why                                                                                          | Trade-off                                                                                            |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                    | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI |
+| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                 | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                |
+| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again   |
+| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                 | E2E takes about a minute, so it covers only user-visible behaviour                                   |
+| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                       | Styles are checked by the e2e and axe tests instead                                                  |
+| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                          | The background colours live in two places. A unit test keeps them in sync                            |
+| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates come through npm instead of Google                                                      |
+| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                       | Slower CI, and a stricter budget on a page that still renders with JavaScript                        |
+| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own | Even a one-line fix needs a PR and a green pipeline                                                  |
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, project tiles, case studies and contact buttons. Playwright runs against the production build in desktop and mobile Chrome. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and also checks that the top bar, the hero and the sections line up at several screen widths. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
 
-**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 104 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
+**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 117 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
 
 **Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks, labelled lists, a theme switch with `aria-pressed`, and decorative icons hidden from screen readers.
 
@@ -106,39 +118,57 @@ flowchart LR
 - Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.
 - Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants, and slow runs on a busy machine can turn into timeouts that look like caught bugs.
 - A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
+- A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.
+- After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.
 
-## Case study: Email Campaign Dashboard, secured and tested
+## Case study: Talent Outreach, job offers to the right candidates
 
-**[Code](https://github.com/SzymonRojek/email-campaign-dashboard)** · **[Live demo](https://email-campaign-dashboard-app.onrender.com/?utm_source=github)** (password `admin`; the free server can take up to a minute to wake up, and the demo data resets every night)
+**[Code](https://github.com/SzymonRojek/talent-outreach)** · **[Live demo](https://talent-outreach.onrender.com/?utm_source=github)** (one click on "Try the demo", no password; the free server can take up to a minute to wake up, and the demo data resets every night)
 
-A full-stack React, Express and TypeScript dashboard for email campaigns, with data in Airtable. It started in 2021 as a CRUD app; I reviewed it like a tester, fixed what I found and rebuilt it into a product that is safe to demo publicly and safe to change.
+A full-stack React, Express and TypeScript recruitment tool, with data in Airtable. It started in 2021 as an email CRUD app ("Email Campaign Dashboard"); I reviewed it like a tester, rebuilt it to production standard and then narrowed it to one recruiter's problem: the right job offer to the right candidates, and not to anyone contacted in the last 14 days.
 
-| At a glance        |                                                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------ |
-| Secrets in browser | 0: only the Express server talks to Airtable                                               |
-| Automated tests    | 200+ server and client unit tests, 63 Playwright end-to-end tests                          |
-| Test data          | end-to-end tests run against a fake Airtable, so they never touch real data                |
-| Bugs fixed         | 11 found and fixed in the first review                                                     |
-| Delivery           | pull request checks, then staging, then production, all automatic                          |
-| Live demo          | outbox instead of real sending, nightly data reset, Sentry and Umami without personal data |
+| At a glance        |                                                                                                             |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Secrets in browser | 0: only the Express server talks to Airtable                                                                |
+| Automated tests    | 200+ server and client unit tests, 63 Playwright end-to-end tests, a Postman collection (Newman)            |
+| Accessibility      | Lighthouse on 7 screens in CI: accessibility, best practices and SEO must stay at 100                       |
+| Test data          | end-to-end, API and Lighthouse runs use a fake Airtable, so they never touch real data                      |
+| Bugs fixed         | 11 found and fixed in the first review                                                                      |
+| Delivery           | pull request checks, then staging, then production, all automatic                                           |
+| Live demo          | one-click login, outbox instead of real sending, nightly reset and live check, Sentry without personal data |
+
+### The brief
+
+A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing "Dear candidate", with the risk of leaking addresses or contacting the same people too often.
+
+| Spreadsheet and Gmail                                   | Talent Outreach                                                                                     |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Filter the sheet by hand and copy the addresses         | Pick a role and a budget, and the matching candidates are found                                     |
+| "Dear candidate" for everyone                           | Every email uses the candidate's name and the role; a mistyped placeholder is caught before sending |
+| Nobody remembers who got which offer                    | Candidates contacted in the last 14 days are skipped by default                                     |
+| Consent is a column nobody updates                      | Only candidates open to offers get emails; the opt-out link updates the status by itself            |
+| One address in CC instead of BCC leaks everyone's email | One email per candidate, so nobody sees the others                                                  |
+| What was sent is buried in the Sent folder              | An outbox for each job offer shows every email exactly as it was sent                               |
+
+Not built yet: real delivery. Every email is built, checked and saved to the outbox; sending it through an email service is one more transport in one file.
 
 ### Problem
 
-The app sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser, so anyone who called the API directly could read, change or delete every subscriber. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
+The 2021 app sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser, so anyone who called the API directly could read, change or delete every record. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
 
 ### Architecture
 
 ```mermaid
 flowchart LR
   react["React app"] --> api["Express API /api<br/>signed login token"]
-  api --> mail["Server picks recipients,<br/>escapes text, signs<br/>unsubscribe links"]
-  mail --> airtable[("Airtable<br/>subscribers, campaigns,<br/>outbox, feedback")]
+  api --> mail["Server checks consent,<br/>escapes text, signs<br/>opt-out links"]
+  mail --> airtable[("Airtable<br/>candidates, job offers,<br/>outbox, feedback")]
 ```
 
 ```mermaid
 flowchart LR
   branch["Feature branch"] --> pr["PR to dev<br/>type check, lint,<br/>unit tests, build"]
-  pr --> e2e["Playwright e2e<br/>fake Airtable"]
+  pr --> e2e["Playwright e2e,<br/>Postman API tests,<br/>Lighthouse<br/>fake Airtable"]
   e2e --> staging["Merge, deploy<br/>to staging"]
   staging --> main["Release PR<br/>dev → main, CI again"]
   main --> prod["Deploy to<br/>production"]
@@ -146,20 +176,22 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                          | Why                                                                                           | Trade-off                                                                                             |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Server-side login, signed tokens, lockout after 5 wrong passwords | A browser-only login didn't protect the API at all                                            | One shared demo password; the in-memory lockout resets when the free server restarts                  |
-| The server picks recipients and builds every email                | The browser can't be trusted to decide who gets a campaign or what goes into an email         | The preview needs a server call, so it uses the same template as sending                              |
-| An outbox instead of real sending in the demo                     | With a public password anyone could send email from my account, and the free host blocks SMTP | Nobody gets the emails; each one is saved and can be opened. A real email service is one setting away |
-| End-to-end tests against a fake Airtable                          | Tests must never touch real data, and CI shouldn't need secrets                               | The fake can drift from the real API, so it copies Airtable's records and errors                      |
-| Nightly reset of the demo data                                    | Visitors change the data, and the next reviewer should see a working example                  | New examples are created before old ones are deleted; the reset is skipped when nothing changed       |
-| Monitoring and visit statistics without personal data             | I need to see failures on the live demo without collecting data I don't need                  | Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce                 |
-| Staging before production, with a hotfix path                     | Changes are checked on a live copy before users see them                                      | Two environments to keep in sync; a hotfix must be merged back into `dev`                             |
+| Decision                                                          | Why                                                                          | Trade-off                                                                                                                   |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Server-side login, signed tokens, lockout after 5 wrong passwords | A browser-only login didn't protect the API at all                           | The lockout lives in memory and resets when the free server restarts; it counts the real address behind Cloudflare          |
+| A one-click demo login, only where the demo is switched on        | A reviewer should try the app without a password                             | Any server without the setting has no passwordless door; API clients still use the password                                 |
+| The browser suggests recipients, the server has the last word     | Filtering by role, budget and last contact needs a fast, interactive list    | The server re-checks consent on every send, so an outdated list can't reach someone who opted out                           |
+| An outbox instead of real sending in the demo                     | Anyone can enter the public demo, and the free host blocks SMTP              | Nobody gets the emails; each one is saved and can be opened. Real delivery is one more transport in one file, not built yet |
+| End-to-end, API and Lighthouse runs against a fake Airtable       | Tests must never touch real data, and CI shouldn't need secrets              | The fake can drift from the real API, so it copies Airtable's records and errors                                            |
+| Nightly reset, then a read-only check of the live app             | Visitors change the data, and the next reviewer should see a working example | New examples are created before old ones are deleted; the reset is skipped when nothing changed                             |
+| One recruiter problem instead of a generic newsletter tool        | A problem solved end to end is easier to explain, to use and to test         | Fewer features: the app only sends job offers to candidates                                                                 |
+| Error monitoring without personal data                            | I need to see failures on the live demo without collecting data I don't need | Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce                                       |
+| Staging before production, with a hotfix path                     | Changes are checked on a live copy before users see them                     | Two environments to keep in sync; a hotfix must be merged back into `dev`                                                   |
 
 ### What the first review found
 
 - The Airtable token leaked in error responses.
-- Unchecking every subscriber sent the email to **all** of them: an empty selection was treated as "no filter".
+- Unchecking every recipient sent the email to **all** of them: an empty selection was treated as "no filter".
 - Lists silently stopped at 100 records, because Airtable pages its results.
 - Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
@@ -169,63 +201,9 @@ flowchart LR
 - Anything a server returns on failure needs the same care as a success response.
 - Edge cases like an empty list deserve their own test.
 - Testing with more data than one page is cheap and catches paging bugs.
-- Monitoring can leak too: unsubscribe tokens in page addresses had to be removed from error reports.
-- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset and a request for made-up data.
-- A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
-
-------------------- | --------------------------------------------------------------------------- |
-| API keys in browser | 0: the Express server is the only thing that talks to Airtable |
-| Automated tests | 70+ server and client unit tests, 27 Playwright end-to-end tests |
-| Test data | end-to-end tests run against a fake Airtable, so they never touch real data |
-| Bugs fixed | 11 found and fixed in one review |
-| Delivery | pull request checks, then staging, then production, all automatic |
-
-### Problem
-
-The Airtable key already stayed on the server, behind an Express proxy. But the login only ran in the browser, so anyone who called the API directly could read, change or delete every subscriber. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
-
-### Architecture
-
-```mermaid
-flowchart LR
-  react["React app"] --> api["Express API /api<br/>signed login token"]
-  api --> proxy["Server-side proxy<br/>Airtable key in env vars"]
-  proxy --> airtable["Airtable REST API"]
-```
-
-```mermaid
-flowchart LR
-  branch["Feature branch"] --> pr["PR to dev<br/>type check, unit tests, build"]
-  pr --> e2e["Playwright e2e<br/>fake Airtable"]
-  e2e --> staging["Merge, deploy<br/>to staging"]
-  staging --> main["PR dev → main<br/>CI again"]
-  main --> prod["Deploy to<br/>production"]
-```
-
-### Key decisions and trade-offs
-
-| Decision                                      | Why                                                             | Trade-off                                                                        |
-| --------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Server-side login with HMAC-signed tokens     | A browser-only login didn't protect the API at all              | One shared demo password; the lockout lives in memory and resets on restart      |
-| Lock an IP out after 5 wrong passwords        | Basic protection against password guessing                      | Visitors behind one shared IP can lock each other out                            |
-| End-to-end tests against a fake Airtable      | Tests must never touch real data, and CI needs no secrets       | The fake can drift from the real API, so it copies Airtable's records and errors |
-| Real email sending turned off in the demo     | With a public password, anyone could send email from my account | The demo marks a campaign as sent and says clearly that no email went out        |
-| Staging before production, with a hotfix path | Changes are checked on a live copy before users see them        | Two environments to keep in sync; a hotfix must be merged back into `dev`        |
-
-### What the review found
-
-- The Airtable token leaked in error responses.
-- Unchecking every subscriber sent the email to **all** of them: an empty selection was treated as "no filter".
-- Lists silently stopped at 100 records, because Airtable pages its results.
-- Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
-- Deleting a record didn't wait for Airtable, so a failure could crash the server.
-
-### Lessons learned
-
-- Anything a server returns on failure needs the same care as a success response.
-- Edge cases like an empty list deserve their own test.
-- Testing with more data than one page is cheap and catches paging bugs.
-- Test data should look like real users' data, including their alphabet.
+- Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports.
+- Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.
+- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.
 - A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
 
 ---
@@ -234,14 +212,14 @@ flowchart LR
 
 ### Tech stack
 
-| Area      | Tools                                                                 |
-| --------- | --------------------------------------------------------------------- |
-| Front-end | React 19, TypeScript (strict), Vite                                   |
-| State     | Redux Toolkit (theme)                                                 |
-| Styling   | styled-components with light and dark themes, self-hosted Inter       |
-| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker |
-| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot               |
-| Hosting   | GitHub Pages, deployed automatically from `main`                      |
+| Area      | Tools                                                                                 |
+| --------- | ------------------------------------------------------------------------------------- |
+| Front-end | React 19, TypeScript (strict), Vite                                                   |
+| State     | Redux Toolkit (theme)                                                                 |
+| Styling   | styled-components with light and dark themes, self-hosted Inter and Plus Jakarta Sans |
+| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker                 |
+| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot                               |
+| Hosting   | GitHub Pages, deployed automatically from `main`                                      |
 
 ### Getting started
 
@@ -273,12 +251,14 @@ Work happens on the `dev` branch. Every push to `dev` or `main` and every pull r
 
 All text lives in data files, not in components:
 
-| File                                              | Content                                                                      |
-| ------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn |
-| `src/features/Homepage/skillsData.ts`             | Core skills (eight chips) and tools                                          |
-| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                               |
-| `src/features/Homepage/Portfolio/projectsData.ts` | Projects and their optional `caseStudy` write-ups                            |
-| `src/features/Homepage/qualityData.ts`            | The "How this site is tested" section                                        |
+| File                                              | Content                                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                | Name, job titles, headline, target roles, location, bio, contact text, LinkedIn                         |
+| `src/features/Homepage/howITestData.ts`           | The "How I test at work" section                                                                        |
+| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages                                         |
+| `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |
+| `src/features/Homepage/experienceData.ts`         | Experience, education and certifications                                                                |
+| `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
+| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
 
-To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project moves from a tile to a full case-study card on the site. Keep this README's case study in step with the homepage one.
+To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project then shows as a card whose "Read the case study" button opens the full write-up. Keep this README's case study in step with the homepage one.

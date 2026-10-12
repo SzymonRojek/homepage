@@ -1,25 +1,39 @@
-import { Container } from "./styled";
-import { ThemeSwitch } from "../../common/ThemeSwitch";
+import { Container, SkipLink } from "./styled";
+import { useInitialScroll } from "../../common/useInitialScroll";
+import { TopBar } from "./TopBar";
 import { MainHeader } from "./MainHeader";
+import { Mindset } from "./Mindset";
+import { HowITest } from "./HowITest";
 import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
-import { Quality } from "./Quality";
+import { Education } from "./Education";
 import { Footer } from "./Footer";
 
-export const Homepage = () => (
-  <Container>
-    <ThemeSwitch />
-    <MainHeader />
-    <main>
-      <Experience />
+export const Homepage = () => {
+  useInitialScroll();
 
-      <Portfolio />
+  return (
+    <>
+      <SkipLink href="#main">Skip to content</SkipLink>
+      <TopBar />
+      <MainHeader />
+      <Container>
+        <main id="main" tabIndex={-1}>
+          <Mindset />
 
-      <Quality />
+          <HowITest />
 
-      <Skills />
-    </main>
-    <Footer />
-  </Container>
-);
+          <Experience />
+
+          <Portfolio />
+
+          <Skills />
+
+          <Education />
+        </main>
+        <Footer />
+      </Container>
+    </>
+  );
+};

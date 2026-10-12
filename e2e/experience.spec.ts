@@ -18,46 +18,13 @@ test.describe("Experience", () => {
     ]);
   });
 
-  test("lists education with school and year", async ({ page }) => {
-    const items = page
-      .getByRole("region", { name: "Experience" })
-      .getByRole("listitem")
-      .filter({ hasText: "Master of Theology" });
-    await expect(items).toContainText("Nicolaus Copernicus University, Toruń");
-    await expect(items).toContainText("2012");
-  });
-
-  test("lists the ISTQB certification first, as in progress", async ({
+  test("shows only the job: education and languages live elsewhere", async ({
     page,
   }) => {
     const experience = page.getByRole("region", { name: "Experience" });
 
-    await expect(
-      experience.getByRole("listitem").filter({ hasText: "ISTQB" }),
-    ).toContainText("In progress");
-    await expect(
-      experience
-        .getByRole("article")
-        .filter({ hasText: "Education" })
-        .getByRole("listitem")
-        .first(),
-    ).toContainText("ISTQB");
-  });
-
-  test("lists languages and interests", async ({ page }) => {
-    const list = page
-      .getByRole("region", { name: "Experience" })
-      .getByRole("list", { name: "Languages and interests" });
-
-    await expect(list).toContainText("Polish");
-    await expect(list).toContainText("Native");
-    await expect(list).toContainText("English");
-    await expect(list).toContainText("Professional working proficiency");
-    await expect(
-      list.getByRole("link", { name: "my guitar website" }),
-    ).toHaveAttribute(
-      "href",
-      "https://szymonrojek.github.io/my-music-website/",
-    );
+    await expect(experience.getByText("ISTQB")).toHaveCount(0);
+    await expect(experience.getByText("Polish")).toHaveCount(0);
+    await expect(experience.getByText("Interests")).toHaveCount(0);
   });
 });

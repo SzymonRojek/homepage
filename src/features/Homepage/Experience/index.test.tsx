@@ -21,16 +21,6 @@ vi.mock("../experienceData", () => ({
       groups: [{ title: "Manual", points: ["Run tests."] }],
     },
   ],
-  education: [
-    { title: "Certificate", school: "Board", year: "2025" },
-    { title: "Course", school: "School" },
-  ],
-  languages: [{ name: "Polish", level: "Native" }],
-  interests: [
-    { name: "Guitar", url: "https://example.com/guitar", linkText: "site" },
-    { name: "Swimming" },
-    { name: "Cycling" },
-  ],
 }));
 
 const renderExperience = () =>
@@ -54,40 +44,11 @@ describe("Experience", () => {
     expect(within(section).getByText("Write tests.")).toBeVisible();
   });
 
-  it("shows the year only for education items that have one", () => {
+  it("shows only jobs: education and languages have their own places", () => {
     renderExperience();
 
-    const items = screen
-      .getAllByRole("listitem")
-      .filter((item) => /Certificate|Course/.test(item.textContent ?? ""));
-
-    expect(items[0]).toHaveTextContent("2025");
-    expect(items[1]).toHaveTextContent(/^CourseSchool$/);
-    // No empty year badge is rendered for an item without a year.
-    expect(items[1].querySelector("span")).toBeNull();
-  });
-
-  it("shows languages with their level and links interests that have a site", () => {
-    renderExperience();
-
-    const list = screen.getByRole("list", { name: "Languages and interests" });
-    expect(within(list).getByText("Polish")).toBeVisible();
-    expect(within(list).getByText("Native")).toBeVisible();
-    expect(within(list).getByText(/Guitar/)).toHaveTextContent("Guitar (site)");
-    expect(within(list).getByRole("link", { name: "site" })).toHaveAttribute(
-      "href",
-      "https://example.com/guitar",
-    );
-    expect(within(list).getAllByRole("link")).toHaveLength(1);
-  });
-
-  it("separates interests with commas", () => {
-    renderExperience();
-
-    const interests = screen
-      .getByRole("list", { name: "Languages and interests" })
-      .querySelector("li:last-child p:last-child");
-
-    expect(interests).toHaveTextContent(/^Guitar \(site\), Swimming, Cycling$/);
+    const section = screen.getByRole("region", { name: "Experience" });
+    expect(within(section).queryByText(/Education/)).toBeNull();
+    expect(within(section).queryByText(/Languages/)).toBeNull();
   });
 });

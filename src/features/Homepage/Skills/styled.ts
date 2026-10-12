@@ -1,37 +1,47 @@
 import styled from "styled-components";
-import { Highlight, Highlights } from "../MainHeader/styled";
+import { Card, Chip, Chips } from "../Section";
 
-export const Card = styled.div`
-  padding: 32px;
-  background: ${({ theme }) => theme.colors.boxBackground};
-  box-shadow: ${({ theme }) => theme.boxShadow};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
-  transition: background 0.3s;
+type Accent = "qa" | "dev" | "both";
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 16px;
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 `;
 
-export const SkillList = styled(Highlights)`
-  gap: 12px;
-  margin: 0;
+export const Group = styled(Card)``;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 8px;
-    margin: 0;
-  }
+export const GroupTitle = styled.h3<{ $accent: Accent }>`
+  margin: 0 0 16px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme, $accent }) =>
+    $accent === "both" ? theme.colors.primary : theme.colors[$accent].accent};
 `;
 
-export const Skill = styled(Highlight)`
-  background: ${({ theme }) => theme.colors.site.background};
+export const SkillList = styled(Chips)``;
+
+export const Skill = styled(Chip)`
+  font-family: inherit;
+  font-size: 15px;
+  padding: 6px 12px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 14px;
+  }
 `;
 
 export const Tools = styled.p`
   margin: 24px 0 0;
-  padding-top: 20px;
-  line-height: 1.5;
-  border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
+  line-height: 1.6;
 
   strong {
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -39,7 +49,14 @@ export const Tools = styled.p`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 16px;
-    padding-top: 12px;
     font-size: 14px;
+  }
+`;
+
+export const Languages = styled(Tools)`
+  margin-top: 8px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 6px;
   }
 `;
