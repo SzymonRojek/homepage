@@ -45,8 +45,16 @@ export const Logo = styled.span`
   font-family: ${({ theme }) => theme.fontMono};
   font-size: 15px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.onGradient};
-  background: ${({ theme }) => theme.colors.gradient};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  /* A gradient border around a calm tile: the colours stay, but quietly. */
+  background:
+    linear-gradient(
+        ${({ theme }) => theme.colors.boxBackground},
+        ${({ theme }) => theme.colors.boxBackground}
+      )
+      padding-box,
+    ${({ theme }) => theme.colors.gradient} border-box;
+  border: 2px solid transparent;
   border-radius: 12px;
 `;
 
@@ -68,17 +76,8 @@ export const BrandName = styled.span`
 
 export const BrandTagline = styled.span`
   margin-top: 2px;
-  font-family: ${({ theme }) => theme.fontMono};
-  font-size: 12px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.muted};
-
-  span:first-child {
-    color: ${({ theme }) => theme.colors.dev.accent};
-  }
-
-  span:last-child {
-    color: ${({ theme }) => theme.colors.qa.accent};
-  }
 `;
 
 export const Nav = styled.nav`

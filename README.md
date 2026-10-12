@@ -12,7 +12,7 @@
 ## Why this site exists (30-second summary)
 
 - **Who:** Software Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
-- **Looking for:** QA Engineer and Data/ETL Test Analyst roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
+- **Looking for:** Test Automation and QA Engineer roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                      |
@@ -23,6 +23,16 @@
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                 |
 | Deploys               | only from `main`, only after every check passes, only through a PR I merge           |
+
+## Links for job applications
+
+The projects open in the tester (automation) view by default. A link can open them in another view, so each CV can point to the part that matters for that role:
+
+| Applying for        | Link                                                            |
+| ------------------- | --------------------------------------------------------------- |
+| Test automation, QA | https://szymonrojek.github.io/homepage/                         |
+| Developer           | https://szymonrojek.github.io/homepage/?view=developer#projects |
+| Both sides at once  | https://szymonrojek.github.io/homepage/?view=both#projects      |
 
 ## Case study: this website, built and tested like a real product
 
@@ -242,7 +252,7 @@ All text lives in data files, not in components:
 | `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn                            |
 | `src/features/Homepage/skillsData.ts`             | Testing skills, development skills and tools                                                            |
 | `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |
-| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                                                          |
+| `src/features/Homepage/experienceData.ts`         | Experience, education and languages                                                                     |
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
 | `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
 

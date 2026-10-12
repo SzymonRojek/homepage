@@ -53,17 +53,15 @@ const lensHeadings = () =>
     .filter((text) => text?.startsWith("How I"));
 
 describe("Portfolio", () => {
-  it("starts with both views of every case study", () => {
+  it("starts with the tester view of every case study", () => {
     renderPortfolio();
 
-    expect(screen.getByRole("button", { name: "Both" })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: "Tester" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
     expect(lensHeadings()).toEqual([
-      "How I built it",
       "How I proved it works",
-      "How I built it",
       "How I proved it works",
     ]);
   });

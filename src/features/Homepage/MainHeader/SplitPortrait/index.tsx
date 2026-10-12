@@ -10,12 +10,12 @@ interface SplitPortraitProps {
 const halves = [
   {
     side: "developer",
-    badge: "Build",
+    badge: "Code",
     label: "See my projects from the developer side",
   },
   {
     side: "tester",
-    badge: "Protect",
+    badge: "Test",
     label: "See my projects from the tester side",
   },
 ] as const;
@@ -46,7 +46,9 @@ export const SplitPortrait = ({ src, name }: SplitPortraitProps) => {
         ))}
         <Divider aria-hidden="true" />
       </Portrait>
-      <Hint aria-hidden="true">Pick a side</Hint>
+      <Hint aria-hidden="true">
+        Click a side: my projects as a tester or a developer
+      </Hint>
     </Figure>
   );
 };

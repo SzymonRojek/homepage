@@ -3,21 +3,15 @@ export const profile = {
   title: "Software Test Engineer",
   // Shown next to the title: the coding side is self-taught, not a job.
   secondaryTitle: "self-taught developer",
-  tagline: "I build software, then I try to break it.",
-  availability: "Open to QA Engineer & Data/ETL Test Analyst roles",
+  tagline: "I find what breaks before your users do.",
+  availability: "Open to Test Automation & QA Engineer roles",
   location: [
     "Based in Hove, UK",
     "Full right to work in the UK",
     "Open to relocation",
   ],
-  bio: "I test data migrations and ETL in financial services at Equiniti: turning mapping documents into traceable test cases, reconciling source and target data with SQL and tracing defects to their root cause. Outside work I build full-stack apps in React, TypeScript and Express, and test them like production systems with Playwright, unit tests and CI.",
-  highlights: [
-    "4 years in software testing",
-    "Data migration & ETL testing",
-    "SQL reconciliation",
-    "REST API testing",
-  ],
+  bio: "Four years testing financial data migrations at Equiniti: SQL reconciliation, business logic and root-cause analysis. I taught myself to code, so I automate tests with Playwright and build full-stack apps to practise.",
   contactText:
-    "I'm open to QA Engineer and Data/ETL Test Analyst roles, based in Hove with full right to work in the UK. If your team wants a tester who also reads and writes the code, I'd like to hear from you.",
+    "I'm open to Test Automation and QA Engineer roles, based in Hove with full right to work in the UK. If your team wants a tester who also reads and writes the code, I'd like to hear from you.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
 };

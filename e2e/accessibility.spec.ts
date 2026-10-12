@@ -13,7 +13,12 @@ for (const colorScheme of ["light", "dark"] as const) {
         }),
       ).toBeVisible();
 
-      // Scan the full case studies too, not only what is visible by default.
+      // Scan the full case studies too, not only what is visible by default:
+      // both the developer and the tester columns, and every <details>.
+      await page
+        .getByRole("group", { name: "View projects as" })
+        .getByRole("button", { name: "Both" })
+        .click();
       await page
         .locator("details")
         .evaluateAll((elements) =>

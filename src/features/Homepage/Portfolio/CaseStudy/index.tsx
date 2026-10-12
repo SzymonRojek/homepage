@@ -47,7 +47,7 @@ interface CaseStudyProps {
 
 const lensTitles = {
   developer: { label: "Developer view", title: "How I built it" },
-  tester: { label: "Tester view", title: "How I proved it works" },
+  tester: { label: "Automation view", title: "How I proved it works" },
 };
 
 const LensColumn = ({

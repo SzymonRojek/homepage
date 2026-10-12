@@ -13,6 +13,7 @@ test.describe("Navigation", () => {
       ["Experience", "Experience"],
       ["Skills", "Skills"],
       ["Mindset", "Two mindsets, one goal"],
+      ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {
         await nav.getByRole("link", { name: link }).click();

@@ -11,7 +11,6 @@ import {
   Points,
   Stack,
   Join,
-  Proof,
 } from "./styled";
 
 export const Mindset = () => (
@@ -20,7 +19,7 @@ export const Mindset = () => (
     <SectionIntro>{mindsetIntro}</SectionIntro>
     <Grid>
       {mindsets.map(
-        ({ side, label, title, context, summary, points, stack, proof }) => (
+        ({ side, label, title, context, summary, points, stack }) => (
           <Side key={side} $side={side} aria-labelledby={`mindset-${side}`}>
             <SideHeader>
               <SideTitle id={`mindset-${side}`}>{title}</SideTitle>
@@ -38,11 +37,6 @@ export const Mindset = () => (
                 <Chip key={item}>{item}</Chip>
               ))}
             </Stack>
-            {proof && (
-              <Proof $side={side} href={proof.href}>
-                {proof.text} ↓
-              </Proof>
-            )}
           </Side>
         ),
       )}

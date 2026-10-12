@@ -14,7 +14,7 @@ test.describe("Header and footer", () => {
       page.getByText("Software Test Engineer").first(),
     ).toBeVisible();
     await expect(
-      page.getByText("I build software, then I try to break it."),
+      page.getByText("I find what breaks before your users do."),
     ).toBeVisible();
     await expect(page.getByText("· self-taught developer")).toBeVisible();
   });
@@ -25,7 +25,7 @@ test.describe("Header and footer", () => {
     const header = page.getByRole("banner");
 
     await expect(
-      header.getByText("Open to QA Engineer & Data/ETL Test Analyst roles"),
+      header.getByText("Open to Test Automation & QA Engineer roles"),
     ).toBeVisible();
     await expect(
       header.getByText(
@@ -33,13 +33,11 @@ test.describe("Header and footer", () => {
       ),
     ).toBeVisible();
     await expect(
-      header.getByRole("list", { name: "Key skills" }).getByRole("listitem"),
-    ).toHaveText([
-      "4 years in software testing",
-      "Data migration & ETL testing",
-      "SQL reconciliation",
-      "REST API testing",
-    ]);
+      header.getByText(/^Four years testing financial data/),
+    ).toBeVisible();
+    await expect(header.getByRole("list", { name: "Key skills" })).toHaveCount(
+      0,
+    );
   });
 
   test("has contact links", async ({ page }) => {
@@ -48,11 +46,13 @@ test.describe("Header and footer", () => {
       "mailto:sz.rojek@gmail.com",
     );
 
-    const linkedin = page
-      .getByRole("banner")
-      .getByRole("link", { name: "LinkedIn", exact: true });
-    await expect(linkedin).toHaveAttribute("href", /linkedin\.com\/in\//);
-    await expect(linkedin).toHaveAttribute("target", "_blank");
+    // The hero has one button; LinkedIn lives in the footer.
+    await expect(
+      page.getByRole("banner").getByRole("link", { name: "LinkedIn" }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("contentinfo").getByRole("link", { name: "LinkedIn" }),
+    ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 
   test("shows the main sections in recruiter order", async ({ page }) => {
@@ -60,6 +60,7 @@ test.describe("Header and footer", () => {
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
       "Two mindsets, one goal",
+      "How I test at work",
       "Projects",
       "Experience",
       "Skills",

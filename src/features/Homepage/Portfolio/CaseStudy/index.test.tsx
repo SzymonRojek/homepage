@@ -151,9 +151,9 @@ describe("CaseStudy", () => {
       ).getByText("React"),
     ).toBeVisible();
     expect(
-      within(screen.getByRole("list", { name: "Tester view stack" })).getByText(
-        "Playwright",
-      ),
+      within(
+        screen.getByRole("list", { name: "Automation view stack" }),
+      ).getByText("Playwright"),
     ).toBeVisible();
   });
 

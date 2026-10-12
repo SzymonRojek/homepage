@@ -5,9 +5,9 @@ import type { ProjectView } from "../projectViewSlice";
 export type { ProjectView };
 
 const views: { view: ProjectView; label: string }[] = [
-  { view: "both", label: "Both" },
-  { view: "developer", label: "Developer" },
   { view: "tester", label: "Tester" },
+  { view: "developer", label: "Developer" },
+  { view: "both", label: "Both" },
 ];
 
 interface LensSwitchProps {

@@ -18,6 +18,7 @@ import {
 // Each href points to the id of a section heading.
 const navLinks = [
   { href: "#mindset", label: "Mindset" },
+  { href: "#how-i-test", label: "How I test" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
@@ -35,9 +36,7 @@ export const TopBar = () => (
         <Logo aria-hidden="true">{initials}</Logo>
         <BrandText aria-hidden="true">
           <BrandName>{profile.name}</BrandName>
-          <BrandTagline>
-            <span>build</span> · <span>test</span>
-          </BrandTagline>
+          <BrandTagline>{profile.title}</BrandTagline>
         </BrandText>
       </Brand>
       <Nav aria-label="Sections">

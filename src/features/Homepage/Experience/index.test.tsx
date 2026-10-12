@@ -26,11 +26,6 @@ vi.mock("../experienceData", () => ({
     { title: "Course", school: "School" },
   ],
   languages: [{ name: "Polish", level: "Native" }],
-  interests: [
-    { name: "Guitar", url: "https://example.com/guitar", linkText: "site" },
-    { name: "Swimming" },
-    { name: "Cycling" },
-  ],
 }));
 
 const renderExperience = () =>
@@ -67,27 +62,13 @@ describe("Experience", () => {
     expect(items[1].querySelector("span")).toBeNull();
   });
 
-  it("shows languages with their level and links interests that have a site", () => {
+  it("shows languages with their level and no interests", () => {
     renderExperience();
 
-    const list = screen.getByRole("list", { name: "Languages and interests" });
+    const list = screen.getByRole("list", { name: "Languages" });
     expect(within(list).getByText("Polish")).toBeVisible();
     expect(within(list).getByText("Native")).toBeVisible();
-    expect(within(list).getByText(/Guitar/)).toHaveTextContent("Guitar (site)");
-    expect(within(list).getByRole("link", { name: "site" })).toHaveAttribute(
-      "href",
-      "https://example.com/guitar",
-    );
-    expect(within(list).getAllByRole("link")).toHaveLength(1);
-  });
-
-  it("separates interests with commas", () => {
-    renderExperience();
-
-    const interests = screen
-      .getByRole("list", { name: "Languages and interests" })
-      .querySelector("li:last-child p:last-child");
-
-    expect(interests).toHaveTextContent(/^Guitar \(site\), Swimming, Cycling$/);
+    expect(within(list).getAllByRole("listitem")).toHaveLength(1);
+    expect(screen.queryByText("Interests")).not.toBeInTheDocument();
   });
 });

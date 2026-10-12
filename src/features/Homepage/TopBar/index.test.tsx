@@ -30,12 +30,14 @@ describe("TopBar", () => {
     ).getAllByRole("link");
     expect(links.map(({ textContent }) => textContent)).toEqual([
       "Mindset",
+      "How I test",
       "Projects",
       "Experience",
       "Skills",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "#mindset",
+      "#how-i-test",
       "#projects",
       "#experience",
       "#skills",
@@ -44,6 +46,8 @@ describe("TopBar", () => {
 
   it("has a way back to the top, a contact link and the theme switch", () => {
     renderTopBar();
+
+    expect(screen.getByText("Software Test Engineer")).toBeInTheDocument();
 
     expect(
       screen.getByRole("link", { name: "Szymon Rojek, back to top" }),

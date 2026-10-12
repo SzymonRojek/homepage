@@ -80,20 +80,3 @@ export const languages: Language[] = [
   { name: "Polish", level: "Native" },
   { name: "English", level: "Professional working proficiency" },
 ];
-
-export interface Interest {
-  name: string;
-  // Optional link, for example to a project built around the interest.
-  url?: string;
-  linkText?: string;
-}
-
-export const interests: Interest[] = [
-  {
-    name: "Classical guitar",
-    url: "https://szymonrojek.github.io/my-music-website/",
-    linkText: "my guitar website",
-  },
-  { name: "Swimming" },
-  { name: "Cycling" },
-];

@@ -143,16 +143,3 @@ export const Join = styled.span`
     display: none;
   }
 `;
-
-export const Proof = styled.a<{ $side: MindsetSide }>`
-  align-self: flex-start;
-  margin-top: 16px;
-  font-weight: 700;
-  color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-
-  &:hover {
-    border-bottom-width: 2px;
-  }
-`;

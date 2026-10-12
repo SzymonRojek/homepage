@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ButtonLinks } from "../ButtonLink";
 
 export const Wrapper = styled.header`
   position: relative;
@@ -9,7 +10,8 @@ export const Wrapper = styled.header`
   align-items: center;
   padding: 72px 0 24px;
 
-  /* Dotted grid with a green (build) and a cyan (test) glow, faded at the edges. */
+  /* Dotted grid and a soft glow only behind the portrait, so the photo is
+     the one strong element in the hero. */
   &::before {
     content: "";
     position: absolute;
@@ -17,21 +19,16 @@ export const Wrapper = styled.header`
     z-index: -1;
     background:
       radial-gradient(
-        circle at 10% 30%,
-        ${({ theme }) => theme.colors.glow.dev},
-        transparent 40%
-      ),
-      radial-gradient(
-        circle at 90% 70%,
+        circle at 16% 50%,
         ${({ theme }) => theme.colors.glow.qa},
-        transparent 40%
+        transparent 30%
       ),
       radial-gradient(
           ${({ theme }) => theme.colors.gridDot} 1px,
           transparent 1px
         )
         0 0 / 24px 24px;
-    mask-image: radial-gradient(ellipse at 50% 45%, #000 45%, transparent 80%);
+    mask-image: radial-gradient(circle at 16% 50%, #000 10%, transparent 34%);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -46,12 +43,22 @@ export const Wrapper = styled.header`
 
     &::before {
       inset: 0 -12px;
+      mask-image: radial-gradient(circle at 50% 22%, #000 10%, transparent 45%);
     }
   }
 `;
 
+// On phones the photo sits centred above the text, so the text centres too.
 export const Details = styled.div`
   min-width: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    text-align: center;
+
+    ${ButtonLinks} {
+      justify-content: center;
+    }
+  }
 `;
 
 export const Availability = styled.p`
@@ -116,27 +123,21 @@ export const SecondaryTitle = styled.span`
   color: ${({ theme }) => theme.colors.muted};
 `;
 
-// Darker gradient stops in the light theme keep the text at 4.5:1.
 export const Tagline = styled.p`
-  width: fit-content;
-  margin: 6px 0 0;
-  font-size: 22px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.dev.accent};
-  background: ${({ theme }) => theme.colors.gradientText};
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 8px 0 0;
+  font-size: 19px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.qa.accent};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 18px;
+    font-size: 17px;
   }
 `;
 
 export const Location = styled.p`
-  margin: 16px 0 0;
-  font-size: 15px;
-  font-weight: 600;
+  margin: 20px 0 0;
+  font-size: 14px;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.muted};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -144,41 +145,15 @@ export const Location = styled.p`
   }
 `;
 
+// About 70 characters a line, a comfortable reading width.
 export const Summary = styled.p`
-  max-width: 680px;
-  margin: 16px 0 0;
+  max-width: 36em;
+  margin: 20px 0 0;
   font-size: 18px;
   line-height: 1.6;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-inline: auto;
     font-size: 15px;
-  }
-`;
-
-export const Highlights = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 24px 0 0;
-  padding: 0;
-  list-style: none;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 16px;
-  }
-`;
-
-export const Highlight = styled.li`
-  padding: 6px 14px;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  background: ${({ theme }) => theme.colors.boxBackground};
-  border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 999px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 13px;
-    padding: 4px 10px;
   }
 `;

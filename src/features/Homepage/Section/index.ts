@@ -9,7 +9,7 @@ export const Section = styled.section`
   }
 `;
 
-// A short gradient bar above every section heading ties the page together.
+// A short bar in the tester colour above every section heading.
 export const SectionHeader = styled(SubHeader)`
   margin-bottom: 28px;
 
@@ -19,7 +19,7 @@ export const SectionHeader = styled(SubHeader)`
     width: 48px;
     height: 4px;
     margin-bottom: 16px;
-    background: ${({ theme }) => theme.colors.gradient};
+    background: ${({ theme }) => theme.colors.primary};
     border-radius: 2px;
   }
 

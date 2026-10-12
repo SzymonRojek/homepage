@@ -2,7 +2,7 @@ export type MindsetSide = "developer" | "tester";
 
 export interface Mindset {
   side: MindsetSide;
-  // Short label shown in the card's corner, e.g. "Build".
+  // Short label shown in the card's corner, e.g. "Test".
   label: string;
   title: string;
   // Where this side comes from, e.g. "My profession: 4 years at Equiniti".
@@ -10,8 +10,6 @@ export interface Mindset {
   summary: string;
   points: string[];
   stack: string[];
-  // Optional link to where the claim is shown in practice.
-  proof?: { text: string; href: string };
 }
 
 // Every point must be backed by the experience section or a project's repo.
@@ -21,7 +19,7 @@ export const mindsetIntro =
 export const mindsets: Mindset[] = [
   {
     side: "tester",
-    label: "Protect",
+    label: "Test",
     title: "Tester mindset",
     context: "My profession: 4 years at Equiniti",
     summary: "I find what breaks before users do, and prove that it's fixed.",
@@ -40,14 +38,10 @@ export const mindsets: Mindset[] = [
       "axe",
       "Azure DevOps",
     ],
-    proof: {
-      text: "See it in practice: this site's CI pipeline",
-      href: "#case-study-homepage",
-    },
   },
   {
     side: "developer",
-    label: "Build",
+    label: "Code",
     title: "Developer mindset",
     context: "Self-taught: my own projects",
     summary:

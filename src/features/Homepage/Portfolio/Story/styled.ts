@@ -48,8 +48,8 @@ export const StepNumber = styled.span`
   height: 36px;
   font-family: ${({ theme }) => theme.fontMono};
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.onGradient};
-  background: ${({ theme }) => theme.colors.gradient};
+  color: ${({ theme }) => theme.colors.onPrimary};
+  background: ${({ theme }) => theme.colors.primary};
   border-radius: 50%;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

@@ -18,7 +18,7 @@ export const Portrait = styled.div`
   overflow: hidden;
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 28px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
   box-shadow: ${({ theme }) => theme.boxShadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -27,7 +27,6 @@ export const Portrait = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     width: 200px;
-    border-radius: 20px;
   }
 `;
 
@@ -47,11 +46,13 @@ export const Half = styled.a<{ $side: Side }>`
   }
 
   &:first-child::after {
-    border-radius: 28px 0 0 28px;
+    border-radius: ${({ theme }) =>
+      `${theme.borderRadiusSmall} 0 0 ${theme.borderRadiusSmall}`};
   }
 
   &:nth-child(2)::after {
-    border-radius: 0 28px 28px 0;
+    border-radius: ${({ theme }) =>
+      `0 ${theme.borderRadiusSmall} ${theme.borderRadiusSmall} 0`};
   }
 
   &:hover::after,
@@ -72,9 +73,7 @@ export const Photo = styled.img<{ $side: Side }>`
   max-width: none;
   height: 100%;
   object-fit: cover;
-  transition:
-    filter 0.4s,
-    transform 0.4s;
+  transition: transform 0.4s;
 
   ${({ $side }) =>
     $side === "developer"
@@ -88,17 +87,6 @@ export const Photo = styled.img<{ $side: Side }>`
 
   ${Half}:hover &, ${Half}:focus-visible & {
     transform: scale(1.04);
-  }
-
-  ${Half}:hover &, ${Half}:focus-visible & {
-    ${({ $side }) =>
-      $side === "developer"
-        ? css`
-            filter: grayscale(0.6) contrast(1.15);
-          `
-        : css`
-            filter: saturate(1.15);
-          `}
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -145,7 +133,8 @@ export const Divider = styled.span`
 `;
 
 export const Hint = styled.span`
-  font-family: ${({ theme }) => theme.fontMono};
+  max-width: 300px;
   font-size: 13px;
+  text-align: center;
   color: ${({ theme }) => theme.colors.muted};
 `;

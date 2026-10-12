@@ -5,9 +5,7 @@ test.describe("Projects", () => {
     await page.goto("./");
   });
 
-  test("shows test projects first and other work separately", async ({
-    page,
-  }) => {
+  test("shows the case studies and no other projects", async ({ page }) => {
     await test.step("testing projects as case studies, in order", async () => {
       await expect(
         page.getByRole("article").filter({ hasText: "Case study" }),
@@ -17,14 +15,10 @@ test.describe("Projects", () => {
       ).toHaveCount(0);
     });
 
-    await test.step("front-end work under Other projects", async () => {
-      const other = page.getByRole("region", { name: "Other projects" });
-      await expect(other.getByRole("listitem")).toHaveCount(1);
-      await expect(other).toContainText("Role-based sign-in app");
-      await expect(other.getByRole("link", { name: "Code" })).toHaveAttribute(
-        "href",
-        "https://github.com/SzymonRojek/react-sign-in-up",
-      );
+    await test.step("no Other projects section", async () => {
+      await expect(
+        page.getByRole("region", { name: "Other projects" }),
+      ).toHaveCount(0);
     });
   });
 
@@ -83,7 +77,6 @@ test.describe("Projects", () => {
       "Research",
       "Solution",
       "Value",
-      "How I built it",
       "How I proved it works",
       "Problem",
       "Constraints",
@@ -142,6 +135,10 @@ test.describe("Projects", () => {
     const caseStudy = page.getByRole("article", {
       name: "Talent Outreach: job offers to the right candidates",
     });
+    await page
+      .getByRole("group", { name: "View projects as" })
+      .getByRole("button", { name: "Both" })
+      .click();
 
     await expect(
       caseStudy.getByRole("heading", { name: "How I built it" }),
@@ -150,7 +147,7 @@ test.describe("Projects", () => {
       caseStudy.getByRole("heading", { name: "How I proved it works" }),
     ).toBeVisible();
     await expect(
-      caseStudy.getByRole("list", { name: "Tester view stack" }),
+      caseStudy.getByRole("list", { name: "Automation view stack" }),
     ).toContainText("Newman");
     await expect(
       caseStudy.getByRole("list", { name: "Developer view stack" }),
@@ -163,30 +160,53 @@ test.describe("Projects", () => {
     const views = page.getByRole("group", { name: "View projects as" });
 
     await page
-      .getByRole("link", { name: "See my projects from the tester side" })
+      .getByRole("link", { name: "See my projects from the developer side" })
       .click();
 
     await expect(page).toHaveURL(/#projects$/);
     await expect(
       page.getByRole("heading", { level: 2, name: "Projects" }),
     ).toBeInViewport();
-    await expect(views.getByRole("button", { name: "Tester" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
     await expect(
-      page.getByRole("heading", { name: "How I built it" }),
+      views.getByRole("button", { name: "Developer" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      page.getByRole("heading", { name: "How I proved it works" }),
     ).toHaveCount(0);
 
-    await test.step("the developer half works from the keyboard", async () => {
+    await test.step("the tester half works from the keyboard", async () => {
       await page
-        .getByRole("link", { name: "See my projects from the developer side" })
+        .getByRole("link", { name: "See my projects from the tester side" })
         .focus();
       await page.keyboard.press("Enter");
       await expect(
-        views.getByRole("button", { name: "Developer" }),
+        views.getByRole("button", { name: "Tester" }),
       ).toHaveAttribute("aria-pressed", "true");
+      await expect(
+        page.getByRole("heading", { name: "How I built it" }),
+      ).toHaveCount(0);
     });
+  });
+
+  test("a link can open the projects in the developer view", async ({
+    page,
+  }) => {
+    await page.goto("./?view=developer#projects");
+
+    await expect(
+      page
+        .getByRole("group", { name: "View projects as" })
+        .getByRole("button", { name: "Developer" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      page.getByRole("heading", { name: "How I built it" }),
+    ).toHaveCount(2);
+    await expect(
+      page.getByRole("heading", { name: "How I proved it works" }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Projects" }),
+    ).toBeInViewport();
   });
 
   test("the view switch shows the developer or the tester side", async ({
@@ -198,21 +218,17 @@ test.describe("Projects", () => {
       name: "How I proved it works",
     });
 
-    await test.step("starts with both sides", async () => {
-      await expect(views.getByRole("button", { name: "Both" })).toHaveAttribute(
-        "aria-pressed",
-        "true",
-      );
-      await expect(built).toHaveCount(2);
-      await expect(tested).toHaveCount(2);
-    });
-
-    await test.step("tester view hides how it was built", async () => {
-      await views.getByRole("button", { name: "Tester" }).click();
+    await test.step("starts with the tester side only", async () => {
       await expect(
         views.getByRole("button", { name: "Tester" }),
       ).toHaveAttribute("aria-pressed", "true");
       await expect(built).toHaveCount(0);
+      await expect(tested).toHaveCount(2);
+    });
+
+    await test.step("both views show the two sides", async () => {
+      await views.getByRole("button", { name: "Both" }).click();
+      await expect(built).toHaveCount(2);
       await expect(tested).toHaveCount(2);
     });
 
@@ -226,11 +242,10 @@ test.describe("Projects", () => {
       await views.getByRole("button", { name: "Developer" }).focus();
       await page.keyboard.press("Shift+Tab");
       await page.keyboard.press("Enter");
-      await expect(views.getByRole("button", { name: "Both" })).toHaveAttribute(
-        "aria-pressed",
-        "true",
-      );
-      await expect(tested).toHaveCount(2);
+      await expect(
+        views.getByRole("button", { name: "Tester" }),
+      ).toHaveAttribute("aria-pressed", "true");
+      await expect(built).toHaveCount(0);
     });
   });
 
@@ -263,22 +278,6 @@ test.describe("Projects", () => {
     await expect(
       caseStudy.getByRole("list", { name: "CI checks" }),
     ).toHaveCount(0);
-  });
-
-  test("the tester mindset links to the pipeline as proof", async ({
-    page,
-  }) => {
-    await page
-      .getByRole("article", { name: "Tester mindset" })
-      .getByRole("link", { name: /See it in practice/ })
-      .click();
-
-    await expect(page).toHaveURL(/#case-study-homepage$/);
-    await expect(
-      page.getByRole("article", {
-        name: "This website: built and tested like a real product",
-      }),
-    ).toBeInViewport();
   });
 
   test("renders without loading or error states", async ({ page }) => {

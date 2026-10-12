@@ -23,7 +23,7 @@ describe("LensSwitch", () => {
       within(group)
         .getAllByRole("button")
         .map(({ textContent }) => textContent),
-    ).toEqual(["Both", "Developer", "Tester"]);
+    ).toEqual(["Tester", "Developer", "Both"]);
   });
 
   it("marks only the current view as pressed", () => {

@@ -6,7 +6,17 @@ interface ProjectViewState {
   view: ProjectView;
 }
 
-const initialState: ProjectViewState = { view: "both" };
+const views: ProjectView[] = ["tester", "developer", "both"];
+
+// A CV can link straight to one view, e.g. /homepage/?view=developer#projects.
+// Without a valid ?view= the projects open in the tester (automation) view.
+export const getInitialProjectView = (search = window.location.search) => {
+  const view = new URLSearchParams(search).get("view");
+
+  return views.find((option) => option === view) ?? "tester";
+};
+
+const initialState: ProjectViewState = { view: getInitialProjectView() };
 
 // Shared by the view switch in Projects and the split portrait in the header.
 const projectViewSlice = createSlice({

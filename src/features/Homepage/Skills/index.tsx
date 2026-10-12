@@ -1,19 +1,27 @@
 import { Section, SectionHeader } from "../Section";
-import { devSkills, keySkills, tools } from "../skillsData";
+import {
+  automationSkills,
+  programmingSkills,
+  testingSkills,
+  tools,
+} from "../skillsData";
 import { Grid, Group, GroupTitle, SkillList, Skill, Tools } from "./styled";
 
+// Testing is the profession (cyan), programming is self-taught (green), and
+// automation is where the two meet (both colours).
 const groups = [
-  { side: "tester", title: "Testing & data", skills: keySkills },
-  { side: "developer", title: "Development", skills: devSkills },
+  { accent: "qa", title: "Testing & data", skills: testingSkills },
+  { accent: "both", title: "Test automation", skills: automationSkills },
+  { accent: "dev", title: "Programming", skills: programmingSkills },
 ] as const;
 
 export const Skills = () => (
   <Section aria-labelledby="skills">
     <SectionHeader id="skills">Skills</SectionHeader>
     <Grid>
-      {groups.map(({ side, title, skills }) => (
-        <Group key={side} $side={side}>
-          <GroupTitle $side={side}>{title}</GroupTitle>
+      {groups.map(({ accent, title, skills }) => (
+        <Group key={title} $accent={accent}>
+          <GroupTitle $accent={accent}>{title}</GroupTitle>
           <SkillList aria-label={`${title} skills`}>
             {skills.map((skill) => (
               <Skill key={skill}>{skill}</Skill>

@@ -46,15 +46,6 @@ export const SecondaryButtonLink = styled(ButtonLink)`
   }
 `;
 
-// Square button with only an icon; give it an aria-label.
-export const IconButtonLink = styled(SecondaryButtonLink)`
-  padding: 10px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 9px;
-  }
-`;
-
 export const EnvelopeIcon = styled(Envelope)`
   width: 18px;
   height: 18px;

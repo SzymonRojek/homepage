@@ -2,6 +2,7 @@ import { Container, SkipLink } from "./styled";
 import { TopBar } from "./TopBar";
 import { MainHeader } from "./MainHeader";
 import { Mindset } from "./Mindset";
+import { HowITest } from "./HowITest";
 import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
@@ -15,6 +16,8 @@ export const Homepage = () => (
       <MainHeader />
       <main id="main" tabIndex={-1}>
         <Mindset />
+
+        <HowITest />
 
         <Portfolio />
 

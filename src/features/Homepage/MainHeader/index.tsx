@@ -12,17 +12,12 @@ import {
   SecondaryTitle,
   Tagline,
   Summary,
-  Highlights,
-  Highlight,
 } from "./styled";
-import {
-  ButtonLink,
-  ButtonLinks,
-  IconButtonLink,
-  EnvelopeIcon,
-  LinkedInIcon,
-} from "../ButtonLink";
+import { ButtonLink, ButtonLinks, EnvelopeIcon } from "../ButtonLink";
 
+// One clear path: who I am, what I do, how to reach me. One button only;
+// LinkedIn is in the footer. The location sits under the button: UK
+// recruiters need it, but it shouldn't compete.
 export const MainHeader = () => (
   <Wrapper id="top">
     <SplitPortrait src={szymonRojekProfile} name={profile.name} />
@@ -34,28 +29,14 @@ export const MainHeader = () => (
         <SecondaryTitle> · {profile.secondaryTitle}</SecondaryTitle>
       </Title>
       <Tagline>{profile.tagline}</Tagline>
-      <Location>{profile.location.join(" · ")}</Location>
       <Summary>{profile.bio}</Summary>
-      <Highlights aria-label="Key skills">
-        {profile.highlights.map((highlight) => (
-          <Highlight key={highlight}>{highlight}</Highlight>
-        ))}
-      </Highlights>
       <ButtonLinks>
         <ButtonLink href={`mailto:${email}`} title={email}>
           <EnvelopeIcon aria-hidden="true" />
           Email me
         </ButtonLink>
-        <IconButtonLink
-          href={profile.linkedinUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="LinkedIn"
-          title="LinkedIn"
-        >
-          <LinkedInIcon aria-hidden="true" />
-        </IconButtonLink>
       </ButtonLinks>
+      <Location>{profile.location.join(" · ")}</Location>
     </Details>
   </Wrapper>
 );

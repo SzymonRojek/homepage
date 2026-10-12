@@ -1,14 +1,16 @@
 const colorNames = {
-  ink: "#0B0F17",
-  inkPanel: "#111827",
+  // Dark surfaces, checked for depth: card vs page 1.15:1, border vs card 1.45:1.
+  ink: "#0A0F18",
+  inkPanel: "#151E2E",
+  inkBorder: "#2A3A52",
   inkTerminal: "#0B1220",
-  slate50: "#F8FAFC",
   slate100: "#F1F5F9",
   slate200: "#E2E8F0",
   slate300: "#CBD5E1",
   slate400: "#94A3B8",
   slate500: "#64748B",
   slate600: "#475569",
+  slate700: "#334155",
   slate800: "#1E293B",
   slate900: "#0F172A",
   slate950: "#020617",
@@ -23,8 +25,6 @@ const colorNames = {
   cyan400: "#22D3EE",
   cyan500: "#06B6D4",
   cyan700: "#0E7490",
-  teal300: "#5EEAD4",
-  teal700: "#0F766E",
   emeraldGlow: "rgba(16, 185, 129, 0.10)",
   cyanGlow: "rgba(6, 182, 212, 0.10)",
   emeraldSoftDark: "rgba(16, 185, 129, 0.08)",
@@ -33,8 +33,8 @@ const colorNames = {
   cyanBorderDark: "rgba(34, 211, 238, 0.30)",
   gridDotLight: "rgba(15, 23, 42, 0.07)",
   gridDotDark: "rgba(255, 255, 255, 0.06)",
-  navLight: "rgba(248, 250, 252, 0.85)",
-  navDark: "rgba(11, 15, 23, 0.80)",
+  navLight: "rgba(241, 245, 249, 0.85)",
+  navDark: "rgba(10, 15, 24, 0.80)",
   whiteTransparent: "rgba(255, 255, 255, 0.35)",
 };
 
@@ -70,19 +70,22 @@ const contact = {
   glow: `radial-gradient(circle at 0% 0%, ${colorNames.emeraldGlow}, transparent 50%), radial-gradient(circle at 100% 100%, ${colorNames.cyanGlow}, transparent 50%)`,
 };
 
+// Text levels: headings, body, secondary. Secondary passes AA on the page
+// background too (slate-600 on slate-100 is 6.9:1), so it works everywhere.
 export const themeLight = {
   ...common,
   colors: {
-    primary: colorNames.teal700,
+    // Links, focus rings, section bars, step numbers: the tester colour.
+    primary: colorNames.cyan700,
+    onPrimary: colorNames.white,
     textPrimary: colorNames.slate900,
     muted: colorNames.slate600,
     site: {
-      background: colorNames.slate50,
-      text: colorNames.slate600,
+      background: colorNames.slate100,
+      text: colorNames.slate700,
     },
     gradient,
     onGradient: colorNames.slate950,
-    gradientText: `linear-gradient(90deg, ${colorNames.emerald700}, ${colorNames.cyan700})`,
     gridDot: colorNames.gridDotLight,
     glow: {
       dev: colorNames.emeraldGlow,
@@ -101,20 +104,22 @@ export const themeLight = {
     },
     buttonLink: {
       text: colorNames.slate950,
-      border: colorNames.slate200,
-      shadow: colorNames.teal300,
+      border: colorNames.slate300,
+      shadow: colorNames.cyan200,
     },
     boxBackground: colorNames.white,
-    headerLine: colorNames.slate200,
+    // Card borders: 1.48:1 against white, so cards stand out from the page.
+    headerLine: colorNames.slate300,
     tile: {
-      border: colorNames.slate200,
-      borderHover: colorNames.teal300,
+      border: colorNames.slate300,
+      borderHover: colorNames.cyan200,
       header: colorNames.slate900,
     },
+    // The border is a control boundary: 3.86:1, above the 3:1 WCAG 1.4.11 needs.
     themeSwitch: {
       background: colorNames.slate200,
-      border: colorNames.slate400,
-      icon: colorNames.teal700,
+      border: colorNames.slate500,
+      icon: colorNames.cyan700,
     },
     terminal,
     contact,
@@ -125,8 +130,10 @@ export const themeDark: typeof themeLight = {
   ...common,
   boxShadow: "0 12px 32px rgba(0, 0, 0, 0.35)",
   colors: {
-    primary: colorNames.teal300,
-    textPrimary: colorNames.slate100,
+    primary: colorNames.cyan400,
+    onPrimary: colorNames.slate950,
+    // Softer than slate-100 against near-black, still 15.6:1.
+    textPrimary: colorNames.slate200,
     muted: colorNames.slate400,
     site: {
       background: colorNames.ink,
@@ -134,7 +141,6 @@ export const themeDark: typeof themeLight = {
     },
     gradient,
     onGradient: colorNames.slate950,
-    gradientText: `linear-gradient(90deg, ${colorNames.emerald400}, ${colorNames.cyan400})`,
     gridDot: colorNames.gridDotDark,
     glow: {
       dev: colorNames.emeraldGlow,
@@ -153,20 +159,20 @@ export const themeDark: typeof themeLight = {
     },
     buttonLink: {
       text: colorNames.slate950,
-      border: colorNames.slate800,
+      border: colorNames.inkBorder,
       shadow: colorNames.whiteTransparent,
     },
     boxBackground: colorNames.inkPanel,
-    headerLine: colorNames.slate800,
+    headerLine: colorNames.inkBorder,
     tile: {
-      border: colorNames.slate800,
-      borderHover: colorNames.teal300,
-      header: colorNames.slate100,
+      border: colorNames.inkBorder,
+      borderHover: colorNames.cyanBorderDark,
+      header: colorNames.slate200,
     },
     themeSwitch: {
       background: colorNames.slate800,
       border: colorNames.slate500,
-      icon: colorNames.teal700,
+      icon: colorNames.cyan700,
     },
     terminal,
     contact: {

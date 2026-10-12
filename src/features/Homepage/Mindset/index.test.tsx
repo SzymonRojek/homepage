@@ -33,10 +33,10 @@ describe("Mindset", () => {
     });
     const tester = screen.getByRole("article", { name: "Tester mindset" });
 
-    expect(developer).toHaveTextContent("Build");
+    expect(within(developer).getByText("Code", { exact: true })).toBeVisible();
     expect(tester).toHaveTextContent("My profession: 4 years at Equiniti");
     expect(developer).toHaveTextContent("Self-taught: my own projects");
-    expect(tester).toHaveTextContent("Protect");
+    expect(within(tester).getByText("Test", { exact: true })).toBeVisible();
     expect(tester).toHaveTextContent(/4 years testing financial data/);
     expect(
       within(developer).getByRole("list", { name: "Developer mindset tools" }),
@@ -46,19 +46,13 @@ describe("Mindset", () => {
     ).toHaveTextContent("Playwright");
   });
 
-  it("links the tester side to its proof, and only that side", () => {
+  it("has no links in the mindset cards", () => {
     renderMindset();
 
     expect(
-      within(screen.getByRole("article", { name: "Tester mindset" })).getByRole(
-        "link",
-        { name: /See it in practice: this site's CI pipeline/ },
-      ),
-    ).toHaveAttribute("href", "#case-study-homepage");
-    expect(
       within(
-        screen.getByRole("article", { name: "Developer mindset" }),
-      ).queryByRole("link"),
-    ).toBeNull();
+        screen.getByRole("region", { name: "Two mindsets, one goal" }),
+      ).queryAllByRole("link"),
+    ).toHaveLength(0);
   });
 });

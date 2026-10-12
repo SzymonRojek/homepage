@@ -479,14 +479,6 @@ export const projects: Project[] = [
       "Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.",
     caseStudy: homepageCaseStudy,
   },
-  {
-    title: "Role-based sign-in app",
-    repo: "react-sign-in-up",
-    language: "JavaScript",
-    category: "Other",
-    description:
-      "React login and registration with admin, editor and user roles.",
-  },
 ];
 
 export const repoUrl = (repo: string) =>

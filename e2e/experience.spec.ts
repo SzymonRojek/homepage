@@ -44,20 +44,14 @@ test.describe("Experience", () => {
     ).toContainText("ISTQB");
   });
 
-  test("lists languages and interests", async ({ page }) => {
-    const list = page
-      .getByRole("region", { name: "Experience" })
-      .getByRole("list", { name: "Languages and interests" });
+  test("lists languages, without interests", async ({ page }) => {
+    const experience = page.getByRole("region", { name: "Experience" });
+    const list = experience.getByRole("list", { name: "Languages" });
 
     await expect(list).toContainText("Polish");
     await expect(list).toContainText("Native");
     await expect(list).toContainText("English");
     await expect(list).toContainText("Professional working proficiency");
-    await expect(
-      list.getByRole("link", { name: "my guitar website" }),
-    ).toHaveAttribute(
-      "href",
-      "https://szymonrojek.github.io/my-music-website/",
-    );
+    await expect(experience.getByText("Interests")).toHaveCount(0);
   });
 });

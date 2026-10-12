@@ -37,13 +37,17 @@ export const Card = styled.section`
   }
 `;
 
+// The contact card is one call to action, so it is centred.
 export const Content = styled.div`
   max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
 `;
 
 export const Heading = styled(SubHeader)`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   color: inherit;
 `;
@@ -69,7 +73,9 @@ export const Paragraph = styled.p`
   }
 `;
 
-export const Buttons = styled(ButtonLinks)``;
+export const Buttons = styled(ButtonLinks)`
+  justify-content: center;
+`;
 
 export const ContactButton = styled(ButtonLink)`
   &:focus-visible {

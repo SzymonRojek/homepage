@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { Card, Chip, Chips } from "../Section";
 
-type Side = "developer" | "tester";
-const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
+type Accent = "qa" | "dev" | "both";
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -15,19 +14,36 @@ export const Grid = styled.div`
   }
 `;
 
-export const Group = styled(Card)<{ $side: Side }>`
+// "both" gets the green-to-cyan gradient along its top edge.
+export const Group = styled(Card)<{ $accent: Accent }>`
+  position: relative;
+  overflow: hidden;
   border-top: 4px solid
-    ${({ theme, $side }) => theme.colors[accent($side)].accent};
+    ${({ theme, $accent }) =>
+      $accent === "both" ? "transparent" : theme.colors[$accent].accent};
+
+  ${({ theme, $accent }) =>
+    $accent === "both" &&
+    `
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -4px 0 auto;
+      height: 4px;
+      background: ${theme.colors.gradient};
+    }
+  `}
 `;
 
-export const GroupTitle = styled.h3<{ $side: Side }>`
+export const GroupTitle = styled.h3<{ $accent: Accent }>`
   margin: 0 0 16px;
   font-family: ${({ theme }) => theme.fontMono};
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
+  color: ${({ theme, $accent }) =>
+    $accent === "both" ? theme.colors.primary : theme.colors[$accent].accent};
 `;
 
 export const SkillList = styled(Chips)``;
