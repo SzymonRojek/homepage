@@ -46,8 +46,10 @@ describe("HowITest", () => {
     renderHowITest();
 
     expect(
-      screen.getByText(/migration of client data from one system to another/),
+      screen.getByText(/moving client data from two systems into one/),
     ).toBeVisible();
+    // No internal system names, only the approach.
+    expect(screen.queryByText(/SunStar|Sirius|\bAST\b/)).toBeNull();
     expect(
       screen.getByText(/Clients and figures are confidential/),
     ).toBeVisible();

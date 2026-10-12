@@ -16,7 +16,9 @@ test.describe("Header and footer", () => {
     // Only the name and the job title: the coding side is told further down.
     await expect(brand).toHaveText("Szymon RojekSoftware Test Engineer");
     await expect(
-      page.getByText("I find what breaks before your users do."),
+      page.getByText("A number can match and still be wrong.", {
+        exact: true,
+      }),
     ).toBeVisible();
   });
 
@@ -76,6 +78,8 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
+      "Spot the bug",
+      "What colleagues say",
       "Two mindsets, one goal",
       "How I test at work",
       "Experience",
@@ -83,6 +87,26 @@ test.describe("Header and footer", () => {
       "Skills",
       "Education & certifications",
     ]);
+  });
+
+  test("the portrait's line moves with the keyboard", async ({ page }) => {
+    const slider = page.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "50% code, 50% test",
+    );
+
+    await slider.focus();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowRight");
+
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "52% code, 48% test",
+    );
+    await expect(page.getByRole("img", { name: "Szymon Rojek" })).toBeVisible();
   });
 
   test("footer offers email and LinkedIn without showing the address", async ({

@@ -10,7 +10,7 @@ export const howITest = {
   intro:
     "At Equiniti I test financial and shareholder data as it moves between systems. I try to look at a migration from above, so I see the same record as data, as business logic and as code. Clients and figures are confidential, so this is my approach, not a project report.",
   highlight:
-    "The largest I've tested: a large migration of client data from one system to another.",
+    "The biggest so far: moving client data from two systems into one.",
   steps: [
     {
       title: "Understand the mapping and the business",

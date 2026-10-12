@@ -163,6 +163,17 @@ export const Highlight = styled.span`
   white-space: nowrap;
 `;
 
+// The underline draws itself once, left to right, as if by hand.
+const draw = keyframes`
+  from {
+    clip-path: inset(-50% 100% -50% 0);
+  }
+
+  to {
+    clip-path: inset(-50% 0 -50% 0);
+  }
+`;
+
 // A hand-drawn yellow stroke under the highlighted word; decorative.
 export const Underline = styled.svg`
   position: absolute;
@@ -171,6 +182,11 @@ export const Underline = styled.svg`
   width: 104%;
   height: 0.3em;
   overflow: visible;
+  animation: ${draw} 0.7s ease-out 0.4s both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 
   path {
     fill: none;
@@ -195,7 +211,7 @@ export const Summary = styled.p`
   }
 `;
 
-// Where I can work: three label/value pairs under the email button, split by
+// Where I can work: three label/value pairs under the bio, split by
 // thin vertical lines, like the facts at the foot of a CV. HR checks these
 // first.
 export const Where = styled.dl`
@@ -265,5 +281,26 @@ export const WhereItem = styled.div`
     dd {
       font-size: 16px;
     }
+  }
+`;
+
+// What I'm working on right now: a sign of a real person, not a template.
+export const Now = styled.p`
+  margin: 24px 0 0;
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.brand.muted};
+
+  strong {
+    margin-right: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.brand.accent};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 20px;
+    font-size: 14px;
   }
 `;

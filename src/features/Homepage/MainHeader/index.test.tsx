@@ -40,11 +40,11 @@ describe("MainHeader", () => {
         .map(({ textContent }) => textContent),
     ).toEqual(["Hove, UK", "UK, full", "Open"]);
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
-    // The tagline is the headline; "breaks" is wrapped for its underline.
+    // The tagline is the headline; "wrong" is wrapped for its underline.
     const headline = screen.getByText(
       (_, element) =>
         element?.tagName === "P" &&
-        element.textContent === "I find what breaks before your users do.",
+        element.textContent === "A number can match and still be wrong.",
     );
     expect(headline).toBeInTheDocument();
     expect(headline.querySelector("svg")).toHaveAttribute(
@@ -53,6 +53,13 @@ describe("MainHeader", () => {
     );
     // The name and title are in the top bar; here the name is the h1 only.
     expect(screen.queryByText("Software Test Engineer")).toBeNull();
+  });
+
+  it("says what I'm working on right now", () => {
+    renderHeader();
+
+    const now = screen.getByText("Preparing for the ISTQB Foundation exam");
+    expect(now).toHaveTextContent(/^NowPreparing for the ISTQB/);
   });
 
   it("has no skill chips: the bio says it once", () => {

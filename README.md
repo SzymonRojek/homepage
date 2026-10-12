@@ -6,7 +6,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'I find what breaks before your users do.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'A number can match and still be wrong.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
 </picture>
 
 ## Why this site exists (30-second summary)
@@ -254,6 +254,8 @@ All text lives in data files, not in components:
 | File                                              | Content                                                                                                 |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `src/features/Homepage/profile.ts`                | Name, job titles, headline, target roles, location, bio, contact text, LinkedIn                         |
+| `src/features/Homepage/spotTheBugData.ts`         | The "Spot the bug" record: values before and after, why each is fine, the bug                           |
+| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word                                                          |
 | `src/features/Homepage/howITestData.ts`           | The "How I test at work" section                                                                        |
 | `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages                                         |
 | `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |

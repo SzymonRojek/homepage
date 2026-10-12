@@ -13,7 +13,11 @@ const expectOneEdge = async (page: Page, gutter: number) => {
   const edges = {
     topBar: (await box(page.getByRole("link", { name: /^Szymon Rojek/ }))).x,
     hero: (
-      await box(page.getByText("I find what breaks before your users do."))
+      await box(
+        page.getByText("A number can match and still be wrong.", {
+          exact: true,
+        }),
+      )
     ).x,
     section: (
       await box(
