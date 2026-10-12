@@ -52,7 +52,7 @@ describe("MainHeader", () => {
       "true",
     );
     // The name and title are in the top bar; here the name is the h1 only.
-    expect(screen.queryByText("· self-taught Developer")).toBeNull();
+    expect(screen.queryByText("Software Test Engineer")).toBeNull();
   });
 
   it("has no skill chips: the bio says it once", () => {

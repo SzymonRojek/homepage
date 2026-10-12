@@ -5,7 +5,7 @@ test.describe("Header and footer", () => {
     await page.goto("./");
   });
 
-  test("shows name, title and page title", async ({ page, isMobile }) => {
+  test("shows name, title and page title", async ({ page }) => {
     await expect(page).toHaveTitle(/Szymon Rojek/);
     // The h1 is for search engines and screen readers; the top bar shows it.
     await expect(
@@ -13,11 +13,8 @@ test.describe("Header and footer", () => {
     ).toBeAttached();
     const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
     await expect(brand).toBeVisible();
-    await expect(brand).toContainText("Software Test Engineer");
-    // "self-taught Developer" fits next to the title from tablets up.
-    await expect(brand.getByText("· self-taught Developer")).toBeVisible({
-      visible: !isMobile,
-    });
+    // Only the name and the job title: the coding side is told further down.
+    await expect(brand).toHaveText("Szymon RojekSoftware Test Engineer");
     await expect(
       page.getByText("I find what breaks before your users do."),
     ).toBeVisible();

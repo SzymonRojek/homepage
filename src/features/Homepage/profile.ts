@@ -1,13 +1,11 @@
 export const profile = {
   name: "Szymon Rojek",
   title: "Software Test Engineer",
-  // Shown next to the title: the coding side is self-taught, not a job.
-  secondaryTitle: "self-taught Developer",
   tagline: "I find what breaks before your users do.",
   // The word in the tagline that gets the hand-drawn underline.
   taglineHighlight: "breaks",
   availability: "Open to Test Automation & QA Engineer roles",
-  // A row of three facts under the email button, so HR sees them at once.
+  // A row of three facts under the bio, so HR sees them at once.
   location: [
     { label: "Based in", value: "Hove, UK" },
     { label: "Right to work", value: "UK, full" },

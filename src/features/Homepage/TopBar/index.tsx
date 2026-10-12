@@ -7,7 +7,6 @@ import {
   Brand,
   BrandName,
   BrandTitle,
-  BrandTitleMore,
   Nav,
   NavList,
   NavLink,
@@ -66,10 +65,7 @@ export const TopBar = () => {
       <Inner>
         <Brand href="#top" title="Back to top">
           <BrandName>{profile.name}</BrandName>
-          <BrandTitle>
-            {profile.title}
-            <BrandTitleMore> · {profile.secondaryTitle}</BrandTitleMore>
-          </BrandTitle>
+          <BrandTitle>{profile.title}</BrandTitle>
         </Brand>
         <Nav id="site-menu" aria-label="Sections" $open={menuOpen}>
           <NavList>

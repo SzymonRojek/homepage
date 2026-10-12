@@ -57,8 +57,7 @@ export const BrandName = styled.span`
   }
 `;
 
-// The job title in yellow (7.9:1 on the green) so HR spots it first; the
-// "self-taught Developer" part stays quiet.
+// The job title in yellow (7.9:1 on the green) so HR spots it first.
 export const BrandTitle = styled.span`
   font-size: 13px;
   font-weight: 600;
@@ -68,16 +67,6 @@ export const BrandTitle = styled.span`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 12px;
-  }
-`;
-
-// Too long for a phone next to the menu button; shown from tablets up.
-export const BrandTitleMore = styled.span`
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.brand.muted};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    display: none;
   }
 `;
 

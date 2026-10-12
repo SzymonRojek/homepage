@@ -54,9 +54,7 @@ describe("TopBar", () => {
     // The name and title as a wordmark, linking back to the top.
     const brand = screen.getByRole("link", { name: /^Szymon Rojek/ });
     expect(brand).toHaveAttribute("href", "#top");
-    expect(brand).toHaveTextContent(
-      "Szymon RojekSoftware Test Engineer · self-taught Developer",
-    );
+    expect(brand).toHaveTextContent(/^Szymon RojekSoftware Test Engineer$/);
     expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
       "href",
       "#contact",
