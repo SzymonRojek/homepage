@@ -31,7 +31,6 @@ describe("TopBar", () => {
       screen.getByRole("navigation", { name: "Sections" }),
     ).getAllByRole("link");
     expect(links.map(({ textContent }) => textContent)).toEqual([
-      "Mindset",
       "How I test",
       "Experience",
       "Projects",
@@ -39,7 +38,6 @@ describe("TopBar", () => {
       "Contact",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
-      "#mindset",
       "#how-i-test",
       "#experience",
       "#projects",

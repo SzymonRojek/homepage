@@ -44,35 +44,39 @@ export const jobs: Job[] = [
 
 export interface EducationItem {
   title: string;
-  school: string;
-  year?: string;
+  detail: string;
+  // When it started or happened; "Now" for what I'm working on.
+  year: string;
+  // The one thing I'm working on now, shown large as "Next up".
+  next?: boolean;
 }
 
+// Newest first, by the date each one started.
 export const education: EducationItem[] = [
   {
-    title: "ISTQB Certified Tester Foundation Level (CTFL)",
-    school: "International Software Testing Qualifications Board",
-    year: "In progress",
-  },
-  {
-    title: "LinkedIn Learning courses",
-    school: "Programming, software testing and AI, alongside my job",
-    year: "2023 – present",
+    title: "ISTQB Certified Tester, Foundation Level",
+    detail: "Preparing for the exam now.",
+    year: "Now",
+    next: true,
   },
   {
     title: "Microsoft AI courses",
-    school: "Generative AI, Microsoft Copilot and responsible AI",
+    detail: "Generative AI, Copilot, responsible AI",
     year: "2026",
   },
   {
     title: "Artificial Intelligence course",
-    school: "John Paul II Catholic University of Lublin",
+    detail: "John Paul II Catholic University of Lublin",
     year: "2025",
   },
   {
-    title: "React.js workshops, final exam passed",
-    school:
-      "React School: components, state, forms, custom hooks, REST APIs, component testing and TypeScript",
+    title: "LinkedIn Learning",
+    detail: "Programming, testing and AI, alongside my job",
+    year: "2023 – now",
+  },
+  {
+    title: "React School",
+    detail: "React workshops, final exam passed",
     year: "2022",
   },
 ];

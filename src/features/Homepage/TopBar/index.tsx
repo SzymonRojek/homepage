@@ -18,7 +18,6 @@ import {
 
 // Each href points to the id of a section heading.
 const navLinks = [
-  { href: "#mindset", label: "Mindset" },
   { href: "#how-i-test", label: "How I test" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },

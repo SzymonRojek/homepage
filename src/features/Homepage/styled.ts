@@ -4,7 +4,6 @@ import { contentColumn } from "../../core/App/contentColumn";
 export const Container = styled.div`
   ${contentColumn}
   min-height: 100vh;
-  padding-bottom: 16px;
 `;
 
 // Hidden until a keyboard user tabs to it.

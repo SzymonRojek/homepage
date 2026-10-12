@@ -1,12 +1,19 @@
 import { test, expect } from "./fixtures";
 
 test.describe("Recommendations", () => {
-  test("quotes three colleagues right after Spot the bug", async ({ page }) => {
+  test("quotes three colleagues first, right under the hero", async ({
+    page,
+  }) => {
     await page.goto("./");
 
     await expect(
-      page.getByRole("main").getByRole("heading", { level: 2 }).nth(1),
+      page.getByRole("main").getByRole("heading", { level: 2 }).first(),
     ).toHaveText("What colleagues say");
+    await expect(
+      page.getByText("“…you will be fortunate if you get to work with him.”", {
+        exact: true,
+      }),
+    ).toBeVisible();
     const quotes = page
       .getByRole("list", { name: "Recommendations" })
       .getByRole("listitem");

@@ -6,8 +6,9 @@ import { Education } from ".";
 
 vi.mock("../experienceData", () => ({
   education: [
-    { title: "Certificate", school: "Board", year: "2025" },
-    { title: "Course", school: "School" },
+    { title: "Exam", detail: "Preparing now.", year: "Now", next: true },
+    { title: "Course B", detail: "Newer", year: "2025" },
+    { title: "Course A", detail: "Older", year: "2022" },
   ],
 }));
 
@@ -19,25 +20,30 @@ const renderEducation = () =>
   );
 
 describe("Education", () => {
-  it("is its own section, with every item in data order", () => {
+  it("is called Still learning", () => {
     renderEducation();
 
-    const section = screen.getByRole("region", {
-      name: "Education & certifications",
-    });
-    const items = within(section).getAllByRole("listitem");
-    expect(items).toHaveLength(2);
-    expect(items[0]).toHaveTextContent("Certificate");
-    expect(items[0]).toHaveTextContent("Board");
+    expect(
+      screen.getByRole("region", { name: "Still learning" }),
+    ).toBeInTheDocument();
   });
 
-  it("shows the year only for items that have one", () => {
+  it("shows what I'm learning now as Next up", () => {
     renderEducation();
 
-    const items = screen.getAllByRole("listitem");
-    expect(items[0]).toHaveTextContent("2025");
-    expect(items[1]).toHaveTextContent(/^CourseSchool$/);
-    // No empty year badge is rendered for an item without a year.
-    expect(items[1].querySelector("span")).toBeNull();
+    const next = screen.getByRole("article", { name: "Exam" });
+    expect(next).toHaveTextContent(/^Next upExamPreparing now\.$/);
+  });
+
+  it("lists the rest in data order, with year, title and detail", () => {
+    renderEducation();
+
+    const items = within(
+      screen.getByRole("list", { name: "Courses" }),
+    ).getAllByRole("listitem");
+    expect(items.map(({ textContent }) => textContent)).toEqual([
+      "2025Course BNewer",
+      "2022Course AOlder",
+    ]);
   });
 });

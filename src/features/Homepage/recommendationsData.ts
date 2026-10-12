@@ -34,3 +34,11 @@ export const recommendations: Recommendation[] = [
     date: "February 2024",
   },
 ];
+
+// One sentence from the recommendations, shown large above them. The words
+// are a part of Jim's quote; the highlight is the end of the sentence.
+export const headline = {
+  text: "you will be fortunate if you get to work with him",
+  highlight: "work with him",
+  from: "Jim Grinsfelder",
+};

@@ -19,7 +19,10 @@ export const GlobalStyle = createGlobalStyle`
         }
 
     body {
-        padding-bottom: 48px;
+        /* Full-width bands inside the content column reach the screen edges
+           with 100vw, which includes the scrollbar; clip, never scroll, the
+           sliver. "clip" keeps the sticky top bar working. */
+        overflow-x: clip;
         font-family: "Inter", sans-serif;
         font-size: 17px;
         line-height: 1.5;
@@ -30,7 +33,6 @@ export const GlobalStyle = createGlobalStyle`
         transition: background .3s;
 
         @media(max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-            padding-bottom: 24px;
             font-size: 16px;
         }
     }

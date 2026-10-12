@@ -55,13 +55,6 @@ describe("MainHeader", () => {
     expect(screen.queryByText("Software Test Engineer")).toBeNull();
   });
 
-  it("says what I'm working on right now", () => {
-    renderHeader();
-
-    const now = screen.getByText("Preparing for the ISTQB Foundation exam");
-    expect(now).toHaveTextContent(/^NowPreparing for the ISTQB/);
-  });
-
   it("has no skill chips: the bio says it once", () => {
     renderHeader();
 

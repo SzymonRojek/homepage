@@ -21,7 +21,12 @@ const expectOneEdge = async (page: Page, gutter: number) => {
     ).x,
     section: (
       await box(
-        page.getByRole("heading", { level: 2, name: "Two mindsets, one goal" }),
+        page.getByText(
+          "“…you will be fortunate if you get to work with him.”",
+          {
+            exact: true,
+          },
+        ),
       )
     ).x,
   };

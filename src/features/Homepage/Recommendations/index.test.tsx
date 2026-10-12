@@ -5,6 +5,11 @@ import { themeLight } from "../../../core/App/theme";
 import { Recommendations } from ".";
 
 vi.mock("../recommendationsData", () => ({
+  headline: {
+    text: "a great tester to work with",
+    highlight: "work with",
+    from: "Bob Jones",
+  },
   recommendations: [
     {
       quote: "Finds the root cause.",
@@ -44,6 +49,16 @@ describe("Recommendations", () => {
     expect(items[0]).toHaveTextContent(
       "Ann SmithDeveloper at Acme, worked with me on the same team · May 2025",
     );
+  });
+
+  it("shows one sentence large, with its author and role", () => {
+    renderRecommendations();
+
+    const [pull] = screen.getAllByRole("figure");
+    expect(pull).toHaveTextContent(
+      "“…a great tester to work with.”Bob Jones, Engineer at Acme",
+    );
+    expect(pull.querySelector("mark")).toHaveTextContent(/^work with$/);
   });
 
   it("links to the originals on LinkedIn in a new tab", () => {

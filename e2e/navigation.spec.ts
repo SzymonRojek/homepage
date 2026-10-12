@@ -21,7 +21,6 @@ test.describe("Navigation", () => {
       ["Projects", "Projects"],
       ["Experience", "Experience"],
       ["Skills", "Skills"],
-      ["Mindset", "Two mindsets, one goal"],
       ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {

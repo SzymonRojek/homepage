@@ -11,10 +11,14 @@ test.describe("How I test at work", () => {
       section
         .getByRole("list", { name: "How I test a data migration" })
         .getByRole("heading", { level: 3 }),
-    ).toHaveCount(6);
+    ).toHaveCount(3);
     await expect(section).toContainText("field-by-field values");
     await expect(section).toContainText("stored procedures");
     await expect(section).toContainText("Why it matters:");
+    // The story in my own words comes first.
+    await expect(
+      section.getByRole("article", { name: "Beyond the obvious bugs" }),
+    ).toContainText("set up a call with the developer");
 
     // The job comes straight after how I test there, so they read as one.
     const headings = await page

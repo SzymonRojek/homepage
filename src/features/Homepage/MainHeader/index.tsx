@@ -14,7 +14,6 @@ import {
   Summary,
   Where,
   WhereItem,
-  Now,
 } from "./styled";
 
 // The tagline is the big headline, with a hand-drawn underline under one word.
@@ -55,10 +54,6 @@ export const MainHeader = () => (
               </WhereItem>
             ))}
           </Where>
-          <Now>
-            <strong>Now</strong>
-            {profile.now}
-          </Now>
         </Details>
         <SplitPortrait src={szymonRojekProfile} name={profile.name} />
       </BandInner>

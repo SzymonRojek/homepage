@@ -4,7 +4,7 @@ import { test, expect } from "./fixtures";
 const TALENT = "Talent Outreach: job offers to the right candidates";
 const HOMEPAGE = "This website: built and tested like a real product";
 
-// Mindset and Experience cards are articles too, so case studies are looked for
+// Experience and story cards are articles too, so case studies are looked for
 // inside the Projects section only.
 const caseStudies = (page: Page) =>
   page.getByRole("region", { name: "Projects" }).getByRole("article");

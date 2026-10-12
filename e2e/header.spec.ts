@@ -70,7 +70,7 @@ test.describe("Header and footer", () => {
     await expect(
       page
         .getByRole("contentinfo")
-        .getByRole("link", { name: "Message me on LinkedIn" }),
+        .getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 
@@ -78,14 +78,12 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "Spot the bug",
       "What colleagues say",
-      "Two mindsets, one goal",
       "How I test at work",
       "Experience",
       "Projects",
       "Skills",
-      "Education & certifications",
+      "Still learning",
     ]);
   });
 
@@ -109,7 +107,7 @@ test.describe("Header and footer", () => {
     await expect(page.getByRole("img", { name: "Szymon Rojek" })).toBeVisible();
   });
 
-  test("footer offers email and LinkedIn without showing the address", async ({
+  test("footer is a short letter with email, and LinkedIn below it", async ({
     page,
   }) => {
     const footer = page.getByRole("contentinfo");
@@ -118,8 +116,12 @@ test.describe("Header and footer", () => {
       footer.getByRole("link", { name: "Send me an email" }),
     ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
     await expect(
-      footer.getByRole("link", { name: "Message me on LinkedIn" }),
+      footer.getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
     await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
+    await expect(footer).toContainText("communication matters most in a team");
+    await expect(
+      footer.getByRole("heading", { name: "Thanks for reading this far." }),
+    ).toBeVisible();
   });
 });
