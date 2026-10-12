@@ -259,6 +259,26 @@ describe("Projects", () => {
     expect(screen.getByRole("article", { name: "Talent" })).toBeVisible();
   });
 
+  it("opens a case study whose address arrived before the page was ready", () => {
+    // The store was created with no case study open; the address changed
+    // before the listener existed, so no hashchange will reach it.
+    window.history.replaceState(
+      null,
+      "",
+      "/#case-study-talent-outreach-developer",
+    );
+
+    renderProjects([
+      createProject({
+        title: "Talent",
+        repo: "talent-outreach",
+        caseStudy: caseStudy("Talent"),
+      }),
+    ]);
+
+    expect(screen.getByRole("article", { name: "Talent" })).toBeVisible();
+  });
+
   it("ignores an address change that names no case study", () => {
     renderProjects([
       createProject({

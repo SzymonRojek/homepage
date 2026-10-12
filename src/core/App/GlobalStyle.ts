@@ -40,9 +40,8 @@ export const GlobalStyle = createGlobalStyle`
         background: ${({ theme }) => theme.colors.dev.border};
     }
 
-    /* Numbers the sections inside <main>: 01, 02, ... */
-    main {
-        counter-reset: section;
+    h1, h2, h3, h4 {
+        font-family: ${({ theme }) => theme.fontDisplay};
     }
 
     /* The skip link focuses <main>, and an opened case study takes focus too;

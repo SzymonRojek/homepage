@@ -88,6 +88,9 @@ export const Projects = ({ projects }: ProjectsProps) => {
     };
 
     window.addEventListener("hashchange", onHashChange);
+    // An address that changed after the page loaded but before this listener
+    // was ready (a busy phone, a quick click) would be missed: read it once.
+    onHashChange();
     return () => window.removeEventListener("hashchange", onHashChange);
   }, [dispatch]);
 
@@ -125,7 +128,6 @@ export const Projects = ({ projects }: ProjectsProps) => {
           key={open.repo}
           title={open.title}
           repo={open.repo}
-          language={open.language}
           caseStudy={open.caseStudy}
         />
       )}

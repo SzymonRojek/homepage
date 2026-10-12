@@ -1,9 +1,9 @@
 import styled from "styled-components";
 export const SubHeader = styled.h2`
   margin: 0;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
   letter-spacing: -0.035em;
   color: ${({ theme }) => theme.colors.textPrimary};
 

@@ -68,7 +68,7 @@ export const Period = styled.p<{ $current: boolean }>`
   color: ${({ theme }) => theme.colors.qa.accent};
   background: ${({ theme }) => theme.colors.qa.soft};
   border: 1px solid ${({ theme }) => theme.colors.qa.border};
-  border-radius: 999px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 
   ${({ $current }) =>
     $current &&

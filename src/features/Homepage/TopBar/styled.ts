@@ -1,51 +1,84 @@
 import styled, { css } from "styled-components";
 import { ButtonLink } from "../ButtonLink";
+import { contentColumn } from "../../../core/App/contentColumn";
 
-// The bar is the positioning box for the menu panel on small screens.
+// The top of the deep-green brand band; the menu panel hangs from it on
+// small screens. Focus rings are yellow here, as on the hero and the contact
+// card, because the page's green ring would vanish on green.
 export const Bar = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 12px 16px;
-  background: ${({ theme }) => theme.colors.nav};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 0;
+  color: ${({ theme }) => theme.colors.brand.text};
+  background: ${({ theme }) => theme.colors.brand.background};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.brand.line};
+
+  *:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.brand.accent};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 8px 12px;
+    padding: 8px 0;
   }
 `;
 
 export const Inner = styled.div`
+  ${contentColumn}
   display: flex;
   align-items: center;
   gap: 24px;
-  max-width: 1216px;
-  margin: 0 auto;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     gap: 12px;
   }
 `;
 
+// The name and title as a two-line wordmark; the browser icon keeps "SR".
 export const Brand = styled.a`
   display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  color: ${({ theme }) => theme.colors.brand.text};
   text-decoration: none;
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
-export const Logo = styled.span`
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  font-family: ${({ theme }) => theme.fontMono};
-  font-size: 15px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.site.background};
-  background: ${({ theme }) => theme.colors.textPrimary};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+export const BrandName = styled.span`
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 17px;
+  }
+`;
+
+// The job title in yellow (7.9:1 on the green) so HR spots it first; the
+// "self-taught Developer" part stays quiet.
+export const BrandTitle = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: ${({ theme }) => theme.colors.brand.accent};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 12px;
+  }
+`;
+
+// Too long for a phone next to the menu button; shown from tablets up.
+export const BrandTitleMore = styled.span`
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.brand.muted};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    display: none;
+  }
 `;
 
 // In the bar on wide screens; a panel under the bar, shown by the menu
@@ -56,18 +89,19 @@ export const Nav = styled.nav<{ $open: boolean }>`
   gap: 16px;
   margin-left: auto;
 
+  /* On phones and tablets: a panel under the bar, with the page's gutters. */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    ${contentColumn}
     display: ${({ $open }) => ($open ? "block" : "none")};
     position: absolute;
     top: 100%;
     right: 0;
     left: 0;
     margin: 0;
-    padding: 8px 16px 16px;
-    gap: 0;
-    background: ${({ theme }) => theme.colors.boxBackground};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
-    box-shadow: ${({ theme }) => theme.boxShadow};
+    padding-top: 8px;
+    padding-bottom: 16px;
+    background: ${({ theme }) => theme.colors.brand.background};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.brand.line};
   }
 `;
 
@@ -80,8 +114,6 @@ export const NavList = styled.ul`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     flex-direction: column;
-    max-width: 1216px;
-    margin: 0 auto;
   }
 `;
 
@@ -91,7 +123,7 @@ export const NavLink = styled.a`
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.site.text};
+  color: ${({ theme }) => theme.colors.brand.muted};
   text-decoration: none;
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transition:
@@ -99,18 +131,15 @@ export const NavLink = styled.a`
     background 0.2s;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.textPrimary};
-    background: ${({ theme }) => theme.colors.boxBackground};
+    color: ${({ theme }) => theme.colors.brand.text};
+    background: ${({ theme }) => theme.colors.brand.control};
   }
 
   /* Large tap targets in the menu panel. */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     padding: 12px;
     font-size: 17px;
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.site.background};
-    }
+    border-radius: ${({ theme }) => theme.borderRadiusSmall};
   }
 `;
 
@@ -123,17 +152,22 @@ export const MenuFooter = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     justify-content: space-between;
-    max-width: 1216px;
-    margin: 8px auto 0;
+    margin-top: 8px;
     padding: 16px 12px 0;
-    border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
+    border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
   }
 `;
 
 export const ContactLink = styled(ButtonLink)`
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-size: 14px;
   white-space: nowrap;
+  color: ${({ theme }) => theme.colors.brand.onAccent};
+  background: ${({ theme }) => theme.colors.brand.accent};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.brand.accentHover};
+  }
 `;
 
 export const MenuButton = styled.button`
@@ -146,9 +180,9 @@ export const MenuButton = styled.button`
     width: 40px;
     height: 40px;
     padding: 0;
-    color: ${({ theme }) => theme.colors.textPrimary};
-    background: ${({ theme }) => theme.colors.boxBackground};
-    border: 1px solid ${({ theme }) => theme.colors.headerLine};
+    color: ${({ theme }) => theme.colors.brand.text};
+    background: ${({ theme }) => theme.colors.brand.control};
+    border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
     border-radius: ${({ theme }) => theme.borderRadiusSmall};
     cursor: pointer;
   }

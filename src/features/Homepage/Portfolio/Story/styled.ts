@@ -157,11 +157,13 @@ export const Comparison = styled.table`
 
     td:first-child {
       border-bottom: none;
-      border-radius: 8px 8px 0 0;
+      border-radius: ${({ theme }) => theme.borderRadiusSmall}
+        ${({ theme }) => theme.borderRadiusSmall} 0 0;
     }
 
     td:last-child {
-      border-radius: 0 0 8px 8px;
+      border-radius: 0 0 ${({ theme }) => theme.borderRadiusSmall}
+        ${({ theme }) => theme.borderRadiusSmall};
     }
 
     td::before {
@@ -213,7 +215,7 @@ export const ValueList = styled.ul`
     color: ${({ theme }) => theme.colors.textPrimary};
     background: ${({ theme }) => theme.colors.qa.soft};
     border: 1px solid ${({ theme }) => theme.colors.qa.border};
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
 
   li::before {

@@ -6,15 +6,13 @@ export type Side = "developer" | "tester";
 interface ProjectViewState {
   // The repo of the open case study; all are closed by default.
   openRepo: string | null;
-  // The column a portrait half or a link asked for, to scroll to it.
+  // The column a link asked for (#case-study-<repo>-tester), to scroll to it.
   side: Side | null;
 }
 
 const caseStudyRepos = projects
   .filter(({ caseStudy }) => caseStudy)
   .map(({ repo }) => repo);
-
-export const firstCaseStudyRepo = caseStudyRepos[0] ?? null;
 
 // #case-study-<repo> opens a case study, and #case-study-<repo>-developer or
 // -tester also points at one of its columns, e.g. a CV link for a developer
@@ -32,7 +30,7 @@ export const parseCaseStudyHash = (hash = window.location.hash) => {
 
 const initialState: ProjectViewState = parseCaseStudyHash();
 
-// Shared by the project cards and the split portrait.
+// Shared by the project cards and the address (#case-study-... links).
 const projectViewSlice = createSlice({
   name: "projectView",
   initialState,
@@ -49,16 +47,10 @@ const projectViewSlice = createSlice({
       state.openRepo = payload.openRepo;
       state.side = payload.side;
     },
-    // A portrait half: that side of the open case study, or of the first one.
-    showSide: (state, { payload }: PayloadAction<Side>) => {
-      state.openRepo ??= firstCaseStudyRepo;
-      state.side = payload;
-    },
   },
 });
 
-export const { openCaseStudy, openFromAddress, showSide } =
-  projectViewSlice.actions;
+export const { openCaseStudy, openFromAddress } = projectViewSlice.actions;
 
 const selectProjectViewState = (state: { projectView: ProjectViewState }) =>
   state.projectView;

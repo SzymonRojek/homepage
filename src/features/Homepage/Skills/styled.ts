@@ -14,31 +14,7 @@ export const Grid = styled.div`
   }
 `;
 
-// "both" gets an edge that is half test green, half code blue.
-export const Group = styled(Card)<{ $accent: Accent }>`
-  position: relative;
-  border-top: 4px solid
-    ${({ theme, $accent }) =>
-      $accent === "both" ? "transparent" : theme.colors[$accent].accent};
-
-  ${({ theme, $accent }) =>
-    $accent === "both" &&
-    `
-    &::before {
-      content: "";
-      position: absolute;
-      /* Over the transparent top border, edge to edge, rounded like the card. */
-      inset: -4px -1px auto;
-      height: 4px;
-      border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
-      background: linear-gradient(
-        90deg,
-        ${theme.colors.qa.accent} 50%,
-        ${theme.colors.dev.accent} 50%
-      );
-    }
-  `}
-`;
+export const Group = styled(Card)``;
 
 export const GroupTitle = styled.h3<{ $accent: Accent }>`
   margin: 0 0 16px;

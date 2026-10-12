@@ -1,36 +1,34 @@
 import styled from "styled-components";
 import { SubHeader } from "../SubHeader";
 
-// Every section in <main> opens with a strong rule and a small number
-// (01, 02, ...), like the chapters of a test report. The number is drawn by
-// CSS with empty alt text, so it is not part of any heading's name.
 export const Section = styled.section`
-  margin-top: 96px;
-  padding-top: 20px;
-  border-top: 2px solid ${({ theme }) => theme.colors.textPrimary};
-  counter-increment: section;
-
-  &::before {
-    content: counter(section, decimal-leading-zero);
-    content: counter(section, decimal-leading-zero) / "";
-    display: block;
-    margin-bottom: 12px;
-    font-family: ${({ theme }) => theme.fontMono};
-    font-size: 12px;
-    color: ${({ theme }) => theme.colors.muted};
-  }
+  margin-top: 64px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 64px;
-    padding-top: 16px;
+    margin-top: 44px;
   }
 `;
 
+// A short yellow bar above every section heading, the brand accent.
 export const SectionHeader = styled(SubHeader)`
   margin-bottom: 24px;
 
+  &::before {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 6px;
+    margin-bottom: 16px;
+    background: ${({ theme }) => theme.colors.brand.accent};
+    border-radius: 3px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-bottom: 16px;
+
+    &::before {
+      margin-bottom: 12px;
+    }
   }
 `;
 
@@ -61,15 +59,16 @@ export const Card = styled.div`
   }
 `;
 
-// A small tag for tech stacks and facts: plain text in a thin box.
+// A small rounded tag for tech stacks and facts.
 export const Chip = styled.li`
-  padding: 3px 8px;
+  padding: 4px 11px;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.textPrimary};
+  background: ${({ theme }) => theme.colors.site.background};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
 export const Chips = styled.ul`

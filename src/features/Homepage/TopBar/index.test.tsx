@@ -51,11 +51,12 @@ describe("TopBar", () => {
   it("has a way back to the top, a contact link and the theme switch", () => {
     renderTopBar();
 
-    expect(
-      screen.getByRole("link", { name: "Szymon Rojek, back to top" }),
-    ).toHaveAttribute("href", "#top");
-    // The logo only: no name or title next to it.
-    expect(screen.queryByText("Software Test Engineer")).toBeNull();
+    // The name and title as a wordmark, linking back to the top.
+    const brand = screen.getByRole("link", { name: /^Szymon Rojek/ });
+    expect(brand).toHaveAttribute("href", "#top");
+    expect(brand).toHaveTextContent(
+      "Szymon RojekSoftware Test Engineer · self-taught Developer",
+    );
     expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
       "href",
       "#contact",

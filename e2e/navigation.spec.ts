@@ -54,7 +54,7 @@ test.describe("Navigation", () => {
       .scrollIntoViewIfNeeded();
 
     await expect(
-      page.getByRole("link", { name: "Szymon Rojek, back to top" }),
+      page.getByRole("link", { name: /^Szymon Rojek/ }),
     ).toBeInViewport();
     // On a phone the switch is in the menu; the menu button stays in the bar.
     await expect(
@@ -158,12 +158,15 @@ test.describe("Navigation", () => {
       () => (window as unknown as { scrollFrames: number[] }).scrollFrames,
     );
     // No animation: the page jumps from the top (before React renders) to the
-    // saved place in one go. A second, small jump is allowed: when the font
-    // arrives, Chrome's scroll anchoring keeps the same content in view.
+    // saved place, never through the page in between. Small moves near it are
+    // allowed: as each font arrives (two families, five files), Chrome's
+    // scroll anchoring shifts the position so the same content stays in view,
+    // sometimes in the same frame as the jump.
     const positions = [...new Set(frames)].filter((y) => y !== 0);
-    expect(positions.length).toBeLessThanOrEqual(2);
+    const seen = `saved place ${place}, positions ${positions.join(", ")}`;
+    expect(positions.length, seen).toBeGreaterThan(0);
     for (const y of positions) {
-      expect(Math.abs(y - place)).toBeLessThan(200);
+      expect(Math.abs(y - place), seen).toBeLessThan(200);
     }
   });
 

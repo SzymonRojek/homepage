@@ -30,12 +30,7 @@ const caseStudy: CaseStudyData = {
 const renderCaseStudy = () =>
   render(
     <ThemeProvider theme={themeLight}>
-      <CaseStudy
-        title="This portfolio"
-        repo="homepage"
-        language="TypeScript"
-        caseStudy={caseStudy}
-      />
+      <CaseStudy title="This portfolio" repo="homepage" caseStudy={caseStudy} />
     </ThemeProvider>,
   );
 
@@ -57,6 +52,8 @@ describe("CaseStudy", () => {
       screen.queryByRole("link", { name: "GitHub Repository" }),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("article")).toHaveAttribute("tabindex", "-1");
+    // No "repo · language" line: the card and the title say enough.
+    expect(screen.queryByText(/homepage ·/)).not.toBeInTheDocument();
   });
   it("keeps the full case study collapsed until it is opened", () => {
     renderCaseStudy();
@@ -156,7 +153,6 @@ describe("CaseStudy", () => {
         <CaseStudy
           title="This portfolio"
           repo="homepage"
-          language="TypeScript"
           caseStudy={{
             ...caseStudy,
             tester: {
@@ -197,7 +193,6 @@ describe("CaseStudy", () => {
         <CaseStudy
           title="This portfolio"
           repo="homepage"
-          language="TypeScript"
           caseStudy={{
             ...caseStudy,
             story: {

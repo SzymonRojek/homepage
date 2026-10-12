@@ -5,7 +5,9 @@ import {
   Bar,
   Inner,
   Brand,
-  Logo,
+  BrandName,
+  BrandTitle,
+  BrandTitleMore,
   Nav,
   NavList,
   NavLink,
@@ -23,11 +25,6 @@ const navLinks = [
   { href: "#projects", label: "Projects" },
   { href: "#skills", label: "Skills" },
 ];
-
-const initials = profile.name
-  .split(" ")
-  .map((part) => part[0])
-  .join("");
 
 // On wide screens the links, Contact and the theme switch sit in the bar. On
 // phones and tablets they move into a menu behind a button: the links, then
@@ -67,8 +64,12 @@ export const TopBar = () => {
   return (
     <Bar ref={barRef}>
       <Inner>
-        <Brand href="#top" aria-label={`${profile.name}, back to top`}>
-          <Logo aria-hidden="true">{initials}</Logo>
+        <Brand href="#top" title="Back to top">
+          <BrandName>{profile.name}</BrandName>
+          <BrandTitle>
+            {profile.title}
+            <BrandTitleMore> · {profile.secondaryTitle}</BrandTitleMore>
+          </BrandTitle>
         </Brand>
         <Nav id="site-menu" aria-label="Sections" $open={menuOpen}>
           <NavList>

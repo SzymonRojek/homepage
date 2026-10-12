@@ -5,19 +5,22 @@ test.describe("Header and footer", () => {
     await page.goto("./");
   });
 
-  test("shows name, title and page title", async ({ page }) => {
+  test("shows name, title and page title", async ({ page, isMobile }) => {
     await expect(page).toHaveTitle(/Szymon Rojek/);
+    // The h1 is for search engines and screen readers; the top bar shows it.
     await expect(
       page.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
-    ).toBeVisible();
-    // Scoped to the hero: the top bar also shows the title, hidden on phones.
-    await expect(
-      page.getByRole("banner").getByText("Software Test Engineer"),
-    ).toBeVisible();
+    ).toBeAttached();
+    const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
+    await expect(brand).toBeVisible();
+    await expect(brand).toContainText("Software Test Engineer");
+    // "self-taught Developer" fits next to the title from tablets up.
+    await expect(brand.getByText("· self-taught Developer")).toBeVisible({
+      visible: !isMobile,
+    });
     await expect(
       page.getByText("I find what breaks before your users do."),
     ).toBeVisible();
-    await expect(page.getByText("· self-taught developer")).toBeVisible();
   });
 
   test("tells recruiters at a glance what I'm looking for", async ({
@@ -28,11 +31,17 @@ test.describe("Header and footer", () => {
     await expect(
       header.getByText("Open to Test Automation & QA Engineer roles"),
     ).toBeVisible();
-    await expect(
-      header.getByText(
-        "Based in Hove, UK · Full right to work in the UK · Open to relocation",
-      ),
-    ).toBeVisible();
+    const where = header.getByLabel("Location and right to work");
+    await expect(where.getByRole("term")).toHaveText([
+      "Based in",
+      "Right to work",
+      "Relocation",
+    ]);
+    await expect(where.getByRole("definition")).toHaveText([
+      "Hove, UK",
+      "UK, full",
+      "Open",
+    ]);
     await expect(
       header.getByText(/^Four years testing financial data/),
     ).toBeVisible();
@@ -41,16 +50,24 @@ test.describe("Header and footer", () => {
     );
   });
 
-  test("has contact links", async ({ page }) => {
-    await expect(page.getByRole("link", { name: "Email me" })).toHaveAttribute(
-      "href",
-      "mailto:sz.rojek@gmail.com",
-    );
-
-    // The hero has one button; LinkedIn lives in the footer.
+  test("has contact links in the top bar and the footer", async ({
+    page,
+    isMobile,
+  }) => {
+    // The hero has no links: contact lives in the top bar and the footer.
+    await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
+    // On a phone Contact sits in the menu.
+    if (isMobile) {
+      await page.getByRole("button", { name: "Menu" }).click();
+    }
     await expect(
-      page.getByRole("banner").getByRole("link", { name: "LinkedIn" }),
-    ).toHaveCount(0);
+      page.getByRole("link", { name: "Contact", exact: true }),
+    ).toHaveAttribute("href", "#contact");
+    await expect(
+      page
+        .getByRole("contentinfo")
+        .getByRole("link", { name: "Send me an email" }),
+    ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
     await expect(
       page
         .getByRole("contentinfo")

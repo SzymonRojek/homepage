@@ -54,6 +54,8 @@ test.describe("Projects", () => {
       .filter({ has: page.getByRole("heading", { name: TALENT }) });
 
     await expect(card).not.toContainText("talent-outreach ·");
+    const caseStudy = await openCaseStudy(page, TALENT);
+    await expect(caseStudy).not.toContainText("talent-outreach ·");
     await expect(card.locator("img")).toHaveCount(0);
     await expect(card.getByRole("link", { name: "Code" })).toHaveAttribute(
       "href",
@@ -188,31 +190,6 @@ test.describe("Projects", () => {
     await expect(
       caseStudy.getByRole("list", { name: "Developer view stack" }),
     ).toContainText("Express");
-  });
-
-  test("a half of the portrait opens that side of a case study", async ({
-    page,
-  }) => {
-    const talent = page.getByRole("article", { name: TALENT });
-
-    await page
-      .getByRole("link", { name: "See my projects from the developer side" })
-      .click();
-
-    await expect(talent).toBeVisible();
-    const developer = page.locator("#case-study-talent-outreach-developer");
-    await expect(developer).toBeInViewport();
-    await expect(developer).toBeFocused();
-
-    await test.step("the tester half works from the keyboard", async () => {
-      await page
-        .getByRole("link", { name: "See my projects from the tester side" })
-        .focus();
-      await page.keyboard.press("Enter");
-      const tester = page.locator("#case-study-talent-outreach-tester");
-      await expect(tester).toBeInViewport();
-      await expect(tester).toBeFocused();
-    });
   });
 
   test("a CV link opens a case study at the developer side", async ({

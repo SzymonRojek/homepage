@@ -1,6 +1,4 @@
-import { useAppDispatch } from "../../../../core/hooks";
-import { firstCaseStudyRepo, showSide } from "../../Portfolio/projectViewSlice";
-import { Figure, Portrait, Half, Photo, Badge, Divider, Hint } from "./styled";
+import { Portrait, Half, Photo, Label, Divider } from "./styled";
 
 interface SplitPortraitProps {
   src: string;
@@ -8,47 +6,25 @@ interface SplitPortraitProps {
 }
 
 const halves = [
-  {
-    side: "developer",
-    badge: "Code",
-    label: "See my projects from the developer side",
-  },
-  {
-    side: "tester",
-    badge: "Test",
-    label: "See my projects from the tester side",
-  },
+  { side: "developer", label: "Code" },
+  { side: "tester", label: "Test" },
 ] as const;
 
 // One photo drawn twice: the left half in black and white (code), the right
-// half in colour (test). Each half is a link to that column of the first case
-// study, which it opens, so it works by click, tap and keyboard.
-export const SplitPortrait = ({ src, name }: SplitPortraitProps) => {
-  const dispatch = useAppDispatch();
-
-  return (
-    <Figure>
-      <Portrait role="group" aria-label={`${name}: pick a side`}>
-        {halves.map(({ side, badge, label }) => (
-          <Half
-            key={side}
-            href={`#case-study-${firstCaseStudyRepo}-${side}`}
-            $side={side}
-            aria-label={label}
-            title={label}
-            onClick={() => dispatch(showSide(side))}
-          >
-            <Photo src={src} alt="" $side={side} />
-            <Badge $side={side} aria-hidden="true">
-              {badge}
-            </Badge>
-          </Half>
-        ))}
-        <Divider aria-hidden="true" />
-      </Portrait>
-      <Hint aria-hidden="true">
-        Click a side: my projects as a tester or a developer
-      </Hint>
-    </Figure>
-  );
-};
+// half in colour (test), joined by a yellow line. It is a picture of me, not
+// a control, so for screen readers it is one image with my name.
+export const SplitPortrait = ({ src, name }: SplitPortraitProps) => (
+  <Portrait role="img" aria-label={name}>
+    {halves.map(({ side }) => (
+      <Half key={side}>
+        <Photo src={src} alt="" $side={side} />
+      </Half>
+    ))}
+    {halves.map(({ side, label }) => (
+      <Label key={side} $side={side}>
+        {label}
+      </Label>
+    ))}
+    <Divider />
+  </Portrait>
+);

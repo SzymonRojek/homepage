@@ -55,6 +55,11 @@ export const education: EducationItem[] = [
     year: "In progress",
   },
   {
+    title: "LinkedIn Learning courses",
+    school: "Programming, software testing and AI, alongside my job",
+    year: "2023 – present",
+  },
+  {
     title: "Microsoft AI courses",
     school: "Generative AI, Microsoft Copilot and responsible AI",
     year: "2026",
@@ -69,10 +74,5 @@ export const education: EducationItem[] = [
     school:
       "React School: components, state, forms, custom hooks, REST APIs, component testing and TypeScript",
     year: "2022",
-  },
-  {
-    title: "Master of Theology, First Class Honours",
-    school: "Nicolaus Copernicus University, Toruń",
-    year: "2012",
   },
 ];

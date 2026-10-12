@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest";
 import projectViewReducer, {
-  firstCaseStudyRepo,
   openCaseStudy,
   openFromAddress,
   parseCaseStudyHash,
   selectOpenRepo,
   selectSide,
-  showSide,
 } from "./projectViewSlice";
 
 const read = (state: ReturnType<typeof projectViewReducer>) => ({
@@ -23,20 +21,15 @@ describe("projectViewSlice", () => {
   });
 
   it("opens and closes a case study, forgetting any side", () => {
-    const sided = projectViewReducer(undefined, showSide("developer"));
+    const sided = projectViewReducer(
+      undefined,
+      openFromAddress({ openRepo: "talent-outreach", side: "developer" }),
+    );
     const opened = projectViewReducer(sided, openCaseStudy("homepage"));
     expect(read(opened)).toEqual({ openRepo: "homepage", side: null });
 
     const closed = projectViewReducer(opened, openCaseStudy(null));
     expect(read(closed)).toEqual({ openRepo: null, side: null });
-  });
-
-  it("a portrait half opens the first case study at its side", () => {
-    expect(firstCaseStudyRepo).toBe("talent-outreach");
-    expect(read(projectViewReducer(undefined, showSide("developer")))).toEqual({
-      openRepo: "talent-outreach",
-      side: "developer",
-    });
   });
 
   it("an address typed while the page is open sets the case study and side", () => {
@@ -46,15 +39,6 @@ describe("projectViewSlice", () => {
     );
 
     expect(read(state)).toEqual({ openRepo: "homepage", side: "developer" });
-  });
-
-  it("a portrait half keeps the case study that is already open", () => {
-    const opened = projectViewReducer(undefined, openCaseStudy("homepage"));
-
-    expect(read(projectViewReducer(opened, showSide("tester")))).toEqual({
-      openRepo: "homepage",
-      side: "tester",
-    });
   });
 });
 

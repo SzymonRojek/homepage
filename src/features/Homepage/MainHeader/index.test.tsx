@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
@@ -28,15 +28,31 @@ describe("MainHeader", () => {
     expect(
       screen.getByText("Open to Test Automation & QA Engineer roles"),
     ).toBeInTheDocument();
+    const where = screen.getByLabelText("Location and right to work");
     expect(
-      screen.getByText(
-        "Based in Hove, UK · Full right to work in the UK · Open to relocation",
-      ),
-    ).toBeInTheDocument();
+      within(where)
+        .getAllByRole("term")
+        .map(({ textContent }) => textContent),
+    ).toEqual(["Based in", "Right to work", "Relocation"]);
     expect(
-      screen.getByText("I find what breaks before your users do."),
-    ).toBeInTheDocument();
-    expect(screen.getByText("· self-taught developer")).toBeInTheDocument();
+      within(where)
+        .getAllByRole("definition")
+        .map(({ textContent }) => textContent),
+    ).toEqual(["Hove, UK", "UK, full", "Open"]);
+    expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
+    // The tagline is the headline; "breaks" is wrapped for its underline.
+    const headline = screen.getByText(
+      (_, element) =>
+        element?.tagName === "P" &&
+        element.textContent === "I find what breaks before your users do.",
+    );
+    expect(headline).toBeInTheDocument();
+    expect(headline.querySelector("svg")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+    // The name and title are in the top bar; here the name is the h1 only.
+    expect(screen.queryByText("· self-taught Developer")).toBeNull();
   });
 
   it("has no skill chips: the bio says it once", () => {
@@ -48,20 +64,12 @@ describe("MainHeader", () => {
     ).toBeVisible();
   });
 
-  it("has one button: email", () => {
+  it("has no links: contact lives in the top bar and the footer", () => {
     renderHeader();
 
-    expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute(
-      "href",
-      expect.stringMatching(/^mailto:/),
-    );
-    // Besides the two portrait halves, email is the only link.
+    expect(screen.queryAllByRole("link")).toHaveLength(0);
     expect(
-      screen.getAllByRole("link").map((link) => link.getAttribute("href")),
-    ).toEqual([
-      "#case-study-talent-outreach-developer",
-      "#case-study-talent-outreach-tester",
-      expect.stringMatching(/^mailto:/),
-    ]);
+      screen.getByRole("img", { name: "Szymon Rojek" }),
+    ).toBeInTheDocument();
   });
 });

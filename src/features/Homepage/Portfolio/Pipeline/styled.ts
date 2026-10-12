@@ -7,7 +7,7 @@ export const Terminal = styled.div`
   color: ${({ theme }) => theme.colors.terminal.text};
   background: ${({ theme }) => theme.colors.terminal.background};
   border: 1px solid ${({ theme }) => theme.colors.terminal.border};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 export const TerminalBar = styled.div`

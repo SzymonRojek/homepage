@@ -248,6 +248,8 @@ const homepageCaseStudy: CaseStudy = {
     "End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.",
     "Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.",
     "Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. After targeted tests, every mutant in those files was caught. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants.",
+    "A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.",
+    "After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.",
   ],
 };
 

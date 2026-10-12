@@ -30,7 +30,7 @@ export const Kicker = styled.p`
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.site.background};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
 export const Title = styled.h3`
@@ -43,17 +43,6 @@ export const Title = styled.h3`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 22px;
-  }
-`;
-
-export const Meta = styled.p`
-  margin: 8px 0 0;
-  font-family: ${({ theme }) => theme.fontMono};
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.muted};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 13px;
   }
 `;
 
@@ -87,9 +76,7 @@ export const LensCard = styled.section<{ $side: Side }>`
   padding: 24px;
   background: ${({ theme, $side }) => theme.colors[accent($side)].soft};
   border: 1px solid ${({ theme, $side }) => theme.colors[accent($side)].border};
-  border-left: 4px solid
-    ${({ theme, $side }) => theme.colors[accent($side)].accent};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 16px;
@@ -165,9 +152,7 @@ export const LensStack = styled(Chips)`
 `;
 
 export const Details = styled.details`
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
+  margin-top: 16px;
 `;
 
 export const Toggle = styled.summary`
@@ -341,7 +326,7 @@ export const QualityList = styled.dl`
     padding: 16px;
     background: ${({ theme }) => theme.colors.site.background};
     border: 1px solid ${({ theme }) => theme.colors.headerLine};
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {

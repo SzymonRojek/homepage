@@ -22,9 +22,7 @@ export const Side = styled.article<{ $side: MindsetSide }>`
   flex-direction: column;
   padding: 32px;
   background: ${({ theme }) => theme.colors.boxBackground};
-  border: 1px solid ${({ theme, $side }) => theme.colors[accent($side)].border};
-  border-top: 4px solid
-    ${({ theme, $side }) => theme.colors[accent($side)].accent};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
 
@@ -62,7 +60,7 @@ export const Label = styled.span<{ $side: MindsetSide }>`
   color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
   background: ${({ theme, $side }) => theme.colors[accent($side)].soft};
   border: 1px solid ${({ theme, $side }) => theme.colors[accent($side)].border};
-  border-radius: 6px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
 export const Context = styled.p<{ $side: MindsetSide }>`
@@ -133,8 +131,8 @@ export const Join = styled.span`
   height: 44px;
   font-size: 24px;
   font-weight: 900;
-  color: ${({ theme }) => theme.colors.site.background};
-  background: ${({ theme }) => theme.colors.textPrimary};
+  color: ${({ theme }) => theme.colors.brand.accent};
+  background: ${({ theme }) => theme.colors.brand.background};
   border: 4px solid ${({ theme }) => theme.colors.site.background};
   border-radius: 50%;
   transform: translate(-50%, -50%);

@@ -4,22 +4,39 @@ import { ButtonLink, ButtonLinks } from "../ButtonLink";
 import Talk from "./talk.svg?react";
 
 export const Wrapper = styled.footer`
-  margin-top: 96px;
+  margin-top: 64px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 48px;
+    margin-top: 44px;
   }
 `;
 
+// The deep-green brand band again, so the page opens and closes with it.
 export const Card = styled.section`
   position: relative;
   padding: 56px;
-  color: ${({ theme }) => theme.colors.contact.text};
-  background: ${({ theme }) => theme.colors.contact.background};
-  box-shadow: ${({ theme }) => theme.boxShadow};
+  color: ${({ theme }) => theme.colors.brand.text};
+  background: ${({ theme }) => theme.colors.brand.background};
   border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
-  transition: background 0.3s;
+
+  /* The same soft yellow ring as on the hero, here in the opposite corner. */
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -160px;
+    left: -140px;
+    width: 380px;
+    height: 380px;
+    border: 64px solid ${({ theme }) => theme.colors.brand.accent};
+    border-radius: 50%;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  *:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.brand.accent};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 32px 16px;
@@ -28,6 +45,7 @@ export const Card = styled.section`
 
 // The contact card is one call to action, so it is centred.
 export const Content = styled.div`
+  position: relative;
   max-width: 680px;
   margin: 0 auto;
   text-align: center;
@@ -54,6 +72,7 @@ export const HeadingIcon = styled(Talk)`
 
 export const Paragraph = styled.p`
   margin: 16px 0 0;
+  color: ${({ theme }) => theme.colors.brand.muted};
   font-size: 18px;
   line-height: 1.5;
 
@@ -67,25 +86,22 @@ export const Buttons = styled(ButtonLinks)`
 `;
 
 export const ContactButton = styled(ButtonLink)`
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.contact.text};
-    outline-offset: 3px;
+  color: ${({ theme }) => theme.colors.brand.onAccent};
+  background: ${({ theme }) => theme.colors.brand.accent};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.brand.accentHover};
   }
 `;
 
 export const SecondaryContactButton = styled(ButtonLink)`
   padding: 10px 19px;
-  color: ${({ theme }) => theme.colors.contact.text};
+  color: ${({ theme }) => theme.colors.brand.text};
   background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.contact.text};
+  border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
 
   &:hover {
-    box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.contact.text};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.contact.text};
-    outline-offset: 3px;
+    background: ${({ theme }) => theme.colors.brand.control};
   }
 `;
 

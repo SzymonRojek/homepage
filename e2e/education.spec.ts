@@ -19,14 +19,29 @@ test.describe("Education & certifications", () => {
     await expect(items.first()).toContainText("In progress");
   });
 
-  test("lists education with school and year", async ({ page }) => {
-    const item = page
+  test("shows ongoing LinkedIn Learning as one item, after ISTQB", async ({
+    page,
+  }) => {
+    const items = page
       .getByRole("region", { name: "Education & certifications" })
-      .getByRole("listitem")
-      .filter({ hasText: "Master of Theology" });
+      .getByRole("listitem");
 
-    await expect(item).toContainText("Nicolaus Copernicus University, Toruń");
-    await expect(item).toContainText("2012");
+    await expect(items.nth(1)).toContainText("LinkedIn Learning courses");
+    await expect(items.nth(1)).toContainText(
+      "Programming, software testing and AI",
+    );
+    await expect(items.nth(1)).toContainText("2023 – present");
+  });
+
+  test("lists courses and certifications only, no degree", async ({ page }) => {
+    const section = page.getByRole("region", {
+      name: "Education & certifications",
+    });
+
+    await expect(section.getByRole("listitem")).toHaveCount(5);
+    await expect(section.getByText(/Master of|University, Toruń/)).toHaveCount(
+      0,
+    );
   });
 
   test("lists the React course from 2022", async ({ page }) => {

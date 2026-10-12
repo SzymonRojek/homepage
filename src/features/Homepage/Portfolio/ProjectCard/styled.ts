@@ -10,7 +10,6 @@ export const Card = styled.li<{ $expanded: boolean }>`
   border: 1px solid
     ${({ theme, $expanded }) =>
       $expanded ? theme.colors.textPrimary : theme.colors.headerLine};
-  border-left: 3px solid ${({ theme }) => theme.colors.qa.accent};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
   transition: border-color 0.2s;

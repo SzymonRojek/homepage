@@ -20,8 +20,8 @@ export const Box = styled.span`
   display: flex;
   width: 48px;
   padding: 2px;
-  background: ${({ theme }) => theme.colors.themeSwitch.background};
-  border: 1px solid ${({ theme }) => theme.colors.themeSwitch.border};
+  background: ${({ theme }) => theme.colors.brand.control};
+  border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
   border-radius: 12px;
 `;
 
@@ -37,6 +37,7 @@ export const IconWrapper = styled.span<{ $moveToRight: boolean }>`
     `}
 `;
 
+// The knob is the yellow sun, easy to spot on the green bar.
 export const Icon = styled(SunIcon)`
-  color: ${({ theme }) => theme.colors.themeSwitch.icon};
+  color: ${({ theme }) => theme.colors.brand.accent};
 `;

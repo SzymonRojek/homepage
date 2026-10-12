@@ -1,52 +1,32 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import { render, screen } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
-import projectViewReducer, {
-  selectOpenRepo,
-  selectSide,
-} from "../../Portfolio/projectViewSlice";
 import { SplitPortrait } from ".";
 
-const renderPortrait = () => {
-  const store = configureStore({
-    reducer: { projectView: projectViewReducer },
-  });
+const renderPortrait = () =>
   render(
-    <Provider store={store}>
-      <ThemeProvider theme={themeLight}>
-        <SplitPortrait src="photo.jpg" name="Szymon Rojek" />
-      </ThemeProvider>
-    </Provider>,
+    <ThemeProvider theme={themeLight}>
+      <SplitPortrait src="photo.jpg" name="Szymon Rojek" />
+    </ThemeProvider>,
   );
-  return store;
-};
 
 describe("SplitPortrait", () => {
-  it("links each half to that column of the first case study", () => {
+  it("is one image with my name, not a control", () => {
     renderPortrait();
 
-    const portrait = screen.getByRole("group", {
-      name: "Szymon Rojek: pick a side",
-    });
-    const halves = within(portrait).getAllByRole("link");
-    expect(halves.map((half) => half.getAttribute("aria-label"))).toEqual([
-      "See my projects from the developer side",
-      "See my projects from the tester side",
-    ]);
-    expect(halves.map((half) => half.getAttribute("href"))).toEqual([
-      "#case-study-talent-outreach-developer",
-      "#case-study-talent-outreach-tester",
-    ]);
+    expect(
+      screen.getByRole("img", { name: "Szymon Rojek" }),
+    ).toBeInTheDocument();
+    expect(screen.queryAllByRole("link")).toHaveLength(0);
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
   });
 
-  it("shows the same photo in both halves, as decoration", () => {
+  it("draws the same photo in both halves, as decoration", () => {
     renderPortrait();
 
     const photos = screen
-      .getByRole("group", { name: "Szymon Rojek: pick a side" })
+      .getByRole("img", { name: "Szymon Rojek" })
       .querySelectorAll("img");
     expect(photos).toHaveLength(2);
     photos.forEach((photo) => {
@@ -55,22 +35,11 @@ describe("SplitPortrait", () => {
     });
   });
 
-  it("opens the first case study at the side that was clicked", () => {
-    const store = renderPortrait();
+  it("captions the halves code and test", () => {
+    renderPortrait();
 
-    fireEvent.click(
-      screen.getByRole("link", {
-        name: "See my projects from the tester side",
-      }),
-    );
-    expect(selectOpenRepo(store.getState())).toBe("talent-outreach");
-    expect(selectSide(store.getState())).toBe("tester");
-
-    fireEvent.click(
-      screen.getByRole("link", {
-        name: "See my projects from the developer side",
-      }),
-    );
-    expect(selectSide(store.getState())).toBe("developer");
+    const portrait = screen.getByRole("img", { name: "Szymon Rojek" });
+    expect(portrait).toHaveTextContent("Code");
+    expect(portrait).toHaveTextContent("Test");
   });
 });

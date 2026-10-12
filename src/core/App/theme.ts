@@ -1,42 +1,45 @@
-// "Test report" design: black and white, crisp rules, one action colour
-// (cobalt) and one status colour (pass green). Every text pair below passes
-// WCAG AA in both themes; the comments give the ratios.
+// "Colour block" design: a deep-green brand band (top bar, hero, contact)
+// with cream text and a sunny yellow accent, around a light cream page.
+// Testing is green, code is terracotta. Every text pair passes WCAG AA in
+// both themes; the comments give the ratios.
 const colorNames = {
+  cream: "#FBF4E6",
   white: "#FFFFFF",
-  ink: "#0B0B0C",
-  inkBody: "#33363B",
-  inkMuted: "#5B5F66",
-  rule: "#D9DCE1",
-  ruleSoft: "#E3E5E8",
-  control: "#6B7079",
-  cobalt: "#1F4BFF",
-  cobaltHover: "#1A3FD9",
-  cobaltSoft: "#F3F5FF",
-  cobaltBorder: "#C9D3FF",
-  pass: "#0F7B3F",
-  passSoft: "#F0F8F3",
-  passBorder: "#BFE3CC",
-  night: "#0E0F11",
-  nightCard: "#16181B",
-  nightRule: "#343840",
-  nightControl: "#22252A",
-  paper: "#F2F3F5",
-  paperBody: "#CDD1D6",
-  paperMuted: "#A0A6AE",
-  periwinkle: "#8FA6FF",
-  periwinkleHover: "#A9BAFF",
-  mint: "#5FD68A",
+  ink: "#16231F",
+  inkBody: "#3A4843",
+  inkMuted: "#5C6964",
+  line: "#E6DAC3",
+  deep: "#123C37",
+  deepHover: "#0C2D29",
+  sun: "#FFC94D",
+  sunHover: "#FFD66E",
+  brandMuted: "#B9CEC7",
+  brandLine: "rgba(251, 244, 230, 0.25)",
+  brandControl: "rgba(251, 244, 230, 0.15)",
+  brandControlBorder: "rgba(251, 244, 230, 0.55)",
+  testGreen: "#1F7A5C",
+  testSoft: "#E3F2EA",
+  testBorder: "#B8DCCB",
+  terracotta: "#A94A22",
+  terracottaSoft: "#FBEBE2",
+  terracottaBorder: "#F0C7B1",
+  night: "#0B1513",
+  nightCard: "#12201D",
+  nightLine: "#2A3F38",
+  paper: "#F3EBDB",
+  paperBody: "#D2CDC0",
+  paperMuted: "#A3AFA9",
+  mint: "#7FD1A8",
+  mintSoft: "rgba(127, 209, 168, 0.1)",
+  mintBorder: "rgba(127, 209, 168, 0.35)",
+  peach: "#F2A47A",
+  peachSoft: "rgba(242, 164, 122, 0.1)",
+  peachBorder: "rgba(242, 164, 122, 0.35)",
   terminal: "#0B1220",
   terminalRule: "#1E293B",
   terminalText: "#E2E8F0",
   terminalMuted: "#94A3B8",
   terminalPass: "#34D399",
-  periwinkleSoft: "rgba(143, 166, 255, 0.08)",
-  periwinkleBorder: "rgba(143, 166, 255, 0.35)",
-  mintSoft: "rgba(95, 214, 138, 0.08)",
-  mintBorder: "rgba(95, 214, 138, 0.35)",
-  navLight: "rgba(255, 255, 255, 0.9)",
-  navDark: "rgba(14, 15, 17, 0.85)",
 };
 
 const common = {
@@ -45,11 +48,34 @@ const common = {
     tabletVerticalMax: 991,
     tabletHorizontalMax: 1199,
   },
-  boxShadow: "0 1px 2px rgba(11, 11, 12, 0.04)",
+  boxShadow:
+    "0 1px 2px rgba(22, 35, 31, 0.04), 0 8px 24px rgba(22, 35, 31, 0.05)",
+  // One content column for the top bar, the hero and the sections: at most
+  // 1160px of content, with side gutters that grow with the screen.
+  layout: {
+    maxWidth: 1160,
+    gutter: { mobile: 16, tablet: 32, desktop: 48 },
+  },
   borderRadius: "8px",
-  borderRadiusSmall: "6px",
+  borderRadiusSmall: "4px",
+  fontDisplay: '"Plus Jakarta Sans", Inter, sans-serif',
   fontMono:
     'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
+};
+
+// The brand band: the same deep green in both themes, cream text (11.1:1),
+// muted cream (7.4:1), sunny yellow accent (7.9:1) and yellow buttons with
+// green text (7.9:1).
+const brand = {
+  background: colorNames.deep,
+  text: colorNames.cream,
+  muted: colorNames.brandMuted,
+  line: colorNames.brandLine,
+  accent: colorNames.sun,
+  accentHover: colorNames.sunHover,
+  onAccent: colorNames.deep,
+  control: colorNames.brandControl,
+  controlBorder: colorNames.brandControlBorder,
 };
 
 // The CI terminal is dark in both themes.
@@ -64,47 +90,37 @@ const terminal = {
 export const themeLight = {
   ...common,
   colors: {
-    // Actions and links: buttons, links, focus rings (5.99:1 on white).
-    primary: colorNames.cobalt,
-    primaryHover: colorNames.cobaltHover,
-    onPrimary: colorNames.white,
-    // Headings 19.7:1, body 12.1:1, secondary 6.4:1 on white.
+    // Links and buttons on the cream page: deep green (11.1:1).
+    primary: colorNames.deep,
+    primaryHover: colorNames.deepHover,
+    onPrimary: colorNames.cream,
+    // Headings 14.8:1, body 8.8:1, secondary 5.2:1 on cream.
     textPrimary: colorNames.ink,
     muted: colorNames.inkMuted,
     site: {
-      background: colorNames.white,
+      background: colorNames.cream,
       text: colorNames.inkBody,
     },
-    nav: colorNames.navLight,
-    // Code / developer: cobalt. Test / tester: pass green (5.35:1 on white).
+    // Code: terracotta (5.2:1 on cream). Test: green (4.8:1 on cream).
     dev: {
-      accent: colorNames.cobalt,
-      soft: colorNames.cobaltSoft,
-      border: colorNames.cobaltBorder,
+      accent: colorNames.terracotta,
+      soft: colorNames.terracottaSoft,
+      border: colorNames.terracottaBorder,
     },
     qa: {
-      accent: colorNames.pass,
-      soft: colorNames.passSoft,
-      border: colorNames.passBorder,
+      accent: colorNames.testGreen,
+      soft: colorNames.testSoft,
+      border: colorNames.testBorder,
     },
     boxBackground: colorNames.white,
-    headerLine: colorNames.rule,
+    headerLine: colorNames.line,
     tile: {
-      border: colorNames.rule,
-      borderHover: colorNames.cobaltBorder,
+      border: colorNames.line,
+      borderHover: colorNames.testBorder,
       header: colorNames.ink,
     },
-    // The border is a control boundary: 3.94:1, above the 3:1 WCAG 1.4.11 needs.
-    themeSwitch: {
-      background: colorNames.ruleSoft,
-      border: colorNames.control,
-      icon: colorNames.cobalt,
-    },
+    brand,
     terminal,
-    contact: {
-      background: colorNames.ink,
-      text: colorNames.white,
-    },
   },
 };
 
@@ -112,20 +128,20 @@ export const themeDark: typeof themeLight = {
   ...common,
   boxShadow: "none",
   colors: {
-    primary: colorNames.periwinkle,
-    primaryHover: colorNames.periwinkleHover,
-    onPrimary: colorNames.night,
+    // Links and buttons: sunny yellow (11.0:1 on cards), green text on it.
+    primary: colorNames.sun,
+    primaryHover: colorNames.sunHover,
+    onPrimary: colorNames.deep,
     textPrimary: colorNames.paper,
     muted: colorNames.paperMuted,
     site: {
       background: colorNames.night,
       text: colorNames.paperBody,
     },
-    nav: colorNames.navDark,
     dev: {
-      accent: colorNames.periwinkle,
-      soft: colorNames.periwinkleSoft,
-      border: colorNames.periwinkleBorder,
+      accent: colorNames.peach,
+      soft: colorNames.peachSoft,
+      border: colorNames.peachBorder,
     },
     qa: {
       accent: colorNames.mint,
@@ -133,21 +149,13 @@ export const themeDark: typeof themeLight = {
       border: colorNames.mintBorder,
     },
     boxBackground: colorNames.nightCard,
-    headerLine: colorNames.nightRule,
+    headerLine: colorNames.nightLine,
     tile: {
-      border: colorNames.nightRule,
-      borderHover: colorNames.periwinkleBorder,
+      border: colorNames.nightLine,
+      borderHover: colorNames.mintBorder,
       header: colorNames.paper,
     },
-    themeSwitch: {
-      background: colorNames.nightControl,
-      border: colorNames.control,
-      icon: colorNames.periwinkle,
-    },
+    brand,
     terminal,
-    contact: {
-      background: colorNames.nightCard,
-      text: colorNames.paper,
-    },
   },
 };

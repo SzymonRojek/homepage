@@ -23,7 +23,7 @@ test.describe("Experience", () => {
   }) => {
     const experience = page.getByRole("region", { name: "Experience" });
 
-    await expect(experience.getByText("Master of Theology")).toHaveCount(0);
+    await expect(experience.getByText("ISTQB")).toHaveCount(0);
     await expect(experience.getByText("Polish")).toHaveCount(0);
     await expect(experience.getByText("Interests")).toHaveCount(0);
   });

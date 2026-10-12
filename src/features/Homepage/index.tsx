@@ -17,8 +17,8 @@ export const Homepage = () => {
     <>
       <SkipLink href="#main">Skip to content</SkipLink>
       <TopBar />
+      <MainHeader />
       <Container>
-        <MainHeader />
         <main id="main" tabIndex={-1}>
           <Mindset />
 

@@ -29,7 +29,7 @@ export const Skills = () => (
     <SectionHeader id="skills">Skills</SectionHeader>
     <Grid>
       {groups.map(({ accent, title, skills }) => (
-        <Group key={title} $accent={accent}>
+        <Group key={title}>
           <GroupTitle $accent={accent}>{title}</GroupTitle>
           <SkillList aria-label={`${title} skills`}>
             {skills.map((skill) => (

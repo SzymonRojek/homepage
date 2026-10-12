@@ -6,7 +6,6 @@ import {
   Article,
   Kicker,
   Title,
-  Meta,
   Summary,
   Lenses,
   LensCard,
@@ -31,7 +30,6 @@ import { Chip } from "../../Section";
 interface CaseStudyProps {
   title: string;
   repo: string;
-  language: string;
   caseStudy: CaseStudyData;
 }
 
@@ -80,12 +78,7 @@ const LensColumn = ({
   </LensCard>
 );
 
-export const CaseStudy = ({
-  title,
-  repo,
-  language,
-  caseStudy,
-}: CaseStudyProps) => {
+export const CaseStudy = ({ title, repo, caseStudy }: CaseStudyProps) => {
   const id = `case-study-${repo}`;
   const {
     summary,
@@ -104,9 +97,6 @@ export const CaseStudy = ({
     <Article id={id} aria-labelledby={`${id}-title`} tabIndex={-1}>
       <Kicker>Case study</Kicker>
       <Title id={`${id}-title`}>{title}</Title>
-      <Meta>
-        {repo} · {language}
-      </Meta>
       {/* With a story, its brief says the same thing in plainer words. */}
       {!story && <Summary>{summary}</Summary>}
 
