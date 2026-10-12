@@ -7,15 +7,16 @@ Guidance for AI agents (Claude Code) working in this repository.
 Personal portfolio homepage of **Szymon Rojek**, Software Test Engineer (data migration, SQL and API testing) who also builds front-end.
 Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in `package.json`).
 
-A single page aimed at recruiters for test automation and QA roles (developer roles possibly too, through the `?view=developer` link). The theme of the page is "two mindsets": a tester who also builds software. Developer content is green (`theme.colors.dev`, "build"), tester content is cyan (`theme.colors.qa`, "protect"). Parts in order:
+A single page aimed at recruiters for test automation and QA roles (developer roles possibly too, through the `#case-study-talent-outreach-developer` link). The theme of the page is "two mindsets": a tester who also builds software. The design is a clean "test report": black and white, strong rules between sections, and two colours with fixed meanings: pass green (`theme.colors.qa`) for testing and status, cobalt blue (`theme.colors.dev`, also `primary`) for code and actions. Parts in order:
 
-- **Skip link and sticky top bar:** "SR" logo with a gradient border, name and title (back to top), section links (Mindset, How I test, Projects, Experience, Skills), a Contact button and the theme switch.
-- **Header (hero):** dotted grid with green/cyan glow, a split portrait (one photo drawn twice: left half black and white with a "Code" badge, right half in colour with "Test"; each half is a link to #projects that switches the project view to developer or tester), open-to-work pill with target roles, name, title with "· self-taught developer", a plain tester-first tagline, a two-sentence bio (no skill chips: they repeated it), one button, "Email me" (LinkedIn is in the footer, "How I test" in the top bar), then the location line (Hove, UK right to work, open to relocation) in small text. The dotted grid and glow sit only behind the portrait. There is deliberately no CV download.
+- **Skip link and sticky top bar:** the "SR" logo only (a solid ink tile, back to top), section links (Mindset, How I test, Experience, Projects, Skills), a Contact button and the theme switch. Up to `tabletVerticalMax` (991px) the bar shows only the logo and a ☰ button (`aria-expanded`, `aria-controls="site-menu"`); the links, then Contact (left) and the theme switch (right) in one row, move into a panel under the bar that closes on a link, on Escape (focus back to the button) and on a click outside. Contact and the switch live inside the `<nav>`, once, for both layouts.
+- **Header (hero):** a split portrait (one photo drawn twice, joined by a thin ink line: left half black and white with a blue "Code" badge, right half in colour with a green "Test" badge; each half links to that column of the first case study and opens it), open-to-work status (green monospace text with a still green square), name, title with "· self-taught developer", a tagline with a green ✓ before it, a two-sentence bio (no skill chips: they repeated it), one button, "Email me" (LinkedIn is in the footer, "How I test" in the top bar), then the location line (Hove, UK right to work, open to relocation) in small text. There is deliberately no CV download.
 - **Two mindsets, one goal:** a Developer card and a Tester card side by side, each with points backed by real work and a tool list.
 - **How I test at work:** professional evidence before the side projects: an intro, one highlight (a large client data migration, no system names), six numbered steps of migration testing (mapping, test design, SQL reconciliation, business logic and stored procedures, root cause, AI with a human in charge) and "Why it matters". Clients, systems and figures stay confidential: don't add internal system names unless the user confirms it's allowed.
-- **Projects:** a "View as Tester / Developer / Both" switch (sticky on desktop; Tester by default, or the view named in `?view=developer|tester|both`, so each CV can link to its own view), then projects with a `caseStudy` as full-width case-study cards (no stat boxes: numbers live in the tester view and the story): a numbered "How I solved it" story (Brief → Research as a "what exists vs my design" table → Solution → Value, with an honest next step; it replaces the summary), and a "How I built it" (developer view) and "How I proved it works" (automation view) column that the switch filters; problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons sit inside a `<details>`. Other testing projects would render as tiles and `category: "Other"` projects as an "Other projects" list; there are none now (the sign-in app was removed on purpose). Static data, no GitHub API call, so the section cannot fail or rate-limit.
-- **Experience:** job, education and languages. Interests were removed on purpose.
-- **Skills:** three cards: "Testing & data" (data and SQL first), "Test automation" and "Programming" (self-taught), then a tools row.
+- **Projects:** two case-study cards side by side (name, one sentence, short facts, "Read the case study", "Live demo" and "Code"). All closed by default; one opens below the cards at a time, the address becomes `#case-study-<repo>`, and the page scrolls to it and moves focus to it. There is no view switch: a case study always shows its numbered "How I solved it" story (Brief → Research as a "what exists vs my design" table → Solution → Value, with an honest next step), then "How I proved it works" (automation view) and "How I built it" (developer view) side by side, tester first, and problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons inside a `<details>`. Each column has an id (`#case-study-<repo>-tester` / `-developer`): a portrait half and a CV link open the case study there. Testing projects without a case study would render as tiles and `category: "Other"` projects as an "Other projects" list; there are none now. Static data, no GitHub API call, so the section cannot fail or rate-limit.
+- **Experience:** the job only, right after "How I test at work", so the professional work reads as one block.
+- **Skills:** three cards: "Testing & data" (data and SQL first), "Test automation" and "Programming" (self-taught), then a tools row and a languages row.
+- **Education & certifications:** its own section, last in `<main>` as on a UK CV (ISTQB, courses, React School, degree). Not in the top bar, to keep it to five links. Interests were removed on purpose.
 - **Footer:** "Let's talk" card with Email and LinkedIn buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
@@ -87,36 +88,36 @@ src/
   common/
     themeSlice.ts             # getInitialDarkTheme (saved choice, else OS), hasUserChoice, toggleTheme, systemThemeChanged
     useSystemTheme.ts         # listens to prefers-color-scheme changes (used in App)
-    useScrollToHash.ts        # scrolls to the #section in the address once the page has rendered (CV links)
+    useInitialScroll.ts       # after render: a reload returns to the saved position, a link visit jumps to its #section; both instant, never smooth
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
     profile.ts                # name, title, secondaryTitle, tagline, availability, location, bio, contactText, LinkedIn (CONTENT)
     mindsetData.ts            # developer and tester mindset cards (CONTENT)
     howITestData.ts           # "How I test at work": intro, highlight, steps, why it matters (CONTENT)
-    skillsData.ts             # testingSkills, automationSkills, programmingSkills, tools (CONTENT)
-    experienceData.ts         # jobs, education, languages (CONTENT)
+    skillsData.ts             # testingSkills, automationSkills, programmingSkills, tools, languages (CONTENT)
+    experienceData.ts         # jobs, education (CONTENT)
     email.ts                  # contact email (CONTENT)
-    TopBar/                   # sticky bar: logo, section links, Contact, ThemeSwitch
+    TopBar/                   # sticky bar: logo, section links (a menu on phones and tablets), Contact, ThemeSwitch
     MainHeader/SplitPortrait/ # the two-sided photo in the hero
     HowITest/                 # the "How I test at work" section (reuses the Story timeline styles)
-    MainHeader/, Mindset/, Skills/, Experience/, Footer/
+    MainHeader/, Mindset/, Skills/, Experience/, Education/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
       projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl and caseStudy with developer/tester lenses (CONTENT)
       pipelineData.ts         # this site's CI checks and links, shown in the homepage tester view (CONTENT)
       Story/                  # Brief / Research / Solution / Value timeline of a case study
       Pipeline/               # CI terminal: checks, result line, CI badge, link to the e2e tests
-      projectViewSlice.ts     # shared project view ("tester" | "developer" | "both"); starts from ?view= or "tester"; set by LensSwitch and the split portrait
-      LensSwitch/             # Tester / Developer / Both view switch (aria-pressed buttons)
-      Projects/               # case-study cards, test project tiles + "Other projects" list
-      CaseStudy/              # one case study: story (or summary), developer/tester columns, full write-up in <details>
+      projectViewSlice.ts     # the open case study and the side to scroll to, both read from #case-study-<repo>[-tester|-developer]; set by the cards and the split portrait
+      Projects/               # case-study cards, the one open case study with its view switch, test project tiles + "Other projects" list
+      ProjectCard/            # one card: name, sentence, facts, open/close button (aria-expanded), demo and code links
+      CaseStudy/              # one case study: story (or summary), developer/tester columns, full write-up in <details>; takes focus when opened (tabIndex -1)
       FlowDiagram/            # data-driven step diagram (ordered list, decorative CSS arrows)
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
     Section/, ButtonLink/, SubHeader/   # shared styled primitives (Section also has Card, Chip, Chips, SectionIntro)
 e2e/
   fixtures.ts                 # `test` that fails if the page calls api.github.com (projects must stay static)
-  *.spec.ts                   # header, navigation, how-i-test, experience, projects (incl. case study, view switch and CI pipeline), skills, theme, accessibility (details expanded)
+  *.spec.ts                   # header, navigation, how-i-test, experience, education, projects (incl. case study, view switch and CI pipeline), skills, theme, accessibility (details expanded)
 ```
 
 **Case studies:** the README case studies mirror `homepageCaseStudy` and `talentOutreachCaseStudy` in `projectsData.ts`; update both together. The `story`, `developer` and `tester` fields exist only on the site. Stories follow the advice employers gave: show HOW a problem was solved, not which tools were used. The Talent Outreach brief (a small recruitment agency) is self-set, not a paid client: never invent a client, savings or market research that didn't happen, and date competitor facts (prices change). The homepage's tester lens shows `sitePipeline` (`Portfolio/pipelineData.ts`) as a dark CI terminal with the live badge instead of bullet points; there is no separate "How this site is tested" section any more. Talent Outreach (formerly "Email Campaign Dashboard", GitHub repo `talent-outreach`, demo https://talent-outreach.onrender.com/) is checked out at `~/email-campaign-react-airtable`; verify its facts on `origin/main` there, since the local branch can lag. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Numbers on the site should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
@@ -130,15 +131,17 @@ e2e/
 - **Selectors:** each slice defines a private `selectXState` and exports `selectX` helpers built on it.
 - **Types:** strict TypeScript, no `any`. Type props with an interface next to the component. Unused function arguments are prefixed with `_`.
 - **Theme tokens only:** never hard-code colours or breakpoints.
-  - Use `theme.colors.*` (including `dev`, `qa`, `primary` / `onPrimary`, `gradient` / `onGradient`, `terminal`), `theme.breakpoints.mobileMax | tabletVerticalMax | tabletHorizontalMax`, `theme.boxShadow`, `theme.borderRadius` (cards), `theme.borderRadiusSmall` and `theme.fontMono`.
-  - Colour roles: cyan (`qa`, also `primary` for links, focus rings, section bars and step numbers) is testing, green (`dev`) is self-taught coding. The `gradient` means "both sides together" and is used sparingly: main buttons, logo border, portrait line, the "+" between the mindset cards, the Test automation card and the contact card edge. No gradient text.
-  - Depth comes from surfaces, not glows: light page slate-100 with white cards and slate-300 borders; dark page `#0A0F18`, cards `#151E2E`, borders `#2A3A52`. Text levels: headings, body, secondary (`muted`), all AA on both the page and cards. The theme switch border must keep 3:1 (WCAG 1.4.11).
+  - Use `theme.colors.*` (including `dev`, `qa`, `primary` / `primaryHover` / `onPrimary`, `terminal`), `theme.breakpoints.mobileMax | tabletVerticalMax | tabletHorizontalMax`, `theme.boxShadow`, `theme.borderRadius` (cards, 8px), `theme.borderRadiusSmall` (6px) and `theme.fontMono`.
+  - Colour roles: pass green (`qa`) is testing and status (✓ marks, the open-to-work square, the edge of case-study cards, the automation column, outcomes); cobalt blue (`dev`, and `primary` for buttons, links and focus rings) is code and actions. No gradients, glows or gradient text; the one exception is the Test automation card edge, half green and half blue, because it is both.
+  - Structure comes from lines, not effects: every section in `<main>` opens with a 2px ink rule and a small monospace number (CSS counter, empty alt text so it is not in the heading's name). Light: white page and cards, `#D9DCE1` borders. Dark: page `#0E0F11`, cards `#16181B`, borders `#343840`. Text levels: headings, body, secondary (`muted`), all AA on page and cards (ratios in `theme.ts`). Monospace only for tiny labels. The theme switch border must keep 3:1 (WCAG 1.4.11).
   - To add a colour, put it in `colorNames` in `theme.ts` and add the key to **both** themes. `themeDark` is typed as `typeof themeLight`, so a missing key is a type error.
   - Text colours must pass WCAG AA (4.5:1). The axe e2e test enforces this.
 - Media queries follow this pattern: `@media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) { ... }`. The site is desktop-first.
 - **SVGs** that need colouring are imported as components with `import XIcon from "./x.svg?react"` and styled through `currentColor`. Decorative images use a plain URL import with `<img src>`.
 - **styled-components props** that only drive styling must be transient (`$moveToRight`).
 - **Content changes** (profile, skills, experience, projects, quality, email, socials) go into the data files marked CONTENT above, not into JSX.
+- **British English** for every word a visitor or README reader sees: "personalised", "colour", "behaviour", "practise" (verb) / "practice" (noun), "organisation". Code identifiers and CSS stay as they are (`color`, `behavior: "instant"`).
+- **Icons** in `public/`: `favicon.svg` (the "SR" initials on an ink tile, as in the top bar), `favicon.png` (32px fallback), `apple-touch-icon.png` (180px) and `icon-192.png` / `icon-512.png` for `manifest.json`, all generated from the same design; keep them in step with the logo.
 - **Headings:** h1 is the name, h2 is a page section (`SectionHeader`), h3 is a card or group, h4 is a project tile. Sections use `aria-labelledby` pointing to their heading `id`.
 - External links: `target="_blank" rel="noreferrer"`. Decorative images: `alt=""`.
 - **Privacy:** never put a phone number on the site.

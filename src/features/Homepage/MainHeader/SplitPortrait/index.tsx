@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../../../../core/hooks";
-import { setProjectView } from "../../Portfolio/projectViewSlice";
+import { firstCaseStudyRepo, showSide } from "../../Portfolio/projectViewSlice";
 import { Figure, Portrait, Half, Photo, Badge, Divider, Hint } from "./styled";
 
 interface SplitPortraitProps {
@@ -20,9 +20,9 @@ const halves = [
   },
 ] as const;
 
-// One photo drawn twice: the left half in black and white (developer, build),
-// the right half in colour (tester, protect). Each half is a link that opens
-// Projects in its view, so it works by click, tap and keyboard.
+// One photo drawn twice: the left half in black and white (code), the right
+// half in colour (test). Each half is a link to that column of the first case
+// study, which it opens, so it works by click, tap and keyboard.
 export const SplitPortrait = ({ src, name }: SplitPortraitProps) => {
   const dispatch = useAppDispatch();
 
@@ -32,11 +32,11 @@ export const SplitPortrait = ({ src, name }: SplitPortraitProps) => {
         {halves.map(({ side, badge, label }) => (
           <Half
             key={side}
-            href="#projects"
+            href={`#case-study-${firstCaseStudyRepo}-${side}`}
             $side={side}
             aria-label={label}
             title={label}
-            onClick={() => dispatch(setProjectView(side))}
+            onClick={() => dispatch(showSide(side))}
           >
             <Photo src={src} alt="" $side={side} />
             <Badge $side={side} aria-hidden="true">

@@ -1,7 +1,17 @@
 import { test, expect } from "./fixtures";
 
+// On phones the switch sits in the closed menu, so it is found even when
+// hidden; clickThemeSwitch opens the menu first where there is one.
 const themeSwitch = (page: import("@playwright/test").Page) =>
-  page.getByRole("button", { name: "Dark mode" });
+  page.getByRole("button", { name: "Dark mode", includeHidden: true });
+
+const clickThemeSwitch = async (page: import("@playwright/test").Page) => {
+  const menu = page.getByRole("button", { name: "Menu" });
+  if (await menu.isVisible()) {
+    await menu.click();
+  }
+  await themeSwitch(page).click();
+};
 
 test.describe("with a light OS theme", () => {
   test.use({ colorScheme: "light" });
@@ -16,7 +26,7 @@ test.describe("with a light OS theme", () => {
     });
 
     await test.step("switches to dark", async () => {
-      await themeSwitch(page).click();
+      await clickThemeSwitch(page);
 
       await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
       await expect(page.locator("body")).not.toHaveCSS(
@@ -119,7 +129,7 @@ test.describe("when the OS theme changes while the page is open", () => {
 
   test("is ignored after the visitor chooses", async ({ page }) => {
     await page.goto("./");
-    await themeSwitch(page).click();
+    await clickThemeSwitch(page);
     await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
 
     await page.emulateMedia({ colorScheme: "light" });

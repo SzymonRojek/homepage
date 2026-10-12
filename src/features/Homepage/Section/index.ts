@@ -1,34 +1,36 @@
 import styled from "styled-components";
 import { SubHeader } from "../SubHeader";
 
+// Every section in <main> opens with a strong rule and a small number
+// (01, 02, ...), like the chapters of a test report. The number is drawn by
+// CSS with empty alt text, so it is not part of any heading's name.
 export const Section = styled.section`
   margin-top: 96px;
+  padding-top: 20px;
+  border-top: 2px solid ${({ theme }) => theme.colors.textPrimary};
+  counter-increment: section;
+
+  &::before {
+    content: counter(section, decimal-leading-zero);
+    content: counter(section, decimal-leading-zero) / "";
+    display: block;
+    margin-bottom: 12px;
+    font-family: ${({ theme }) => theme.fontMono};
+    font-size: 12px;
+    color: ${({ theme }) => theme.colors.muted};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 64px;
+    padding-top: 16px;
   }
 `;
 
-// A short bar in the tester colour above every section heading.
 export const SectionHeader = styled(SubHeader)`
-  margin-bottom: 28px;
-
-  &::before {
-    content: "";
-    display: block;
-    width: 48px;
-    height: 4px;
-    margin-bottom: 16px;
-    background: ${({ theme }) => theme.colors.primary};
-    border-radius: 2px;
-  }
+  margin-bottom: 24px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-bottom: 20px;
-
-    &::before {
-      margin-bottom: 12px;
-    }
+    margin-bottom: 16px;
   }
 `;
 
@@ -59,17 +61,15 @@ export const Card = styled.div`
   }
 `;
 
-// Small monospace label, used for tech stacks and tags.
+// A small tag for tech stacks and facts: plain text in a thin box.
 export const Chip = styled.li`
-  padding: 4px 10px;
-  font-family: ${({ theme }) => theme.fontMono};
+  padding: 3px 8px;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.textPrimary};
-  background: ${({ theme }) => theme.colors.site.background};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  border-radius: 6px;
+  border-radius: 4px;
 `;
 
 export const Chips = styled.ul`

@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ButtonLink } from "../ButtonLink";
 
+// The bar is the positioning box for the menu panel on small screens.
 export const Bar = styled.div`
   position: sticky;
   top: 0;
@@ -17,22 +18,19 @@ export const Bar = styled.div`
 `;
 
 export const Inner = styled.div`
-  max-width: 1216px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   gap: 24px;
+  max-width: 1216px;
+  margin: 0 auto;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex-wrap: wrap;
-    gap: 8px 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    gap: 12px;
   }
 `;
 
 export const Brand = styled.a`
   display: flex;
-  align-items: center;
-  gap: 12px;
   text-decoration: none;
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
@@ -45,49 +43,31 @@ export const Logo = styled.span`
   font-family: ${({ theme }) => theme.fontMono};
   font-size: 15px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  /* A gradient border around a calm tile: the colours stay, but quietly. */
-  background:
-    linear-gradient(
-        ${({ theme }) => theme.colors.boxBackground},
-        ${({ theme }) => theme.colors.boxBackground}
-      )
-      padding-box,
-    ${({ theme }) => theme.colors.gradient} border-box;
-  border: 2px solid transparent;
-  border-radius: 12px;
+  color: ${({ theme }) => theme.colors.site.background};
+  background: ${({ theme }) => theme.colors.textPrimary};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
-export const BrandText = styled.span`
+// In the bar on wide screens; a panel under the bar, shown by the menu
+// button, on phones and tablets.
+export const Nav = styled.nav<{ $open: boolean }>`
   display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    display: none;
-  }
-`;
-
-export const BrandName = styled.span`
-  font-size: 16px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.textPrimary};
-`;
-
-export const BrandTagline = styled.span`
-  margin-top: 2px;
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.muted};
-`;
-
-export const Nav = styled.nav`
+  align-items: center;
+  gap: 16px;
   margin-left: auto;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    order: 3;
-    width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    display: ${({ $open }) => ($open ? "block" : "none")};
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
     margin: 0;
-    overflow-x: auto;
+    padding: 8px 16px 16px;
+    gap: 0;
+    background: ${({ theme }) => theme.colors.boxBackground};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
+    box-shadow: ${({ theme }) => theme.boxShadow};
   }
 `;
 
@@ -97,6 +77,12 @@ export const NavList = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    flex-direction: column;
+    max-width: 1216px;
+    margin: 0 auto;
+  }
 `;
 
 export const NavLink = styled.a`
@@ -117,23 +103,92 @@ export const NavLink = styled.a`
     background: ${({ theme }) => theme.colors.boxBackground};
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 6px 10px;
-    font-size: 14px;
+  /* Large tap targets in the menu panel. */
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    padding: 12px;
+    font-size: 17px;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.site.background};
+    }
   }
 `;
 
-export const Actions = styled.div`
+// Contact and the theme switch: in the bar on wide screens; on phones and
+// tablets a row under the menu links, Contact left and the switch right.
+export const MenuFooter = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-left: auto;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    justify-content: space-between;
+    max-width: 1216px;
+    margin: 8px auto 0;
+    padding: 16px 12px 0;
+    border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
   }
 `;
 
 export const ContactLink = styled(ButtonLink)`
   padding: 8px 16px;
   font-size: 14px;
+  white-space: nowrap;
+`;
+
+export const MenuButton = styled.button`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    display: grid;
+    place-items: center;
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: ${({ theme }) => theme.colors.boxBackground};
+    border: 1px solid ${({ theme }) => theme.colors.headerLine};
+    border-radius: ${({ theme }) => theme.borderRadiusSmall};
+    cursor: pointer;
+  }
+`;
+
+// Three lines that turn into a cross while the menu is open.
+export const MenuIcon = styled.span<{ $open: boolean }>`
+  display: grid;
+  gap: 4px;
+  width: 18px;
+
+  span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
+  }
+
+  ${({ $open }) =>
+    $open &&
+    css`
+      span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+      }
+
+      span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+    `}
+
+  @media (prefers-reduced-motion: reduce) {
+    span {
+      transition: none;
+    }
+  }
 `;

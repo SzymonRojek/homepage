@@ -133,8 +133,8 @@ export const Join = styled.span`
   height: 44px;
   font-size: 24px;
   font-weight: 900;
-  color: ${({ theme }) => theme.colors.onGradient};
-  background: ${({ theme }) => theme.colors.gradient};
+  color: ${({ theme }) => theme.colors.site.background};
+  background: ${({ theme }) => theme.colors.textPrimary};
   border: 4px solid ${({ theme }) => theme.colors.site.background};
   border-radius: 50%;
   transform: translate(-50%, -50%);

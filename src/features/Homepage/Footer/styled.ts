@@ -15,22 +15,11 @@ export const Card = styled.section`
   position: relative;
   padding: 56px;
   color: ${({ theme }) => theme.colors.contact.text};
-  background:
-    ${({ theme }) => theme.colors.contact.glow},
-    ${({ theme }) => theme.colors.contact.background};
+  background: ${({ theme }) => theme.colors.contact.background};
   box-shadow: ${({ theme }) => theme.boxShadow};
   border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
   transition: background 0.3s;
-
-  /* Gradient line along the top edge. */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 4px;
-    background: ${({ theme }) => theme.colors.gradient};
-  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 32px 16px;

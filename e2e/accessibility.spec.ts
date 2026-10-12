@@ -8,31 +8,36 @@ for (const colorScheme of ["light", "dark"] as const) {
     test("has no serious accessibility violations", async ({ page }) => {
       await page.goto("./");
       await expect(
-        page.getByRole("article", {
-          name: "This website: built and tested like a real product",
-        }),
+        page.getByRole("list", { name: "Case studies" }),
       ).toBeVisible();
 
-      // Scan the full case studies too, not only what is visible by default:
-      // both the developer and the tester columns, and every <details>.
-      await page
-        .getByRole("group", { name: "View projects as" })
-        .getByRole("button", { name: "Both" })
-        .click();
-      await page
-        .locator("details")
-        .evaluateAll((elements) =>
-          elements.forEach((element) => element.setAttribute("open", "")),
-        );
+      const scan = async () => {
+        const { violations } = await new AxeBuilder({ page }).analyze();
+        return violations
+          .filter(({ impact }) => impact === "serious" || impact === "critical")
+          .map(({ id, help, nodes }) => ({
+            id,
+            help,
+            targets: nodes.map(({ target }) => target.join(" ")),
+          }));
+      };
 
-      const { violations } = await new AxeBuilder({ page }).analyze();
-      const serious = violations
-        .filter(({ impact }) => impact === "serious" || impact === "critical")
-        .map(({ id, help, nodes }) => ({
-          id,
-          help,
-          targets: nodes.map(({ target }) => target.join(" ")),
-        }));
+      // The page with every case study closed, then each one opened in full,
+      // with every <details>, not only what is visible by default.
+      const serious = await scan();
+      const cards = page
+        .getByRole("list", { name: "Case studies" })
+        .getByRole("button", { name: "Read the case study" });
+
+      for (let index = 0; index < (await cards.count()); index++) {
+        await cards.nth(index).click();
+        await page
+          .locator("details")
+          .evaluateAll((elements) =>
+            elements.forEach((element) => element.setAttribute("open", "")),
+          );
+        serious.push(...(await scan()));
+      }
 
       expect(serious).toEqual([]);
     });

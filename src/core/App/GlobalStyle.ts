@@ -36,12 +36,18 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     ::selection {
-        color: ${({ theme }) => theme.colors.onGradient};
+        color: ${({ theme }) => theme.colors.textPrimary};
         background: ${({ theme }) => theme.colors.dev.border};
     }
 
-    /* The skip link focuses <main>; it needs no ring of its own. */
-    main:focus {
+    /* Numbers the sections inside <main>: 01, 02, ... */
+    main {
+        counter-reset: section;
+    }
+
+    /* The skip link focuses <main>, and an opened case study takes focus too;
+       neither is a control, so neither needs a ring. */
+    [tabindex="-1"]:focus {
         outline: none;
     }
 

@@ -1,40 +1,72 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { projects } from "./projectsData";
 
-export type ProjectView = "both" | "developer" | "tester";
+export type Side = "developer" | "tester";
 
 interface ProjectViewState {
-  view: ProjectView;
+  // The repo of the open case study; all are closed by default.
+  openRepo: string | null;
+  // The column a portrait half or a link asked for, to scroll to it.
+  side: Side | null;
 }
 
-const views: ProjectView[] = ["tester", "developer", "both"];
+const caseStudyRepos = projects
+  .filter(({ caseStudy }) => caseStudy)
+  .map(({ repo }) => repo);
 
-// A CV can link straight to one view, e.g. /homepage/?view=developer#projects.
-// Without a valid ?view= the projects open in the tester (automation) view.
-export const getInitialProjectView = (search = window.location.search) => {
-  const view = new URLSearchParams(search).get("view");
+export const firstCaseStudyRepo = caseStudyRepos[0] ?? null;
 
-  return views.find((option) => option === view) ?? "tester";
+// #case-study-<repo> opens a case study, and #case-study-<repo>-developer or
+// -tester also points at one of its columns, e.g. a CV link for a developer
+// role: /homepage/#case-study-talent-outreach-developer
+export const parseCaseStudyHash = (hash = window.location.hash) => {
+  const match = /^#case-study-(.+?)(?:-(developer|tester))?$/.exec(
+    decodeURIComponent(hash),
+  );
+  const repo = match?.[1];
+
+  return repo && caseStudyRepos.includes(repo)
+    ? { openRepo: repo, side: (match[2] as Side | undefined) ?? null }
+    : { openRepo: null, side: null };
 };
 
-const initialState: ProjectViewState = { view: getInitialProjectView() };
+const initialState: ProjectViewState = parseCaseStudyHash();
 
-// Shared by the view switch in Projects and the split portrait in the header.
+// Shared by the project cards and the split portrait.
 const projectViewSlice = createSlice({
   name: "projectView",
   initialState,
   reducers: {
-    setProjectView: (state, { payload }: PayloadAction<ProjectView>) => {
-      state.view = payload;
+    openCaseStudy: (state, { payload }: PayloadAction<string | null>) => {
+      state.openRepo = payload;
+      state.side = null;
+    },
+    // A #case-study-... address typed or pasted while the page is open.
+    openFromAddress: (
+      state,
+      { payload }: PayloadAction<{ openRepo: string; side: Side | null }>,
+    ) => {
+      state.openRepo = payload.openRepo;
+      state.side = payload.side;
+    },
+    // A portrait half: that side of the open case study, or of the first one.
+    showSide: (state, { payload }: PayloadAction<Side>) => {
+      state.openRepo ??= firstCaseStudyRepo;
+      state.side = payload;
     },
   },
 });
 
-export const { setProjectView } = projectViewSlice.actions;
+export const { openCaseStudy, openFromAddress, showSide } =
+  projectViewSlice.actions;
 
 const selectProjectViewState = (state: { projectView: ProjectViewState }) =>
   state.projectView;
 
-export const selectProjectView = (state: { projectView: ProjectViewState }) =>
-  selectProjectViewState(state).view;
+export const selectOpenRepo = (state: { projectView: ProjectViewState }) =>
+  selectProjectViewState(state).openRepo;
+
+export const selectSide = (state: { projectView: ProjectViewState }) =>
+  selectProjectViewState(state).side;
 
 export default projectViewSlice.reducer;

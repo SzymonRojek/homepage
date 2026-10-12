@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import projectViewReducer from "./projectViewSlice";
 import { Portfolio } from ".";
@@ -48,37 +48,36 @@ const renderPortfolio = () =>
 
 const lensHeadings = () =>
   screen
-    .getAllByRole("heading", { level: 4 })
+    .queryAllByRole("heading", { level: 4 })
     .map(({ textContent }) => textContent)
     .filter((text) => text?.startsWith("How I"));
 
 describe("Portfolio", () => {
-  it("starts with the tester view of every case study", () => {
-    renderPortfolio();
-
-    expect(screen.getByRole("button", { name: "Tester" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    expect(lensHeadings()).toEqual([
-      "How I proved it works",
-      "How I proved it works",
-    ]);
+  beforeEach(() => {
+    // jsdom has no layout, so scrollIntoView does not exist there.
+    Element.prototype.scrollIntoView = () => {};
   });
 
-  it("switches every case study to the chosen view and back", () => {
+  afterEach(() => {
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("starts with every case study closed, as cards", () => {
     renderPortfolio();
 
-    fireEvent.click(screen.getByRole("button", { name: "Tester" }));
-    expect(lensHeadings()).toEqual([
-      "How I proved it works",
-      "How I proved it works",
-    ]);
+    expect(
+      screen.getAllByRole("button", { name: "Read the case study" }),
+    ).toHaveLength(2);
+    expect(screen.queryByRole("article")).toBeNull();
+    expect(lensHeadings()).toEqual([]);
+  });
 
-    fireEvent.click(screen.getByRole("button", { name: "Developer" }));
-    expect(lensHeadings()).toEqual(["How I built it", "How I built it"]);
+  it("opens a case study with both sides, tester first", () => {
+    renderPortfolio();
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Read the case study" })[0],
+    );
 
-    fireEvent.click(screen.getByRole("button", { name: "Both" }));
-    expect(lensHeadings()).toHaveLength(4);
+    expect(lensHeadings()).toEqual(["How I proved it works", "How I built it"]);
   });
 });

@@ -58,6 +58,10 @@ describe("MainHeader", () => {
     // Besides the two portrait halves, email is the only link.
     expect(
       screen.getAllByRole("link").map((link) => link.getAttribute("href")),
-    ).toEqual(["#projects", "#projects", expect.stringMatching(/^mailto:/)]);
+    ).toEqual([
+      "#case-study-talent-outreach-developer",
+      "#case-study-talent-outreach-tester",
+      expect.stringMatching(/^mailto:/),
+    ]);
   });
 });

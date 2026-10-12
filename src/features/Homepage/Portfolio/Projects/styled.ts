@@ -149,3 +149,19 @@ export const OtherList = styled.ul`
 `;
 
 export const OtherItem = styled.li``;
+
+// The case-study cards: two side by side, one column on tablets and phones.
+export const Cards = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+`;

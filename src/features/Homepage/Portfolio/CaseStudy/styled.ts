@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Chips } from "../../Section";
-import { ButtonLink, SecondaryButtonLink } from "../../ButtonLink";
 
 type Side = "developer" | "tester";
 const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
@@ -69,10 +68,10 @@ export const Summary = styled.p`
   }
 `;
 
-// Developer and tester side by side; one full-width column when filtered.
-export const Lenses = styled.div<{ $single: boolean }>`
+// Tester and developer side by side; one column on tablets and phones.
+export const Lenses = styled.div`
   display: grid;
-  grid-template-columns: ${({ $single }) => ($single ? "1fr" : "1fr 1fr")};
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-top: 28px;
 
@@ -164,17 +163,6 @@ export const LensPipeline = styled.div`
 export const LensStack = styled(Chips)`
   margin-top: 20px;
 `;
-
-export const Links = styled.p`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 20px 0 0;
-`;
-
-export const PrimaryLink = styled(ButtonLink)``;
-
-export const SecondaryLink = styled(SecondaryButtonLink)``;
 
 export const Details = styled.details`
   margin-top: 28px;

@@ -1,33 +1,86 @@
 import { describe, expect, it } from "vitest";
 import projectViewReducer, {
-  getInitialProjectView,
-  selectProjectView,
-  setProjectView,
+  firstCaseStudyRepo,
+  openCaseStudy,
+  openFromAddress,
+  parseCaseStudyHash,
+  selectOpenRepo,
+  selectSide,
+  showSide,
 } from "./projectViewSlice";
 
-describe("projectViewSlice", () => {
-  it("starts with the tester view when the address names none", () => {
-    const state = projectViewReducer(undefined, { type: "init" });
+const read = (state: ReturnType<typeof projectViewReducer>) => ({
+  openRepo: selectOpenRepo({ projectView: state }),
+  side: selectSide({ projectView: state }),
+});
 
-    expect(selectProjectView({ projectView: state })).toBe("tester");
+describe("projectViewSlice", () => {
+  it("starts with every case study closed", () => {
+    expect(read(projectViewReducer(undefined, { type: "init" }))).toEqual({
+      openRepo: null,
+      side: null,
+    });
   });
 
-  it("switches to the chosen view", () => {
-    const state = projectViewReducer(undefined, setProjectView("developer"));
+  it("opens and closes a case study, forgetting any side", () => {
+    const sided = projectViewReducer(undefined, showSide("developer"));
+    const opened = projectViewReducer(sided, openCaseStudy("homepage"));
+    expect(read(opened)).toEqual({ openRepo: "homepage", side: null });
 
-    expect(selectProjectView({ projectView: state })).toBe("developer");
+    const closed = projectViewReducer(opened, openCaseStudy(null));
+    expect(read(closed)).toEqual({ openRepo: null, side: null });
+  });
+
+  it("a portrait half opens the first case study at its side", () => {
+    expect(firstCaseStudyRepo).toBe("talent-outreach");
+    expect(read(projectViewReducer(undefined, showSide("developer")))).toEqual({
+      openRepo: "talent-outreach",
+      side: "developer",
+    });
+  });
+
+  it("an address typed while the page is open sets the case study and side", () => {
+    const state = projectViewReducer(
+      undefined,
+      openFromAddress({ openRepo: "homepage", side: "developer" }),
+    );
+
+    expect(read(state)).toEqual({ openRepo: "homepage", side: "developer" });
+  });
+
+  it("a portrait half keeps the case study that is already open", () => {
+    const opened = projectViewReducer(undefined, openCaseStudy("homepage"));
+
+    expect(read(projectViewReducer(opened, showSide("tester")))).toEqual({
+      openRepo: "homepage",
+      side: "tester",
+    });
   });
 });
 
-describe("getInitialProjectView", () => {
-  it("opens the view named in the address", () => {
-    expect(getInitialProjectView("?view=developer")).toBe("developer");
-    expect(getInitialProjectView("?view=both")).toBe("both");
-    expect(getInitialProjectView("?utm_source=cv&view=tester")).toBe("tester");
+describe("parseCaseStudyHash", () => {
+  it("opens the case study named in the address", () => {
+    expect(parseCaseStudyHash("#case-study-homepage")).toEqual({
+      openRepo: "homepage",
+      side: null,
+    });
   });
 
-  it("falls back to the tester view for a missing or unknown view", () => {
-    expect(getInitialProjectView("")).toBe("tester");
-    expect(getInitialProjectView("?view=manager")).toBe("tester");
+  it("also reads the column, even for a repo name with dashes", () => {
+    expect(parseCaseStudyHash("#case-study-talent-outreach-developer")).toEqual(
+      { openRepo: "talent-outreach", side: "developer" },
+    );
+    expect(parseCaseStudyHash("#case-study-talent-outreach")).toEqual({
+      openRepo: "talent-outreach",
+      side: null,
+    });
+  });
+
+  it("keeps everything closed for other addresses", () => {
+    const closed = { openRepo: null, side: null };
+    expect(parseCaseStudyHash("")).toEqual(closed);
+    expect(parseCaseStudyHash("#projects")).toEqual(closed);
+    expect(parseCaseStudyHash("#case-study-unknown")).toEqual(closed);
+    expect(parseCaseStudyHash("#case-study-unknown-tester")).toEqual(closed);
   });
 });

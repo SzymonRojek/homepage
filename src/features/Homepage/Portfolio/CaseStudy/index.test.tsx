@@ -3,7 +3,6 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import type { CaseStudy as CaseStudyData } from "../projectsData";
-import type { ProjectView } from "../LensSwitch";
 import { CaseStudy } from ".";
 
 const caseStudy: CaseStudyData = {
@@ -28,16 +27,14 @@ const caseStudy: CaseStudyData = {
   lessons: ["Write the failing test first."],
 };
 
-const renderCaseStudy = (demoUrl?: string, view?: ProjectView) =>
+const renderCaseStudy = () =>
   render(
     <ThemeProvider theme={themeLight}>
       <CaseStudy
         title="This portfolio"
         repo="homepage"
         language="TypeScript"
-        demoUrl={demoUrl}
         caseStudy={caseStudy}
-        view={view}
       />
     </ThemeProvider>,
   );
@@ -53,25 +50,14 @@ describe("CaseStudy", () => {
     expect(within(article).queryByLabelText("Impact")).not.toBeInTheDocument();
   });
 
-  it("links to the repository, and to a demo only when there is one", () => {
-    const { unmount } = renderCaseStudy();
+  it("has no links of its own: the card links to the code and the demo", () => {
+    renderCaseStudy();
 
     expect(
-      screen.getByRole("link", { name: "GitHub Repository" }),
-    ).toHaveAttribute("href", "https://github.com/SzymonRojek/homepage");
-    expect(
-      screen.queryByRole("link", { name: "Live demo" }),
+      screen.queryByRole("link", { name: "GitHub Repository" }),
     ).not.toBeInTheDocument();
-
-    unmount();
-    renderCaseStudy("https://example.com");
-
-    expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
-      "rel",
-      "noreferrer",
-    );
+    expect(screen.getByRole("article")).toHaveAttribute("tabindex", "-1");
   });
-
   it("keeps the full case study collapsed until it is opened", () => {
     renderCaseStudy();
 
@@ -93,8 +79,8 @@ describe("CaseStudy", () => {
         .getAllByRole("heading", { level: 4, hidden: true })
         .map(({ textContent }) => textContent),
     ).toEqual([
-      "How I built it",
       "How I proved it works",
+      "How I built it",
       "Problem",
       "Constraints",
       "Architecture",
@@ -134,41 +120,34 @@ describe("CaseStudy", () => {
     expect(screen.getByText("Write the failing test first.")).toBeVisible();
   });
 
-  it("shows the developer and the tester view side by side by default", () => {
+  it("shows both columns, tester first, each with its own link target", () => {
     renderCaseStudy();
 
+    const columns = screen.getAllByRole("region", { name: /^How I/ });
+    expect(columns.map((column) => column.id)).toEqual([
+      "case-study-homepage-tester",
+      "case-study-homepage-developer",
+    ]);
     expect(
-      screen.getByRole("heading", { level: 4, name: "How I built it" }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole("heading", { level: 4, name: "How I proved it works" }),
-    ).toBeVisible();
+      columns.map((column) => column.getAttribute("aria-labelledby")),
+    ).toEqual([
+      "case-study-homepage-tester-title",
+      "case-study-homepage-developer-title",
+    ]);
+    expect(columns[0]).toHaveAccessibleName("How I proved it works");
+    expect(columns[1]).toHaveAccessibleName("How I built it");
+    expect(screen.getByText("Gated in CI.")).toBeVisible();
     expect(screen.getByText("Built static.")).toBeVisible();
-    expect(screen.getByText("Playwright on every push.")).toBeVisible();
-    expect(
-      within(
-        screen.getByRole("list", { name: "Developer view stack" }),
-      ).getByText("React"),
-    ).toBeVisible();
     expect(
       within(
         screen.getByRole("list", { name: "Automation view stack" }),
       ).getByText("Playwright"),
     ).toBeVisible();
-  });
-
-  it("shows only the developer view when it is chosen", () => {
-    renderCaseStudy(undefined, "developer");
-
-    expect(screen.getByText("Built static.")).toBeVisible();
-    expect(screen.queryByText("Gated in CI.")).not.toBeInTheDocument();
-  });
-
-  it("shows only the tester view when it is chosen", () => {
-    renderCaseStudy(undefined, "tester");
-
-    expect(screen.getByText("Gated in CI.")).toBeVisible();
-    expect(screen.queryByText("Built static.")).not.toBeInTheDocument();
+    expect(
+      within(
+        screen.getByRole("list", { name: "Developer view stack" }),
+      ).getByText("React"),
+    ).toBeVisible();
   });
 
   it("shows a CI pipeline in a lens instead of empty points", () => {

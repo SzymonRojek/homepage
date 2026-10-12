@@ -211,8 +211,8 @@ export const ValueList = styled.ul`
     font-weight: 600;
     line-height: 1.5;
     color: ${({ theme }) => theme.colors.textPrimary};
-    background: ${({ theme }) => theme.colors.dev.soft};
-    border: 1px solid ${({ theme }) => theme.colors.dev.border};
+    background: ${({ theme }) => theme.colors.qa.soft};
+    border: 1px solid ${({ theme }) => theme.colors.qa.border};
     border-radius: 12px;
   }
 
@@ -223,7 +223,7 @@ export const ValueList = styled.ul`
     top: 14px;
     left: 18px;
     font-weight: 900;
-    color: ${({ theme }) => theme.colors.dev.accent};
+    color: ${({ theme }) => theme.colors.qa.accent};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

@@ -48,6 +48,16 @@ test.describe("Skills", () => {
     await expect(skills.first()).toHaveText("TypeScript & React");
   });
 
+  test("lists the languages under the tools", async ({ page }) => {
+    await expect(
+      page
+        .getByRole("region", { name: "Skills" })
+        .getByText(/^Languages: Polish/),
+    ).toHaveText(
+      "Languages: Polish (native) · English (professional working proficiency)",
+    );
+  });
+
   test("lists the tools", async ({ page }) => {
     await expect(
       page

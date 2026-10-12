@@ -120,14 +120,14 @@ export const Badge = styled.span<{ $side: Side }>`
   }
 `;
 
-// The green-to-cyan line where the two sides meet.
+// A plain line where the two sides meet.
 export const Divider = styled.span`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 3px;
-  background: ${({ theme }) => theme.colors.gradient};
+  width: 2px;
+  background: ${({ theme }) => theme.colors.textPrimary};
   transform: translateX(-50%);
   pointer-events: none;
 `;

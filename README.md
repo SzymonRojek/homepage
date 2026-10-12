@@ -17,8 +17,8 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 50 unit and component tests, 52 end-to-end runs (desktop and mobile)                 |
-| Coverage              | about 86%, with an 80% gate that fails CI                                            |
+| Automated tests       | 101 unit and component tests, 84 end-to-end runs (desktop and mobile)                |
+| Coverage              | about 95%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                 |
@@ -26,13 +26,13 @@
 
 ## Links for job applications
 
-The projects open in the tester (automation) view by default. A link can open them in another view, so each CV can point to the part that matters for that role:
+The case studies start closed. A link can open one at a chosen side, so each CV points to the part that matters for that role:
 
-| Applying for        | Link                                                            |
-| ------------------- | --------------------------------------------------------------- |
-| Test automation, QA | https://szymonrojek.github.io/homepage/                         |
-| Developer           | https://szymonrojek.github.io/homepage/?view=developer#projects |
-| Both sides at once  | https://szymonrojek.github.io/homepage/?view=both#projects      |
+| Applying for        | Link                                                                         |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Test automation, QA | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-tester    |
+| Developer           | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-developer |
+| The whole page      | https://szymonrojek.github.io/homepage/                                      |
 
 ## Case study: this website, built and tested like a real product
 
@@ -121,7 +121,7 @@ flowchart LR
 
 **[Code](https://github.com/SzymonRojek/talent-outreach)** · **[Live demo](https://talent-outreach.onrender.com/?utm_source=github)** (one click on "Try the demo", no password; the free server can take up to a minute to wake up, and the demo data resets every night)
 
-A full-stack React, Express and TypeScript recruitment tool, with data in Airtable. It started in 2021 as an email CRUD app ("Email Campaign Dashboard"); I reviewed it like a tester, rebuilt it to production standard and then narrowed it to one recruiter's problem: the right job offer to the right candidates, never too often.
+A full-stack React, Express and TypeScript recruitment tool, with data in Airtable. It started in 2021 as an email CRUD app ("Email Campaign Dashboard"); I reviewed it like a tester, rebuilt it to production standard and then narrowed it to one recruiter's problem: the right job offer to the right candidates, and not to anyone contacted in the last 14 days.
 
 | At a glance        |                                                                                                             |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -250,9 +250,9 @@ All text lives in data files, not in components:
 | File                                              | Content                                                                                                 |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn                            |
-| `src/features/Homepage/skillsData.ts`             | Testing skills, development skills and tools                                                            |
+| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages                                         |
 | `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |
-| `src/features/Homepage/experienceData.ts`         | Experience, education and languages                                                                     |
+| `src/features/Homepage/experienceData.ts`         | Experience and education                                                                                |
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
 | `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
 

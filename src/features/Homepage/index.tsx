@@ -1,5 +1,5 @@
 import { Container, SkipLink } from "./styled";
-import { useScrollToHash } from "../../common/useScrollToHash";
+import { useInitialScroll } from "../../common/useInitialScroll";
 import { TopBar } from "./TopBar";
 import { MainHeader } from "./MainHeader";
 import { Mindset } from "./Mindset";
@@ -7,10 +7,11 @@ import { HowITest } from "./HowITest";
 import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
+import { Education } from "./Education";
 import { Footer } from "./Footer";
 
 export const Homepage = () => {
-  useScrollToHash();
+  useInitialScroll();
 
   return (
     <>
@@ -23,11 +24,13 @@ export const Homepage = () => {
 
           <HowITest />
 
-          <Portfolio />
-
           <Experience />
 
+          <Portfolio />
+
           <Skills />
+
+          <Education />
         </main>
         <Footer />
       </Container>

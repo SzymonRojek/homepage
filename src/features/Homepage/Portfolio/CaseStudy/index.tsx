@@ -1,12 +1,7 @@
 import { FlowDiagram } from "../FlowDiagram";
 import { Pipeline } from "../Pipeline";
 import { Story } from "../Story";
-import type { ProjectView } from "../LensSwitch";
-import {
-  repoUrl,
-  type CaseStudy as CaseStudyData,
-  type Lens,
-} from "../projectsData";
+import { type CaseStudy as CaseStudyData, type Lens } from "../projectsData";
 import {
   Article,
   Kicker,
@@ -21,9 +16,6 @@ import {
   LensPoints,
   LensStack,
   LensPipeline,
-  Links,
-  PrimaryLink,
-  SecondaryLink,
   Details,
   Toggle,
   Part,
@@ -40,9 +32,7 @@ interface CaseStudyProps {
   title: string;
   repo: string;
   language: string;
-  demoUrl?: string;
   caseStudy: CaseStudyData;
-  view?: ProjectView;
 }
 
 const lensTitles = {
@@ -50,16 +40,25 @@ const lensTitles = {
   tester: { label: "Automation view", title: "How I proved it works" },
 };
 
+// Each column has its own id (#case-study-<repo>-tester / -developer), so a
+// portrait half or a CV link can open the case study at that side.
 const LensColumn = ({
+  id,
   side,
   lens: { headline, points, stack, pipeline },
 }: {
+  id: string;
   side: "developer" | "tester";
   lens: Lens;
 }) => (
-  <LensCard $side={side}>
+  <LensCard
+    $side={side}
+    id={`${id}-${side}`}
+    tabIndex={-1}
+    aria-labelledby={`${id}-${side}-title`}
+  >
     <LensLabel $side={side}>{lensTitles[side].label}</LensLabel>
-    <LensTitle>{lensTitles[side].title}</LensTitle>
+    <LensTitle id={`${id}-${side}-title`}>{lensTitles[side].title}</LensTitle>
     <LensHeadline>{headline}</LensHeadline>
     {points.length > 0 && (
       <LensPoints $side={side}>
@@ -85,9 +84,7 @@ export const CaseStudy = ({
   title,
   repo,
   language,
-  demoUrl,
   caseStudy,
-  view = "both",
 }: CaseStudyProps) => {
   const id = `case-study-${repo}`;
   const {
@@ -104,30 +101,21 @@ export const CaseStudy = ({
   } = caseStudy;
 
   return (
-    <Article id={id} aria-labelledby={`${id}-title`}>
+    <Article id={id} aria-labelledby={`${id}-title`} tabIndex={-1}>
       <Kicker>Case study</Kicker>
       <Title id={`${id}-title`}>{title}</Title>
       <Meta>
         {repo} · {language}
       </Meta>
-      <Links>
-        {demoUrl && (
-          <PrimaryLink href={demoUrl} target="_blank" rel="noreferrer">
-            Live demo
-          </PrimaryLink>
-        )}
-        <SecondaryLink href={repoUrl(repo)} target="_blank" rel="noreferrer">
-          GitHub Repository
-        </SecondaryLink>
-      </Links>
       {/* With a story, its brief says the same thing in plainer words. */}
       {!story && <Summary>{summary}</Summary>}
 
       {story && <Story story={story} />}
 
-      <Lenses $single={view !== "both"}>
-        {view !== "tester" && <LensColumn side="developer" lens={developer} />}
-        {view !== "developer" && <LensColumn side="tester" lens={tester} />}
+      {/* Tester first: testing is the profession, coding is self-taught. */}
+      <Lenses>
+        <LensColumn id={id} side="tester" lens={tester} />
+        <LensColumn id={id} side="developer" lens={developer} />
       </Lenses>
 
       <Details>

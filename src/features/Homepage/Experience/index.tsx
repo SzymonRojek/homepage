@@ -1,5 +1,5 @@
 import { Section, SectionHeader } from "../Section";
-import { education, jobs, languages } from "../experienceData";
+import { jobs } from "../experienceData";
 import {
   Card,
   JobHeader,
@@ -10,11 +10,6 @@ import {
   Group,
   GroupTitle,
   Points,
-  EducationList,
-  EducationItem,
-  EducationTitle,
-  School,
-  Year,
 } from "./styled";
 
 export const Experience = () => (
@@ -45,30 +40,5 @@ export const Experience = () => (
         </Groups>
       </Card>
     ))}
-    <Card>
-      <Role>Education and professional development</Role>
-      <EducationList>
-        {education.map(({ title, school, year }) => (
-          <EducationItem key={title}>
-            <div>
-              <EducationTitle>{title}</EducationTitle>
-              <School>{school}</School>
-            </div>
-            {year && <Year>{year}</Year>}
-          </EducationItem>
-        ))}
-      </EducationList>
-    </Card>
-    <Card>
-      <Role>Languages</Role>
-      <EducationList aria-label="Languages">
-        {languages.map(({ name, level }) => (
-          <EducationItem key={name}>
-            <EducationTitle>{name}</EducationTitle>
-            <Year>{level}</Year>
-          </EducationItem>
-        ))}
-      </EducationList>
-    </Card>
   </Section>
 );

@@ -14,10 +14,9 @@ export const Grid = styled.div`
   }
 `;
 
-// "both" gets the green-to-cyan gradient along its top edge.
+// "both" gets an edge that is half test green, half code blue.
 export const Group = styled(Card)<{ $accent: Accent }>`
   position: relative;
-  overflow: hidden;
   border-top: 4px solid
     ${({ theme, $accent }) =>
       $accent === "both" ? "transparent" : theme.colors[$accent].accent};
@@ -28,9 +27,15 @@ export const Group = styled(Card)<{ $accent: Accent }>`
     &::before {
       content: "";
       position: absolute;
-      inset: -4px 0 auto;
+      /* Over the transparent top border, edge to edge, rounded like the card. */
+      inset: -4px -1px auto;
       height: 4px;
-      background: ${theme.colors.gradient};
+      border-radius: ${theme.borderRadius} ${theme.borderRadius} 0 0;
+      background: linear-gradient(
+        90deg,
+        ${theme.colors.qa.accent} 50%,
+        ${theme.colors.dev.accent} 50%
+      );
     }
   `}
 `;
@@ -69,5 +74,13 @@ export const Tools = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 16px;
     font-size: 14px;
+  }
+`;
+
+export const Languages = styled(Tools)`
+  margin-top: 8px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 6px;
   }
 `;

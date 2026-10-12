@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures";
 
 test.describe("How I test at work", () => {
-  test("shows the migration testing approach before the projects", async ({
+  test("shows the migration testing approach before the job", async ({
     page,
   }) => {
     await page.goto("./");
@@ -18,6 +18,6 @@ test.describe("How I test at work", () => {
 
     const headings = page.getByRole("main").getByRole("heading", { level: 2 });
     await expect(headings.nth(1)).toHaveText("How I test at work");
-    await expect(headings.nth(2)).toHaveText("Projects");
+    await expect(headings.nth(2)).toHaveText("Experience");
   });
 });

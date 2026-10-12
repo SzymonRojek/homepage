@@ -64,9 +64,10 @@ test.describe("Header and footer", () => {
     ).toHaveText([
       "Two mindsets, one goal",
       "How I test at work",
-      "Projects",
       "Experience",
+      "Projects",
       "Skills",
+      "Education & certifications",
     ]);
   });
 

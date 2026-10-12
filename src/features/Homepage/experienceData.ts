@@ -65,18 +65,14 @@ export const education: EducationItem[] = [
     year: "2025",
   },
   {
+    title: "React.js workshops, final exam passed",
+    school:
+      "React School: components, state, forms, custom hooks, REST APIs, component testing and TypeScript",
+    year: "2022",
+  },
+  {
     title: "Master of Theology, First Class Honours",
     school: "Nicolaus Copernicus University, Toruń",
     year: "2012",
   },
-];
-
-export interface Language {
-  name: string;
-  level: string;
-}
-
-export const languages: Language[] = [
-  { name: "Polish", level: "Native" },
-  { name: "English", level: "Professional working proficiency" },
 ];

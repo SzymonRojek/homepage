@@ -5,7 +5,8 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import projectViewReducer, {
-  selectProjectView,
+  selectOpenRepo,
+  selectSide,
 } from "../../Portfolio/projectViewSlice";
 import { SplitPortrait } from ".";
 
@@ -24,7 +25,7 @@ const renderPortrait = () => {
 };
 
 describe("SplitPortrait", () => {
-  it("offers a developer half and a tester half, both linking to projects", () => {
+  it("links each half to that column of the first case study", () => {
     renderPortrait();
 
     const portrait = screen.getByRole("group", {
@@ -35,7 +36,10 @@ describe("SplitPortrait", () => {
       "See my projects from the developer side",
       "See my projects from the tester side",
     ]);
-    halves.forEach((half) => expect(half).toHaveAttribute("href", "#projects"));
+    expect(halves.map((half) => half.getAttribute("href"))).toEqual([
+      "#case-study-talent-outreach-developer",
+      "#case-study-talent-outreach-tester",
+    ]);
   });
 
   it("shows the same photo in both halves, as decoration", () => {
@@ -51,7 +55,7 @@ describe("SplitPortrait", () => {
     });
   });
 
-  it("switches the projects to the side that was clicked", () => {
+  it("opens the first case study at the side that was clicked", () => {
     const store = renderPortrait();
 
     fireEvent.click(
@@ -59,13 +63,14 @@ describe("SplitPortrait", () => {
         name: "See my projects from the tester side",
       }),
     );
-    expect(selectProjectView(store.getState())).toBe("tester");
+    expect(selectOpenRepo(store.getState())).toBe("talent-outreach");
+    expect(selectSide(store.getState())).toBe("tester");
 
     fireEvent.click(
       screen.getByRole("link", {
         name: "See my projects from the developer side",
       }),
     );
-    expect(selectProjectView(store.getState())).toBe("developer");
+    expect(selectSide(store.getState())).toBe("developer");
   });
 });

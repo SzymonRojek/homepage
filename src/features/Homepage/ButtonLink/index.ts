@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Envelope from "./envelope.svg?react";
 import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
-export const ButtonLink = styled.a`
+const buttonStyles = css`
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -10,24 +10,32 @@ export const ButtonLink = styled.a`
   font-size: 15px;
   line-height: 20px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.onGradient};
+  color: ${({ theme }) => theme.colors.onPrimary};
   text-decoration: none;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
-  background: ${({ theme }) => theme.colors.gradient};
-  transition:
-    box-shadow 0.2s,
-    transform 0.2s;
+  background: ${({ theme }) => theme.colors.primary};
+  transition: background 0.2s;
 
   &:hover {
-    box-shadow: 0 6px 20px ${({ theme }) => theme.colors.glow.dev};
-    transform: translateY(-1px);
+    background: ${({ theme }) => theme.colors.primaryHover};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 10px 16px;
     font-size: 14px;
   }
+`;
+
+export const ButtonLink = styled.a`
+  ${buttonStyles}
+`;
+
+// The same look for an action that stays on the page, e.g. opening a section.
+export const Button = styled.button`
+  ${buttonStyles}
+  font-family: inherit;
+  cursor: pointer;
 `;
 
 export const SecondaryButtonLink = styled(ButtonLink)`
@@ -37,8 +45,8 @@ export const SecondaryButtonLink = styled(ButtonLink)`
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
 
   &:hover {
-    box-shadow: none;
-    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.boxBackground};
+    border-color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

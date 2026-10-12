@@ -70,6 +70,11 @@ export interface Project {
   description: string;
   category: ProjectCategory;
   demoUrl?: string;
+  // Card: one sentence and three short facts in the same pattern on every
+  // card: what it is, how it's tested, how quality is guarded. The full story
+  // opens on click.
+  teaser?: string;
+  facts?: string[];
   caseStudy?: CaseStudy;
 }
 
@@ -249,7 +254,7 @@ const homepageCaseStudy: CaseStudy = {
 // Facts checked on main of github.com/SzymonRojek/talent-outreach (October 2026).
 const talentOutreachCaseStudy: CaseStudy = {
   summary:
-    "A recruitment tool rebuilt from a 2021 email app: job offers go to the right candidates by role and budget, personalized, never too often and only with consent, with tests at every level and CI/CD through staging to production.",
+    "A recruitment tool rebuilt from a 2021 email app: job offers go to the right candidates by role and budget, personalised, only with consent and not to anyone contacted in the last 14 days, with tests at every level and CI/CD through staging to production.",
   story: {
     brief:
       "A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing “Dear candidate”, with the risk of leaking addresses or contacting the same people too often.",
@@ -284,13 +289,13 @@ const talentOutreachCaseStudy: CaseStudy = {
       "A server-only path to the data: the Airtable token never reaches the browser.",
       "A one-click “Try the demo” login that exists only where the demo is switched on; API clients use a password, with a 15-minute lockout after 5 wrong attempts.",
       "The browser suggests the recipients, and the server has the last word: it sends only to candidates open to offers.",
-      "Every email is built on the server from one template: personalized, escaped and with a signed opt-out link. The preview uses the same template.",
+      "Every email is built on the server from one template: personalised, escaped and with a signed opt-out link. The preview uses the same template.",
       "An outbox instead of real sending, so the public demo can't email anyone.",
       "Staging before production, a nightly demo reset followed by a read-only check of the live app, and error monitoring without personal data.",
     ],
     value: [
       "Fewer costly mistakes: no CC leaks, no offer twice within two weeks and no email to anyone without consent.",
-      "From a role and a budget to personalized offers in one flow, with a preview before every send.",
+      "From a role and a budget to personalised offers in one flow, with a preview before every send.",
       "Safe to hand over and change: tests at every level, CI on every pull request and staging before production.",
     ],
     nextStep:
@@ -337,7 +342,7 @@ const talentOutreachCaseStudy: CaseStudy = {
   },
   problem: [
     "The app started in 2021 as an email CRUD client that sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser: anyone who called the API directly could read, change or delete every record. My first review found 11 bugs.",
-    "In 2026 I rebuilt it to production standard and then narrowed it from a generic newsletter tool to one recruiter's problem: the right job offer to the right candidates, never too often.",
+    "In 2026 I rebuilt it to production standard and then narrowed it from a generic newsletter tool to one recruiter's problem: the right job offer to the right candidates, and not to anyone contacted in the last 14 days.",
   ],
   constraints: [
     "Airtable is the database: a third-party REST API with rate limits and pages of 100 records.",
@@ -466,8 +471,15 @@ export const projects: Project[] = [
     language: "TypeScript",
     category: "Testing",
     description:
-      "Full-stack recruitment tool: job offers to candidates by role and budget, personalized, never too often and only with consent, with unit, API, end-to-end and Lighthouse tests and CI/CD through staging to production.",
+      "Full-stack recruitment tool: job offers to candidates by role and budget, personalised, only with consent and not to anyone contacted in the last 14 days, with unit, API, end-to-end and Lighthouse tests and CI/CD through staging to production.",
     demoUrl: "https://talent-outreach.onrender.com/?utm_source=portfolio",
+    teaser:
+      "Job offers to the right candidates: matched by role and budget, personalised, and skipping anyone contacted in the last 14 days.",
+    facts: [
+      "Full-stack TypeScript",
+      "Unit, API & e2e tests",
+      "Staging → production",
+    ],
     caseStudy: talentOutreachCaseStudy,
   },
   {
@@ -475,6 +487,13 @@ export const projects: Project[] = [
     repo: "homepage",
     language: "TypeScript",
     category: "Testing",
+    teaser:
+      "The page you're reading, rebuilt in 2026 and tested like a real product.",
+    facts: [
+      "React + TypeScript",
+      "Playwright & axe in CI",
+      "Lighthouse budgets",
+    ],
     description:
       "Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.",
     caseStudy: homepageCaseStudy,

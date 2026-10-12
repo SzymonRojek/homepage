@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
@@ -21,8 +21,10 @@ const renderTopBar = () =>
     </Provider>,
   );
 
+// The menu button is hidden on wide screens, which is all jsdom can see, and
+// a hidden element has no accessible name; it is found by its aria-label.
 describe("TopBar", () => {
-  it("links to every main section in page order", () => {
+  it("links to every main section in page order, then Contact", () => {
     renderTopBar();
 
     const links = within(
@@ -31,27 +33,29 @@ describe("TopBar", () => {
     expect(links.map(({ textContent }) => textContent)).toEqual([
       "Mindset",
       "How I test",
-      "Projects",
       "Experience",
+      "Projects",
       "Skills",
+      "Contact",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "#mindset",
       "#how-i-test",
-      "#projects",
       "#experience",
+      "#projects",
       "#skills",
+      "#contact",
     ]);
   });
 
   it("has a way back to the top, a contact link and the theme switch", () => {
     renderTopBar();
 
-    expect(screen.getByText("Software Test Engineer")).toBeInTheDocument();
-
     expect(
       screen.getByRole("link", { name: "Szymon Rojek, back to top" }),
     ).toHaveAttribute("href", "#top");
+    // The logo only: no name or title next to it.
+    expect(screen.queryByText("Software Test Engineer")).toBeNull();
     expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
       "href",
       "#contact",
@@ -59,5 +63,79 @@ describe("TopBar", () => {
     expect(
       screen.getByRole("button", { name: "Dark mode" }),
     ).toBeInTheDocument();
+  });
+
+  it("keeps Contact and the theme switch in the menu, after the links", () => {
+    renderTopBar();
+
+    const nav = screen.getByRole("navigation", { name: "Sections" });
+    expect(nav).toHaveAttribute("id", "site-menu");
+    const contact = within(nav).getByRole("link", { name: "Contact" });
+    const lastSection = within(nav).getByRole("link", { name: "Skills" });
+    expect(
+      lastSection.compareDocumentPosition(contact) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      within(nav).getByRole("button", { name: "Dark mode" }),
+    ).toBeInTheDocument();
+  });
+
+  it("closes the menu when Contact is chosen", () => {
+    renderTopBar();
+    const button = screen.getByLabelText("Menu");
+    fireEvent.click(button);
+
+    fireEvent.click(screen.getByRole("link", { name: "Contact" }));
+
+    expect(button).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("opens and closes the menu with its button", () => {
+    renderTopBar();
+
+    const button = screen.getByLabelText("Menu");
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    expect(button).toHaveAttribute("aria-controls", "site-menu");
+    expect(document.getElementById("site-menu")).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("closes the menu when a link is chosen", () => {
+    renderTopBar();
+    const button = screen.getByLabelText("Menu");
+    fireEvent.click(button);
+
+    fireEvent.click(screen.getByRole("link", { name: "Projects" }));
+
+    expect(button).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("closes the menu on Escape and gives focus back to the button", () => {
+    renderTopBar();
+    const button = screen.getByLabelText("Menu");
+    fireEvent.click(button);
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    expect(button).toHaveFocus();
+  });
+
+  it("closes the menu on a click outside the bar, but not inside it", () => {
+    renderTopBar();
+    const button = screen.getByLabelText("Menu");
+    fireEvent.click(button);
+
+    fireEvent.pointerDown(screen.getByRole("navigation", { name: "Sections" }));
+    expect(button).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.pointerDown(document.body);
+    expect(button).toHaveAttribute("aria-expanded", "false");
   });
 });

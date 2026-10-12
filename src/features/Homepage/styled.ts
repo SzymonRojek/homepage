@@ -19,8 +19,8 @@ export const SkipLink = styled.a`
   z-index: 20;
   padding: 10px 16px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.onGradient};
-  background: ${({ theme }) => theme.colors.gradient};
+  color: ${({ theme }) => theme.colors.onPrimary};
+  background: ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transform: translateY(-200%);
 

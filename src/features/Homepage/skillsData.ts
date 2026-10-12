@@ -40,3 +40,13 @@ export const tools = [
   "GitHub Copilot",
   "Claude",
 ];
+
+export interface Language {
+  name: string;
+  level: string;
+}
+
+export const languages: Language[] = [
+  { name: "Polish", level: "Native" },
+  { name: "English", level: "Professional working proficiency" },
+];

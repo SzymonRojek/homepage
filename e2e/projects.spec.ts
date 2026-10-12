@@ -1,74 +1,132 @@
+import type { Page } from "@playwright/test";
 import { test, expect } from "./fixtures";
+
+const TALENT = "Talent Outreach: job offers to the right candidates";
+const HOMEPAGE = "This website: built and tested like a real product";
+
+// Mindset and Experience cards are articles too, so case studies are looked for
+// inside the Projects section only.
+const caseStudies = (page: Page) =>
+  page.getByRole("region", { name: "Projects" }).getByRole("article");
+
+// Opens a case study from its card, as a visitor would.
+const openCaseStudy = async (page: Page, name: string) => {
+  await page
+    .getByRole("list", { name: "Case studies" })
+    .getByRole("listitem")
+    .filter({ has: page.getByRole("heading", { name }) })
+    .getByRole("button", { name: "Read the case study" })
+    .click();
+  return page.getByRole("article", { name });
+};
 
 test.describe("Projects", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("./");
   });
 
-  test("shows the case studies and no other projects", async ({ page }) => {
-    await test.step("testing projects as case studies, in order", async () => {
-      await expect(
-        page.getByRole("article").filter({ hasText: "Case study" }),
-      ).toHaveText([/Talent Outreach/, /This website: built and tested/]);
-      await expect(
-        page.getByRole("list", { name: "Test projects" }),
-      ).toHaveCount(0);
-    });
+  test("shows two case-study cards, all closed", async ({ page }) => {
+    const cards = page.getByRole("list", { name: "Case studies" });
 
-    await test.step("no Other projects section", async () => {
-      await expect(
-        page.getByRole("region", { name: "Other projects" }),
-      ).toHaveCount(0);
-    });
+    await expect(cards.getByRole("heading", { level: 3 })).toHaveText([
+      TALENT,
+      HOMEPAGE,
+    ]);
+    await expect(
+      cards.getByRole("button", { name: "Read the case study" }),
+    ).toHaveCount(2);
+    await expect(caseStudies(page)).toHaveCount(0);
+    await expect(
+      page.getByRole("group", { name: "View projects as" }),
+    ).toHaveCount(0);
+    await expect(page.getByRole("list", { name: "Test projects" })).toHaveCount(
+      0,
+    );
+    await expect(
+      page.getByRole("region", { name: "Other projects" }),
+    ).toHaveCount(0);
   });
 
-  test("the Talent Outreach case study links to the code and the live demo", async ({
-    page,
-  }) => {
-    const caseStudy = page.getByRole("article", {
-      name: "Talent Outreach: job offers to the right candidates",
-    });
+  test("a card links to the code and the live demo", async ({ page }) => {
+    const card = page
+      .getByRole("list", { name: "Case studies" })
+      .getByRole("listitem")
+      .filter({ has: page.getByRole("heading", { name: TALENT }) });
 
-    await expect(caseStudy).toContainText("talent-outreach · TypeScript");
-    await expect(
-      caseStudy.getByRole("link", { name: "GitHub Repository" }),
-    ).toHaveAttribute("href", "https://github.com/SzymonRojek/talent-outreach");
-    await expect(
-      caseStudy.getByRole("link", { name: "Live demo" }),
-    ).toHaveAttribute(
+    await expect(card).not.toContainText("talent-outreach ·");
+    await expect(card.locator("img")).toHaveCount(0);
+    await expect(card.getByRole("link", { name: "Code" })).toHaveAttribute(
+      "href",
+      "https://github.com/SzymonRojek/talent-outreach",
+    );
+    await expect(card.getByRole("link", { name: "Live demo" })).toHaveAttribute(
       "href",
       "https://talent-outreach.onrender.com/?utm_source=portfolio",
     );
-
-    await caseStudy.getByText("Read the full case study").click();
-    await expect(
-      caseStudy.getByRole("rowheader", {
-        name: "An outbox instead of real sending in the demo",
-      }),
-    ).toBeVisible();
   });
 
-  test("the homepage case study opens with its story, not stat boxes", async ({
-    page,
-  }) => {
-    const caseStudy = page.getByRole("article", {
-      name: "This website: built and tested like a real product",
+  test("opens one case study at a time and closes it", async ({ page }) => {
+    const talent = await openCaseStudy(page, TALENT);
+
+    await test.step("opens below the cards and takes focus", async () => {
+      await expect(talent).toBeVisible();
+      await expect(talent).toBeFocused();
+      await expect(talent).toBeInViewport();
+      await expect(page).toHaveURL(/#case-study-talent-outreach$/);
     });
 
-    await expect(caseStudy).toContainText("Case study");
-    await expect(caseStudy.getByLabel("Impact")).toHaveCount(0);
-    await expect(
-      caseStudy.getByRole("list", { name: "How I solved it" }),
-    ).toContainText("My first website, from 2021, was a learning project");
-    await expect(
-      caseStudy.getByRole("heading", { name: "Problem" }),
-    ).toBeHidden();
+    await test.step("opening another closes the first", async () => {
+      const homepage = await openCaseStudy(page, HOMEPAGE);
+      await expect(homepage).toBeVisible();
+      await expect(talent).toHaveCount(0);
+      await expect(page).toHaveURL(/#case-study-homepage$/);
+    });
+
+    await test.step("closes from its card", async () => {
+      await page.getByRole("button", { name: "Close the case study" }).click();
+      await expect(caseStudies(page)).toHaveCount(0);
+      await expect(page).toHaveURL(/#projects$/);
+    });
+  });
+
+  test("a link can open one case study", async ({ page }) => {
+    await page.goto("./#case-study-homepage");
+
+    const homepage = page.getByRole("article", { name: HOMEPAGE });
+    await expect(homepage).toBeVisible();
+    await expect(homepage).toBeInViewport();
+    await expect(caseStudies(page)).toHaveCount(1);
+  });
+
+  test("the Talent Outreach case study tells how the problem was solved", async ({
+    page,
+  }) => {
+    const story = (await openCaseStudy(page, TALENT)).getByRole("list", {
+      name: "How I solved it",
+    });
+
+    await expect(story.getByRole("heading", { level: 4 })).toHaveText([
+      "Brief",
+      "Research",
+      "Solution",
+      "Value",
+    ]);
+    await expect(story).toContainText("keeps its candidates in a spreadsheet");
+    const research = story.getByRole("table");
+    await expect(research.getByRole("columnheader")).toHaveText([
+      "Spreadsheet and Gmail",
+      "My design",
+    ]);
+    await expect(research.getByRole("row")).toHaveCount(7);
+    await expect(research).toContainText("skipped by default");
+    await expect(story).toContainText("Not built yet: real delivery.");
   });
 
   test("the full case study opens with every part", async ({ page }) => {
-    const caseStudy = page.getByRole("article", {
-      name: "This website: built and tested like a real product",
-    });
+    const caseStudy = await openCaseStudy(page, HOMEPAGE);
+    await expect(
+      caseStudy.getByRole("heading", { name: "Problem" }),
+    ).toBeHidden();
 
     await caseStudy.getByText("Read the full case study").click();
 
@@ -78,6 +136,7 @@ test.describe("Projects", () => {
       "Solution",
       "Value",
       "How I proved it works",
+      "How I built it",
       "Problem",
       "Constraints",
       "Architecture",
@@ -103,42 +162,19 @@ test.describe("Projects", () => {
     ).toBeVisible();
   });
 
-  test("the Talent Outreach case study tells how the problem was solved", async ({
-    page,
-  }) => {
-    const story = page
-      .getByRole("article", {
-        name: "Talent Outreach: job offers to the right candidates",
-      })
-      .getByRole("list", { name: "How I solved it" });
-
-    await expect(story.getByRole("heading", { level: 4 })).toHaveText([
-      "Brief",
-      "Research",
-      "Solution",
-      "Value",
-    ]);
-    await expect(story).toContainText("keeps its candidates in a spreadsheet");
-    const research = story.getByRole("table");
-    await expect(research.getByRole("columnheader")).toHaveText([
-      "Spreadsheet and Gmail",
-      "My design",
-    ]);
-    await expect(research.getByRole("row")).toHaveCount(7);
-    await expect(research).toContainText("skipped by default");
-    await expect(story).toContainText("Not built yet: real delivery.");
-  });
-
   test("each case study shows how it was built and how it was tested", async ({
     page,
   }) => {
-    const caseStudy = page.getByRole("article", {
-      name: "Talent Outreach: job offers to the right candidates",
-    });
-    await page
-      .getByRole("group", { name: "View projects as" })
-      .getByRole("button", { name: "Both" })
-      .click();
+    const caseStudy = await openCaseStudy(page, TALENT);
+
+    await expect(
+      caseStudy.getByRole("heading", { level: 4 }).filter({
+        hasText: /^How I/,
+      }),
+    ).toHaveText(["How I proved it works", "How I built it"]);
+    await expect(
+      page.getByRole("group", { name: "View projects as" }),
+    ).toHaveCount(0);
 
     await expect(
       caseStudy.getByRole("heading", { name: "How I built it" }),
@@ -154,107 +190,46 @@ test.describe("Projects", () => {
     ).toContainText("Express");
   });
 
-  test("a half of the portrait opens the projects from that side", async ({
+  test("a half of the portrait opens that side of a case study", async ({
     page,
   }) => {
-    const views = page.getByRole("group", { name: "View projects as" });
+    const talent = page.getByRole("article", { name: TALENT });
 
     await page
       .getByRole("link", { name: "See my projects from the developer side" })
       .click();
 
-    await expect(page).toHaveURL(/#projects$/);
-    await expect(
-      page.getByRole("heading", { level: 2, name: "Projects" }),
-    ).toBeInViewport();
-    await expect(
-      views.getByRole("button", { name: "Developer" }),
-    ).toHaveAttribute("aria-pressed", "true");
-    await expect(
-      page.getByRole("heading", { name: "How I proved it works" }),
-    ).toHaveCount(0);
+    await expect(talent).toBeVisible();
+    const developer = page.locator("#case-study-talent-outreach-developer");
+    await expect(developer).toBeInViewport();
+    await expect(developer).toBeFocused();
 
     await test.step("the tester half works from the keyboard", async () => {
       await page
         .getByRole("link", { name: "See my projects from the tester side" })
         .focus();
       await page.keyboard.press("Enter");
-      await expect(
-        views.getByRole("button", { name: "Tester" }),
-      ).toHaveAttribute("aria-pressed", "true");
-      await expect(
-        page.getByRole("heading", { name: "How I built it" }),
-      ).toHaveCount(0);
+      const tester = page.locator("#case-study-talent-outreach-tester");
+      await expect(tester).toBeInViewport();
+      await expect(tester).toBeFocused();
     });
   });
 
-  test("a link can open the projects in the developer view", async ({
+  test("a CV link opens a case study at the developer side", async ({
     page,
   }) => {
-    await page.goto("./?view=developer#projects");
+    await page.goto("./#case-study-talent-outreach-developer");
 
+    await expect(page.getByRole("article", { name: TALENT })).toBeVisible();
     await expect(
-      page
-        .getByRole("group", { name: "View projects as" })
-        .getByRole("button", { name: "Developer" }),
-    ).toHaveAttribute("aria-pressed", "true");
-    await expect(
-      page.getByRole("heading", { name: "How I built it" }),
-    ).toHaveCount(2);
-    await expect(
-      page.getByRole("heading", { name: "How I proved it works" }),
-    ).toHaveCount(0);
-    await expect(
-      page.getByRole("heading", { level: 2, name: "Projects" }),
+      page.locator("#case-study-talent-outreach-developer"),
     ).toBeInViewport();
-  });
-
-  test("the view switch shows the developer or the tester side", async ({
-    page,
-  }) => {
-    const views = page.getByRole("group", { name: "View projects as" });
-    const built = page.getByRole("heading", { name: "How I built it" });
-    const tested = page.getByRole("heading", {
-      name: "How I proved it works",
-    });
-
-    await test.step("starts with the tester side only", async () => {
-      await expect(
-        views.getByRole("button", { name: "Tester" }),
-      ).toHaveAttribute("aria-pressed", "true");
-      await expect(built).toHaveCount(0);
-      await expect(tested).toHaveCount(2);
-    });
-
-    await test.step("both views show the two sides", async () => {
-      await views.getByRole("button", { name: "Both" }).click();
-      await expect(built).toHaveCount(2);
-      await expect(tested).toHaveCount(2);
-    });
-
-    await test.step("developer view hides how it was tested", async () => {
-      await views.getByRole("button", { name: "Developer" }).click();
-      await expect(built).toHaveCount(2);
-      await expect(tested).toHaveCount(0);
-    });
-
-    await test.step("works from the keyboard", async () => {
-      await views.getByRole("button", { name: "Developer" }).focus();
-      await page.keyboard.press("Shift+Tab");
-      await page.keyboard.press("Enter");
-      await expect(
-        views.getByRole("button", { name: "Tester" }),
-      ).toHaveAttribute("aria-pressed", "true");
-      await expect(built).toHaveCount(0);
-    });
   });
 
   test("the homepage tester view shows the CI pipeline with live status", async ({
     page,
   }) => {
-    const caseStudy = page.getByRole("article", {
-      name: "This website: built and tested like a real product",
-    });
+    const caseStudy = await openCaseStudy(page, HOMEPAGE);
     const checks = caseStudy
       .getByRole("list", { name: "CI checks" })
       .getByRole("listitem");
@@ -270,25 +245,15 @@ test.describe("Projects", () => {
     await expect(
       caseStudy.getByRole("link", { name: "CI status" }),
     ).toHaveAttribute("href", /actions\/workflows\/ci\.yml$/);
-
-    await page
-      .getByRole("group", { name: "View projects as" })
-      .getByRole("button", { name: "Developer" })
-      .click();
-    await expect(
-      caseStudy.getByRole("list", { name: "CI checks" }),
-    ).toHaveCount(0);
   });
 
   test("renders without loading or error states", async ({ page }) => {
     // The noGithubApi fixture also fails this test if the page calls GitHub.
+    // One "Read the case study" per card; the facts are list items too.
     await expect(
-      page.getByRole("article", {
-        name: "This website: built and tested like a real product",
-      }),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("article").filter({ hasText: "Case study" }),
+      page
+        .getByRole("list", { name: "Case studies" })
+        .getByRole("button", { name: "Read the case study" }),
     ).toHaveCount(2);
     await expect(page.getByText(/projects are loading/i)).toHaveCount(0);
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
