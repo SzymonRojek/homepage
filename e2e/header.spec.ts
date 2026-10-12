@@ -10,8 +10,9 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
     ).toBeVisible();
+    // Scoped to the hero: the top bar also shows the title, hidden on phones.
     await expect(
-      page.getByText("Software Test Engineer").first(),
+      page.getByRole("banner").getByText("Software Test Engineer"),
     ).toBeVisible();
     await expect(
       page.getByText("I find what breaks before your users do."),
@@ -51,7 +52,9 @@ test.describe("Header and footer", () => {
       page.getByRole("banner").getByRole("link", { name: "LinkedIn" }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("contentinfo").getByRole("link", { name: "LinkedIn" }),
+      page
+        .getByRole("contentinfo")
+        .getByRole("link", { name: "Message me on LinkedIn" }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 

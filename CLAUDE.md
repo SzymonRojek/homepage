@@ -87,6 +87,7 @@ src/
   common/
     themeSlice.ts             # getInitialDarkTheme (saved choice, else OS), hasUserChoice, toggleTheme, systemThemeChanged
     useSystemTheme.ts         # listens to prefers-color-scheme changes (used in App)
+    useScrollToHash.ts        # scrolls to the #section in the address once the page has rendered (CV links)
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
