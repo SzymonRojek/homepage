@@ -118,6 +118,10 @@ describe("TopBar", () => {
   it("closes the menu on Escape and gives focus back to the button", () => {
     renderTopBar();
     const button = screen.getByLabelText("Menu");
+    // jsdom ignores media queries, so the button keeps its wide-screen
+    // display: none, and a hidden element can't take focus (jsdom 30.1.2+).
+    // Show it as on a phone, where the menu is used.
+    button.style.display = "grid";
     fireEvent.click(button);
 
     fireEvent.keyDown(document, { key: "Escape" });
