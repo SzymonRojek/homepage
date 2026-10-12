@@ -10,6 +10,18 @@ export const keySkills = [
   "Cypress",
 ];
 
+// The developer side, as used in the two case studies.
+export const devSkills = [
+  "React & TypeScript",
+  "Node.js & Express",
+  "REST API design",
+  "Redux Toolkit & TanStack Query",
+  "styled-components & Tailwind CSS",
+  "Secure auth: signed tokens, escaping",
+  "CI/CD with GitHub Actions",
+  "Git flow: branches, PRs, staging",
+];
+
 export const tools = [
   "Azure DevOps",
   "SQL Server Management Studio",

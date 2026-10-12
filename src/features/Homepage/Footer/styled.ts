@@ -4,7 +4,7 @@ import { ButtonLink, ButtonLinks } from "../ButtonLink";
 import Talk from "./talk.svg?react";
 
 export const Wrapper = styled.footer`
-  margin-top: 120px;
+  margin-top: 96px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 48px;
@@ -12,13 +12,25 @@ export const Wrapper = styled.footer`
 `;
 
 export const Card = styled.section`
+  position: relative;
   padding: 56px;
   color: ${({ theme }) => theme.colors.contact.text};
-  background: ${({ theme }) => theme.colors.contact.background};
+  background:
+    ${({ theme }) => theme.colors.contact.glow},
+    ${({ theme }) => theme.colors.contact.background};
   box-shadow: ${({ theme }) => theme.boxShadow};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
   transition: background 0.3s;
+
+  /* Gradient line along the top edge. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: ${({ theme }) => theme.colors.gradient};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 32px 16px;
@@ -26,7 +38,7 @@ export const Card = styled.section`
 `;
 
 export const Content = styled.div`
-  max-width: 640px;
+  max-width: 680px;
 `;
 
 export const Heading = styled(SubHeader)`
@@ -60,27 +72,25 @@ export const Paragraph = styled.p`
 export const Buttons = styled(ButtonLinks)``;
 
 export const ContactButton = styled(ButtonLink)`
-  color: ${({ theme }) => theme.colors.contact.buttonText};
-  background: ${({ theme }) => theme.colors.contact.buttonBackground};
-  border-color: ${({ theme }) => theme.colors.contact.buttonBackground};
-
-  &:hover {
-    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.contact.text};
-  }
-
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.contact.text};
     outline-offset: 3px;
   }
 `;
 
-export const SecondaryContactButton = styled(ContactButton)`
+export const SecondaryContactButton = styled(ButtonLink)`
+  padding: 10px 19px;
   color: ${({ theme }) => theme.colors.contact.text};
   background: transparent;
-  border-color: ${({ theme }) => theme.colors.contact.text};
+  border: 1px solid ${({ theme }) => theme.colors.contact.text};
 
   &:hover {
     box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.contact.text};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.contact.text};
+    outline-offset: 3px;
   }
 `;
 
@@ -92,6 +102,7 @@ export const Bottom = styled.div`
   margin-top: 32px;
   padding: 0 4px;
   font-size: 14px;
+  color: ${({ theme }) => theme.colors.muted};
 
   p {
     margin: 0;

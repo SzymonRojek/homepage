@@ -1,6 +1,12 @@
 import { FlowDiagram } from "../FlowDiagram";
-import { Link } from "../Projects/styled";
-import { repoUrl, type CaseStudy as CaseStudyData } from "../projectsData";
+import { Pipeline } from "../Pipeline";
+import { Story } from "../Story";
+import type { ProjectView } from "../LensSwitch";
+import {
+  repoUrl,
+  type CaseStudy as CaseStudyData,
+  type Lens,
+} from "../projectsData";
 import {
   Article,
   Kicker,
@@ -11,7 +17,17 @@ import {
   Stat,
   StatValue,
   StatLabel,
+  Lenses,
+  LensCard,
+  LensLabel,
+  LensTitle,
+  LensHeadline,
+  LensPoints,
+  LensStack,
+  LensPipeline,
   Links,
+  PrimaryLink,
+  SecondaryLink,
   Details,
   Toggle,
   Part,
@@ -22,6 +38,7 @@ import {
   Table,
   QualityList,
 } from "./styled";
+import { Chip } from "../../Section";
 
 interface CaseStudyProps {
   title: string;
@@ -29,7 +46,44 @@ interface CaseStudyProps {
   language: string;
   demoUrl?: string;
   caseStudy: CaseStudyData;
+  view?: ProjectView;
 }
+
+const lensTitles = {
+  developer: { label: "Developer view", title: "How I built it" },
+  tester: { label: "Tester view", title: "How I proved it works" },
+};
+
+const LensColumn = ({
+  side,
+  lens: { headline, points, stack, pipeline },
+}: {
+  side: "developer" | "tester";
+  lens: Lens;
+}) => (
+  <LensCard $side={side}>
+    <LensLabel $side={side}>{lensTitles[side].label}</LensLabel>
+    <LensTitle>{lensTitles[side].title}</LensTitle>
+    <LensHeadline>{headline}</LensHeadline>
+    {points.length > 0 && (
+      <LensPoints $side={side}>
+        {points.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </LensPoints>
+    )}
+    {pipeline && (
+      <LensPipeline>
+        <Pipeline pipeline={pipeline} />
+      </LensPipeline>
+    )}
+    <LensStack aria-label={`${lensTitles[side].label} stack`}>
+      {stack.map((item) => (
+        <Chip key={item}>{item}</Chip>
+      ))}
+    </LensStack>
+  </LensCard>
+);
 
 export const CaseStudy = ({
   title,
@@ -37,11 +91,15 @@ export const CaseStudy = ({
   language,
   demoUrl,
   caseStudy,
+  view = "both",
 }: CaseStudyProps) => {
   const id = `case-study-${repo}`;
   const {
     summary,
     impact,
+    story,
+    developer,
+    tester,
     problem,
     constraints,
     diagrams,
@@ -57,7 +115,8 @@ export const CaseStudy = ({
       <Meta>
         {repo} · {language}
       </Meta>
-      <Summary>{summary}</Summary>
+      {/* With a story, its brief says the same thing in plainer words. */}
+      {!story && <Summary>{summary}</Summary>}
 
       <Impact aria-label="Impact">
         {impact.map(({ value, label }) => (
@@ -68,15 +127,22 @@ export const CaseStudy = ({
         ))}
       </Impact>
 
+      {story && <Story story={story} />}
+
+      <Lenses $single={view !== "both"}>
+        {view !== "tester" && <LensColumn side="developer" lens={developer} />}
+        {view !== "developer" && <LensColumn side="tester" lens={tester} />}
+      </Lenses>
+
       <Links>
-        <Link href={repoUrl(repo)} target="_blank" rel="noreferrer">
-          GitHub Repository
-        </Link>
         {demoUrl && (
-          <Link href={demoUrl} target="_blank" rel="noreferrer">
+          <PrimaryLink href={demoUrl} target="_blank" rel="noreferrer">
             Live demo
-          </Link>
+          </PrimaryLink>
         )}
+        <SecondaryLink href={repoUrl(repo)} target="_blank" rel="noreferrer">
+          GitHub Repository
+        </SecondaryLink>
       </Links>
 
       <Details>

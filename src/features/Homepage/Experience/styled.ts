@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const Card = styled.article`
   padding: 32px;
   background: ${({ theme }) => theme.colors.boxBackground};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
   box-shadow: ${({ theme }) => theme.boxShadow};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.borderRadius};
   transition: background 0.3s;
 
   & + & {
@@ -36,7 +37,7 @@ export const JobHeader = styled.header`
 
 export const Role = styled.h3`
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
   color: ${({ theme }) => theme.colors.textPrimary};
 
@@ -64,11 +65,12 @@ export const Period = styled.p<{ $current: boolean }>`
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.dev.accent};
+  background: ${({ theme }) => theme.colors.dev.soft};
+  border: 1px solid ${({ theme }) => theme.colors.dev.border};
   border-radius: 999px;
 
-  ${({ $current, theme }) =>
+  ${({ $current }) =>
     $current &&
     `
     &::before {
@@ -76,7 +78,7 @@ export const Period = styled.p<{ $current: boolean }>`
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: ${theme.colors.primary};
+      background: currentColor;
     }
   `}
 

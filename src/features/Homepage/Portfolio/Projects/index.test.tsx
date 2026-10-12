@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import type { Project } from "../projectsData";
+import type { ProjectView } from "../LensSwitch";
 import { Projects } from ".";
 
 const createProject = (overrides: Partial<Project> = {}): Project => ({
@@ -14,10 +15,10 @@ const createProject = (overrides: Partial<Project> = {}): Project => ({
   ...overrides,
 });
 
-const renderProjects = (projects: Project[]) =>
+const renderProjects = (projects: Project[], view?: ProjectView) =>
   render(
     <ThemeProvider theme={themeLight}>
-      <Projects projects={projects} />
+      <Projects projects={projects} view={view} />
     </ThemeProvider>,
   );
 
@@ -87,6 +88,8 @@ describe("Projects", () => {
         caseStudy: {
           summary: "Summary.",
           impact: [],
+          developer: { headline: "Built.", points: [], stack: [] },
+          tester: { headline: "Tested.", points: [], stack: [] },
           problem: [],
           constraints: [],
           diagrams: [],
@@ -133,6 +136,8 @@ describe("Projects", () => {
         caseStudy: {
           summary: "Summary.",
           impact: [],
+          developer: { headline: "Built.", points: [], stack: [] },
+          tester: { headline: "Tested.", points: [], stack: [] },
           problem: [],
           constraints: [],
           diagrams: [],
@@ -146,5 +151,31 @@ describe("Projects", () => {
     expect(
       screen.queryByRole("list", { name: "Test projects" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("passes the chosen view to every case study", () => {
+    renderProjects(
+      [
+        createProject({
+          repo: "studied",
+          caseStudy: {
+            summary: "Summary.",
+            impact: [],
+            developer: { headline: "Built.", points: [], stack: [] },
+            tester: { headline: "Tested.", points: [], stack: [] },
+            problem: [],
+            constraints: [],
+            diagrams: [],
+            decisions: [],
+            quality: [],
+            lessons: [],
+          },
+        }),
+      ],
+      "tester",
+    );
+
+    expect(screen.getByText("Tested.")).toBeInTheDocument();
+    expect(screen.queryByText("Built.")).not.toBeInTheDocument();
   });
 });

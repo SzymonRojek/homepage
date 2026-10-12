@@ -13,6 +13,9 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByText("Software Test Engineer").first(),
     ).toBeVisible();
+    await expect(
+      page.getByText("I build software, then I try to break it."),
+    ).toBeVisible();
   });
 
   test("tells recruiters at a glance what I'm looking for", async ({
@@ -55,9 +58,9 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
+      "Two mindsets, one goal",
+      "Projects",
       "Experience",
-      "Test projects",
-      "How this site is tested",
       "Skills",
     ]);
   });

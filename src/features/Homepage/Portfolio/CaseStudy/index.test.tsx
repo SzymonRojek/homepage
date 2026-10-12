@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import type { CaseStudy as CaseStudyData } from "../projectsData";
+import type { ProjectView } from "../LensSwitch";
 import { CaseStudy } from ".";
 
 const caseStudy: CaseStudyData = {
@@ -11,6 +12,16 @@ const caseStudy: CaseStudyData = {
     { value: "0", label: "API calls" },
     { value: "40+", label: "e2e tests" },
   ],
+  developer: {
+    headline: "Built static.",
+    points: ["React and TypeScript."],
+    stack: ["React"],
+  },
+  tester: {
+    headline: "Gated in CI.",
+    points: ["Playwright on every push."],
+    stack: ["Playwright"],
+  },
   problem: ["Recruiters can't verify a CV."],
   constraints: ["Static hosting."],
   diagrams: [{ title: "Pipeline", steps: ["Build", "Deploy"] }],
@@ -21,7 +32,7 @@ const caseStudy: CaseStudyData = {
   lessons: ["Write the failing test first."],
 };
 
-const renderCaseStudy = (demoUrl?: string) =>
+const renderCaseStudy = (demoUrl?: string, view?: ProjectView) =>
   render(
     <ThemeProvider theme={themeLight}>
       <CaseStudy
@@ -30,6 +41,7 @@ const renderCaseStudy = (demoUrl?: string) =>
         language="TypeScript"
         demoUrl={demoUrl}
         caseStudy={caseStudy}
+        view={view}
       />
     </ThemeProvider>,
   );
@@ -88,6 +100,8 @@ describe("CaseStudy", () => {
         .getAllByRole("heading", { level: 4, hidden: true })
         .map(({ textContent }) => textContent),
     ).toEqual([
+      "How I built it",
+      "How I proved it works",
       "Problem",
       "Constraints",
       "Architecture",
@@ -125,5 +139,111 @@ describe("CaseStudy", () => {
     expect(screen.getByText("Static hosting.")).toBeVisible();
     expect(screen.getByText("Unit and e2e tests.")).toBeVisible();
     expect(screen.getByText("Write the failing test first.")).toBeVisible();
+  });
+
+  it("shows the developer and the tester view side by side by default", () => {
+    renderCaseStudy();
+
+    expect(
+      screen.getByRole("heading", { level: 4, name: "How I built it" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", { level: 4, name: "How I proved it works" }),
+    ).toBeVisible();
+    expect(screen.getByText("Built static.")).toBeVisible();
+    expect(screen.getByText("Playwright on every push.")).toBeVisible();
+    expect(
+      within(
+        screen.getByRole("list", { name: "Developer view stack" }),
+      ).getByText("React"),
+    ).toBeVisible();
+    expect(
+      within(screen.getByRole("list", { name: "Tester view stack" })).getByText(
+        "Playwright",
+      ),
+    ).toBeVisible();
+  });
+
+  it("shows only the developer view when it is chosen", () => {
+    renderCaseStudy(undefined, "developer");
+
+    expect(screen.getByText("Built static.")).toBeVisible();
+    expect(screen.queryByText("Gated in CI.")).not.toBeInTheDocument();
+  });
+
+  it("shows only the tester view when it is chosen", () => {
+    renderCaseStudy(undefined, "tester");
+
+    expect(screen.getByText("Gated in CI.")).toBeVisible();
+    expect(screen.queryByText("Built static.")).not.toBeInTheDocument();
+  });
+
+  it("shows a CI pipeline in a lens instead of empty points", () => {
+    render(
+      <ThemeProvider theme={themeLight}>
+        <CaseStudy
+          title="This portfolio"
+          repo="homepage"
+          language="TypeScript"
+          caseStudy={{
+            ...caseStudy,
+            tester: {
+              headline: "Gated in CI.",
+              points: [],
+              stack: [],
+              pipeline: {
+                name: "ci.yml",
+                checks: ["Lint", "Unit tests"],
+                result: "Every check passes",
+                badgeURL: "https://example.com/badge.svg",
+                workflowURL: "https://example.com/ci",
+                testsURL: "https://example.com/e2e",
+              },
+            },
+          }}
+        />
+      </ThemeProvider>,
+    );
+
+    const checks = screen.getByRole("list", { name: "CI checks" });
+    expect(within(checks).getAllByRole("listitem")).toHaveLength(2);
+    expect(screen.getByText("Every check passes")).toBeVisible();
+    expect(screen.getByRole("link", { name: "CI status" })).toHaveAttribute(
+      "href",
+      "https://example.com/ci",
+    );
+    expect(
+      screen.getByRole("link", { name: "See the end-to-end tests" }),
+    ).toHaveAttribute("href", "https://example.com/e2e");
+    // The tester lens shows the pipeline, not the points of the default fixture.
+    expect(screen.queryByText("Playwright on every push.")).toBeNull();
+  });
+
+  it("replaces the summary with the story when there is one", () => {
+    render(
+      <ThemeProvider theme={themeLight}>
+        <CaseStudy
+          title="This portfolio"
+          repo="homepage"
+          language="TypeScript"
+          caseStudy={{
+            ...caseStudy,
+            story: {
+              brief: "Recruiters need proof.",
+              researchAgainst: "Typical CVs",
+              research: [],
+              solution: [],
+              value: [],
+            },
+          }}
+        />
+      </ThemeProvider>,
+    );
+
+    expect(screen.getByText("Recruiters need proof.")).toBeVisible();
+    expect(screen.queryByText("A tested site.")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("list", { name: "How I solved it" }),
+    ).toBeInTheDocument();
   });
 });

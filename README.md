@@ -6,7 +6,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: name, role, open-to-work status, location, bio and contact buttons" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: top bar, name, role, tagline, open-to-work status, location, bio and contact buttons" />
 </picture>
 
 ## Why this site exists (30-second summary)
@@ -107,38 +107,54 @@ flowchart LR
 - Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants, and slow runs on a busy machine can turn into timeouts that look like caught bugs.
 - A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
 
-## Case study: Email Campaign Dashboard, secured and tested
+## Case study: Talent Outreach, job offers to the right candidates
 
-**[Code](https://github.com/SzymonRojek/email-campaign-dashboard)** · **[Live demo](https://email-campaign-dashboard-app.onrender.com/?utm_source=github)** (password `admin`; the free server can take up to a minute to wake up, and the demo data resets every night)
+**[Code](https://github.com/SzymonRojek/talent-outreach)** · **[Live demo](https://talent-outreach.onrender.com/?utm_source=github)** (one click on "Try the demo", no password; the free server can take up to a minute to wake up, and the demo data resets every night)
 
-A full-stack React, Express and TypeScript dashboard for email campaigns, with data in Airtable. It started in 2021 as a CRUD app; I reviewed it like a tester, fixed what I found and rebuilt it into a product that is safe to demo publicly and safe to change.
+A full-stack React, Express and TypeScript recruitment tool, with data in Airtable. It started in 2021 as an email CRUD app ("Email Campaign Dashboard"); I reviewed it like a tester, rebuilt it to production standard and then narrowed it to one recruiter's problem: the right job offer to the right candidates, never too often.
 
-| At a glance        |                                                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------ |
-| Secrets in browser | 0: only the Express server talks to Airtable                                               |
-| Automated tests    | 200+ server and client unit tests, 63 Playwright end-to-end tests                          |
-| Test data          | end-to-end tests run against a fake Airtable, so they never touch real data                |
-| Bugs fixed         | 11 found and fixed in the first review                                                     |
-| Delivery           | pull request checks, then staging, then production, all automatic                          |
-| Live demo          | outbox instead of real sending, nightly data reset, Sentry and Umami without personal data |
+| At a glance        |                                                                                                             |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Secrets in browser | 0: only the Express server talks to Airtable                                                                |
+| Automated tests    | 200+ server and client unit tests, 63 Playwright end-to-end tests, a Postman collection (Newman)            |
+| Accessibility      | Lighthouse on 7 screens in CI: accessibility, best practices and SEO must stay at 100                       |
+| Test data          | end-to-end, API and Lighthouse runs use a fake Airtable, so they never touch real data                      |
+| Bugs fixed         | 11 found and fixed in the first review                                                                      |
+| Delivery           | pull request checks, then staging, then production, all automatic                                           |
+| Live demo          | one-click login, outbox instead of real sending, nightly reset and live check, Sentry without personal data |
+
+### The brief
+
+A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing "Dear candidate", with the risk of leaking addresses or contacting the same people too often.
+
+| Spreadsheet and Gmail                                   | Talent Outreach                                                                                     |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Filter the sheet by hand and copy the addresses         | Pick a role and a budget, and the matching candidates are found                                     |
+| "Dear candidate" for everyone                           | Every email uses the candidate's name and the role; a mistyped placeholder is caught before sending |
+| Nobody remembers who got which offer                    | Candidates contacted in the last 14 days are skipped by default                                     |
+| Consent is a column nobody updates                      | Only candidates open to offers get emails; the opt-out link updates the status by itself            |
+| One address in CC instead of BCC leaks everyone's email | One email per candidate, so nobody sees the others                                                  |
+| What was sent is buried in the Sent folder              | An outbox for each job offer shows every email exactly as it was sent                               |
+
+Not built yet: real delivery. Every email is built, checked and saved to the outbox; sending it through an email service is one more transport in one file.
 
 ### Problem
 
-The app sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser, so anyone who called the API directly could read, change or delete every subscriber. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
+The 2021 app sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser, so anyone who called the API directly could read, change or delete every record. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
 
 ### Architecture
 
 ```mermaid
 flowchart LR
   react["React app"] --> api["Express API /api<br/>signed login token"]
-  api --> mail["Server picks recipients,<br/>escapes text, signs<br/>unsubscribe links"]
-  mail --> airtable[("Airtable<br/>subscribers, campaigns,<br/>outbox, feedback")]
+  api --> mail["Server checks consent,<br/>escapes text, signs<br/>opt-out links"]
+  mail --> airtable[("Airtable<br/>candidates, job offers,<br/>outbox, feedback")]
 ```
 
 ```mermaid
 flowchart LR
   branch["Feature branch"] --> pr["PR to dev<br/>type check, lint,<br/>unit tests, build"]
-  pr --> e2e["Playwright e2e<br/>fake Airtable"]
+  pr --> e2e["Playwright e2e,<br/>Postman API tests,<br/>Lighthouse<br/>fake Airtable"]
   e2e --> staging["Merge, deploy<br/>to staging"]
   staging --> main["Release PR<br/>dev → main, CI again"]
   main --> prod["Deploy to<br/>production"]
@@ -146,20 +162,22 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                          | Why                                                                                           | Trade-off                                                                                             |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Server-side login, signed tokens, lockout after 5 wrong passwords | A browser-only login didn't protect the API at all                                            | One shared demo password; the in-memory lockout resets when the free server restarts                  |
-| The server picks recipients and builds every email                | The browser can't be trusted to decide who gets a campaign or what goes into an email         | The preview needs a server call, so it uses the same template as sending                              |
-| An outbox instead of real sending in the demo                     | With a public password anyone could send email from my account, and the free host blocks SMTP | Nobody gets the emails; each one is saved and can be opened. A real email service is one setting away |
-| End-to-end tests against a fake Airtable                          | Tests must never touch real data, and CI shouldn't need secrets                               | The fake can drift from the real API, so it copies Airtable's records and errors                      |
-| Nightly reset of the demo data                                    | Visitors change the data, and the next reviewer should see a working example                  | New examples are created before old ones are deleted; the reset is skipped when nothing changed       |
-| Monitoring and visit statistics without personal data             | I need to see failures on the live demo without collecting data I don't need                  | Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce                 |
-| Staging before production, with a hotfix path                     | Changes are checked on a live copy before users see them                                      | Two environments to keep in sync; a hotfix must be merged back into `dev`                             |
+| Decision                                                          | Why                                                                          | Trade-off                                                                                                                   |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Server-side login, signed tokens, lockout after 5 wrong passwords | A browser-only login didn't protect the API at all                           | The lockout lives in memory and resets when the free server restarts; it counts the real address behind Cloudflare          |
+| A one-click demo login, only where the demo is switched on        | A reviewer should try the app without a password                             | Any server without the setting has no passwordless door; API clients still use the password                                 |
+| The browser suggests recipients, the server has the last word     | Filtering by role, budget and last contact needs a fast, interactive list    | The server re-checks consent on every send, so an outdated list can't reach someone who opted out                           |
+| An outbox instead of real sending in the demo                     | Anyone can enter the public demo, and the free host blocks SMTP              | Nobody gets the emails; each one is saved and can be opened. Real delivery is one more transport in one file, not built yet |
+| End-to-end, API and Lighthouse runs against a fake Airtable       | Tests must never touch real data, and CI shouldn't need secrets              | The fake can drift from the real API, so it copies Airtable's records and errors                                            |
+| Nightly reset, then a read-only check of the live app             | Visitors change the data, and the next reviewer should see a working example | New examples are created before old ones are deleted; the reset is skipped when nothing changed                             |
+| One recruiter problem instead of a generic newsletter tool        | A problem solved end to end is easier to explain, to use and to test         | Fewer features: the app only sends job offers to candidates                                                                 |
+| Error monitoring without personal data                            | I need to see failures on the live demo without collecting data I don't need | Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce                                       |
+| Staging before production, with a hotfix path                     | Changes are checked on a live copy before users see them                     | Two environments to keep in sync; a hotfix must be merged back into `dev`                                                   |
 
 ### What the first review found
 
 - The Airtable token leaked in error responses.
-- Unchecking every subscriber sent the email to **all** of them: an empty selection was treated as "no filter".
+- Unchecking every recipient sent the email to **all** of them: an empty selection was treated as "no filter".
 - Lists silently stopped at 100 records, because Airtable pages its results.
 - Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
@@ -169,63 +187,9 @@ flowchart LR
 - Anything a server returns on failure needs the same care as a success response.
 - Edge cases like an empty list deserve their own test.
 - Testing with more data than one page is cheap and catches paging bugs.
-- Monitoring can leak too: unsubscribe tokens in page addresses had to be removed from error reports.
-- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset and a request for made-up data.
-- A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
-
-------------------- | --------------------------------------------------------------------------- |
-| API keys in browser | 0: the Express server is the only thing that talks to Airtable |
-| Automated tests | 70+ server and client unit tests, 27 Playwright end-to-end tests |
-| Test data | end-to-end tests run against a fake Airtable, so they never touch real data |
-| Bugs fixed | 11 found and fixed in one review |
-| Delivery | pull request checks, then staging, then production, all automatic |
-
-### Problem
-
-The Airtable key already stayed on the server, behind an Express proxy. But the login only ran in the browser, so anyone who called the API directly could read, change or delete every subscriber. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
-
-### Architecture
-
-```mermaid
-flowchart LR
-  react["React app"] --> api["Express API /api<br/>signed login token"]
-  api --> proxy["Server-side proxy<br/>Airtable key in env vars"]
-  proxy --> airtable["Airtable REST API"]
-```
-
-```mermaid
-flowchart LR
-  branch["Feature branch"] --> pr["PR to dev<br/>type check, unit tests, build"]
-  pr --> e2e["Playwright e2e<br/>fake Airtable"]
-  e2e --> staging["Merge, deploy<br/>to staging"]
-  staging --> main["PR dev → main<br/>CI again"]
-  main --> prod["Deploy to<br/>production"]
-```
-
-### Key decisions and trade-offs
-
-| Decision                                      | Why                                                             | Trade-off                                                                        |
-| --------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Server-side login with HMAC-signed tokens     | A browser-only login didn't protect the API at all              | One shared demo password; the lockout lives in memory and resets on restart      |
-| Lock an IP out after 5 wrong passwords        | Basic protection against password guessing                      | Visitors behind one shared IP can lock each other out                            |
-| End-to-end tests against a fake Airtable      | Tests must never touch real data, and CI needs no secrets       | The fake can drift from the real API, so it copies Airtable's records and errors |
-| Real email sending turned off in the demo     | With a public password, anyone could send email from my account | The demo marks a campaign as sent and says clearly that no email went out        |
-| Staging before production, with a hotfix path | Changes are checked on a live copy before users see them        | Two environments to keep in sync; a hotfix must be merged back into `dev`        |
-
-### What the review found
-
-- The Airtable token leaked in error responses.
-- Unchecking every subscriber sent the email to **all** of them: an empty selection was treated as "no filter".
-- Lists silently stopped at 100 records, because Airtable pages its results.
-- Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
-- Deleting a record didn't wait for Airtable, so a failure could crash the server.
-
-### Lessons learned
-
-- Anything a server returns on failure needs the same care as a success response.
-- Edge cases like an empty list deserve their own test.
-- Testing with more data than one page is cheap and catches paging bugs.
-- Test data should look like real users' data, including their alphabet.
+- Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports.
+- Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.
+- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.
 - A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
 
 ---
@@ -273,12 +237,13 @@ Work happens on the `dev` branch. Every push to `dev` or `main` and every pull r
 
 All text lives in data files, not in components:
 
-| File                                              | Content                                                                      |
-| ------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn |
-| `src/features/Homepage/skillsData.ts`             | Core skills (eight chips) and tools                                          |
-| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                               |
-| `src/features/Homepage/Portfolio/projectsData.ts` | Projects and their optional `caseStudy` write-ups                            |
-| `src/features/Homepage/qualityData.ts`            | The "How this site is tested" section                                        |
+| File                                              | Content                                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                | Name, title, target roles, location, bio, key skills, contact text, LinkedIn                            |
+| `src/features/Homepage/skillsData.ts`             | Testing skills, development skills and tools                                                            |
+| `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |
+| `src/features/Homepage/experienceData.ts`         | Experience, education, languages and interests                                                          |
+| `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
+| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
 
 To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project moves from a tile to a full case-study card on the site. Keep this README's case study in step with the homepage one.

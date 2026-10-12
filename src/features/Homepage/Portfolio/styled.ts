@@ -1,29 +1,34 @@
 import styled from "styled-components";
-import GithubIcon from "./github.svg?react";
 
-export const Section = styled.section`
-  margin-top: 72px;
+// Sticks under the top bar, so the view can be switched while scrolling
+// through a long case study.
+export const Toolbar = styled.div`
+  position: sticky;
+  top: 76px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 4px 4px 4px 14px;
+  background: ${({ theme }) => theme.colors.boxBackground};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  border-radius: 12px;
+  box-shadow: ${({ theme }) => theme.boxShadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 40px;
+    position: static;
+    padding-left: 10px;
   }
 `;
 
-export const StyledGithubIcon = styled(GithubIcon)`
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 8px;
-`;
-
-export const Header = styled.header`
-  text-align: center;
-`;
-export const MyRecentProjects = styled.p`
-  font-weight: normal;
-  margin-top: 8px;
-  font-size: 20px;
-  color: ${({ theme }) => theme.colors.textPrimary};
+export const ToolbarLabel = styled.span`
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.muted};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 17px;
+    font-size: 12px;
   }
 `;

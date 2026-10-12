@@ -3,9 +3,13 @@ import a from "color-alpha";
 
 export const OtherProjects = styled.section`
   margin-top: 48px;
+  padding: 24px 28px;
+  border: 1px dashed ${({ theme }) => theme.colors.headerLine};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 32px;
+    padding: 16px;
   }
 `;
 
@@ -38,10 +42,10 @@ export const Tile = styled.li`
   margin: 0;
   padding: 32px;
   background: ${({ theme }) => theme.colors.boxBackground};
-  border: 6px solid ${({ theme }) => theme.colors.tile.border};
+  border: 1px solid ${({ theme }) => theme.colors.tile.border};
   transition: border-color 0.3s;
   box-shadow: ${({ theme }) => theme.boxShadow};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.tile.borderHover};

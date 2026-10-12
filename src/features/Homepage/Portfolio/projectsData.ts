@@ -1,4 +1,5 @@
 import { githubUserName } from "./githubUserName";
+import { sitePipeline } from "./pipelineData";
 
 export type ProjectCategory = "Testing" | "Other";
 
@@ -11,6 +12,38 @@ export interface Decision {
 export type QualityArea =
   "Testing" | "Performance" | "Accessibility" | "Security";
 
+// A CI pipeline drawn as a terminal in a tester view.
+export interface Pipeline {
+  name: string;
+  checks: string[];
+  result: string;
+  badgeURL: string;
+  workflowURL: string;
+  testsURL: string;
+}
+
+// How the problem was solved, in the order an employer asks about it:
+// the brief, what the market already offers, the solution and its value.
+export interface Story {
+  brief: string;
+  // Column heading for what already exists, e.g. "Spreadsheet and Gmail".
+  researchAgainst: string;
+  research: { market: string; mine: string }[];
+  solution: string[];
+  value: string[];
+  // An honest limit or next step, shown under the value.
+  nextStep?: string;
+}
+
+// One side of a project: how it was built, or how it was tested.
+export interface Lens {
+  headline: string;
+  points: string[];
+  stack: string[];
+  // Shown instead of (or after) the points, as live evidence.
+  pipeline?: Pipeline;
+}
+
 // An in-depth write-up. Projects without one show as a short tile, so a case
 // study appears on the page as soon as this is filled in.
 export interface CaseStudy {
@@ -18,6 +51,11 @@ export interface CaseStudy {
   summary: string;
   // 2–4 numbers a recruiter can scan. Prefer thresholds CI enforces, so they stay true.
   impact: { value: string; label: string }[];
+  // Shown before everything else except the impact numbers.
+  story?: Story;
+  // The same project seen by a developer and by a tester, shown side by side.
+  developer: Lens;
+  tester: Lens;
   problem: string[];
   constraints: string[];
   diagrams: { title: string; steps: string[] }[];
@@ -52,6 +90,70 @@ const homepageCaseStudy: CaseStudy = {
       label: "Lighthouse accessibility, SEO and best practices, enforced in CI",
     },
   ],
+  story: {
+    brief:
+      "Recruiters and hiring managers need to check, in 30 seconds and without help, that a tester really can do what the CV says.",
+    researchAgainst: "Typical CVs and portfolios",
+    research: [
+      {
+        market:
+          "A CV lists tools like Playwright and CI/CD, but nobody can check them.",
+        mine: "Every claim links to the running tests, the CI pipeline and a live status badge.",
+      },
+      {
+        market:
+          "Portfolios that load projects from the GitHub API can show an error on shared office networks (60 requests an hour per address).",
+        mine: "All content is static, so there is nothing to time out or rate-limit.",
+      },
+      {
+        market: "Portfolios show what was built, not why.",
+        mine: "Each project is told as a brief, research, solution and value, with the decisions and trade-offs behind it.",
+      },
+    ],
+    solution: [
+      "Content in typed data files and a static build: no server, no runtime API calls.",
+      "A test pyramid: unit tests for logic, Playwright for what visitors see, axe for accessibility.",
+      "Every push passes audit, lint, type check, tests and Lighthouse budgets before it can deploy.",
+      "A protected main branch: changes reach the live site only through a pull request I review, so an AI coding assistant can't ship on its own.",
+    ],
+    value: [
+      "Free hosting on GitHub Pages.",
+      "Nothing can fail for a visitor: no API calls, no loading or error states.",
+      "Every change is verified before release, and anyone can check it through the public tests and CI badge.",
+    ],
+  },
+  developer: {
+    headline: "A static React app with nothing that can fail for a visitor",
+    points: [
+      "React 19 with strict TypeScript, Redux Toolkit for the theme and styled-components with typed light and dark themes.",
+      "Content lives in typed data files, so there are no runtime API calls and no loading or error states.",
+      "The theme follows the OS live, a saved choice wins, and it's painted before JavaScript loads, so a dark reload never flashes light.",
+      "A self-hosted font and a right-sized photo raised mobile Lighthouse performance from 0.84 to about 0.9.",
+    ],
+    stack: [
+      "React 19",
+      "TypeScript",
+      "Redux Toolkit",
+      "styled-components",
+      "Vite",
+      "GitHub Pages",
+    ],
+  },
+  tester: {
+    headline:
+      "Nothing ships unless every gate passes. Every push runs this pipeline:",
+    points: [],
+    pipeline: sitePipeline,
+    stack: [
+      "Vitest",
+      "Testing Library",
+      "Playwright",
+      "axe",
+      "Lighthouse CI",
+      "Stryker",
+      "GitHub Actions",
+    ],
+  },
   problem: [
     "A CV can say “Playwright” and “CI/CD”, but a recruiter can't check it. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.",
     "The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.",
@@ -154,25 +256,116 @@ const homepageCaseStudy: CaseStudy = {
   ],
 };
 
-const emailCampaignCaseStudy: CaseStudy = {
+// Facts checked on main of github.com/SzymonRojek/talent-outreach (October 2026).
+const talentOutreachCaseStudy: CaseStudy = {
   summary:
-    "A full-stack dashboard for email campaigns, rebuilt from a 2021 CRUD app into a secure, tested product: server-side login, personalized emails with signed unsubscribe links, 200+ unit tests, 63 end-to-end tests against a fake Airtable, and CI/CD through staging to production.",
+    "A recruitment tool rebuilt from a 2021 email app: job offers go to the right candidates by role and budget, personalized, never too often and only with consent, with tests at every level and CI/CD through staging to production.",
   impact: [
     { value: "0", label: "secrets or personal data reaching the browser" },
+    {
+      value: "100",
+      label:
+        "Lighthouse accessibility, best practices and SEO on 7 screens, enforced in CI",
+    },
     {
       value: "63",
       label: "end-to-end tests on the production build, with no real data",
     },
     { value: "200+", label: "server and client unit tests" },
-    { value: "11", label: "bugs found and fixed in the first review" },
   ],
+  story: {
+    brief:
+      "A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing “Dear candidate”, with the risk of leaking addresses or contacting the same people too often.",
+    researchAgainst: "Spreadsheet and Gmail",
+    research: [
+      {
+        market: "Filter the sheet by hand and copy the addresses.",
+        mine: "Pick a role and a budget, and the matching candidates are found.",
+      },
+      {
+        market: "“Dear candidate” for everyone.",
+        mine: "Every email uses the candidate's name and the role, and a mistyped placeholder is caught before sending.",
+      },
+      {
+        market: "Nobody remembers who got which offer.",
+        mine: "Candidates contacted in the last 14 days are skipped by default, and the list shows when each one was last contacted.",
+      },
+      {
+        market: "Consent is a column nobody updates.",
+        mine: "Only candidates open to offers get emails, and the opt-out link in every email updates the status by itself.",
+      },
+      {
+        market: "One address in CC instead of BCC leaks everyone's email.",
+        mine: "One email per candidate, so nobody sees the others.",
+      },
+      {
+        market: "What was sent is buried in the Sent folder.",
+        mine: "An outbox for each job offer shows who got it and every email exactly as it was sent.",
+      },
+    ],
+    solution: [
+      "A server-only path to the data: the Airtable token never reaches the browser.",
+      "A one-click “Try the demo” login that exists only where the demo is switched on; API clients use a password, with a 15-minute lockout after 5 wrong attempts.",
+      "The browser suggests the recipients, and the server has the last word: it sends only to candidates open to offers.",
+      "Every email is built on the server from one template: personalized, escaped and with a signed opt-out link. The preview uses the same template.",
+      "An outbox instead of real sending, so the public demo can't email anyone.",
+      "Staging before production, a nightly demo reset followed by a read-only check of the live app, and error monitoring without personal data.",
+    ],
+    value: [
+      "Fewer costly mistakes: no CC leaks, no offer twice within two weeks and no email to anyone without consent.",
+      "From a role and a budget to personalized offers in one flow, with a preview before every send.",
+      "Safe to hand over and change: tests at every level, CI on every pull request and staging before production.",
+    ],
+    nextStep:
+      "Not built yet: real delivery. Every email is built, checked and saved to the outbox; sending it through an email service is one more transport in one file. Airtable's free plan also caps a base at 1,000 records and 1,000 API calls a month, so a bigger talent pool needs a paid tier.",
+  },
+  developer: {
+    headline: "A 2021 email app rebuilt into a focused recruitment product",
+    points: [
+      "React 19 client with shadcn/ui, TanStack Query and React Hook Form; an Express API in TypeScript on Node.js 24.",
+      "Signed login tokens valid for 8 hours. The one-click demo login exists only where it is switched on, and the lockout uses the visitor's real address behind Cloudflare, so one person can't block others.",
+      "Recipients by role, budget and last contact; the server re-checks consent and builds every email with a signed opt-out link.",
+      "Follows Airtable's paging and rate limits, resets the demo every night, reports errors to Sentry without personal data, and deploys dev to staging and main to production.",
+    ],
+    stack: [
+      "React 19",
+      "TypeScript",
+      "Express",
+      "Airtable API",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "Sentry",
+      "Render",
+    ],
+  },
+  tester: {
+    headline: "Tested from a single function to the live app",
+    points: [
+      "200+ unit tests: Jest and supertest on the server, Vitest and React Testing Library on the client.",
+      "63 Playwright user flows on the production build against a fake Airtable, from a job offer draft to the outbox, opting out and phones. CI needs no secrets and never touches real data.",
+      "A Postman collection run by Newman in CI tests every endpoint from the outside, including refused logins, a duplicate email and a second send of the same offer; its read-only part checks the live app after every nightly reset.",
+      "Lighthouse audits 7 screens on every pull request and fails it if accessibility, best practices or SEO drop below 100.",
+    ],
+    stack: [
+      "Jest",
+      "supertest",
+      "Vitest",
+      "React Testing Library",
+      "Playwright",
+      "Postman",
+      "Newman",
+      "Lighthouse",
+      "GitHub Actions",
+    ],
+  },
   problem: [
-    "The app started in 2021 as a CRUD client that sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser: anyone who called the API directly could read, change or delete every subscriber.",
-    "The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended. I wanted a product a hiring manager could open and use: a public demo that stays safe with a public password, and code that is safe to change.",
+    "The app started in 2021 as an email CRUD client that sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser: anyone who called the API directly could read, change or delete every record. My first review found 11 bugs.",
+    "In 2026 I rebuilt it to production standard and then narrowed it from a generic newsletter tool to one recruiter's problem: the right job offer to the right candidates, never too often.",
   ],
   constraints: [
     "Airtable is the database: a third-party REST API with rate limits and pages of 100 records.",
-    "A public demo with a public password: no real emails, visitors change the data, and only made-up data belongs in it.",
+    "Candidate data is personal data: consent, an opt-out in every email and no personal data in monitoring.",
+    "A public demo anyone can enter with one click: no real emails, visitors change the data, and only made-up data belongs in it.",
     "Free hosting (Render) that sleeps after inactivity and blocks outgoing email (SMTP).",
     "One maintainer, so every change has to be checked automatically and on staging before production.",
   ],
@@ -182,8 +375,8 @@ const emailCampaignCaseStudy: CaseStudy = {
       steps: [
         "React app",
         "Express API under /api with a signed login token",
-        "Server picks recipients, escapes text, signs unsubscribe links",
-        "Airtable: subscribers, campaigns, outbox, feedback",
+        "Server checks consent, escapes text, signs opt-out links",
+        "Airtable: candidates, job offers, outbox, feedback",
       ],
     },
     {
@@ -191,10 +384,10 @@ const emailCampaignCaseStudy: CaseStudy = {
       steps: [
         "Feature branch off dev",
         "Pull request: type check, lint, unit tests, build",
-        "Playwright e2e against a fake Airtable",
+        "Playwright e2e, Postman API tests and Lighthouse against a fake Airtable",
         "Merge to dev, auto-deploy to staging",
         "Check staging",
-        "Release pull request dev to main, CI again",
+        "Release pull request dev to main, CI again on all changes together",
         "Auto-deploy to production",
       ],
     },
@@ -205,34 +398,47 @@ const emailCampaignCaseStudy: CaseStudy = {
         "Server-side login with signed tokens and a lockout after 5 wrong passwords",
       why: "A browser-only login didn't protect the API at all.",
       tradeOff:
-        "One shared demo password, and the in-memory lockout resets when the free server restarts.",
+        "The lockout lives in memory and resets when the free server restarts. It counts the real address behind Cloudflare, so one visitor can't block others.",
     },
     {
-      decision: "The server picks recipients and builds every email",
-      why: "The browser can't be trusted to decide who gets a campaign or what goes into an email.",
+      decision: "A one-click demo login, only where the demo is switched on",
+      why: "A reviewer should try the app in one click, without a password.",
       tradeOff:
-        "The preview needs a server call, so it uses the same template as sending.",
+        "Any server without the setting has no passwordless door; API clients still log in with the password.",
+    },
+    {
+      decision:
+        "The browser suggests the recipients, the server has the last word",
+      why: "Filtering by role, budget and last contact needs a fast, interactive list.",
+      tradeOff:
+        "The server re-checks consent on every send, so an outdated or edited list can't reach someone who opted out.",
     },
     {
       decision: "An outbox instead of real sending in the demo",
-      why: "With a public password anyone could send email from my account, and the free host blocks SMTP.",
+      why: "Anyone can enter the public demo, and the free host blocks SMTP.",
       tradeOff:
-        "Nobody gets the emails; each one is saved and can be opened. Switching to a real email service is one setting.",
+        "Nobody gets the emails; each one is saved and can be opened. Real delivery is one more transport in one file, not built yet.",
     },
     {
-      decision: "End-to-end tests against a fake Airtable",
+      decision: "End-to-end, API and Lighthouse runs against a fake Airtable",
       why: "Tests must never touch real data, and CI shouldn't need secrets.",
       tradeOff:
         "The fake can drift from the real API, so it copies Airtable's record shape and errors.",
     },
     {
-      decision: "Nightly reset of the demo data",
+      decision:
+        "Nightly reset of the demo data, then a read-only check of the live app",
       why: "Visitors change the data, and the next reviewer should see a working example.",
       tradeOff:
-        "New examples are created before the old ones are deleted, and the reset is skipped when nothing changed, to save API calls.",
+        "New examples are created before the old ones are deleted, and the reset is skipped when nothing changed, to save API calls. A broken demo fails the run.",
     },
     {
-      decision: "Error monitoring and visit statistics without personal data",
+      decision: "One recruiter problem instead of a generic newsletter tool",
+      why: "A problem that is solved end to end is easier to explain, to use and to test.",
+      tradeOff: "Fewer features: the app only sends job offers to candidates.",
+    },
+    {
+      decision: "Error monitoring without personal data",
       why: "I need to see failures on the live demo without collecting data I don't need.",
       tradeOff:
         "Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce.",
@@ -247,32 +453,46 @@ const emailCampaignCaseStudy: CaseStudy = {
   quality: [
     {
       area: "Testing",
-      text: "Server tests with Jest and supertest cover login and tokens, every endpoint, sending and the outbox, templates and escaping, unsubscribe links, the CSV import, feedback limits and the demo reset, with Airtable mocked. Client tests with Vitest and React Testing Library cover CSV parsing, search, sorting, validation, the API client and choosing recipients. Playwright runs 63 user flows on the production build, from login and CSV import to sending, unsubscribing, dark mode, loading errors and phones.",
+      text: "Server tests with Jest and supertest cover every endpoint, login and limits, sending and templates, opt-out links, the CSV import, feedback, the demo reset and privacy in monitoring, with Airtable mocked. Client tests with Vitest and React Testing Library cover validation, CSV, search, sorting and filtering, the API client and choosing recipients by role, budget and last contact. Playwright runs 63 user flows on the production build, from a job offer draft to the outbox, opting out, unsaved changes, dark mode and phones. A Postman collection of 30 requests, run by Newman in CI, tests every endpoint from the outside, and its read-only smoke folder checks the live app after every nightly reset.",
     },
     {
       area: "Performance",
-      text: "The server follows Airtable's paging, so lists show every record and not only the first 100. Approved feedback is kept in memory for 30 seconds and the nightly reset is skipped when nothing changed, both to stay within Airtable's API limits. On the free plan the main cost is a cold start of up to a minute, which the README tells visitors about.",
+      text: "The server follows Airtable's paging, so lists show every record and not only the first 100. Approved feedback is kept in memory for 30 seconds and the nightly reset is skipped when nothing changed, both to stay within Airtable's API limits. Lighthouse reports performance on 7 screens; its limit only catches a real slowdown, because scores vary on shared CI machines. On the free plan the main cost is a cold start of up to a minute, which the README tells visitors about.",
     },
     {
       area: "Accessibility",
-      text: "The UI is built on shadcn/ui and Radix primitives, which handle keyboard and screen-reader support for dialogs, menus and side panels. End-to-end tests find controls by their role and accessible name, and phone layouts have their own tests. There is no automated accessibility scan yet; adding axe is the next step.",
+      text: "The UI is built on shadcn/ui and Radix primitives, which handle keyboard and screen-reader support for dialogs, menus and side panels. Lighthouse audits 7 screens, logged out and in, on every pull request and fails it below 100 for accessibility; it already caught a low-contrast avatar and a button without a name. End-to-end tests find controls by their role and accessible name, and phone layouts have their own tests.",
     },
     {
       area: "Security",
-      text: "The Airtable token lives only on the server and error responses no longer leak it. Login tokens are HMAC-signed and expire after 8 hours, with constant-time comparisons and an IP lockout. Unsubscribe links have their own signature, user text is escaped in every email, the server has no open CORS, and public feedback has a bot trap, a rate limit and moderation.",
+      text: "The Airtable token lives only on the server and error responses no longer leak it. Login tokens are HMAC-signed and expire after 8 hours, with constant-time comparisons and a lockout on the visitor's real address. The demo login exists only where it is switched on. Opt-out links have their own signature, user text is escaped in every email, the server has no CORS, and public feedback has a bot trap, a rate limit and moderation.",
     },
   ],
   lessons: [
     "A review found the Airtable token leaking in error responses. Anything a server returns on failure needs the same care as a success response.",
-    "Unchecking every subscriber sent the email to all of them: an empty selection was treated as “no filter”. Edge cases like an empty list deserve their own test.",
+    "Unchecking every recipient sent the email to all of them: an empty selection was treated as “no filter”. Edge cases like an empty list deserve their own test.",
     "Lists silently stopped at 100 records because Airtable pages its results. Testing with more data than one page is cheap and catches this.",
-    "Monitoring can leak too: unsubscribe tokens in page addresses had to be removed from error reports before they were sent.",
-    "A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset and a request for made-up data.",
+    "Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports before they were sent.",
+    "Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.",
+    "A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.",
     "A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.",
   ],
 };
 
+export const projectsIntro =
+  "Two products I built and tested end to end. Each one is shown from both sides: how I built it as a developer, and how I proved it works as a tester.";
+
 export const projects: Project[] = [
+  {
+    title: "Talent Outreach: job offers to the right candidates",
+    repo: "talent-outreach",
+    language: "TypeScript",
+    category: "Testing",
+    description:
+      "Full-stack recruitment tool: job offers to candidates by role and budget, personalized, never too often and only with consent, with unit, API, end-to-end and Lighthouse tests and CI/CD through staging to production.",
+    demoUrl: "https://talent-outreach.onrender.com/?utm_source=portfolio",
+    caseStudy: talentOutreachCaseStudy,
+  },
   {
     title: "This portfolio, tested end to end",
     repo: "homepage",
@@ -281,17 +501,6 @@ export const projects: Project[] = [
     description:
       "Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.",
     caseStudy: homepageCaseStudy,
-  },
-  {
-    title: "Email Campaign Dashboard, secured and tested",
-    repo: "email-campaign-dashboard",
-    language: "TypeScript",
-    category: "Testing",
-    description:
-      "Full-stack React, Express and TypeScript dashboard for email campaigns on Airtable, with server-side login, personalized emails, unit and Playwright end-to-end tests against a fake Airtable, and CI/CD through staging to production.",
-    demoUrl:
-      "https://email-campaign-dashboard-app.onrender.com/?utm_source=portfolio",
-    caseStudy: emailCampaignCaseStudy,
   },
   {
     title: "Role-based sign-in app",

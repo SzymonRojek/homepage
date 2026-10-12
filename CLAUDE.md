@@ -7,13 +7,14 @@ Guidance for AI agents (Claude Code) working in this repository.
 Personal portfolio homepage of **Szymon Rojek**, Software Test Engineer (data migration, SQL and API testing) who also builds front-end.
 Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in `package.json`).
 
-A single page aimed at recruiters for QA / test automation roles, with these parts in order:
+A single page aimed at recruiters for QA / test automation roles. The theme of the page is "two mindsets": a tester who also builds software. Developer content is green (`theme.colors.dev`, "build"), tester content is cyan (`theme.colors.qa`, "protect"). Parts in order:
 
-- **Header:** round avatar, name, title, open-to-work pill with target roles, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary) and an icon-only LinkedIn link. There is deliberately no CV download.
+- **Skip link and sticky top bar:** "SR" logo (back to top), section links (Mindset, Projects, Experience, Skills), a Contact button and the theme switch.
+- **Header (hero):** dotted grid with green/cyan glow, a split portrait (one photo drawn twice: left half black and white with a "Build" badge, right half in colour with "Protect"; each half is a link to #projects that switches the project view to developer or tester), open-to-work pill with target roles, name, title, tagline, a location line (Hove, UK right to work, open to relocation), short bio, key-skill chips, and buttons: "Email me" (primary) and an icon-only LinkedIn link. There is deliberately no CV download.
+- **Two mindsets, one goal:** a Developer card and a Tester card side by side, each with points backed by real work and a tool list. The Tester card links to the homepage case study as proof.
+- **Projects:** a "View as Both / Developer / Tester" switch (sticky on desktop), then projects with a `caseStudy` as full-width case-study cards: impact numbers, a numbered "How I solved it" story (Brief → Research as a "what exists vs my design" table → Solution → Value, with an honest next step; it replaces the summary), and a "How I built it" (developer) and "How I proved it works" (tester) column that the switch filters; problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons sit inside a `<details>`. Other testing projects render as tiles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
 - **Experience:** job, education, and languages & interests (the guitar site is linked there).
-- **Test projects:** projects with a `caseStudy` render first as full-width case-study cards (summary and impact numbers visible; problem, constraints, flow diagrams, decisions table, testing/performance/accessibility/security and lessons inside a `<details>`). Other testing projects render as tiles, then front-end work as a compact "Other projects" list. Static data, no GitHub API call, so the section cannot fail or rate-limit.
-- **How this site is tested:** CI badge, the list of checks and a link to the homepage case study.
-- **Skills:** one card with eight core-skill chips (data and SQL first) and a tools row.
+- **Skills:** a "Testing & data" card (eight chips, data and SQL first), a "Development" card and a tools row.
 - **Footer:** "Let's talk" card with Email and LinkedIn buttons (the address is not shown), GitHub and LinkedIn icons.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
@@ -79,7 +80,7 @@ src/
   index.tsx                   # createRoot, Redux <Provider> + <App/>
   styled.d.ts                 # DefaultTheme = typeof themeLight
   core/
-    store.ts                  # configureStore (theme); RootState, AppDispatch; saves the theme only when the visitor chose it
+    store.ts                  # configureStore (theme, projectView); RootState, AppDispatch; saves the theme only when the visitor chose it
     hooks.ts                  # useAppDispatch, useAppSelector (use these, not the plain hooks)
     App/                      # ThemeProvider, Normalize, GlobalStyle, theme.ts (palette + themes)
   common/
@@ -88,26 +89,33 @@ src/
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, availability, location, bio, highlights, contactText, LinkedIn (CONTENT)
-    skillsData.ts             # keySkills (8), tools (CONTENT)
+    profile.ts                # name, title, tagline, availability, location, bio, highlights, contactText, LinkedIn (CONTENT)
+    mindsetData.ts            # developer and tester mindset cards (CONTENT)
+    skillsData.ts             # keySkills (8), devSkills (8), tools (CONTENT)
     experienceData.ts         # jobs, education, languages, interests (CONTENT)
-    qualityData.ts            # "How this site is tested" text and links (CONTENT)
     email.ts                  # contact email (CONTENT)
-    MainHeader/, Skills/, Experience/, Quality/, Footer/
+    TopBar/                   # sticky bar: logo, section links, Contact, ThemeSwitch
+    MainHeader/SplitPortrait/ # the two-sided photo in the hero
+    MainHeader/, Mindset/, Skills/, Experience/, Footer/
     Portfolio/
       githubUserName.ts       # GitHub user (CONTENT)
-      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl and caseStudy (CONTENT)
+      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl and caseStudy with developer/tester lenses (CONTENT)
+      pipelineData.ts         # this site's CI checks and links, shown in the homepage tester view (CONTENT)
+      Story/                  # Brief / Research / Solution / Value timeline of a case study
+      Pipeline/               # CI terminal: checks, result line, CI badge, link to the e2e tests
+      projectViewSlice.ts     # shared project view ("both" | "developer" | "tester"), set by LensSwitch and the split portrait
+      LensSwitch/             # Both / Developer / Tester view switch (aria-pressed buttons)
       Projects/               # case-study cards, test project tiles + "Other projects" list
-      CaseStudy/              # one case study: visible summary + impact, full write-up in <details>
+      CaseStudy/              # one case study: summary, impact, developer/tester columns, full write-up in <details>
       FlowDiagram/            # data-driven step diagram (ordered list, decorative CSS arrows)
     Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
-    Section/, ButtonLink/, SubHeader/   # shared styled primitives
+    Section/, ButtonLink/, SubHeader/   # shared styled primitives (Section also has Card, Chip, Chips, SectionIntro)
 e2e/
   fixtures.ts                 # `test` that fails if the page calls api.github.com (projects must stay static)
-  *.spec.ts                   # header, experience, projects (incl. case study), quality, skills, theme, accessibility (details expanded)
+  *.spec.ts                   # header, navigation, experience, projects (incl. case study, view switch and CI pipeline), skills, theme, accessibility (details expanded)
 ```
 
-**Case studies:** the README case studies mirror `homepageCaseStudy` and `emailCampaignCaseStudy` in `projectsData.ts`; update both together. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
+**Case studies:** the README case studies mirror `homepageCaseStudy` and `talentOutreachCaseStudy` in `projectsData.ts`; update both together. The `story`, `developer` and `tester` fields exist only on the site. Stories follow the advice employers gave: show HOW a problem was solved, not which tools were used. The Talent Outreach brief (a small recruitment agency) is self-set, not a paid client: never invent a client, savings or market research that didn't happen, and date competitor facts (prices change). The homepage's tester lens shows `sitePipeline` (`Portfolio/pipelineData.ts`) as a dark CI terminal with the live badge instead of bullet points; there is no separate "How this site is tested" section any more. Talent Outreach (formerly "Email Campaign Dashboard", GitHub repo `talent-outreach`, demo https://talent-outreach.onrender.com/) is checked out at `~/email-campaign-react-airtable`; verify its facts on `origin/main` there, since the local branch can lag. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Impact numbers should be thresholds CI enforces (for example "80%+ coverage"), so they stay true.
 
 **Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 
@@ -118,7 +126,8 @@ e2e/
 - **Selectors:** each slice defines a private `selectXState` and exports `selectX` helpers built on it.
 - **Types:** strict TypeScript, no `any`. Type props with an interface next to the component. Unused function arguments are prefixed with `_`.
 - **Theme tokens only:** never hard-code colours or breakpoints.
-  - Use `theme.colors.*`, `theme.breakpoints.mobileMax | tabletVerticalMax | tabletHorizontalMax`, `theme.boxShadow` and `theme.borderRadiusSmall`.
+  - Use `theme.colors.*` (including `dev`, `qa`, `gradient`, `gradientText`, `terminal`), `theme.breakpoints.mobileMax | tabletVerticalMax | tabletHorizontalMax`, `theme.boxShadow`, `theme.borderRadius` (cards), `theme.borderRadiusSmall` and `theme.fontMono`.
+  - Gradient text needs `gradientText`, whose light-theme stops are dark enough for 4.5:1; the bright `gradient` is only for backgrounds behind `onGradient` text.
   - To add a colour, put it in `colorNames` in `theme.ts` and add the key to **both** themes. `themeDark` is typed as `typeof themeLight`, so a missing key is a type error.
   - Text colours must pass WCAG AA (4.5:1). The axe e2e test enforces this.
 - Media queries follow this pattern: `@media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) { ... }`. The site is desktop-first.
@@ -148,7 +157,7 @@ e2e/
   - OS theme by default.
   - Rewrite for the Software Test Engineer profile.
   - Curated projects.
-  - Playwright + axe tests and the "How this site is tested" section.
+  - Playwright + axe tests and the CI pipeline shown in the homepage case study.
   - SEO/Open Graph tags, icons and README.
   - Optional, not done: PL/EN i18n.
 

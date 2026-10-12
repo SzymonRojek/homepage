@@ -1,14 +1,15 @@
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
 import { email } from "../email";
 import { profile } from "../profile";
+import { SplitPortrait } from "./SplitPortrait";
 import {
   Wrapper,
-  Avatar,
   Details,
   Availability,
   Location,
   Name,
   Title,
+  Tagline,
   Summary,
   Highlights,
   Highlight,
@@ -22,12 +23,13 @@ import {
 } from "../ButtonLink";
 
 export const MainHeader = () => (
-  <Wrapper>
-    <Avatar src={szymonRojekProfile} alt={profile.name} />
+  <Wrapper id="top">
+    <SplitPortrait src={szymonRojekProfile} name={profile.name} />
     <Details>
+      <Availability>{profile.availability}</Availability>
       <Name>{profile.name}</Name>
       <Title>{profile.title}</Title>
-      <Availability>{profile.availability}</Availability>
+      <Tagline>{profile.tagline}</Tagline>
       <Location>{profile.location.join(" · ")}</Location>
       <Summary>{profile.bio}</Summary>
       <Highlights aria-label="Key skills">

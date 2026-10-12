@@ -16,11 +16,17 @@ import {
 } from "./styled";
 import { repoUrl, type Project } from "../projectsData";
 import { CaseStudy } from "../CaseStudy";
+import type { ProjectView } from "../LensSwitch";
+
+interface ProjectsProps {
+  projects: Project[];
+  view?: ProjectView;
+}
 
 const otherIntro =
   "A front-end background helps me understand what I test and write maintainable UI automation.";
 
-export const Projects = ({ projects }: { projects: Project[] }) => {
+export const Projects = ({ projects, view = "both" }: ProjectsProps) => {
   const testProjects = projects.filter(
     ({ category, caseStudy }) => category === "Testing" && !caseStudy,
   );
@@ -38,6 +44,7 @@ export const Projects = ({ projects }: { projects: Project[] }) => {
               language={language}
               demoUrl={demoUrl}
               caseStudy={caseStudy}
+              view={view}
             />
           ),
       )}

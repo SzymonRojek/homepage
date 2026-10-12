@@ -1,41 +1,57 @@
 import styled from "styled-components";
+import { Chips } from "../../Section";
+import { ButtonLink, SecondaryButtonLink } from "../../ButtonLink";
+
+type Side = "developer" | "tester";
+const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
 
 export const Article = styled.article`
   margin-top: 32px;
   padding: 40px;
   background: ${({ theme }) => theme.colors.boxBackground};
-  border: 6px solid ${({ theme }) => theme.colors.tile.border};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 24px;
+    margin-top: 20px;
     padding: 20px;
   }
 `;
 
 export const Kicker = styled.p`
+  display: inline-block;
   margin: 0;
-  font-size: 13px;
+  padding: 4px 10px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  background: ${({ theme }) => theme.colors.site.background};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  border-radius: 6px;
 `;
 
 export const Title = styled.h3`
-  margin: 8px 0 0;
-  font-size: 28px;
+  margin: 16px 0 0;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: ${({ theme }) => theme.colors.tile.header};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 20px;
+    font-size: 22px;
   }
 `;
 
 export const Meta = styled.p`
   margin: 8px 0 0;
-  font-size: 15px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.muted};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 13px;
@@ -43,10 +59,10 @@ export const Meta = styled.p`
 `;
 
 export const Summary = styled.p`
-  max-width: 760px;
-  margin: 20px 0 0;
+  max-width: 820px;
+  margin: 16px 0 0;
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.6;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 15px;
@@ -64,7 +80,7 @@ export const Impact = styled.dl`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 12px;
+    gap: 10px;
     margin-top: 20px;
   }
 `;
@@ -75,19 +91,30 @@ export const Stat = styled.div`
   flex-direction: column-reverse;
   justify-content: flex-end;
   gap: 6px;
-  padding: 16px;
+  padding: 18px;
   background: ${({ theme }) => theme.colors.site.background};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  border-radius: 12px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding: 14px;
+  }
 `;
 
 export const StatValue = styled.dd`
+  width: fit-content;
   margin: 0;
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 900;
-  color: ${({ theme }) => theme.colors.primary};
+  line-height: 1.1;
+  color: ${({ theme }) => theme.colors.dev.accent};
+  background: ${({ theme }) => theme.colors.gradientText};
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 24px;
+    font-size: 28px;
   }
 `;
 
@@ -100,15 +127,115 @@ export const StatLabel = styled.dt`
   }
 `;
 
+// Developer and tester side by side; one full-width column when filtered.
+export const Lenses = styled.div<{ $single: boolean }>`
+  display: grid;
+  grid-template-columns: ${({ $single }) => ($single ? "1fr" : "1fr 1fr")};
+  gap: 20px;
+  margin-top: 28px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+`;
+
+export const LensCard = styled.section<{ $side: Side }>`
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: ${({ theme, $side }) => theme.colors[accent($side)].soft};
+  border: 1px solid ${({ theme, $side }) => theme.colors[accent($side)].border};
+  border-left: 4px solid
+    ${({ theme, $side }) => theme.colors[accent($side)].accent};
+  border-radius: 12px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding: 16px;
+  }
+`;
+
+export const LensLabel = styled.p<{ $side: Side }>`
+  margin: 0;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
+`;
+
+export const LensTitle = styled.h4`
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.textPrimary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 18px;
+  }
+`;
+
+export const LensHeadline = styled.p`
+  margin: 8px 0 0;
+  font-weight: 600;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+export const LensPoints = styled.ul<{ $side: Side }>`
+  flex-grow: 1;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;
+  line-height: 1.55;
+
+  li {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  li::before {
+    content: "${({ $side }) => ($side === "developer" ? "›" : "✓")}";
+    content: "${({ $side }) => ($side === "developer" ? "›" : "✓")}" / "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 900;
+    color: ${({ theme, $side }) => theme.colors[accent($side)].accent};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 15px;
+  }
+`;
+
+export const LensPipeline = styled.div`
+  flex-grow: 1;
+  margin-top: 16px;
+`;
+
+export const LensStack = styled(Chips)`
+  margin-top: 20px;
+`;
+
 export const Links = styled.p`
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  margin: 24px 0 0;
+  gap: 12px;
+  margin: 28px 0 0;
 `;
 
+export const PrimaryLink = styled(ButtonLink)``;
+
+export const SecondaryLink = styled(SecondaryButtonLink)``;
+
 export const Details = styled.details`
-  margin-top: 24px;
+  margin-top: 28px;
   padding-top: 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 `;
@@ -283,7 +410,8 @@ export const QualityList = styled.dl`
   > div {
     padding: 16px;
     background: ${({ theme }) => theme.colors.site.background};
-    border-radius: ${({ theme }) => theme.borderRadiusSmall};
+    border: 1px solid ${({ theme }) => theme.colors.headerLine};
+    border-radius: 12px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
