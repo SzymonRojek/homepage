@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import Envelope from "./envelope.svg?react";
-import LinkedIn from "../Footer/SocialIcons/icons/linkedin.svg?react";
 
 const buttonStyles = css`
   display: inline-flex;
@@ -58,22 +57,4 @@ export const EnvelopeIcon = styled(Envelope)`
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-`;
-
-export const LinkedInIcon = styled(LinkedIn)`
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-`;
-
-export const ButtonLinks = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 10px;
-    margin-top: 20px;
-  }
 `;

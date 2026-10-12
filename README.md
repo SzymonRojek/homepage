@@ -6,7 +6,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'I find what breaks before your users do.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'A number can match and still be wrong.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
 </picture>
 
 ## Why this site exists (30-second summary)
@@ -17,7 +17,7 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 100 unit and component tests, 88 end-to-end runs (desktop and mobile)                |
+| Automated tests       | 107 unit and component tests, 90 end-to-end runs (desktop and mobile)                |
 | Coverage              | about 95%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
@@ -88,7 +88,7 @@ flowchart LR
 | Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                 | E2E takes about a minute, so it covers only user-visible behaviour                                   |
 | 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                       | Styles are checked by the e2e and axe tests instead                                                  |
 | Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                          | The background colours live in two places. A unit test keeps them in sync                            |
-| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates come through npm instead of Google                                                      |
+| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML        |
 | Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                       | Slower CI, and a stricter budget on a page that still renders with JavaScript                        |
 | Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own | Even a one-line fix needs a PR and a green pipeline                                                  |
 
@@ -120,6 +120,7 @@ flowchart LR
 - A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
 - A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.
 - After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.
+- A photo that seemed to flicker on every reload was the text reflowing: the page first appeared in a fallback font, and the photo moved when the web fonts arrived. Preloading the fonts in the HTML fixed it and brought the first paint forward from about 2.2 s to 1.6 s.
 
 ## Case study: Talent Outreach, job offers to the right candidates
 
@@ -254,10 +255,10 @@ All text lives in data files, not in components:
 | File                                              | Content                                                                                                 |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `src/features/Homepage/profile.ts`                | Name, job titles, headline, target roles, location, bio, contact text, LinkedIn                         |
+| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word                                                          |
 | `src/features/Homepage/howITestData.ts`           | The "How I test at work" section                                                                        |
 | `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages                                         |
-| `src/features/Homepage/mindsetData.ts`            | The "Two mindsets, one goal" developer and tester cards                                                 |
-| `src/features/Homepage/experienceData.ts`         | Experience, education and certifications                                                                |
+| `src/features/Homepage/experienceData.ts`         | Experience, and courses for "Still learning"                                                            |
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
 | `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
 

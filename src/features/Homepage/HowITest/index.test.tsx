@@ -24,12 +24,9 @@ describe("HowITest", () => {
         .getAllByRole("heading", { level: 3 })
         .map(({ textContent }) => textContent),
     ).toEqual([
-      "Understand the mapping and the business",
-      "Design the tests",
-      "Reconcile source and target with SQL",
-      "Check the business logic, not only the data",
+      "Understand the rules, then design the tests",
+      "Reconcile with SQL and check the logic",
       "Trace each defect to its root cause",
-      "Use AI with a human in charge",
     ]);
   });
 
@@ -39,15 +36,19 @@ describe("HowITest", () => {
     expect(
       screen.getByText(/Record counts, totals, field-by-field values/),
     ).toBeVisible();
-    expect(screen.getByText(/read the stored procedures/)).toBeVisible();
+    expect(
+      screen.getByText(/read the stored procedures that transform the data/),
+    ).toBeVisible();
   });
 
   it("keeps clients and systems confidential", () => {
     renderHowITest();
 
     expect(
-      screen.getByText(/migration of client data from one system to another/),
-    ).toBeVisible();
+      screen.getByRole("article", { name: "Beyond the obvious bugs" }),
+    ).toHaveTextContent("in the stored procedures themselves");
+    // No internal system names, only the approach.
+    expect(screen.queryByText(/SunStar|Sirius|\bAST\b/)).toBeNull();
     expect(
       screen.getByText(/Clients and figures are confidential/),
     ).toBeVisible();

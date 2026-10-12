@@ -1,34 +1,24 @@
 import styled from "styled-components";
-import { SubHeader } from "../SubHeader";
-import { ButtonLink, ButtonLinks } from "../ButtonLink";
-import Talk from "./talk.svg?react";
+import { ButtonLink } from "../ButtonLink";
+import { contentColumn } from "../../../core/App/contentColumn";
 
+// A full-width footer on the deep-green band, so the page closes the way the
+// hero opens it, with the soft yellow ring in the bottom-left corner.
 export const Wrapper = styled.footer`
-  margin-top: 64px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 44px;
-  }
-`;
-
-// The deep-green brand band again, so the page opens and closes with it.
-export const Card = styled.section`
   position: relative;
-  padding: 56px;
+  overflow: hidden;
+  margin-top: 56px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  overflow: hidden;
 
-  /* The same soft yellow ring as on the hero, here in the opposite corner. */
   &::before {
     content: "";
     position: absolute;
-    bottom: -160px;
-    left: -140px;
-    width: 380px;
-    height: 380px;
-    border: 64px solid ${({ theme }) => theme.colors.brand.accent};
+    bottom: -170px;
+    left: -150px;
+    width: 400px;
+    height: 400px;
+    border: 72px solid ${({ theme }) => theme.colors.brand.accent};
     border-radius: 50%;
     opacity: 0.12;
     pointer-events: none;
@@ -39,53 +29,82 @@ export const Card = styled.section`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 32px 16px;
+    margin-top: 40px;
   }
 `;
 
-// The contact card is one call to action, so it is centred.
-export const Content = styled.div`
+export const Inner = styled.div`
+  ${contentColumn}
   position: relative;
-  max-width: 680px;
-  margin: 0 auto;
-  text-align: center;
 `;
 
-export const Heading = styled(SubHeader)`
+// A short letter at the end of the page: my photo on the left, the text and
+// the button on the right, the pair centred with equal space on both sides.
+export const Letter = styled.section`
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
-  color: inherit;
-`;
+  align-items: flex-start;
+  gap: 36px;
+  padding-top: 64px;
 
-export const HeadingIcon = styled(Talk)`
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  > div {
+    max-width: 36em;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    width: 22px;
-    height: 22px;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 44px;
   }
 `;
 
-export const Paragraph = styled.p`
-  margin: 16px 0 0;
+export const Photo = styled.img`
+  flex: none;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  object-position: 60% 30%;
+  border: 3px solid ${({ theme }) => theme.colors.brand.accent};
+  border-radius: 50%;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    width: 72px;
+    height: 72px;
+  }
+`;
+
+export const Heading = styled.h2`
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.brand.text};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 26px;
+  }
+`;
+
+// What matters to me in a team, in my own words.
+export const Note = styled.p`
+  margin: 14px 0 0;
+  font-size: 17px;
+  line-height: 1.7;
   color: ${({ theme }) => theme.colors.brand.muted};
-  font-size: 18px;
-  line-height: 1.5;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 15px;
+    font-size: 16px;
   }
 `;
 
-export const Buttons = styled(ButtonLinks)`
-  justify-content: center;
+export const Invite = styled(Note)`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.brand.text};
 `;
 
 export const ContactButton = styled(ButtonLink)`
+  margin-top: 22px;
   color: ${({ theme }) => theme.colors.brand.onAccent};
   background: ${({ theme }) => theme.colors.brand.accent};
 
@@ -94,28 +113,31 @@ export const ContactButton = styled(ButtonLink)`
   }
 `;
 
-export const SecondaryContactButton = styled(ButtonLink)`
-  padding: 10px 19px;
-  color: ${({ theme }) => theme.colors.brand.text};
-  background: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.brand.control};
-  }
-`;
-
+// The last line: copyright on the left, GitHub and LinkedIn on the right.
 export const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-top: 32px;
-  padding: 0 4px;
+  margin-top: 56px;
+  padding: 20px 0 28px;
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.muted};
+  color: ${({ theme }) => theme.colors.brand.muted};
+  border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
 
   p {
     margin: 0;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.brand.text};
+  }
+
+  a:hover {
+    color: ${({ theme }) => theme.colors.brand.accent};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 40px;
   }
 `;

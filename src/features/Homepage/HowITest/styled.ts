@@ -1,46 +1,130 @@
 import styled from "styled-components";
 
-export const Highlight = styled.p`
-  max-width: 820px;
-  margin: 0;
-  padding: 16px 20px;
+export const Intro = styled.p`
+  max-width: 46em;
+  margin: -8px 0 0;
   font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  background: ${({ theme }) => theme.colors.qa.soft};
-  border: 1px solid ${({ theme }) => theme.colors.qa.border};
-  border-left: 4px solid ${({ theme }) => theme.colors.qa.accent};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  line-height: 1.65;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 12px 14px;
     font-size: 16px;
   }
 `;
 
-export const StepText = styled.p`
-  max-width: 820px;
-  margin: 8px 0 0;
-  line-height: 1.6;
+// The story gets the deep-green band across the whole screen. The padding
+// mirrors the pull-out, so the text keeps the page's content edge.
+export const Band = styled.article`
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 56px;
+  align-items: start;
+  margin: 36px calc(50% - 50vw) 0;
+  padding: 56px calc(50vw - 50%);
+  color: ${({ theme }) => theme.colors.brand.text};
+  background: ${({ theme }) => theme.colors.brand.background};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 15px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-block: 40px;
   }
 `;
 
+export const StoryTitle = styled.h3`
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.brand.text};
+
+  em {
+    font-style: normal;
+    color: ${({ theme }) => theme.colors.brand.accent};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 30px;
+  }
+`;
+
+export const Punchline = styled.p`
+  margin: 18px 0 0;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.brand.accent};
+
+  &::before {
+    content: "“";
+  }
+
+  &::after {
+    content: "”";
+  }
+`;
+
+export const StoryText = styled.div`
+  p {
+    margin: 0 0 14px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: ${({ theme }) => theme.colors.brand.muted};
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+// The three steps side by side, each under a large number in the testing
+// green (4.8:1 on cream, mint in the dark theme: large text needs 3:1).
+export const Steps = styled.ol`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+`;
+
+export const StepNumber = styled.span`
+  display: block;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: ${({ theme }) => theme.colors.qa.accent};
+`;
+
+export const StepTitle = styled.h3`
+  margin: 12px 0 0;
+  font-size: 19px;
+  line-height: 1.3;
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+export const StepText = styled.p`
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+`;
+
 export const WhyItMatters = styled.p`
-  max-width: 820px;
-  margin: 32px 0 0;
+  margin: 40px 0 0;
   padding-top: 20px;
   line-height: 1.6;
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 
   strong {
     color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 15px;
   }
 `;

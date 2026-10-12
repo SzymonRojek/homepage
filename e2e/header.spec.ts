@@ -16,7 +16,9 @@ test.describe("Header and footer", () => {
     // Only the name and the job title: the coding side is told further down.
     await expect(brand).toHaveText("Szymon RojekSoftware Test Engineer");
     await expect(
-      page.getByText("I find what breaks before your users do."),
+      page.getByText("A number can match and still be wrong.", {
+        exact: true,
+      }),
     ).toBeVisible();
   });
 
@@ -68,7 +70,7 @@ test.describe("Header and footer", () => {
     await expect(
       page
         .getByRole("contentinfo")
-        .getByRole("link", { name: "Message me on LinkedIn" }),
+        .getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 
@@ -76,16 +78,36 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "Two mindsets, one goal",
+      "What colleagues say",
       "How I test at work",
       "Experience",
       "Projects",
       "Skills",
-      "Education & certifications",
+      "Still learning",
     ]);
   });
 
-  test("footer offers email and LinkedIn without showing the address", async ({
+  test("the portrait's line moves with the keyboard", async ({ page }) => {
+    const slider = page.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "50% code, 50% test",
+    );
+
+    await slider.focus();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowRight");
+
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "52% code, 48% test",
+    );
+    await expect(page.getByRole("img", { name: "Szymon Rojek" })).toBeVisible();
+  });
+
+  test("footer is a short letter with email, and LinkedIn below it", async ({
     page,
   }) => {
     const footer = page.getByRole("contentinfo");
@@ -94,8 +116,12 @@ test.describe("Header and footer", () => {
       footer.getByRole("link", { name: "Send me an email" }),
     ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
     await expect(
-      footer.getByRole("link", { name: "Message me on LinkedIn" }),
+      footer.getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
     await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
+    await expect(footer).toContainText("communication matters most in a team");
+    await expect(
+      footer.getByRole("heading", { name: "Thanks for reading this far." }),
+    ).toBeVisible();
   });
 });

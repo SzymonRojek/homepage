@@ -13,16 +13,39 @@ const renderFooter = () =>
   );
 
 describe("Footer", () => {
-  it("offers email and LinkedIn without showing the address", () => {
+  it("offers email in the letter and LinkedIn below, without the address", () => {
     renderFooter();
 
     expect(
       screen.getByRole("link", { name: "Send me an email" }),
     ).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
-    expect(
-      screen.getByRole("link", { name: "Message me on LinkedIn" }),
-    ).toHaveAttribute("href", profile.linkedinUrl);
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
+      "href",
+      profile.linkedinUrl,
+    );
     expect(screen.queryByText(/@/)).not.toBeInTheDocument();
+  });
+
+  it("reads like a letter: thanks, a note about teamwork, one invite", () => {
+    renderFooter();
+
+    expect(
+      screen.getByRole("heading", { name: "Thanks for reading this far." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "If that sounds like your team, I'd like to hear from you.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /LinkedIn/ })).toHaveLength(1);
+  });
+
+  it("has a personal note about teamwork", () => {
+    renderFooter();
+
+    expect(
+      screen.getByText(/communication matters most in a team/),
+    ).toHaveTextContent("mutual respect");
   });
 
   it("links to GitHub and LinkedIn profiles", () => {

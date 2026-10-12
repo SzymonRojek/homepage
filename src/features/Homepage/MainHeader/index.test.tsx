@@ -40,11 +40,11 @@ describe("MainHeader", () => {
         .map(({ textContent }) => textContent),
     ).toEqual(["Hove, UK", "UK, full", "Open"]);
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
-    // The tagline is the headline; "breaks" is wrapped for its underline.
+    // The tagline is the headline; "wrong" is wrapped for its underline.
     const headline = screen.getByText(
       (_, element) =>
         element?.tagName === "P" &&
-        element.textContent === "I find what breaks before your users do.",
+        element.textContent === "A number can match and still be wrong.",
     );
     expect(headline).toBeInTheDocument();
     expect(headline.querySelector("svg")).toHaveAttribute(

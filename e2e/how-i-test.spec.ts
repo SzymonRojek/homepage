@@ -11,13 +11,22 @@ test.describe("How I test at work", () => {
       section
         .getByRole("list", { name: "How I test a data migration" })
         .getByRole("heading", { level: 3 }),
-    ).toHaveCount(6);
+    ).toHaveCount(3);
     await expect(section).toContainText("field-by-field values");
     await expect(section).toContainText("stored procedures");
     await expect(section).toContainText("Why it matters:");
+    // The story in my own words comes first.
+    await expect(
+      section.getByRole("article", { name: "Beyond the obvious bugs" }),
+    ).toContainText("set up a call with the developer");
 
-    const headings = page.getByRole("main").getByRole("heading", { level: 2 });
-    await expect(headings.nth(1)).toHaveText("How I test at work");
-    await expect(headings.nth(2)).toHaveText("Experience");
+    // The job comes straight after how I test there, so they read as one.
+    const headings = await page
+      .getByRole("main")
+      .getByRole("heading", { level: 2 })
+      .allTextContents();
+    expect(headings.indexOf("Experience")).toBe(
+      headings.indexOf("How I test at work") + 1,
+    );
   });
 });

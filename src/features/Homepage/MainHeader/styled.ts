@@ -195,7 +195,7 @@ export const Summary = styled.p`
   }
 `;
 
-// Where I can work: three label/value pairs under the email button, split by
+// Where I can work: three label/value pairs under the bio, split by
 // thin vertical lines, like the facts at the foot of a CV. HR checks these
 // first.
 export const Where = styled.dl`

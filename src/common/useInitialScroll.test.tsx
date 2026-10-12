@@ -73,6 +73,34 @@ describe("useInitialScroll", () => {
     expect(scrollIntoView).not.toHaveBeenCalled();
   });
 
+  it("after a reload, waits for the fonts so the page is as tall as before", async () => {
+    // One promise for every face, settled when the "network" delivers them.
+    let fontsLoaded = () => {};
+    const fonts = new Promise<FontFace[]>((resolve) => {
+      fontsLoaded = () => resolve([]);
+    });
+    const load = vi.fn(() => fonts);
+    Object.defineProperty(document, "fonts", {
+      value: { load },
+      configurable: true,
+    });
+    navigateAs("reload");
+    sessionStorage.setItem("scrollY", "1234");
+
+    render(<Page />);
+    expect(load).toHaveBeenCalledWith('800 1em "Plus Jakarta Sans"');
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    fontsLoaded();
+    await vi.waitFor(() =>
+      expect(scrollTo).toHaveBeenCalledExactlyOnceWith({
+        top: 1234,
+        behavior: "instant",
+      }),
+    );
+    Reflect.deleteProperty(document, "fonts");
+  });
+
   it("ignores a saved position on a visit from a link", () => {
     navigateAs("navigate");
     sessionStorage.setItem("scrollY", "1234");

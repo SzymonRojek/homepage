@@ -1,51 +1,43 @@
+import szymonRojekProfile from "../MainHeader/szymonRojekProfile.jpg";
 import { email } from "../email";
 import { profile } from "../profile";
 import { SocialIcons } from "./SocialIcons";
 import {
   Wrapper,
-  Card,
-  Content,
+  Inner,
+  Letter,
+  Photo,
   Heading,
-  HeadingIcon,
-  Paragraph,
-  Buttons,
+  Note,
+  Invite,
   ContactButton,
-  SecondaryContactButton,
   Bottom,
 } from "./styled";
-import { EnvelopeIcon, LinkedInIcon } from "../ButtonLink";
+import { EnvelopeIcon } from "../ButtonLink";
 
+// The end of the page reads like a short letter, not a contact form. LinkedIn
+// and GitHub sit in the line underneath.
 export const Footer = () => (
   <Wrapper>
-    <Card aria-labelledby="contact">
-      <Content>
-        <Heading id="contact">
-          Let's talk
-          <HeadingIcon aria-hidden="true" />
-        </Heading>
-        <Paragraph>{profile.contactText}</Paragraph>
-        <Buttons>
+    <Inner>
+      <Letter aria-labelledby="contact">
+        <Photo src={szymonRojekProfile} alt="" loading="lazy" />
+        <div>
+          <Heading id="contact">Thanks for reading this far.</Heading>
+          <Note>{profile.teamNote}</Note>
+          <Invite>{profile.contactInvite}</Invite>
           <ContactButton href={`mailto:${email}`} aria-label="Send me an email">
             <EnvelopeIcon aria-hidden="true" />
-            Email
+            Email me
           </ContactButton>
-          <SecondaryContactButton
-            href={profile.linkedinUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Message me on LinkedIn"
-          >
-            <LinkedInIcon aria-hidden="true" />
-            LinkedIn
-          </SecondaryContactButton>
-        </Buttons>
-      </Content>
-    </Card>
-    <Bottom>
-      <p>
-        © {new Date().getFullYear()} {profile.name}
-      </p>
-      <SocialIcons />
-    </Bottom>
+        </div>
+      </Letter>
+      <Bottom>
+        <p>
+          © {new Date().getFullYear()} {profile.name}
+        </p>
+        <SocialIcons />
+      </Bottom>
+    </Inner>
   </Wrapper>
 );
