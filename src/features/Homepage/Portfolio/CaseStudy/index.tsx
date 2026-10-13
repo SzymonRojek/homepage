@@ -31,6 +31,8 @@ interface CaseStudyProps {
   title: string;
   repo: string;
   caseStudy: CaseStudyData;
+  // Closed, it stays in the page but hidden.
+  open?: boolean;
 }
 
 const lensTitles = {
@@ -78,7 +80,12 @@ const LensColumn = ({
   </LensCard>
 );
 
-export const CaseStudy = ({ title, repo, caseStudy }: CaseStudyProps) => {
+export const CaseStudy = ({
+  title,
+  repo,
+  caseStudy,
+  open = true,
+}: CaseStudyProps) => {
   const id = `case-study-${repo}`;
   const {
     summary,
@@ -94,7 +101,7 @@ export const CaseStudy = ({ title, repo, caseStudy }: CaseStudyProps) => {
   } = caseStudy;
 
   return (
-    <Article id={id} aria-labelledby={`${id}-title`} tabIndex={-1}>
+    <Article id={id} aria-labelledby={`${id}-title`} tabIndex={-1} $open={open}>
       <Kicker>Case study</Kicker>
       <Title id={`${id}-title`}>{title}</Title>
       {/* With a story, its brief says the same thing in plainer words. */}

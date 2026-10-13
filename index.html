@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -55,6 +55,13 @@
       html[data-theme="dark"] {
         background: #0b1513;
         color-scheme: dark;
+      }
+      /* The build writes a light static copy of the page into #root for
+         search engines (scripts/prerender.ts). With a dark theme it stays
+         hidden, page background included, until the app has drawn the page. */
+      html[data-theme="dark"] body[data-prerendered] {
+        visibility: hidden;
+        background: none;
       }
       /* Self-hosted Inter and Plus Jakarta Sans (from @fontsource, OFL). */
       @font-face {
@@ -213,12 +220,14 @@
     <title>Szymon Rojek | Software Test Engineer</title>
     <meta
       name="description"
-      content="Szymon Rojek, Software Test Engineer in Hove, UK, open to Test Automation and QA Engineer roles: data migration and ETL testing, SQL reconciliation, API testing and Playwright."
+      content="Software Test Engineer in Hove, UK, open to Test Automation and QA roles: data migration and ETL testing, SQL reconciliation, API testing and Playwright."
     />
     <link rel="canonical" href="https://szymonrojek.com/" />
     <!-- My initials, as in the top bar: SVG where supported, PNG otherwise. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <!-- Google Search doesn't use SVG icons and wants one over 48px. -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta
@@ -233,21 +242,26 @@
     />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Szymon Rojek" />
+    <meta property="og:locale" content="en_GB" />
     <meta property="og:url" content="https://szymonrojek.com/" />
     <meta property="og:title" content="Szymon Rojek | Software Test Engineer" />
     <meta
       property="og:description"
-      content="Software Test Engineer in Hove, UK, open to Test Automation and QA Engineer roles: data migration and ETL testing, SQL reconciliation, API testing and Playwright."
+      content="Software Test Engineer in Hove, UK, open to Test Automation and QA roles: data migration and ETL testing, SQL reconciliation, API testing and Playwright."
     />
+    <meta property="og:image" content="https://szymonrojek.com/og-image.jpg" />
+    <!-- 1200×630, the size LinkedIn and X show large. -->
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta
-      property="og:image"
-      content="https://szymonrojek.com/og-image.jpg"
+      property="og:image:alt"
+      content="Szymon Rojek, Software Test Engineer, beside a photo of Szymon"
     />
-    <meta property="og:image:alt" content="Photo of Szymon Rojek" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

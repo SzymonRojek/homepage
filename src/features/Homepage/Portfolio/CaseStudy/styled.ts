@@ -4,7 +4,10 @@ import { Chips } from "../../Section";
 type Side = "developer" | "tester";
 const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
 
-export const Article = styled.article`
+// A closed case study is hidden with CSS, not the hidden attribute: some tools
+// that read a page's HTML without styles skip [hidden] content.
+export const Article = styled.article<{ $open: boolean }>`
+  display: ${({ $open }) => ($open ? "block" : "none")};
   margin-top: 32px;
   padding: 40px;
   background: ${({ theme }) => theme.colors.boxBackground};

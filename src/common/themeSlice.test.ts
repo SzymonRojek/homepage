@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import themeReducer, {
   getInitialDarkTheme,
+  loadThemeState,
   selectDarkTheme,
   selectHasUserChoice,
   systemThemeChanged,
@@ -92,32 +93,32 @@ describe("themeSlice", () => {
 
   // Found by mutation testing: no test checked the state a page load starts
   // from, because the other tests pass a state in themselves.
-  describe("initial state on page load", () => {
-    const loadReducer = async () => {
-      vi.resetModules();
-      const { default: reducer } = await import("./themeSlice");
-      return reducer;
-    };
-
-    it("starts from a saved choice and marks it as the visitor's", async () => {
+  describe("state on page load", () => {
+    it("starts from a saved choice and marks it as the visitor's", () => {
       mockColorScheme(false);
       localStorage.setItem("dark", "true");
 
-      const reducer = await loadReducer();
-
-      expect(reducer(undefined, { type: "@@INIT" })).toEqual({
+      expect(loadThemeState()).toEqual({
         isDarkTheme: true,
         hasUserChoice: true,
       });
     });
 
-    it("starts from the OS theme with no visitor choice", async () => {
+    it("starts from the OS theme with no visitor choice", () => {
       mockColorScheme(true);
 
-      const reducer = await loadReducer();
-
-      expect(reducer(undefined, { type: "@@INIT" })).toEqual({
+      expect(loadThemeState()).toEqual({
         isDarkTheme: true,
+        hasUserChoice: false,
+      });
+    });
+
+    it("starts light without asking the browser, as the build's static page", () => {
+      mockColorScheme(true);
+      localStorage.setItem("dark", "true");
+
+      expect(themeReducer(undefined, { type: "@@INIT" })).toEqual({
+        isDarkTheme: false,
         hasUserChoice: false,
       });
     });

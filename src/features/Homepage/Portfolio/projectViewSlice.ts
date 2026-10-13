@@ -28,7 +28,8 @@ export const parseCaseStudyHash = (hash = window.location.hash) => {
     : { openRepo: null, side: null };
 };
 
-const initialState: ProjectViewState = parseCaseStudyHash();
+// All closed; on load the browser reads the address instead (index.tsx).
+const initialState: ProjectViewState = { openRepo: null, side: null };
 
 // Shared by the project cards and the address (#case-study-... links).
 const projectViewSlice = createSlice({

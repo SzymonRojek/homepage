@@ -35,7 +35,7 @@ export const Pipeline = ({
     </Terminal>
     <Footer>
       <a href={workflowURL} target="_blank" rel="noreferrer">
-        <img src={badgeURL} alt="CI status" height={20} />
+        <img src={badgeURL} alt="CI status" height={20} loading="lazy" />
       </a>
       <Link href={testsURL} target="_blank" rel="noreferrer">
         See the end-to-end tests

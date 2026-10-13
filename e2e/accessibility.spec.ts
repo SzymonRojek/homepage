@@ -25,9 +25,11 @@ for (const colorScheme of ["light", "dark"] as const) {
       // The page with every case study closed, then each one opened in full,
       // with every <details>, not only what is visible by default.
       const serious = await scan();
+      // "Read the case study" turns into "Close the case study" once open;
+      // matching both keeps the count, so every case study gets scanned.
       const cards = page
         .getByRole("list", { name: "Case studies" })
-        .getByRole("button", { name: "Read the case study" });
+        .getByRole("button", { name: /the case study$/ });
 
       for (let index = 0; index < (await cards.count()); index++) {
         await cards.nth(index).click();

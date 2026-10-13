@@ -7,11 +7,13 @@ import { useAppSelector } from "../hooks";
 import { selectDarkTheme } from "../../common/themeSlice";
 import { useSystemTheme } from "../../common/useSystemTheme";
 import { useDocumentTheme } from "../../common/useDocumentTheme";
+import { usePrerenderCleanup } from "../../common/usePrerenderCleanup";
 
 export const App = () => {
   const isDarkTheme = useAppSelector(selectDarkTheme);
   useSystemTheme();
   useDocumentTheme(isDarkTheme);
+  usePrerenderCleanup();
 
   return (
     <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>

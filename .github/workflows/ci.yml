@@ -31,6 +31,8 @@ jobs:
         with:
           name: lighthouse-report
           path: .lighthouseci
+          # The folder starts with a dot, and hidden files are skipped by default.
+          include-hidden-files: true
       - uses: actions/upload-artifact@v7
         if: failure()
         with:

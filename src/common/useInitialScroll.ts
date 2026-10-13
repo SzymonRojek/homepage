@@ -31,8 +31,8 @@ const afterFonts = (run: () => void) => {
 
 // Where the page lands once React has rendered it:
 // - after a reload, exactly where the visitor was, as soon as the fonts are
-//   in (the page renders with JavaScript, so the browser can't restore the
-//   position by itself);
+//   in (React replaces the static copy of the page, so the browser can't
+//   restore the position by itself);
 // - on a visit from a link with a #hash (e.g. a CV link to
 //   #case-study-talent-outreach-developer), at that section, at once.
 // Both jump instantly: a smooth scroll on load looks like the page moving by

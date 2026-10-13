@@ -59,9 +59,10 @@ flowchart LR
   data["Content in TypeScript data files<br/>(profile, experience, skills, projects)"]
   react["React 19 components<br/>styled-components light/dark themes"]
   build["Vite production build<br/>self-hosted font, right-sized photo"]
+  prerender["Whole page prerendered<br/>into the HTML"]
   pages["Static files on GitHub Pages"]
   browser["Visitor's browser<br/>no API calls"]
-  data --> react --> build --> pages --> browser
+  data --> react --> build --> prerender --> pages --> browser
 ```
 
 How every change reaches production:
@@ -80,23 +81,24 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                 | Why                                                                                          | Trade-off                                                                                            |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                    | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI |
-| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                 | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                |
-| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again   |
-| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                 | E2E takes about a minute, so it covers only user-visible behaviour                                   |
-| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                       | Styles are checked by the e2e and axe tests instead                                                  |
-| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                          | The background colours live in two places. A unit test keeps them in sync                            |
-| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML        |
-| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                       | Slower CI, and a stricter budget on a page that still renders with JavaScript                        |
-| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own | Even a one-line fix needs a PR and a green pipeline                                                  |
+| Decision                                                 | Why                                                                                          | Trade-off                                                                                                      |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                    | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI           |
+| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                 | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                          |
+| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again             |
+| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                 | E2E takes about a minute, so it covers only user-visible behaviour                                             |
+| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                       | Styles are checked by the e2e and axe tests instead                                                            |
+| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                          | The background colours live in two places. A unit test keeps them in sync                                      |
+| Prerender the page into the HTML at build time           | Search engines and AI tools that don't run JavaScript saw an empty page                      | Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it |
+| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed          | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML                  |
+| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                       | Slower CI, and a stricter budget                                                                               |
+| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own | Even a one-line fix needs a PR and a green pipeline                                                            |
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and also checks that the top bar, the hero and the sections line up at several screen widths. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and also checks that the top bar, the hero and the sections line up at several screen widths. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Other end-to-end tests read the page with JavaScript turned off and check what search engines and link previews get: the structured data, the share image, the sitemap and both case studies in the HTML. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
 
-**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 117 KB gzipped. The page still renders with JavaScript, so prerendering the HTML is the next step.
+**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 117 KB gzipped. The build also writes the whole page into the HTML (`scripts/prerender.ts`), so it can be read without JavaScript, and in the light theme React takes it over as it is, so the photo isn't drawn twice.
 
 **Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks, labelled lists, a theme switch with `aria-pressed`, and decorative icons hidden from screen readers.
 
@@ -105,6 +107,7 @@ flowchart LR
 ### Outcomes
 
 - Projects render instantly and can't fail for a visitor: the section no longer depends on GitHub's API.
+- Search engines and AI tools that don't run JavaScript read the whole page, case studies included.
 - No light flash on reload in dark mode, proven by a test that records the background colour on every frame.
 - Lighthouse accessibility, best practices and SEO all score 100; performance is held by a CI budget.
 - Every deploy has passed the full pipeline, because `main` accepts nothing else.
@@ -224,25 +227,25 @@ flowchart LR
 
 ### Getting started
 
-Requires Node 20.19+ or 22.12+.
+Requires Node 22.18+ (the build runs a TypeScript script directly); CI uses Node 24.
 
 ```bash
 npm install
 npm run dev          # http://localhost:3000/
 ```
 
-| Script                    | What it does                                                    |
-| ------------------------- | --------------------------------------------------------------- |
-| `npm run dev`             | Start the dev server                                            |
-| `npm run build`           | Build the site into `dist/`                                     |
-| `npm run preview`         | Serve the production build locally                              |
-| `npm test`                | Unit and component tests in watch mode                          |
-| `npm run test:coverage`   | Single test run with a coverage report and thresholds           |
-| `npm run test:e2e`        | Playwright end-to-end tests (builds and serves the site)        |
-| `npm run test:mutation`   | Stryker mutation testing of the unit tests (slow, run manually) |
-| `npm run test:lighthouse` | Lighthouse budgets against `dist/` (run `build` first)          |
-| `npm run typecheck`       | TypeScript check                                                |
-| `npm run lint`            | ESLint                                                          |
+| Script                    | What it does                                                     |
+| ------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`             | Start the dev server                                             |
+| `npm run build`           | Build the site into `dist/` and prerender the page into its HTML |
+| `npm run preview`         | Serve the production build locally                               |
+| `npm test`                | Unit and component tests in watch mode                           |
+| `npm run test:coverage`   | Single test run with a coverage report and thresholds            |
+| `npm run test:e2e`        | Playwright end-to-end tests (builds and serves the site)         |
+| `npm run test:mutation`   | Stryker mutation testing of the unit tests (slow, run manually)  |
+| `npm run test:lighthouse` | Lighthouse budgets against `dist/` (run `build` first)           |
+| `npm run typecheck`       | TypeScript check                                                 |
+| `npm run lint`            | ESLint                                                           |
 
 ### CI and deployment
 
@@ -261,5 +264,7 @@ All text lives in data files, not in components:
 | `src/features/Homepage/experienceData.ts`         | Experience, and courses for "Still learning"                                                            |
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
 | `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
+
+Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image.jpg`, shows the name, title and headline as an image, so redraw it when they change.
 
 To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project then shows as a card whose "Read the case study" button opens the full write-up. Keep this README's case study in step with the homepage one.
