@@ -30,6 +30,15 @@ describe("render", () => {
     expect(page.html).not.toContain('aria-expanded="true"');
   });
 
+  it("brings the structured data for the <head>", () => {
+    const { "@graph": graph } = JSON.parse(page.jsonLd);
+
+    expect(graph.map((item: { "@type": string }) => item["@type"])).toEqual([
+      "WebSite",
+      "ProfilePage",
+    ]);
+  });
+
   it("gives only the CSS rules, for a style tag of their own", () => {
     expect(page.css).not.toMatch(/<\/?style/);
     expect(page.css.length).toBeGreaterThan(1000);

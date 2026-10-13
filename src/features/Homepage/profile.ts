@@ -1,3 +1,6 @@
+// Where I live: in the row under the bio and in the page's structured data.
+const basedIn = "Hove, UK";
+
 export const profile = {
   name: "Szymon Rojek",
   title: "Software Test Engineer",
@@ -7,8 +10,9 @@ export const profile = {
   taglineHighlight: "wrong",
   availability: "Open to Test Automation & QA Engineer roles",
   // A row of three facts under the bio, so HR sees them at once.
+  basedIn,
   location: [
-    { label: "Based in", value: "Hove, UK" },
+    { label: "Based in", value: basedIn },
     { label: "Right to work", value: "UK, full" },
     { label: "Relocation", value: "Open" },
   ],

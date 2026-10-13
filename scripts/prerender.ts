@@ -28,7 +28,7 @@ try {
   const { render } = (await import(
     pathToFileURL(resolve(serverDir, "entry-server.mjs")).href
   )) as typeof import("../src/entry-server");
-  const { html, css } = render();
+  const { html, css, jsonLd } = render();
   const template = await readFile(page, "utf8");
   const missing = ["</head>", "<body>", emptyRoot].filter(
     (part) => !template.includes(part),
@@ -44,7 +44,11 @@ try {
   // The marks let index.html hide the copy for a dark theme and index.tsx
   // clean up after the app has replaced it.
   const prerendered = template
-    .replace("</head>", () => `<style data-prerendered>${css}</style></head>`)
+    .replace(
+      "</head>",
+      () =>
+        `<script type="application/ld+json">${jsonLd}</script><style data-prerendered>${css}</style></head>`,
+    )
     .replace("<body>", () => "<body data-prerendered>")
     .replace(emptyRoot, () => `<div id="root">${html}</div>`);
 
