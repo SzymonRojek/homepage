@@ -19,7 +19,7 @@ A single page aimed at recruiters for test automation and QA roles (developer ro
 - **Still learning** (was "Education & certifications"): its own section, last in `<main>` as on a UK CV. ISTQB Foundation as "Next up" on a deep-green card (`next: true`), the other courses in a two-column grid with a green year, newest first by when they started (2026, 2025, 2023 – now for LinkedIn Learning, 2022). LinkedIn Learning is one item (too many courses to list; the certificates are deliberately not on the LinkedIn profile, so never point to them). The degree was removed on purpose. Not in the top bar, to keep it short. Interests were removed on purpose.
 - **Footer:** a short letter, not a contact form: a full-width deep-green band (outside the page `Container`, content in `contentColumn`), no box: my photo in a yellow-ringed circle, "Thanks for reading this far.", my note about teamwork in my own words (`profile.teamNote`), one invite (`profile.contactInvite`) and a single "Email me" button (the address is not shown), with the soft yellow ring in the bottom-left corner of the band; the photo sits left of the text and button, the pair centred with equal space on both sides; the © line below is not centred. No roles or location (the hero has them) and no LinkedIn button: LinkedIn and GitHub are the icons in the line underneath, with "© year name".
 
-- **Search and sharing:** the build prerenders the whole page into `dist/index.html` (light theme, case studies closed), so search engines and AI tools that don't run JavaScript read it; the app replaces that static copy on load, and a dark theme keeps it hidden until then (`body[data-prerendered]` in `index.html`). The head has `lang="en-GB"`, a description of at most 160 characters, canonical, Open Graph and X tags, and JSON-LD (`WebSite` + `ProfilePage` with a `Person`, built from the content files by `structuredData.ts` and written into the head by the prerender, so it is in the build only). `public/og-image.jpg` is a 1200×630 share card (name, title, tagline and photo on the green band): redraw it when those change, then refresh LinkedIn's cached preview with the [Post Inspector](https://www.linkedin.com/post-inspector/). `public/szymon-rojek.jpg` is the photo in the structured data. `public/sitemap.xml` lists the page and `robots.txt` points to it.
+- **Search and sharing:** the build prerenders the whole page into `dist/index.html` (light theme, case studies closed), so search engines and AI tools that don't run JavaScript read it; on a light visit without a case-study address React takes that copy over as it is (`hydrateRoot`), so the photo is drawn once; a dark theme or a case-study address draws the page anew (`createRoot`), and a dark theme keeps the copy hidden until then (`body[data-prerendered]` in `index.html`). The head has `lang="en-GB"`, a description of at most 160 characters, canonical, Open Graph and X tags, and JSON-LD (`WebSite` + `ProfilePage` with a `Person`, built from the content files by `structuredData.ts` and written into the head by the prerender, so it is in the build only). `public/og-image.jpg` is a 1200×630 share card (name, title, tagline and photo on the green band): redraw it when those change, then refresh LinkedIn's cached preview with the [Post Inspector](https://www.linkedin.com/post-inspector/). `public/szymon-rojek.jpg` is the photo in the structured data. `public/sitemap.xml` lists the page and `robots.txt` points to it.
 
 The theme follows the OS setting, including live changes while the page is open, until the visitor uses the light/dark switch. After that, the choice is saved in `localStorage("dark")` and the OS setting is ignored.
 
@@ -82,8 +82,8 @@ npm run deploy     # manual deploy: build, then gh-pages publishes dist/ (CI doe
 
 ```
 src/
-  index.tsx                   # reads the theme and the #case-study address into createAppStore, renders <App/> at once (flushSync) over the static copy, then removes its marks
-  entry-server.tsx            # render(): the page as HTML + CSS, plus the JSON-LD, in Node, light with case studies closed, for scripts/prerender.ts (its test runs without a browser)
+  index.tsx                   # reads the theme and the #case-study address into createAppStore; hydrates the static copy when the visit looks like it (light, no case study open), else renders <App/> anew at once (flushSync)
+  entry-server.tsx            # render(): the page as HTML + CSS, plus the image preloads and JSON-LD for the head, in Node, light with case studies closed, for scripts/prerender.ts (its test runs without a browser)
   styled.d.ts                 # DefaultTheme = typeof themeLight
   core/
     store.ts                  # createAppStore(preloadedState) (theme, projectView); RootState, AppStore, AppDispatch; saveThemeChoice saves the theme only when the visitor chose it
@@ -92,6 +92,7 @@ src/
   common/
     themeSlice.ts             # starts light; loadThemeState (read on load: getInitialDarkTheme = saved choice, else OS; hasUserChoice), toggleTheme, systemThemeChanged
     useSystemTheme.ts         # listens to prefers-color-scheme changes (used in App)
+    usePrerenderCleanup.ts    # after the first render: removes the static copy's styles and its dark-theme mark
     useInitialScroll.ts       # after render: a reload returns to the saved position, a link visit jumps to its #section; both instant, never smooth
     ThemeSwitch/              # toggle button (aria-pressed)
   features/Homepage/
@@ -155,7 +156,7 @@ e2e/
 - **Headings:** h1 is the name, h2 is a page section (`SectionHeader`), h3 is a card or group, h4 is a project tile. Sections use `aria-labelledby` pointing to their heading `id`.
 - External links: `target="_blank" rel="noreferrer"`. Decorative images: `alt=""`.
 - **Privacy:** never put a phone number on the site.
-- **Render without a browser:** the build renders the page in Node, so no module may touch `window`, `document` or `localStorage` on import or while rendering. Read them in effects, event handlers or `src/index.tsx`, and pass what the browser knows in through `createAppStore(preloadedState)`. `src/entry-server.test.tsx` runs in Node and fails otherwise.
+- **Render without a browser:** the build renders the page in Node, so no module may touch `window`, `document` or `localStorage` on import or while rendering. Read them in effects, event handlers or `src/index.tsx`, and pass what the browser knows in through `createAppStore(preloadedState)`. `src/entry-server.test.tsx` runs in Node and fails otherwise. The browser hydrates the copy, so its first render must match the build's: the same tree and no output that depends on time or the browser (the footer year carries `suppressHydrationWarning`). The e2e `prerender` spec fails if React has to redraw the copy.
 - **Unit tests** live next to the code as `*.test.ts(x)`. Components that use styled-components must be rendered inside `<ThemeProvider theme={themeLight}>`. Mock data modules with `vi.mock` when a test needs specific content.
 - **E2E tests** import `test`/`expect` from `e2e/fixtures.ts`, so GitHub is always mocked. Use role-based locators, and add new page behaviour to the e2e suite.
 - Formatting: 2 spaces, double quotes, semicolons (Prettier defaults). Run `npm run lint`, `npm run typecheck` and `npm run format` before committing.

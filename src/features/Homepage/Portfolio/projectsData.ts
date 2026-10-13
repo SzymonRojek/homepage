@@ -243,7 +243,7 @@ const homepageCaseStudy: CaseStudy = {
     },
     {
       area: "Performance",
-      text: "Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The build also writes the whole page into the HTML, so it can be read without JavaScript.",
+      text: "Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The build also writes the whole page into the HTML, so it can be read without JavaScript, and in the light theme React takes it over as it is, so the photo isn't drawn twice.",
     },
     {
       area: "Accessibility",

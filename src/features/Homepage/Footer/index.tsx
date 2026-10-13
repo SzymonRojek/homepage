@@ -33,7 +33,10 @@ export const Footer = () => (
         </div>
       </Letter>
       <Bottom>
-        <p>
+        {/* The static copy of the page carries the build's year. Should a
+            visit fall in a new year before the next deploy, React keeps that
+            year instead of failing to take the copy over. */}
+        <p suppressHydrationWarning>
           © {new Date().getFullYear()} {profile.name}
         </p>
         <SocialIcons />

@@ -58,7 +58,7 @@
       }
       /* The build writes a light static copy of the page into #root for
          search engines (scripts/prerender.ts). With a dark theme it stays
-         hidden, page background included, until the app replaces it. */
+         hidden, page background included, until the app has drawn the page. */
       html[data-theme="dark"] body[data-prerendered] {
         visibility: hidden;
         background: none;

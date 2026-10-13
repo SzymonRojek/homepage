@@ -30,6 +30,11 @@ describe("render", () => {
     expect(page.html).not.toContain('aria-expanded="true"');
   });
 
+  it("keeps React's image preloads out of #root, for the <head>", () => {
+    expect(page.html).not.toMatch(/^<link/);
+    expect(page.preloads).toMatch(/^<link rel="preload" as="image"/);
+  });
+
   it("brings the structured data for the <head>", () => {
     const { "@graph": graph } = JSON.parse(page.jsonLd);
 
