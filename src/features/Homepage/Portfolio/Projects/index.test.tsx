@@ -204,6 +204,31 @@ describe("Projects", () => {
     expect(window.location.hash).toBe("#projects");
   });
 
+  it("keeps closed case studies in the page, hidden, for search engines", () => {
+    renderProjects([
+      createProject({
+        title: "First",
+        repo: "first",
+        caseStudy: caseStudy("First"),
+      }),
+      createProject({
+        title: "Second",
+        repo: "second",
+        caseStudy: caseStudy("Second"),
+      }),
+    ]);
+
+    // Text queries also find hidden text, as a crawler reading the HTML does.
+    expect(screen.getByText("First, tested.")).not.toBeVisible();
+    expect(screen.getByText("Second, built.")).not.toBeVisible();
+
+    fireEvent.click(
+      screen.getAllByRole("button", { name: "Read the case study" })[1],
+    );
+    expect(screen.getByText("Second, built.")).toBeVisible();
+    expect(screen.getByText("First, tested.")).not.toBeVisible();
+  });
+
   it("moves focus to the case study that was opened", () => {
     renderProjects([
       createProject({

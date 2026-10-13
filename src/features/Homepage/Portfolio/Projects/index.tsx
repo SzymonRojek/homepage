@@ -95,7 +95,6 @@ export const Projects = ({ projects }: ProjectsProps) => {
   }, [dispatch]);
 
   const caseStudies = projects.filter(({ caseStudy }) => caseStudy);
-  const open = caseStudies.find(({ repo }) => repo === openRepo);
 
   const toggle = (repo: string) => {
     const next = repo === openRepo ? null : repo;
@@ -123,13 +122,19 @@ export const Projects = ({ projects }: ProjectsProps) => {
         </Cards>
       )}
 
-      {open?.caseStudy && (
-        <CaseStudy
-          key={open.repo}
-          title={open.title}
-          repo={open.repo}
-          caseStudy={open.caseStudy}
-        />
+      {/* All of them, the closed ones hidden: search engines and AI tools
+          that read the page's HTML find every case study. */}
+      {caseStudies.map(
+        ({ title, repo, caseStudy }) =>
+          caseStudy && (
+            <CaseStudy
+              key={repo}
+              title={title}
+              repo={repo}
+              caseStudy={caseStudy}
+              open={repo === openRepo}
+            />
+          ),
       )}
 
       {testProjects.length > 0 && (

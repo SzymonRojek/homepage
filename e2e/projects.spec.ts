@@ -47,6 +47,20 @@ test.describe("Projects", () => {
     ).toHaveCount(0);
   });
 
+  test("both case studies are in the page's HTML while closed", async ({
+    page,
+    request,
+  }) => {
+    // What search engines and AI tools read, without clicking anything.
+    const html = await (await request.get("/")).text();
+
+    expect(html).toContain("Tested from a single function to the live app");
+    expect(html).toContain(
+      "A static React app with nothing that can fail for a visitor",
+    );
+    await expect(caseStudies(page)).toHaveCount(0);
+  });
+
   test("a card links to the code and the live demo", async ({ page }) => {
     const card = page
       .getByRole("list", { name: "Case studies" })
