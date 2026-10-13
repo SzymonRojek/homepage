@@ -56,6 +56,13 @@
         background: #0b1513;
         color-scheme: dark;
       }
+      /* The build writes a light static copy of the page into #root for
+         search engines (scripts/prerender.ts). With a dark theme it stays
+         hidden, page background included, until the app replaces it. */
+      html[data-theme="dark"] body[data-prerendered] {
+        visibility: hidden;
+        background: none;
+      }
       /* Self-hosted Inter and Plus Jakarta Sans (from @fontsource, OFL). */
       @font-face {
         font-family: "Inter";
@@ -239,15 +246,11 @@
       property="og:description"
       content="Software Test Engineer in Hove, UK, open to Test Automation and QA Engineer roles: data migration and ETL testing, SQL reconciliation, API testing and Playwright."
     />
-    <meta
-      property="og:image"
-      content="https://szymonrojek.com/og-image.jpg"
-    />
+    <meta property="og:image" content="https://szymonrojek.com/og-image.jpg" />
     <meta property="og:image:alt" content="Photo of Szymon Rojek" />
     <meta name="twitter:card" content="summary" />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

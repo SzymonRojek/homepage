@@ -1,36 +1,56 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+  selectDarkTheme,
+  systemThemeChanged,
+  toggleTheme,
+} from "../common/themeSlice";
+import { openCaseStudy } from "../features/Homepage/Portfolio/projectViewSlice";
+import { createAppStore, saveThemeChoice } from "./store";
 
-// Each test loads a fresh store, because the theme state starts from localStorage.
-const loadStore = async () => {
-  const { default: store } = await import("./store");
-  const theme = await import("../common/themeSlice");
-
-  return { store, ...theme };
-};
-
-describe("store theme persistence", () => {
-  beforeEach(() => {
-    vi.resetModules();
+describe("createAppStore", () => {
+  it("starts light with every case study closed, as the build's static page", () => {
+    expect(createAppStore().getState()).toEqual({
+      theme: { isDarkTheme: false, hasUserChoice: false },
+      projectView: { openRepo: null, side: null },
+    });
   });
+
+  it("starts from what the browser read on load", () => {
+    const loaded = {
+      theme: { isDarkTheme: true, hasUserChoice: true },
+      projectView: { openRepo: "homepage", side: "tester" as const },
+    };
+
+    expect(createAppStore(loaded).getState()).toEqual(loaded);
+  });
+});
+
+describe("saveThemeChoice", () => {
+  const createSavingStore = () => {
+    const store = createAppStore({
+      theme: { isDarkTheme: false, hasUserChoice: false },
+    });
+    const stopSaving = saveThemeChoice(store);
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+
+    return { store, stopSaving, setItem };
+  };
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it("saves the theme when the visitor toggles it", async () => {
-    const { store, toggleTheme } = await loadStore();
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
-    const wasDark = store.getState().theme.isDarkTheme;
+  it("saves the theme when the visitor toggles it", () => {
+    const { store, setItem } = createSavingStore();
 
     store.dispatch(toggleTheme());
 
     expect(setItem).toHaveBeenCalledOnce();
-    expect(setItem).toHaveBeenCalledWith("dark", String(!wasDark));
+    expect(setItem).toHaveBeenCalledWith("dark", "true");
   });
 
-  it("follows the OS theme without saving it", async () => {
-    const { store, systemThemeChanged, selectDarkTheme } = await loadStore();
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
+  it("follows the OS theme without saving it", () => {
+    const { store, setItem } = createSavingStore();
 
     store.dispatch(systemThemeChanged(true));
 
@@ -38,21 +58,29 @@ describe("store theme persistence", () => {
     expect(setItem).not.toHaveBeenCalled();
   });
 
-  it("does not write to localStorage for other actions", async () => {
-    const { store } = await loadStore();
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
+  it("does not write to localStorage for other actions", () => {
+    const { store, setItem } = createSavingStore();
 
-    store.dispatch({ type: "unrelated/action" });
+    store.dispatch(openCaseStudy("homepage"));
 
     expect(setItem).not.toHaveBeenCalled();
   });
 
-  it("saves only when the theme changes, not on every later action", async () => {
-    const { store, toggleTheme } = await loadStore();
+  it("saves only when the theme changes, not on every later action", () => {
+    const { store, setItem } = createSavingStore();
     store.dispatch(toggleTheme());
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
+    setItem.mockClear();
 
-    store.dispatch({ type: "unrelated/action" });
+    store.dispatch(openCaseStudy("homepage"));
+
+    expect(setItem).not.toHaveBeenCalled();
+  });
+
+  it("stops saving when asked", () => {
+    const { store, stopSaving, setItem } = createSavingStore();
+
+    stopSaving();
+    store.dispatch(toggleTheme());
 
     expect(setItem).not.toHaveBeenCalled();
   });

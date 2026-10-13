@@ -77,7 +77,7 @@ export const Projects = ({ projects }: ProjectsProps) => {
   const dispatch = useAppDispatch();
   useRevealCaseStudy(openRepo, side);
 
-  // On load the address is read once (projectViewSlice); a #case-study-...
+  // On load the address is read once (index.tsx); a #case-study-...
   // address typed or pasted later, while the page is open, opens it too.
   useEffect(() => {
     const onHashChange = () => {

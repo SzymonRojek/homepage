@@ -18,10 +18,15 @@ export const getInitialDarkTheme = (): boolean => {
   return window.matchMedia?.(darkSchemeQuery).matches ?? false;
 };
 
-const initialState: ThemeState = {
+// The theme a page load starts from, read in the browser (index.tsx).
+export const loadThemeState = (): ThemeState => ({
   isDarkTheme: getInitialDarkTheme(),
   hasUserChoice: localStorage.getItem("dark") !== null,
-};
+});
+
+// Light, the theme of the static copy of the page the build writes out
+// (entry-server.tsx), where there is no browser to ask.
+const initialState: ThemeState = { isDarkTheme: false, hasUserChoice: false };
 
 const themeSlice = createSlice({
   name: "theme",
