@@ -101,6 +101,11 @@ const homepageCaseStudy: CaseStudy = {
       },
       {
         market:
+          "The HTML was empty until JavaScript ran, so search engines and AI tools that don't run it saw a blank page.",
+        mine: "The build writes the whole page into the HTML, case studies included.",
+      },
+      {
+        market:
           "Google Fonts blocked rendering, and the photo was three times larger than displayed.",
         mine: "A self-hosted font and a right-sized photo raised mobile performance from 0.84 to about 0.9.",
       },
@@ -167,6 +172,7 @@ const homepageCaseStudy: CaseStudy = {
         "Content in TypeScript data files",
         "React components with light and dark themes",
         "Vite production build",
+        "Whole page prerendered into the HTML",
         "Static files on GitHub Pages",
         "Browser: no API calls",
       ],
@@ -212,6 +218,12 @@ const homepageCaseStudy: CaseStudy = {
         "The background colours live in two places. A unit test keeps them in sync.",
     },
     {
+      decision: "Prerender the page into the HTML at build time",
+      why: "Search engines and AI tools that don't run JavaScript saw an empty page.",
+      tradeOff:
+        "Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it.",
+    },
+    {
       decision: "Self-hosted font and a right-sized photo",
       why: "Google Fonts blocked rendering, and the photo was three times larger than displayed.",
       tradeOff:
@@ -231,7 +243,7 @@ const homepageCaseStudy: CaseStudy = {
     },
     {
       area: "Performance",
-      text: "Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The page still waits for JavaScript to render, so prerendering is the next step.",
+      text: "Lighthouse runs three times on every push and fails CI if the median performance score drops below 0.85 or layout shift goes above 0.1. Self-hosting the font and resizing the photo raised the mobile score from 0.84 to about 0.9 and brought the first paint forward from 3.0 s to 2.2 s. The build also writes the whole page into the HTML, so it can be read without JavaScript.",
     },
     {
       area: "Accessibility",

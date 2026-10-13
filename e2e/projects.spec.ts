@@ -165,7 +165,7 @@ test.describe("Projects", () => {
     ).toHaveCount(9);
     await expect(
       caseStudy.getByRole("list", { name: /^Runtime/ }).getByRole("listitem"),
-    ).toHaveCount(5);
+    ).toHaveCount(6);
     await expect(
       caseStudy
         .getByRole("region", { name: "Key decisions and trade-offs" })
