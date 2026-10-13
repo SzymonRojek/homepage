@@ -5,7 +5,7 @@ Guidance for AI agents (Claude Code) working in this repository.
 ## Project overview
 
 Personal portfolio homepage of **Szymon Rojek**, Software Test Engineer (data migration, SQL and API testing) who also builds front-end.
-Live: https://szymonrojek.github.io/homepage/ (GitHub Pages, `homepage` field in `package.json`).
+Live: https://szymonrojek.com/ (GitHub Pages with a custom domain bought at Cloudflare; `public/CNAME`, `homepage` field in `package.json`). The old https://szymonrojek.github.io/homepage/ redirects there.
 
 A single page aimed at recruiters for test automation and QA roles (developer roles possibly too, through the `#case-study-talent-outreach-developer` link). The theme of the page is a tester who also builds software (the CODE / TEST portrait), told with as little repetition as possible: each fact lives in one place. The design is a "colour block": a deep-green brand band (top bar, hero, contact card) with cream text and a sunny yellow accent, around a light cream page with white cards. Testing is green (`theme.colors.qa`), code is terracotta (`theme.colors.dev`). Headings use Plus Jakarta Sans, body text Inter. Parts in order:
 
@@ -26,7 +26,7 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 ## Tech stack
 
 - **React 19** + **TypeScript** (strict), mounted with `createRoot` in `src/index.tsx`
-- **Vite 8** (`@vitejs/plugin-react`, `vite-plugin-svgr`), `base: "/homepage/"`
+- **Vite 8** (`@vitejs/plugin-react`, `vite-plugin-svgr`), `base: "/"`
 - **Redux Toolkit 2** + **react-redux 9** for the theme state
 - **styled-components 6** with `ThemeProvider` (`themeLight` / `themeDark`) and `styled-normalize`. `DefaultTheme` is typed from `themeLight` in `src/styled.d.ts`.
 - **color-alpha** for transparent colours (typed in `src/vite-env.d.ts`)
@@ -57,7 +57,7 @@ This is enforced in three places:
 ## Commands
 
 ```bash
-npm run dev        # dev server on http://localhost:3000/homepage/ (npm start is an alias)
+npm run dev        # dev server on http://localhost:3000/ (npm start is an alias)
 npm run build      # production build into dist/
 npm run preview    # serve dist/ locally
 npm test           # Vitest in watch mode (npx vitest run for a single run)

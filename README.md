@@ -1,6 +1,6 @@
 # Szymon Rojek: Software Test Engineer
 
-**Live site: [szymonrojek.github.io/homepage](https://szymonrojek.github.io/homepage/)** · [LinkedIn](https://www.linkedin.com/in/szymonrojek/)
+**Live site: [szymonrojek.com](https://szymonrojek.com/)** · [LinkedIn](https://www.linkedin.com/in/szymonrojek/)
 
 [![CI](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml)
 
@@ -28,11 +28,11 @@
 
 The case studies start closed. A link can open one at a chosen side, so each CV points to the part that matters for that role:
 
-| Applying for        | Link                                                                         |
-| ------------------- | ---------------------------------------------------------------------------- |
-| Test automation, QA | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-tester    |
-| Developer           | https://szymonrojek.github.io/homepage/#case-study-talent-outreach-developer |
-| The whole page      | https://szymonrojek.github.io/homepage/                                      |
+| Applying for        | Link                                                          |
+| ------------------- | ------------------------------------------------------------- |
+| Test automation, QA | https://szymonrojek.com/#case-study-talent-outreach-tester    |
+| Developer           | https://szymonrojek.com/#case-study-talent-outreach-developer |
+| The whole page      | https://szymonrojek.com/                                      |
 
 ## Case study: this website, built and tested like a real product
 
@@ -44,7 +44,7 @@ The earlier version loaded my projects from the GitHub API in the visitor's brow
 
 ### Constraints
 
-- Free static hosting on GitHub Pages under `/homepage/`, with no server.
+- Free static hosting on GitHub Pages at my own domain, with no server.
 - One maintainer with limited time, so automation has to catch regressions.
 - Privacy: no phone number anywhere on the site.
 - WCAG AA colour contrast in both the light and the dark theme.
@@ -228,7 +228,7 @@ Requires Node 20.19+ or 22.12+.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000/homepage/
+npm run dev          # http://localhost:3000/
 ```
 
 | Script                    | What it does                                                    |

@@ -154,7 +154,7 @@ const homepageCaseStudy: CaseStudy = {
     "The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.",
   ],
   constraints: [
-    "Free static hosting on GitHub Pages under /homepage/, with no server.",
+    "Free static hosting on GitHub Pages at my own domain, with no server.",
     "One maintainer with limited time, so automation has to catch regressions.",
     "Privacy: no phone number anywhere on the site.",
     "WCAG AA colour contrast in both the light and the dark theme.",

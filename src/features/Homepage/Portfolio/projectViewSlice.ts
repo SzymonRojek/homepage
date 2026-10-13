@@ -16,7 +16,7 @@ const caseStudyRepos = projects
 
 // #case-study-<repo> opens a case study, and #case-study-<repo>-developer or
 // -tester also points at one of its columns, e.g. a CV link for a developer
-// role: /homepage/#case-study-talent-outreach-developer
+// role: /#case-study-talent-outreach-developer
 export const parseCaseStudyHash = (hash = window.location.hash) => {
   const match = /^#case-study-(.+?)(?:-(developer|tester))?$/.exec(
     decodeURIComponent(hash),
