@@ -41,6 +41,8 @@ describe("render", () => {
 
   it("gives only the CSS rules, for a style tag of their own", () => {
     expect(page.css).not.toMatch(/<\/?style/);
+    expect(page.css).not.toContain("data-styled");
+    expect(page.css).not.toContain("/*!sc*/");
     expect(page.css.length).toBeGreaterThan(1000);
   });
 });

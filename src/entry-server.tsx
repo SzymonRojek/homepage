@@ -22,8 +22,14 @@ export const render = () => {
       ),
     );
     // Only the rules: in a <style> tag of its own, styled-components in the
-    // browser leaves them alone, and index.tsx removes them.
-    const css = sheet.getStyleTags().replace(/^<style[^>]*>|<\/style>$/g, "");
+    // browser leaves them alone, and index.tsx removes them. Its bookkeeping
+    // for reusing server styles (data-styled.g… rules, /*!sc*/ marks) goes
+    // too: nothing reuses them, and it was a quarter of the CSS.
+    const css = sheet
+      .getStyleTags()
+      .replace(/^<style[^>]*>|<\/style>$/g, "")
+      .replace(/data-styled\.g\d+\[id="[^"]*"\]\{content:"[^"]*"\}/g, "")
+      .replace(/\/\*!sc\*\//g, "");
 
     return { html, css, jsonLd: structuredDataJson() };
   } finally {
