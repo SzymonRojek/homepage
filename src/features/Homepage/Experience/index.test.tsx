@@ -10,15 +10,15 @@ vi.mock("../experienceData", () => ({
       role: "Test Engineer",
       company: "Current Co",
       details: "Finance",
-      period: "Jan 2024 – present",
-      groups: [{ title: "Testing", points: ["Write tests."] }],
+      period: "Jan 2024 – now",
+      points: ["Write tests."],
     },
     {
       role: "Tester",
       company: "Past Co",
       details: "Retail",
       period: "2020 – 2023",
-      groups: [{ title: "Manual", points: ["Run tests."] }],
+      points: ["Run tests."],
     },
   ],
 }));
@@ -38,8 +38,9 @@ describe("Experience", () => {
     expect(
       within(section).getByRole("heading", { name: "Test Engineer" }),
     ).toBeInTheDocument();
-    expect(within(section).getByText("Current Co · Finance")).toBeVisible();
-    expect(within(section).getByText("Jan 2024 – present")).toBeVisible();
+    expect(within(section).getByText("Current Co")).toBeVisible();
+    expect(within(section).getByText("Finance")).toBeVisible();
+    expect(within(section).getByText("Jan 2024 – now")).toBeVisible();
     expect(within(section).getByText("2020 – 2023")).toBeVisible();
     expect(within(section).getByText("Write tests.")).toBeVisible();
   });

@@ -1,62 +1,70 @@
-import styled from "styled-components";
-import { Card, Chip, Chips } from "../Section";
+import styled, { css } from "styled-components";
 
-type Accent = "qa" | "dev" | "both";
+export type Accent = "qa" | "automation" | "dev";
 
+// Three short lists of plain text, no tags: testing, automation, programming.
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 40px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 28px;
   }
 `;
 
-export const Group = styled(Card)``;
+export const Group = styled.div``;
 
+// Testing is green, programming is terracotta, automation sits between them
+// in the brand green.
 export const GroupTitle = styled.h3<{ $accent: Accent }>`
-  margin: 0 0 16px;
-  font-family: ${({ theme }) => theme.fontMono};
-  font-size: 14px;
+  margin: 0;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: ${({ theme, $accent }) =>
-    $accent === "both" ? theme.colors.primary : theme.colors[$accent].accent};
+
+  ${({ $accent, theme }) => css`
+    color: ${
+      $accent === "qa"
+        ? theme.colors.qa.accent
+        : $accent === "dev"
+          ? theme.colors.dev.accent
+          : theme.colors.primary
+    };
+  `}
 `;
 
-export const SkillList = styled(Chips)``;
+export const SkillList = styled.ul`
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+`;
 
-export const Skill = styled(Chip)`
-  font-family: inherit;
-  font-size: 15px;
-  padding: 6px 12px;
+export const Skill = styled.li`
+  padding: 9px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 14px;
+  &:first-child {
+    border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
   }
 `;
 
 export const Tools = styled.p`
-  margin: 24px 0 0;
-  line-height: 1.6;
+  margin: 28px 0 0;
+  font-size: 15px;
+  line-height: 1.7;
 
   strong {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 16px;
-    font-size: 14px;
-  }
 `;
 
 export const Languages = styled(Tools)`
-  margin-top: 8px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 6px;
-  }
+  margin-top: 6px;
 `;

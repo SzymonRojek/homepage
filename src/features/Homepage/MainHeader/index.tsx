@@ -55,7 +55,11 @@ export const MainHeader = () => (
             ))}
           </Where>
         </Details>
-        <SplitPortrait src={szymonRojekProfile} name={profile.name} />
+        <SplitPortrait
+          src={szymonRojekProfile}
+          name={profile.name}
+          captions={profile.portraitCaptions}
+        />
       </BandInner>
     </Band>
   </Wrapper>

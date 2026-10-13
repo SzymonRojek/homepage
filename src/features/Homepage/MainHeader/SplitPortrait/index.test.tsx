@@ -1,17 +1,33 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import { SplitPortrait } from ".";
 
 const renderPortrait = () =>
   render(
     <ThemeProvider theme={themeLight}>
-      <SplitPortrait src="photo.jpg" name="Szymon Rojek" />
+      <SplitPortrait
+        src="photo.jpg"
+        name="Szymon Rojek"
+        captions={{ test: "All test", code: "All code" }}
+      />
     </ThemeProvider>,
   );
 
 describe("SplitPortrait", () => {
+  // Reduced motion: a release jumps to the end at once, so the result can be
+  // checked without waiting for the slide.
+  beforeEach(() => {
+    vi.stubGlobal("matchMedia", (query: string) => ({
+      matches: query.includes("reduce"),
+    }));
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("is one image with my name, and not a link", () => {
     renderPortrait();
 
@@ -22,35 +38,51 @@ describe("SplitPortrait", () => {
     expect(screen.queryAllByRole("button")).toHaveLength(0);
   });
 
-  it("draws the same photo twice, as decoration", () => {
+  it("draws the same photo three times, as decoration", () => {
     renderPortrait();
 
     const photos = screen
       .getByRole("img", { name: "Szymon Rojek" })
       .querySelectorAll("img");
-    expect(photos).toHaveLength(2);
+    // Colour, the duotone copy and the blue irises on top.
+    expect(photos).toHaveLength(3);
     photos.forEach((photo) => {
       expect(photo).toHaveAttribute("src", "photo.jpg");
       expect(photo).toHaveAttribute("alt", "");
     });
   });
 
-  it("captions the two sides code and test", () => {
+  it("has no Code or Test labels on the photo", () => {
     renderPortrait();
 
     const portrait = screen.getByRole("img", { name: "Szymon Rojek" });
-    expect(portrait).toHaveTextContent("Code");
-    expect(portrait).toHaveTextContent("Test");
+    expect(portrait).not.toHaveTextContent("Code");
+    expect(portrait).not.toHaveTextContent("Test");
   });
 
-  it("starts with the line in the middle", () => {
+  it("starts all in colour, with the tester caption and a drag hint", () => {
     renderPortrait();
 
     const slider = screen.getByRole("slider", {
       name: "Move the line between code and test",
     });
-    expect(slider).toHaveValue("50");
-    expect(slider).toHaveAttribute("aria-valuetext", "50% code, 50% test");
+    expect(slider).toHaveValue("0");
+    expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
+    expect(screen.getByText("All test")).toBeInTheDocument();
+    expect(screen.getByText("Drag")).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("hides the hint once the line has moved", () => {
+    renderPortrait();
+
+    fireEvent.change(
+      screen.getByRole("slider", {
+        name: "Move the line between code and test",
+      }),
+      { target: { value: "30" } },
+    );
+
+    expect(screen.queryByText("Drag")).toBeNull();
   });
 
   it("moves the line when the slider moves", () => {
@@ -63,5 +95,106 @@ describe("SplitPortrait", () => {
 
     expect(slider).toHaveAttribute("aria-valuetext", "80% code, 20% test");
     expect(slider.parentElement).toHaveStyle({ "--split": "80%" });
+  });
+
+  it("shows a caption only when the line reaches either edge", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const caption = slider.parentElement!.querySelector("[aria-live]")!;
+    expect(caption).toHaveTextContent("All test");
+
+    fireEvent.change(slider, { target: { value: "60" } });
+    expect(caption).toHaveTextContent(/^$/);
+
+    fireEvent.change(slider, { target: { value: "97" } });
+    expect(caption).toHaveTextContent("All code");
+
+    fireEvent.change(slider, { target: { value: "3" } });
+    expect(caption).toHaveTextContent("All test");
+  });
+
+  it("follows a finger dragged across the photo", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () =>
+      ({ left: 100, width: 200 }) as DOMRect;
+
+    // A touch doesn't move the line until the finger moves.
+    fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 300 });
+    expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
+
+    fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 140 });
+    expect(slider).toHaveAttribute("aria-valuetext", "20% code, 80% test");
+    expect(screen.queryByText("Drag")).toBeNull();
+  });
+
+  it("puts the line back when the browser turns the touch into a scroll", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect;
+
+    fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 50 });
+    fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 55 });
+    fireEvent.pointerCancel(portrait);
+
+    expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
+    // A scroll is not a drag: the hint stays.
+    expect(screen.getByText("Drag")).toBeInTheDocument();
+  });
+
+  it("finishes a drag that was let go partway: right to the code end", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect;
+
+    fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 0 });
+    fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 30 });
+    fireEvent.pointerUp(portrait);
+
+    expect(slider).toHaveAttribute("aria-valuetext", "100% code, 0% test");
+    expect(screen.getByText("All code")).toBeInTheDocument();
+  });
+
+  it("finishes a drag back to the left at the tester end", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect;
+    fireEvent.change(slider, { target: { value: "100" } });
+
+    fireEvent.pointerDown(portrait, { pointerType: "mouse", clientX: 100 });
+    fireEvent.pointerMove(portrait, { pointerType: "mouse", clientX: 80 });
+    fireEvent.pointerUp(portrait);
+
+    expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
+  });
+
+  it("leaves the line where it is after a tap or a tiny move", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect;
+    fireEvent.change(slider, { target: { value: "40" } });
+
+    fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 40 });
+    fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 41 });
+    fireEvent.pointerUp(portrait);
+
+    expect(slider).toHaveAttribute("aria-valuetext", "41% code, 59% test");
   });
 });

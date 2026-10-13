@@ -6,7 +6,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'A number can match and still be wrong.', a short bio, location and right to work, and a portrait split into black and white (code) and colour (test)" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a deep-green top bar with my name and job title, the open-to-work status, the headline 'A number can match and still be wrong.', a short bio, location and right to work, and a portrait with a slider between colour (tester) and a green duotone (developer)" />
 </picture>
 
 ## Why this site exists (30-second summary)
