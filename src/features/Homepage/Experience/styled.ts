@@ -1,167 +1,79 @@
 import styled from "styled-components";
 
-export const Card = styled.article`
-  padding: 32px;
-  background: ${({ theme }) => theme.colors.boxBackground};
-  border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  box-shadow: ${({ theme }) => theme.boxShadow};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  transition: background 0.3s;
+// One job a row, like a CV: when and where on the left, the role and what I
+// do on the right. No card, a thin rule between jobs.
+export const Job = styled.article`
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 48px;
+  padding-top: 24px;
+  border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 
   & + & {
-    margin-top: 24px;
+    margin-top: 40px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 16px;
-
-    & + & {
-      margin-top: 16px;
-    }
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 `;
 
-export const JobHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
+export const Period = styled.p`
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.qa.accent};
+`;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex-direction: column;
-    gap: 4px;
-  }
+export const Company = styled.p`
+  margin: 6px 0 0;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 18px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+export const Details = styled.p`
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const Role = styled.h3`
   margin: 0;
-  font-size: 24px;
-  font-weight: 900;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.15;
   color: ${({ theme }) => theme.colors.textPrimary};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 17px;
-  }
-`;
-
-export const Company = styled.p`
-  margin: 8px 0 0;
-  font-size: 16px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 14px;
-  }
-`;
-
-export const Period = styled.p<{ $current: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  margin: 0;
-  padding: 4px 12px;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  color: ${({ theme }) => theme.colors.qa.accent};
-  background: ${({ theme }) => theme.colors.qa.soft};
-  border: 1px solid ${({ theme }) => theme.colors.qa.border};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
-
-  ${({ $current }) =>
-    $current &&
-    `
-    &::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-  `}
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 8px;
-    font-size: 12px;
-    padding: 2px 10px;
-  }
-`;
-
-export const Groups = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 24px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: 1fr;
-    margin-top: 0;
-  }
-`;
-
-export const Group = styled.div`
-  padding: 0 24px;
-
-  &:first-child {
-    padding-left: 0;
-  }
-
-  &:last-child {
-    padding-right: 0;
-  }
-
-  & + & {
-    border-left: 1px solid ${({ theme }) => theme.colors.headerLine};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    padding: 20px 0 0;
-
-    & + & {
-      margin-top: 20px;
-      border-left: none;
-      border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
-    }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding-top: 16px;
-
-    & + & {
-      margin-top: 16px;
-    }
-  }
-`;
-
-export const GroupTitle = styled.h4`
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.primary};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 12px;
+    font-size: 24px;
   }
 `;
 
 export const Points = styled.ul`
-  margin: 12px 0 0;
-  padding-left: 18px;
-  font-size: 16px;
-  line-height: 1.5;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
 
-  li::marker {
-    color: ${({ theme }) => theme.colors.primary};
+  li {
+    position: relative;
+    padding: 10px 0 10px 22px;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
-  li + li {
-    margin-top: 10px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 14px;
+  /* A small yellow dot instead of a bullet. */
+  li::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: ${({ theme }) => theme.colors.brand.accent};
+    border-radius: 50%;
   }
 `;

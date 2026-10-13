@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "homepage": "https://szymonrojek.github.io/homepage/",
+  "homepage": "https://szymonrojek.com/",
   "scripts": {
     "dev": "vite",
     "start": "vite",

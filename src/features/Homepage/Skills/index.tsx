@@ -16,11 +16,9 @@ import {
   Languages,
 } from "./styled";
 
-// Testing is the profession (cyan), programming is self-taught (green), and
-// automation is where the two meet (both colours).
 const groups = [
   { accent: "qa", title: "Testing & data", skills: testingSkills },
-  { accent: "both", title: "Test automation", skills: automationSkills },
+  { accent: "automation", title: "Test automation", skills: automationSkills },
   { accent: "dev", title: "Programming", skills: programmingSkills },
 ] as const;
 

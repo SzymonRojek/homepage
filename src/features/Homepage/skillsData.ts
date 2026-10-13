@@ -1,33 +1,28 @@
-// Testing first: the profession. Data and SQL lead, the experience section proves them.
+// Five short lines a group, plain text. Testing first: the profession, data
+// and SQL lead. Only skills shown in my work or in the two case studies.
 export const testingSkills = [
   "Data migration & ETL testing",
   "SQL reconciliation (T-SQL, SQL Server)",
-  "Test plans, test design & traceability",
-  "Manual, functional & regression testing",
+  "Test design & traceability",
   "Defect root-cause analysis",
-  "AI-assisted testing with human review",
+  "AI-assisted testing",
 ];
 
-// Automation, as used at work and in the two case studies.
 export const automationSkills = [
   "Playwright & TypeScript",
-  "API testing: Postman, Newman, supertest",
-  "Unit & component tests: Vitest, Jest, Testing Library",
-  "Accessibility checks: axe, Lighthouse",
+  "API tests: Postman, Newman, supertest",
+  "Vitest, Jest, Testing Library",
+  "axe & Lighthouse",
   "Quality gates in GitHub Actions",
-  "Fake APIs and test data for isolated tests",
-  "Cypress",
 ];
 
-// Self-taught programming, as used in the two case studies.
+// Self-taught, as used in the two case studies.
 export const programmingSkills = [
   "TypeScript & React",
   "Node.js & Express",
-  "REST API design",
-  "Redux Toolkit & TanStack Query",
-  "styled-components & Tailwind CSS",
-  "Secure auth: signed tokens, escaping",
-  "Git flow: branches, PRs, staging",
+  "REST APIs",
+  "Redux Toolkit",
+  "Signed-token auth, Git flow",
 ];
 
 export const tools = [

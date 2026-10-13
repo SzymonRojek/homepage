@@ -11,7 +11,7 @@ export default defineConfig({
   retries: isCI ? 1 : 0,
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
-    baseURL: "http://localhost:4173/homepage/",
+    baseURL: "http://localhost:4173/",
     trace: "on-first-retry",
   },
   // Tests tagged @desktop or @mobile run only in the matching project.
@@ -29,7 +29,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run build && npm run preview -- --port 4173 --strictPort",
-    url: "http://localhost:4173/homepage/",
+    url: "http://localhost:4173/",
     reuseExistingServer: !isCI,
   },
 });

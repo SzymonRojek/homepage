@@ -21,7 +21,7 @@ test.describe("Skills", () => {
       .getByRole("list", { name: "Testing & data skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(6);
+    await expect(skills).toHaveCount(5);
     await expect(skills.first()).toHaveText("Data migration & ETL testing");
     await expect(skills.nth(1)).toHaveText(
       "SQL reconciliation (T-SQL, SQL Server)",
@@ -34,7 +34,7 @@ test.describe("Skills", () => {
       .getByRole("list", { name: "Test automation skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(7);
+    await expect(skills).toHaveCount(5);
     await expect(skills.first()).toHaveText("Playwright & TypeScript");
   });
 
@@ -44,7 +44,7 @@ test.describe("Skills", () => {
       .getByRole("list", { name: "Programming skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(7);
+    await expect(skills).toHaveCount(5);
     await expect(skills.first()).toHaveText("TypeScript & React");
   });
 

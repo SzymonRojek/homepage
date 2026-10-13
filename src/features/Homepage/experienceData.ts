@@ -3,7 +3,9 @@ export interface Job {
   company: string;
   details: string;
   period: string;
-  groups: { title: string; points: string[] }[];
+  // Only what "How I test at work" doesn't already say: mapping, SQL and root
+  // cause live there.
+  points: string[];
 }
 
 export const jobs: Job[] = [
@@ -11,33 +13,12 @@ export const jobs: Job[] = [
     role: "Software Test Engineer",
     company: "Equiniti, Worthing",
     details: "Financial services and shareholder registry",
-    period: "Sep 2022 – present",
-    groups: [
-      {
-        title: "Data migration & SQL",
-        points: [
-          "Turn requirements, mapping documents and transformation rules into test plans and traceable test scenarios.",
-          "Validate financial and shareholder data across data migration and ETL projects, including conversion and deconversion, comparing databases, extracts and reconciliation reports.",
-          "Write complex SQL to surface discrepancies, produce evidence and build test data.",
-          "Trace defects to their source: data, transformation logic, stored procedures or the requirements themselves.",
-        ],
-      },
-      {
-        title: "Quality process",
-        points: [
-          "Estimate effort and design positive and negative manual test cases, peer-reviewed before execution.",
-          "Log and retest defects in Azure DevOps with clear reproduction steps.",
-          "Work with developers, architects and stakeholders in an Agile team to verify fixes.",
-        ],
-      },
-      {
-        title: "AI-assisted testing",
-        points: [
-          "Use GitHub Copilot agents for code analysis, investigation and repetitive tasks.",
-          "Write agentic testing procedures for the test team, with validation steps and human oversight.",
-          "Pilot in-house AI agents that work together to write tests from user stories (PBIs) and mapping documents: find gaps in their output and review them with the senior engineers who build them.",
-        ],
-      },
+    period: "Sep 2022 – now",
+    points: [
+      "Validate financial and shareholder data across migration and ETL projects, including conversion and deconversion.",
+      "Estimate effort and work in an Agile team with developers, architects and stakeholders.",
+      "Use GitHub Copilot agents and write agentic testing procedures for the test team, with validation steps and human oversight.",
+      "Pilot in-house AI agents that write tests from user stories and mapping documents: find the gaps in their output and review them with the senior engineers who build them.",
     ],
   },
 ];
