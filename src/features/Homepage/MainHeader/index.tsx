@@ -29,10 +29,14 @@ export const MainHeader = () => (
       <BandInner>
         <Details>
           <Headline>
-            <NameAndTitle>{`${profile.name}, ${profile.title}: `}</NameAndTitle>
+            {/* The space stays outside the hidden part: a trailing space inside
+                it is dropped from the heading's accessible name. */}
+            <NameAndTitle>{`${profile.name}, ${profile.title}:`}</NameAndTitle>{" "}
             {before}
             <Highlight>
-              {profile.taglineHighlight}
+              {/* Before the word, not after: Chrome puts a space at the edge of
+                  this positioned SVG in the heading's accessible name, and here
+                  it merges with the space before the word ("wrong ." else). */}
               <Underline
                 viewBox="0 0 200 20"
                 preserveAspectRatio="none"
@@ -40,6 +44,7 @@ export const MainHeader = () => (
               >
                 <path d="M3 14 C 50 4, 120 4, 197 10" />
               </Underline>
+              {profile.taglineHighlight}
             </Highlight>
             {after}
           </Headline>
