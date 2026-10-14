@@ -38,57 +38,49 @@ export const Inner = styled.div`
   position: relative;
 `;
 
-// A short letter at the end of the page: my photo on the left, the text and
-// the button on the right, the pair centred with equal space on both sides.
+// The thanks on the left, the note on the right; one column on tablets and
+// phones.
 export const Letter = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 36px;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 56px;
+  align-items: start;
   padding-top: 64px;
 
-  > div {
-    max-width: 36em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex-direction: column;
     gap: 18px;
     padding-top: 44px;
   }
 `;
 
-export const Photo = styled.img`
-  flex: none;
-  width: 96px;
-  height: 96px;
-  object-fit: cover;
-  object-position: 60% 30%;
-  border: 3px solid ${({ theme }) => theme.colors.brand.accent};
-  border-radius: 50%;
+// As large as the hero's headline style, so the page ends the way it opens.
+export const Heading = styled.h2`
+  margin: 0;
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.brand.text};
+  text-wrap: balance;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    width: 72px;
-    height: 72px;
+    font-size: 32px;
   }
 `;
 
-export const Heading = styled.h2`
-  margin: 0;
-  font-size: 32px;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: ${({ theme }) => theme.colors.brand.text};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 26px;
-  }
+// About 70 characters a line, as in the hero's bio.
+export const Message = styled.div`
+  max-width: 36em;
 `;
 
 // What matters to me in a team, in my own words.
 export const Note = styled.p`
-  margin: 14px 0 0;
+  margin: 0;
   font-size: 17px;
   line-height: 1.7;
   color: ${({ theme }) => theme.colors.brand.muted};
@@ -99,17 +91,25 @@ export const Note = styled.p`
 `;
 
 export const Invite = styled(Note)`
+  margin-top: 14px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.brand.text};
 `;
 
+// As wide as its words. On phones it sits on the right, closing the note.
 export const ContactButton = styled(ButtonLink)`
-  margin-top: 22px;
+  margin-top: 24px;
   color: ${({ theme }) => theme.colors.brand.onAccent};
   background: ${({ theme }) => theme.colors.brand.accent};
 
   &:hover {
     background: ${({ theme }) => theme.colors.brand.accentHover};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
   }
 `;
 

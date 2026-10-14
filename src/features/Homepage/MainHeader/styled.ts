@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { contentColumn } from "../../../core/App/contentColumn";
 
 export const Wrapper = styled.header``;
@@ -50,82 +50,24 @@ export const BandInner = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-template-columns: 1fr;
-    justify-items: center;
     gap: 32px;
   }
 `;
 
-// On phones the photo sits centred under the text, so the text centres too.
+// On phones too the text starts on the page's left edge, like every section
+// below, and the photo under it ends on the right edge, as on a desktop.
 export const Details = styled.div`
   min-width: 0;
   padding-bottom: 56px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding-bottom: 0;
-    text-align: center;
   }
 `;
 
-// A soft ring that grows and fades around the dot: "available now". Only
-// transform and opacity change, so the browser animates it off the main
-// thread; an animated box-shadow repainted every frame and cost Lighthouse
-// performance points.
-const pulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-
-  70%,
-  100% {
-    transform: scale(3);
-    opacity: 0;
-  }
-`;
-
-export const Availability = styled.p`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.brand.accent};
-
-  &::before,
-  &::after {
-    content: "";
-    flex-shrink: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  /* The ring: a copy of the dot, laid over it. */
-  &::after {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    margin-top: -4px;
-    opacity: 0;
-    pointer-events: none;
-    animation: ${pulse} 2.4s ease-out infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
-    }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 13px;
-  }
-`;
-
-// The page's h1 for search engines and screen readers; sighted visitors see
-// the name and title in the top bar right above.
-export const Name = styled.h1`
+// The start of the h1, for screen readers and search engines only: sighted
+// visitors see the name and title in the top bar right above.
+export const NameAndTitle = styled.span`
   position: absolute;
   width: 1px;
   height: 1px;
@@ -137,11 +79,11 @@ export const Name = styled.h1`
   border: 0;
 `;
 
-// Where I can work, in cream with a yellow pin: HR checks this first.
-
-// The tagline as the headline of the page.
-export const Headline = styled.p`
+// The tagline as the headline and the h1 of the page. Balanced lines, so no
+// word is left alone on the last one.
+export const Headline = styled.h1`
   margin: 24px 0 0;
+  text-wrap: balance;
   font-family: ${({ theme }) => theme.fontDisplay};
   font-size: 64px;
   font-weight: 800;
@@ -190,80 +132,61 @@ export const Summary = styled.p`
   color: ${({ theme }) => theme.colors.brand.muted};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-inline: auto;
     font-size: 16px;
   }
 `;
 
-// Where I can work: three label/value pairs under the bio, split by
-// thin vertical lines, like the facts at the foot of a CV. HR checks these
-// first.
-export const Where = styled.dl`
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  justify-content: start;
-  max-width: 34em;
+// What I'm looking for, under the bio: the roles lead, in the display face,
+// with a yellow label like the job title in the top bar.
+export const NextRole = styled.dl`
   margin: 28px 0 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    grid-template-columns: repeat(3, 1fr);
-    margin: 24px auto 0;
-  }
-`;
-
-// Values share one line even when a label wraps on a narrow screen.
-export const WhereItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 0 28px;
-
-  &:first-child {
-    padding-left: 0;
-  }
-
-  & + & {
-    border-left: 1px solid ${({ theme }) => theme.colors.brand.line};
-  }
 
   dt {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: ${({ theme }) => theme.colors.brand.muted};
+    color: ${({ theme }) => theme.colors.brand.accent};
   }
 
   dd {
-    margin: auto 0 0;
+    margin: 6px 0 0;
     font-family: ${({ theme }) => theme.fontDisplay};
-    font-size: 18px;
+    font-size: 21px;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.brand.text};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    padding: 0 20px;
+    text-wrap: balance;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 0 10px;
-
-    &:first-child {
-      padding-left: 0;
-    }
-
-    &:last-child {
-      padding-right: 0;
-    }
-
-    dt {
-      font-size: 11px;
-      letter-spacing: 0.06em;
-    }
-
     dd {
-      font-size: 16px;
+      font-size: 19px;
+    }
+  }
+`;
+
+// Where and how I can work, as plain phrases in one quiet line, so the roles
+// above stay the first thing HR reads. On phones, one phrase a line.
+export const Facts = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.brand.muted};
+
+  li + li::before {
+    content: "·";
+    margin: 0 10px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    flex-direction: column;
+    gap: 2px;
+
+    li + li::before {
+      content: none;
     }
   }
 `;

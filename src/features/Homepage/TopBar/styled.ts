@@ -142,8 +142,7 @@ export const MenuFooter = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     justify-content: space-between;
     margin-top: 8px;
-    padding: 16px 12px 0;
-    border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+    padding: 8px 12px 0;
   }
 `;
 

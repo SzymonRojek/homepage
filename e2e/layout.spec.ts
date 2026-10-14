@@ -12,11 +12,10 @@ const box = async (locator: Locator) => {
 const expectOneEdge = async (page: Page, gutter: number) => {
   const edges = {
     topBar: (await box(page.getByRole("link", { name: /^Szymon Rojek/ }))).x,
-    hero: (
+    hero: (await box(page.getByRole("heading", { level: 1 }))).x,
+    footer: (
       await box(
-        page.getByText("A number can match and still be wrong.", {
-          exact: true,
-        }),
+        page.getByRole("heading", { name: "Thanks for reading this far." }),
       )
     ).x,
     section: (
@@ -65,5 +64,9 @@ test.describe("Layout", () => {
     await page.goto("./");
 
     await expectOneEdge(page, 16);
+    // The text starts on the left edge and the photo ends on the right one.
+    const width = page.viewportSize()!.width;
+    const photo = await box(page.getByRole("img", { name: "Szymon Rojek" }));
+    expect(Math.round(width - (photo.x + photo.width))).toBe(16);
   });
 });

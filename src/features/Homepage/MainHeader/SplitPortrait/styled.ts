@@ -45,7 +45,7 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    justify-self: center;
+    justify-self: end;
     width: 240px;
   }
 `;

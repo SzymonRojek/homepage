@@ -31,13 +31,11 @@ test.describe("the page without JavaScript", () => {
       await page.goto("./");
 
       await expect(
-        page.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
-      ).toBeAttached();
-      await expect(
-        page.getByText("A number can match and still be wrong.", {
-          exact: true,
-        }),
-      ).toBeVisible();
+        page.getByRole("heading", { level: 1 }),
+      ).toHaveAccessibleName(
+        "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+      );
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       for (const name of sections) {
         await expect(
           page.getByRole("heading", { level: 2, name }),

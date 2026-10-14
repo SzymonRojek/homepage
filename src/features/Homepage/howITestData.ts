@@ -8,7 +8,7 @@ export interface TestingStep {
 export const howITest = {
   title: "How I test at work",
   intro:
-    "At Equiniti I test financial and shareholder data as it moves between systems. I try to look at a migration from above, so I see the same record as data, as business logic and as code. Clients and figures are confidential, so this is my approach, not a project report.",
+    "At Equiniti I test financial and shareholder data as it moves between systems. I try to look at a migration from above, so I see the same record as data, as business logic and as code.",
   // In my own words: what I enjoy most about testing. No systems, no figures.
   story: {
     title: "Beyond the obvious bugs",
@@ -20,7 +20,7 @@ export const howITest = {
     ],
     // The last line, shown large next to the title.
     punchline:
-      "Sometimes I was right. That gave me far more satisfaction than finding the obvious bugs.",
+      "Sometimes the bug was hiding in the code itself. Those were the finds I enjoyed most.",
   },
   steps: [
     {
