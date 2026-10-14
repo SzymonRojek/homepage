@@ -7,19 +7,17 @@ test.describe("Header and footer", () => {
 
   test("shows name, title and page title", async ({ page }) => {
     await expect(page).toHaveTitle(/Szymon Rojek/);
-    // The h1 is for search engines and screen readers; the top bar shows it.
-    await expect(
-      page.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
-    ).toBeAttached();
+    // The tagline is the h1. It starts with the name and title for screen
+    // readers and search engines; on screen the top bar shows them.
+    const headline = page.getByRole("heading", { level: 1 });
+    await expect(headline).toHaveAccessibleName(
+      "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+    );
     const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
     await expect(brand).toBeVisible();
     // Only the name and the job title: the coding side is told further down.
     await expect(brand).toHaveText("Szymon RojekSoftware Test Engineer");
-    await expect(
-      page.getByText("A number can match and still be wrong.", {
-        exact: true,
-      }),
-    ).toBeVisible();
+    await expect(headline).toBeVisible();
   });
 
   test("tells recruiters at a glance what I'm looking for", async ({
@@ -27,19 +25,18 @@ test.describe("Header and footer", () => {
   }) => {
     const header = page.getByRole("banner");
 
+    await expect(header.getByRole("term")).toHaveText("Looking for");
+    await expect(header.getByRole("definition")).toHaveText(
+      "Test Automation, QA and AI Testing roles",
+    );
     await expect(
-      header.getByText("Open to Test Automation & QA Engineer roles"),
-    ).toBeVisible();
-    const where = header.getByLabel("Location and right to work");
-    await expect(where.getByRole("term")).toHaveText([
-      "Based in",
-      "Right to work",
-      "Relocation",
-    ]);
-    await expect(where.getByRole("definition")).toHaveText([
-      "Hove, UK",
-      "UK, full",
-      "Open",
+      header
+        .getByRole("list", { name: "Location and right to work" })
+        .getByRole("listitem"),
+    ).toHaveText([
+      "Based in Hove, UK",
+      "Full right to work in the UK",
+      "Open to relocation",
     ]);
     await expect(
       header.getByText(/^Four years testing financial data/),

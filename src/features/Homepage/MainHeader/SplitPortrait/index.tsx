@@ -37,6 +37,21 @@ const clamp = (value: number) => Math.min(100, Math.max(0, Math.round(value)));
 // dragging the line right turns it black and white, ending on the second
 // caption. For screen readers the picture is one image with my name and the
 // line is a slider.
+// The photo is bright and flat, taken in daylight: mapped straight from dark
+// to light it came out pale. Levels (a black and a white point) and a gamma
+// over 1 deepen the shadows and the mid-tones, so the face keeps its shape.
+const BLACK_POINT = 0.12;
+const WHITE_POINT = 0.92;
+const GAMMA = 1.35;
+const toneTable = (dark: number, light: number) =>
+  Array.from({ length: 21 }, (_, step) => {
+    const level = Math.min(
+      1,
+      Math.max(0, (step / 20 - BLACK_POINT) / (WHITE_POINT - BLACK_POINT)),
+    );
+    return (dark + (light - dark) * level ** GAMMA).toFixed(4);
+  }).join(" ");
+
 export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
   // The duotone maps black to the deep brand green and white to cream.
   const { colors } = useTheme();
@@ -144,7 +159,7 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
                 <Func
                   key={channel}
                   type="table"
-                  tableValues={`${dark[index]} ${light[index]}`}
+                  tableValues={toneTable(dark[index], light[index])}
                 />
               );
             })}

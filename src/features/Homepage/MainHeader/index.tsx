@@ -6,32 +6,30 @@ import {
   Band,
   BandInner,
   Details,
-  Availability,
-  Name,
+  NameAndTitle,
   Headline,
   Highlight,
   Underline,
   Summary,
-  Where,
-  WhereItem,
+  NextRole,
+  Facts,
 } from "./styled";
 
 // The tagline is the big headline, with a hand-drawn underline under one word.
 const [before, after] = profile.tagline.split(profile.taglineHighlight);
 
-// The deep-green brand band: the tagline as the headline, where I can work,
-// and the photo rising from the band's bottom edge. Contact lives in the top
-// bar and the footer, so the hero has no button of its own. The name
-// and title are in the top bar right above, so here they are the h1 for
-// search engines and screen readers only.
+// The deep-green brand band: the tagline as the headline, the roles I want
+// and where I can work, and the photo rising from the band's bottom edge.
+// Contact lives in the top bar and the footer, so the hero has no button of
+// its own. The headline is the h1 and starts with my name and title, which
+// only screen readers and search engines get: the top bar shows them.
 export const MainHeader = () => (
   <Wrapper id="top">
     <Band>
       <BandInner>
         <Details>
-          <Availability>{profile.availability}</Availability>
-          <Name>{profile.name}</Name>
           <Headline>
+            <NameAndTitle>{`${profile.name}, ${profile.title}: `}</NameAndTitle>
             {before}
             <Highlight>
               {profile.taglineHighlight}
@@ -46,14 +44,15 @@ export const MainHeader = () => (
             {after}
           </Headline>
           <Summary>{profile.bio}</Summary>
-          <Where aria-label="Location and right to work">
-            {profile.location.map(({ label, value }) => (
-              <WhereItem key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </WhereItem>
+          <NextRole>
+            <dt>{profile.lookingFor.label}</dt>
+            <dd>{profile.lookingFor.value}</dd>
+          </NextRole>
+          <Facts aria-label="Location and right to work">
+            {profile.facts.map((fact) => (
+              <li key={fact}>{fact}</li>
             ))}
-          </Where>
+          </Facts>
         </Details>
         <SplitPortrait
           src={szymonRojekProfile}

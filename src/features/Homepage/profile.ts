@@ -1,4 +1,4 @@
-// Where I live: in the row under the bio and in the page's structured data.
+// Where I live: under the bio and in the page's structured data.
 const basedIn = "Hove, UK";
 
 export const profile = {
@@ -8,15 +8,20 @@ export const profile = {
   tagline: "A number can match and still be wrong.",
   // The word in the tagline that gets the hand-drawn underline.
   taglineHighlight: "wrong",
-  availability: "Open to Test Automation & QA Engineer roles",
-  // A row of three facts under the bio, so HR sees them at once.
+  // Under the bio: the roles I want lead, so HR sees them first.
+  lookingFor: {
+    label: "Looking for",
+    value: "Test Automation, QA and AI Testing roles",
+  },
+  // Then where and how I can work, as short phrases, quieter than the roles.
   basedIn,
-  location: [
-    { label: "Based in", value: basedIn },
-    { label: "Right to work", value: "UK, full" },
-    { label: "Relocation", value: "Open" },
+  facts: [
+    `Based in ${basedIn}`,
+    "Full right to work in the UK",
+    "Open to relocation",
   ],
-  bio: "Four years testing financial data migrations at Equiniti: SQL reconciliation, business logic and root-cause analysis. I taught myself to code, so I automate tests with Playwright and build full-stack apps to practise.",
+  // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
+  bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
   // Shown on the photo when its line is dragged all the way to one side:
   // all colour (test) or all black and white (code). Read together they are
   // one sentence.

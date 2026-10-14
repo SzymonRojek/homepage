@@ -22,36 +22,35 @@ describe("MainHeader", () => {
   it("shows who I am, the roles I want and where I can work", () => {
     renderHeader();
 
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Szymon Rojek" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Open to Test Automation & QA Engineer roles"),
-    ).toBeInTheDocument();
-    const where = screen.getByLabelText("Location and right to work");
-    expect(
-      within(where)
-        .getAllByRole("term")
-        .map(({ textContent }) => textContent),
-    ).toEqual(["Based in", "Right to work", "Relocation"]);
-    expect(
-      within(where)
-        .getAllByRole("definition")
-        .map(({ textContent }) => textContent),
-    ).toEqual(["Hove, UK", "UK, full", "Open"]);
-    expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
-    // The tagline is the headline; "wrong" is wrapped for its underline.
-    const headline = screen.getByText(
-      (_, element) =>
-        element?.tagName === "P" &&
-        element.textContent === "A number can match and still be wrong.",
+    // The roles lead; where and how I can work follows as plain phrases.
+    expect(screen.getByRole("term")).toHaveTextContent("Looking for");
+    expect(screen.getByRole("definition")).toHaveTextContent(
+      "Test Automation, QA and AI Testing roles",
     );
-    expect(headline).toBeInTheDocument();
+    const facts = screen.getByRole("list", {
+      name: "Location and right to work",
+    });
+    expect(
+      within(facts)
+        .getAllByRole("listitem")
+        .map(({ textContent }) => textContent),
+    ).toEqual([
+      "Based in Hove, UK",
+      "Full right to work in the UK",
+      "Open to relocation",
+    ]);
+    expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
+    // The tagline is the h1, led by my name and title for screen readers and
+    // search engines; "wrong" is wrapped for its underline.
+    const headline = screen.getByRole("heading", {
+      level: 1,
+      name: "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+    });
     expect(headline.querySelector("svg")).toHaveAttribute(
       "aria-hidden",
       "true",
     );
-    // The name and title are in the top bar; here the name is the h1 only.
+    // On screen the top bar shows the name and title, not the hero.
     expect(screen.queryByText("Software Test Engineer")).toBeNull();
   });
 
