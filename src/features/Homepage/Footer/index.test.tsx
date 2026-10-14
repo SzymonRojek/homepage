@@ -40,6 +40,14 @@ describe("Footer", () => {
     expect(screen.getAllByRole("link", { name: /LinkedIn/ })).toHaveLength(1);
   });
 
+  it("keeps to words: no photo, the hero shows it", () => {
+    const { container } = renderFooter();
+
+    expect(container.querySelector("img")).toBeNull();
+    // The full name stays in the © line only.
+    expect(screen.getAllByText(/Szymon Rojek/)).toHaveLength(1);
+  });
+
   it("has a personal note about teamwork", () => {
     renderFooter();
 

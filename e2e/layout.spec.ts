@@ -13,6 +13,11 @@ const expectOneEdge = async (page: Page, gutter: number) => {
   const edges = {
     topBar: (await box(page.getByRole("link", { name: /^Szymon Rojek/ }))).x,
     hero: (await box(page.getByRole("heading", { level: 1 }))).x,
+    footer: (
+      await box(
+        page.getByRole("heading", { name: "Thanks for reading this far." }),
+      )
+    ).x,
     section: (
       await box(
         page.getByText(

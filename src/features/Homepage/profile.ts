@@ -29,9 +29,9 @@ export const profile = {
     test: "100% tester",
     code: "…who also codes",
   },
-  // What matters to me in a team, in my own words, in the contact card.
+  // What matters to me in a team, in my own words, in the footer.
   teamNote:
-    "For me, communication matters most in a team. People will always be different, but mutual respect and giving each other time to get to know one another come first. I care about supporting each other, because that's what shows in the results.",
+    "For me, communication matters most in a team, with mutual respect and time to get to know one another. I care about supporting each other, because that's what shows in the results.",
   // The one sentence that asks for contact, after the team note.
   contactInvite: "If that sounds like your team, I'd like to hear from you.",
   linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
