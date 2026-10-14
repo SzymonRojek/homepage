@@ -165,6 +165,11 @@ e2e/
 ## Open items
 
 1. Waiting on the user (from the recruiter review): the 2012–2022 career years ("Earlier career"), the ISTQB exam date and the exact Microsoft AI course names in `experienceData.ts`.
+2. Search engines, after the SEO release (PR #15, live on 2026-10-13):
+   - **Bing Webmaster Tools:** URL Inspection failed with "We were not able to connect to the DNS" because the domain is new (registered 2026-10-13). The DNS was checked and resolves correctly on public resolvers, so nothing needs fixing. Try URL Inspection again from 2026-10-15; if it still fails after 2026-10-16, contact Bing Webmaster support with those two facts. The site is imported, and the sitemap stays submitted.
+   - **Google Search Console:** around 2026-10-20, check that the home page is indexed and that Enhancements → Profile page shows no errors.
+   - **LinkedIn:** refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/), and add the site to the profile's Website field and Featured section, if not done yet.
+   - **GitHub:** set the profile's Website field to `https://szymonrojek.com`, set the `homepage` repo's website and replace its outdated description ("…Redux & Saga…"), and link the site from the profile README and the talent-outreach README footer. Waiting on the user's yes.
 
 ## Roadmap
 
