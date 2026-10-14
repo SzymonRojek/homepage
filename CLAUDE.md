@@ -170,6 +170,11 @@ e2e/
    - **Google Search Console:** around 2026-10-20, check that the home page is indexed and that Enhancements → Profile page shows no errors.
    - **LinkedIn:** refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/), and add the site to the profile's Website field and Featured section, if not done yet.
    - **GitHub:** set the profile's Website field to `https://szymonrojek.com`, set the `homepage` repo's website and replace its outdated description ("…Redux & Saga…"), and link the site from the profile README and the talent-outreach README footer. Waiting on the user's yes.
+3. Accessibility, from a review on 2026-10-14 (the automated checks pass):
+   - **Touch slider (WCAG 2.2, 2.5.7 Dragging Movements, AA):** on a touchscreen the portrait line moves only by dragging; a tap does nothing, on purpose, so scrolling isn't disturbed. Add a single-tap alternative (a tap without movement slides the line to the other end; a vertical scroll still cancels the pointer) and an e2e test on the mobile project.
+   - **axe moderate and minor findings:** `e2e/accessibility.spec.ts` fails only on serious and critical violations. Run axe once with every impact and decide what to fix; the CI gate stays as it is unless the user asks.
+   - **Manual checks (the user):** 10 minutes with VoiceOver (Cmd+F5) and the keyboard alone (Tab, Enter, Escape, arrow keys on the photo), 200% and 400% zoom, and Windows high contrast (forced colours) if a Windows machine is at hand.
+   - **External links:** they open a new tab without saying so. Consider visually hidden "(opens in a new tab)" text for screen readers; best practice, not a WCAG failure.
 
 ## Roadmap
 
