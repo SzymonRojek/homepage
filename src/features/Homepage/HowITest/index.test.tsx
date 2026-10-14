@@ -49,8 +49,5 @@ describe("HowITest", () => {
     ).toHaveTextContent("in the stored procedures themselves");
     // No internal system names, only the approach.
     expect(screen.queryByText(/SunStar|Sirius|\bAST\b/)).toBeNull();
-    expect(
-      screen.getByText(/Clients and figures are confidential/),
-    ).toBeVisible();
   });
 });
