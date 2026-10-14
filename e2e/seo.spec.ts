@@ -27,6 +27,8 @@ test.describe("search engines and link previews @desktop", () => {
     expect(await meta(page, 'property="og:description"')).toBe(description);
     expect(await meta(page, 'property="og:locale"')).toBe("en_GB");
     expect(await meta(page, 'property="og:site_name"')).toBe("Szymon Rojek");
+    // LinkedIn's Post Inspector reads the author from here.
+    expect(await meta(page, 'name="author"')).toBe("Szymon Rojek");
   });
 
   test("the share image exists at the size the head declares", async ({
