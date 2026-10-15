@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Chips } from "../../Section";
+import { secondaryButton } from "../../ButtonLink";
 import Cross from "./close.svg?react";
 
 type Side = "developer" | "tester";
@@ -252,24 +253,13 @@ export const CloseButton = styled.button`
   width: 44px;
   height: 44px;
   padding: 0;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  background: ${({ theme }) => theme.colors.boxBackground};
-  border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   cursor: pointer;
-  transition: border-color 0.2s;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.textPrimary};
-  }
+  ${secondaryButton}
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
   }
 `;
 

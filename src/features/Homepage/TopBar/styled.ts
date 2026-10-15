@@ -5,7 +5,8 @@ import { contentColumn } from "../../../core/App/contentColumn";
 // The top of the deep-green brand band; the menu panel hangs from it on
 // small screens. Before the page scrolls it is see-through over the hero,
 // which starts under it (a negative margin of its own height); once the page
-// moves, or the menu opens, it turns solid green with a line under it. Focus
+// moves, or the menu opens, it turns solid green with a line and a soft shadow
+// under it, so it reads as a layer above the page. Focus
 // rings are yellow here, as on the hero and the contact card, because the
 // page's green ring would vanish on green.
 export const Bar = styled.div<{ $solid: boolean }>`
@@ -21,11 +22,15 @@ export const Bar = styled.div<{ $solid: boolean }>`
     $solid ? theme.colors.brand.background : "transparent"};
   border-bottom: 1px solid
     ${({ theme, $solid }) => ($solid ? theme.colors.brand.line : "transparent")};
+  box-shadow: ${({ theme, $solid }) =>
+    $solid ? theme.colors.brand.barShadow : "none"};
   /* Solid at once: a jump from the top lands over the cream page, where a
      fading bar would leave its cream and yellow text unreadable for a moment.
      It fades only back to see-through, over the green hero. */
   transition: ${({ $solid }) =>
-    $solid ? "none" : "background-color 0.2s, border-color 0.2s"};
+    $solid
+      ? "none"
+      : "background-color 0.2s, border-color 0.2s, box-shadow 0.2s"};
 
   *:focus-visible {
     outline-color: ${({ theme }) => theme.colors.brand.accent};
@@ -96,10 +101,19 @@ export const Nav = styled.nav<{ $open: boolean }>`
   gap: 16px;
   margin-left: auto;
 
-  /* On phones and tablets: a panel under the bar, with the page's gutters. */
+  /* On phones and tablets: a panel under the bar, with the page's gutters.
+     It fades in and slides down a little; closed, it is hidden from the
+     keyboard and screen readers too (visibility flips after the fade). */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     ${contentColumn}
-    display: ${({ $open }) => ($open ? "block" : "none")};
+    display: block;
+    visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    transform: translateY(${({ $open }) => ($open ? "0" : "-8px")});
+    transition: ${({ $open }) =>
+      $open
+        ? "opacity 0.2s ease-out, transform 0.2s ease-out"
+        : "opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s"};
     position: absolute;
     top: 100%;
     right: 0;
@@ -109,6 +123,11 @@ export const Nav = styled.nav<{ $open: boolean }>`
     padding-bottom: 16px;
     background: ${({ theme }) => theme.colors.brand.background};
     border-bottom: 1px solid ${({ theme }) => theme.colors.brand.line};
+    box-shadow: ${({ theme }) => theme.colors.brand.barShadow};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
@@ -119,8 +138,11 @@ export const NavList = styled.ul`
   padding: 0;
   list-style: none;
 
+  /* In the menu panel the words start on the logo's edge; the links' own
+     padding (their tap area and hover) reaches out into the gutter. */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     flex-direction: column;
+    margin-inline: -12px;
   }
 `;
 
@@ -155,12 +177,12 @@ export const NavLink = styled.a`
 export const MenuFooter = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 
+  /* Contact on the logo's edge, the theme switch on the menu button's. */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     justify-content: space-between;
-    margin-top: 8px;
-    padding: 8px 12px 0;
+    margin-top: 12px;
   }
 `;
 

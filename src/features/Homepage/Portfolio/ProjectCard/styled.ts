@@ -6,6 +6,8 @@ import ChevronDown from "./chevron.svg?react";
 import ArrowUpRight from "./external.svg?react";
 
 export const Card = styled.li<{ $expanded: boolean }>`
+  /* The buttons below lay out by the card's own width, not the screen's. */
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -44,29 +46,31 @@ export const Facts = styled(Chips)`
   margin-top: 16px;
 `;
 
+// The buttons keep their own width, never stretched. In one row while they
+// fit; in a narrow card the case study takes the first row and the demo and
+// the code sit side by side under it, all to the left.
 export const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   margin-top: 20px;
-`;
 
-// On phones the three don't fit in one row: the case study takes the full
-// width, and the demo and the code share the row under it.
-export const ToggleButton = styled(Button)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex-basis: 100%;
-    justify-content: center;
+  @container (max-width: 379px) {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+
+    & > :first-child {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
   }
 `;
 
-export const SmallLink = styled(SecondaryButtonLink)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex: 1;
-    justify-content: center;
-  }
-`;
+export const ToggleButton = styled(Button)``;
+
+export const SmallLink = styled(SecondaryButtonLink)``;
 
 // Points down while the case study is closed, up once it is open.
 export const Chevron = styled(ChevronDown)<{ $expanded: boolean }>`
