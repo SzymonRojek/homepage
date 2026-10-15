@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Chips } from "../../Section";
+import Cross from "./close.svg?react";
 
 type Side = "developer" | "tester";
 const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
@@ -154,26 +155,69 @@ export const LensStack = styled(Chips)`
   margin-top: 20px;
 `;
 
+// Opens smoothly where the browser can animate to an auto height, and at
+// once elsewhere. The clip margin keeps the close button's focus ring.
 export const Details = styled.details`
   margin-top: 16px;
+
+  @supports (interpolate-size: allow-keywords) {
+    interpolate-size: allow-keywords;
+
+    &::details-content {
+      height: 0;
+      opacity: 0;
+      overflow: clip;
+      overflow-clip-margin: 8px;
+      transition:
+        height 0.35s ease-out,
+        opacity 0.35s ease-out,
+        content-visibility 0.35s allow-discrete;
+    }
+
+    &[open]::details-content {
+      height: auto;
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::details-content {
+        transition: none;
+      }
+    }
+  }
 `;
 
+// A link on the right, above the close button at the end, so opening and
+// closing sit in one column.
 export const Toggle = styled.summary`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
   list-style: none;
+  transition: color 0.2s;
 
   &::-webkit-details-marker {
     display: none;
   }
 
+  /* A quiet hover: the colour shifts, and a closed arrow nudges forward. */
+  &:hover {
+    color: ${({ theme }) => theme.colors.primaryHover};
+  }
+
+  details:not([open]) > &:hover::before {
+    transform: translateX(2px);
+  }
+
+  /* An inline block, so it can turn and move. */
   &::before {
     content: "▸";
     content: "▸" / "";
+    display: inline-block;
+    margin-right: 8px;
     transition: transform 0.2s;
   }
 
@@ -181,10 +225,57 @@ export const Toggle = styled.summary`
     transform: rotate(90deg);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &::before {
+      transition: none;
+    }
+  }
+
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 4px;
   }
+`;
+
+// The close button at the end of the full write-up, on the right.
+export const CloseRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+`;
+
+export const CloseButton = styled.button`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  background: ${({ theme }) => theme.colors.boxBackground};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
+export const CloseIcon = styled(Cross)`
+  width: 18px;
+  height: 18px;
 `;
 
 export const Part = styled.section`

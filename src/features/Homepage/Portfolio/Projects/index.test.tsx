@@ -81,13 +81,15 @@ describe("Projects", () => {
     expect(link).toHaveAttribute("rel", "noreferrer");
   });
 
-  it("shows a live demo link only when the project has one", () => {
+  it("shows a demo link only when the project has one", () => {
     renderProjects([
       createProject({ repo: "with-demo", demoUrl: "https://example.com" }),
       createProject({ repo: "without-demo" }),
     ]);
 
-    expect(screen.getAllByRole("link", { name: "Live demo" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: "Open the demo" })).toHaveLength(
+      1,
+    );
   });
 
   it("lists non-testing work under Other projects", () => {
@@ -122,7 +124,7 @@ describe("Projects", () => {
 
     const other = screen.getByRole("region", { name: "Other projects" });
     expect(other).toHaveTextContent(/front-end background/i);
-    const demos = within(other).getAllByRole("link", { name: "Live demo" });
+    const demos = within(other).getAllByRole("link", { name: "Demo" });
     expect(demos).toHaveLength(1);
     expect(demos[0]).toHaveAttribute("href", "https://example.com/music");
     expect(within(other).getAllByRole("link", { name: "Code" })).toHaveLength(
@@ -158,7 +160,7 @@ describe("Projects", () => {
       within(cards).getByRole("heading", { name: "Studied" }),
     ).toBeVisible();
     expect(
-      within(cards).getByRole("button", { name: "Read the case study" }),
+      within(cards).getByRole("button", { name: "Case study" }),
     ).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
     expect(
@@ -182,14 +184,13 @@ describe("Projects", () => {
       }),
     ]);
     const [first, second] = screen.getAllByRole("button", {
-      name: "Read the case study",
+      name: "Case study",
     });
 
     fireEvent.click(first);
     expect(screen.getByRole("article", { name: "First" })).toBeVisible();
     expect(first).toHaveAttribute("aria-expanded", "true");
     expect(first).toHaveAttribute("aria-controls", "case-study-first");
-    expect(first).toHaveTextContent("Close the case study");
     expect(window.location.hash).toBe("#case-study-first");
 
     fireEvent.click(second);
@@ -198,7 +199,7 @@ describe("Projects", () => {
     expect(window.location.hash).toBe("#case-study-second");
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Close the case study" }),
+      screen.getByRole("button", { name: "Case study", expanded: true }),
     );
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
     expect(window.location.hash).toBe("#projects");
@@ -222,9 +223,7 @@ describe("Projects", () => {
     expect(screen.getByText("First, tested.")).not.toBeVisible();
     expect(screen.getByText("Second, built.")).not.toBeVisible();
 
-    fireEvent.click(
-      screen.getAllByRole("button", { name: "Read the case study" })[1],
-    );
+    fireEvent.click(screen.getAllByRole("button", { name: "Case study" })[1]);
     expect(screen.getByText("Second, built.")).toBeVisible();
     expect(screen.getByText("First, tested.")).not.toBeVisible();
   });
@@ -238,9 +237,7 @@ describe("Projects", () => {
       }),
     ]);
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Read the case study" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Case study" }));
 
     expect(screen.getByRole("article", { name: "First" })).toHaveFocus();
   });
@@ -253,9 +250,7 @@ describe("Projects", () => {
         caseStudy: caseStudy("First"),
       }),
     ]);
-    fireEvent.click(
-      screen.getByRole("button", { name: "Read the case study" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Case study" }));
 
     const article = screen.getByRole("article", { name: "First" });
     expect(article).toHaveTextContent(/First, tested\..*First, built\./);

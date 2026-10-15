@@ -15,7 +15,7 @@ const openCaseStudy = async (page: Page, name: string) => {
     .getByRole("list", { name: "Case studies" })
     .getByRole("listitem")
     .filter({ has: page.getByRole("heading", { name }) })
-    .getByRole("button", { name: "Read the case study" })
+    .getByRole("button", { name: "Case study" })
     .click();
   return page.getByRole("article", { name });
 };
@@ -32,9 +32,9 @@ test.describe("Projects", () => {
       TALENT,
       HOMEPAGE,
     ]);
-    await expect(
-      cards.getByRole("button", { name: "Read the case study" }),
-    ).toHaveCount(2);
+    await expect(cards.getByRole("button", { name: "Case study" })).toHaveCount(
+      2,
+    );
     await expect(caseStudies(page)).toHaveCount(0);
     await expect(
       page.getByRole("group", { name: "View projects as" }),
@@ -75,7 +75,7 @@ test.describe("Projects", () => {
       "href",
       "https://github.com/SzymonRojek/talent-outreach",
     );
-    await expect(card.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+    await expect(card.getByRole("link", { name: "Demo" })).toHaveAttribute(
       "href",
       "https://talent-outreach.onrender.com/?utm_source=portfolio",
     );
@@ -99,7 +99,9 @@ test.describe("Projects", () => {
     });
 
     await test.step("closes from its card", async () => {
-      await page.getByRole("button", { name: "Close the case study" }).click();
+      await page
+        .getByRole("button", { name: "Case study", expanded: true })
+        .click();
       await expect(caseStudies(page)).toHaveCount(0);
       await expect(page).toHaveURL(/#projects$/);
     });
@@ -138,13 +140,31 @@ test.describe("Projects", () => {
     await expect(story).toContainText("Not built yet: real delivery.");
   });
 
-  test("the full case study opens with every part", async ({ page }) => {
+  test("the technical details close from their end, back at its toggle", async ({
+    page,
+  }) => {
+    const caseStudy = await openCaseStudy(page, HOMEPAGE);
+    const toggle = caseStudy.getByText("Technical details");
+    await toggle.click();
+
+    await caseStudy
+      .getByRole("button", { name: "Close the technical details" })
+      .click();
+
+    await expect(
+      caseStudy.getByRole("heading", { name: "Problem" }),
+    ).toBeHidden();
+    await expect(toggle).toBeFocused();
+    await expect(toggle).toBeInViewport();
+  });
+
+  test("the technical details open with every part", async ({ page }) => {
     const caseStudy = await openCaseStudy(page, HOMEPAGE);
     await expect(
       caseStudy.getByRole("heading", { name: "Problem" }),
     ).toBeHidden();
 
-    await caseStudy.getByText("Read the full case study").click();
+    await caseStudy.getByText("Technical details").click();
 
     await expect(caseStudy.getByRole("heading", { level: 4 })).toHaveText([
       "Brief",
@@ -240,11 +260,11 @@ test.describe("Projects", () => {
 
   test("renders without loading or error states", async ({ page }) => {
     // The noGithubApi fixture also fails this test if the page calls GitHub.
-    // One "Read the case study" per card; the facts are list items too.
+    // One "Case study" button per card; the facts are list items too.
     await expect(
       page
         .getByRole("list", { name: "Case studies" })
-        .getByRole("button", { name: "Read the case study" }),
+        .getByRole("button", { name: "Case study" }),
     ).toHaveCount(2);
     await expect(page.getByText(/projects are loading/i)).toHaveCount(0);
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
