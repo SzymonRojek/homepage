@@ -117,6 +117,9 @@ export const themeLight = {
     boxBackground: colorNames.white,
     // The band under the hero, with colleagues' words: white on the cream page.
     quoteBand: colorNames.white,
+    // "work with him" in the big quote: dark words on a yellow marker, since
+    // yellow text on white is only 1.5:1 (ink on sun: 10.6:1).
+    quoteMark: { text: colorNames.ink, background: colorNames.sun },
     headerLine: colorNames.line,
     tile: {
       border: colorNames.line,
@@ -156,6 +159,8 @@ export const themeDark: typeof themeLight = {
     // The page itself: a card-coloured band right under the green hero would
     // read as green on green.
     quoteBand: colorNames.night,
+    // Yellow words on the dark page (12.1:1), no marker.
+    quoteMark: { text: colorNames.sun, background: "transparent" },
     headerLine: colorNames.nightLine,
     tile: {
       border: colorNames.nightLine,

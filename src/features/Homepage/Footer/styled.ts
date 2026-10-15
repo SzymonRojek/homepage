@@ -4,9 +4,12 @@ import { contentColumn } from "../../../core/App/contentColumn";
 
 // A full-width footer on the deep-green band, so the page closes the way the
 // hero opens it, with the soft yellow ring in the bottom-left corner.
+// "clip", not "hidden": a hidden overflow is a scroll container, and a jump to
+// #contact at the end of the page scrolled the footer itself, cutting off
+// the space above its heading.
 export const Wrapper = styled.footer`
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   margin-top: 56px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};

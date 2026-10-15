@@ -38,18 +38,19 @@ describe("SplitPortrait", () => {
     expect(screen.queryAllByRole("button")).toHaveLength(0);
   });
 
-  it("draws the same photo twice, as decoration", () => {
+  it("draws the same photo twice inside one image, both with an alt", () => {
     renderPortrait();
 
-    const photos = screen
-      .getByRole("img", { name: "Szymon Rojek" })
-      .querySelectorAll("img");
+    const picture = screen.getByRole("img", { name: "Szymon Rojek" });
+    const photos = picture.querySelectorAll("img");
     // Colour, and the duotone copy on top; the eyes stay duotone too.
     expect(photos).toHaveLength(2);
     photos.forEach((photo) => {
       expect(photo).toHaveAttribute("src", "photo.jpg");
-      expect(photo).toHaveAttribute("alt", "");
+      // For search engines; screen readers hear only the one image.
+      expect(photo).toHaveAttribute("alt", "Szymon Rojek");
     });
+    expect(screen.getAllByRole("img")).toEqual([picture]);
   });
 
   it("has no Code or Test labels on the photo", () => {

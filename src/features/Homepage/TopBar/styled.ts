@@ -21,9 +21,11 @@ export const Bar = styled.div<{ $solid: boolean }>`
     $solid ? theme.colors.brand.background : "transparent"};
   border-bottom: 1px solid
     ${({ theme, $solid }) => ($solid ? theme.colors.brand.line : "transparent")};
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
+  /* Solid at once: a jump from the top lands over the cream page, where a
+     fading bar would leave its cream and yellow text unreadable for a moment.
+     It fades only back to see-through, over the green hero. */
+  transition: ${({ $solid }) =>
+    $solid ? "none" : "background-color 0.2s, border-color 0.2s"};
 
   *:focus-visible {
     outline-color: ${({ theme }) => theme.colors.brand.accent};

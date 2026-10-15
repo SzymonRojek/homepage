@@ -77,14 +77,16 @@ export const Pull = styled.figure`
 `;
 
 // A yellow stroke under the last words, low enough to stay off the letters.
+// The end of the sentence in yellow: a marker behind dark words in the light
+// theme, yellow words in the dark one. Only a marker gets side padding, so
+// plain yellow words keep normal spacing.
 export const Mark = styled.mark`
-  color: inherit;
-  background: linear-gradient(
-    transparent 74%,
-    ${({ theme }) => theme.colors.brand.accent} 74%,
-    ${({ theme }) => theme.colors.brand.accent} 94%,
-    transparent 94%
-  );
+  padding: 0
+    ${({ theme }) =>
+      theme.colors.quoteMark.background === "transparent" ? "0" : "0.12em"};
+  color: ${({ theme }) => theme.colors.quoteMark.text};
+  background: ${({ theme }) => theme.colors.quoteMark.background};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 `;
