@@ -6,24 +6,26 @@ import { Recommendations } from ".";
 
 vi.mock("../recommendationsData", () => ({
   headline: {
-    text: "a great tester to work with",
+    text: "A great tester to work with",
     highlight: "work with",
     from: "Bob Jones",
   },
   recommendations: [
     {
       quote: "Finds the root cause.",
+      highlight: "root cause",
       name: "Ann Smith",
       role: "Developer at Acme",
       relation: "worked with me on the same team",
       date: "May 2025",
     },
     {
-      quote: "Clear bug reports.",
+      quote: "Clear bug reports. A great tester to work with.",
+      highlight: "Clear bug reports",
       name: "Bob Jones",
       role: "Engineer at Acme",
       relation: "worked with me on a different team",
-      date: "January 2025",
+      date: "Jan 2025",
     },
   ],
 }));
@@ -36,7 +38,7 @@ const renderRecommendations = () =>
   );
 
 describe("Recommendations", () => {
-  it("quotes each colleague with name, role, relation and date", () => {
+  it("quotes each colleague word for word, the byline first", () => {
     renderRecommendations();
 
     const items = within(
@@ -44,20 +46,48 @@ describe("Recommendations", () => {
     ).getAllByRole("listitem");
     expect(items).toHaveLength(2);
     expect(within(items[0]).getByRole("blockquote")).toHaveTextContent(
-      "Finds the root cause.",
+      /^Finds the root cause\.$/,
     );
+    // Who, then what: the name, date and role come before the quote.
     expect(items[0]).toHaveTextContent(
-      "Ann SmithDeveloper at Acme, worked with me on the same team · May 2025",
+      /^Ann SmithMay 2025Developer at AcmeFinds the root cause\.$/,
     );
   });
 
-  it("shows one sentence large, with its author and role", () => {
+  it("dates each recommendation as a machine-readable month", () => {
+    renderRecommendations();
+
+    const items = within(
+      screen.getByRole("list", { name: "Recommendations" }),
+    ).getAllByRole("listitem");
+    expect(items[0].querySelector("time")).toHaveAttribute(
+      "datetime",
+      "2025-05",
+    );
+    expect(items[1].querySelector("time")).toHaveAttribute(
+      "datetime",
+      "2025-01",
+    );
+  });
+
+  it("marks the key words of each recommendation", () => {
+    renderRecommendations();
+
+    const items = within(
+      screen.getByRole("list", { name: "Recommendations" }),
+    ).getAllByRole("listitem");
+    expect(items[0].querySelector("mark")).toHaveTextContent(/^root cause$/);
+    expect(items[1].querySelector("mark")).toHaveTextContent(
+      /^Clear bug reports$/,
+    );
+  });
+
+  it("shows one sentence large above them, still, with its end marked", () => {
     renderRecommendations();
 
     const [pull] = screen.getAllByRole("figure");
-    expect(pull).toHaveTextContent(
-      "“…a great tester to work with.”Bob Jones, Engineer at Acme",
-    );
+    expect(pull).toHaveTextContent(/^“…A great tester to work with\.”$/);
     expect(pull.querySelector("mark")).toHaveTextContent(/^work with$/);
+    expect(screen.queryByRole("button")).toBeNull();
   });
 });

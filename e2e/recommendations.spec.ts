@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures";
 
 test.describe("Recommendations", () => {
-  test("quotes three colleagues first, right under the hero", async ({
+  test("quotes four colleagues first, right under the hero", async ({
     page,
   }) => {
     await page.goto("./");
@@ -17,8 +17,15 @@ test.describe("Recommendations", () => {
     const quotes = page
       .getByRole("list", { name: "Recommendations" })
       .getByRole("listitem");
-    await expect(quotes).toHaveCount(3);
-    await expect(quotes.first()).toContainText("Oskar Wielanowski");
-    await expect(quotes.first()).toContainText("root cause of issues");
+    await expect(quotes).toHaveCount(4);
+    // The newest first, and Oskar's (the second) beside it at the top.
+    await expect(quotes.first()).toContainText("Karthikeyan Palanivel");
+    const oskar = quotes.filter({ hasText: "Oskar Wielanowski" });
+    await expect(oskar.locator("mark")).toHaveText(
+      "saving the team time and preventing future bugs",
+    );
+    expect((await oskar.boundingBox())!.y).toBeLessThan(
+      (await quotes.filter({ hasText: "Jim Grinsfelder" }).boundingBox())!.y,
+    );
   });
 });
