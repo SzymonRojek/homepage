@@ -1,4 +1,4 @@
-import { Section, SectionHeader } from "../Section";
+import { BandSection, SectionHeader } from "../Section";
 import {
   automationSkills,
   languages,
@@ -23,7 +23,7 @@ const groups = [
 ] as const;
 
 export const Skills = () => (
-  <Section aria-labelledby="skills">
+  <BandSection $band="card" aria-labelledby="skills">
     <SectionHeader id="skills">Skills</SectionHeader>
     <Grid>
       {groups.map(({ accent, title, skills }) => (
@@ -46,5 +46,5 @@ export const Skills = () => (
         .map(({ name, level }) => `${name} (${level.toLowerCase()})`)
         .join(" · ")}
     </Languages>
-  </Section>
+  </BandSection>
 );

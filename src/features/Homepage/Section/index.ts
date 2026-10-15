@@ -9,6 +9,22 @@ export const Section = styled.section`
   }
 `;
 
+// A section on a full-width band of its own colour, so the page alternates
+// between banded and cream sections instead of one long cream scroll. It
+// breaks out of the content column like the story band in "How I test", and
+// its content keeps the page's edge. "card" is white (the card colour in the
+// dark theme); "quote" is the band under the hero (see quoteBand).
+export const BandSection = styled(Section)<{ $band: "card" | "quote" }>`
+  margin-inline: calc(50% - 50vw);
+  padding: 64px calc(50vw - 50%);
+  background: ${({ theme, $band }) =>
+    $band === "quote" ? theme.colors.quoteBand : theme.colors.boxBackground};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding-block: 44px;
+  }
+`;
+
 // A short yellow bar above every section heading, the brand accent.
 export const SectionHeader = styled(SubHeader)`
   margin-bottom: 24px;

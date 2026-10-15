@@ -1,24 +1,21 @@
-import { Section } from "../Section";
-import { profile } from "../profile";
 import { headline, recommendations } from "../recommendationsData";
 import {
+  QuoteBand,
   HiddenHeading,
   Pull,
   Mark,
   List,
   Quote,
   Caption,
-  Source,
 } from "./styled";
 
 const author = recommendations.find(({ name }) => name === headline.from);
 const [lead] = headline.text.split(headline.highlight);
 
 // What people I worked with wrote on LinkedIn, word for word: one sentence
-// large, then the full recommendations as plain text. The link lets a
-// recruiter check the originals.
+// large, then the full recommendations as plain text.
 export const Recommendations = () => (
-  <Section aria-labelledby="recommendations">
+  <QuoteBand $band="quote" aria-labelledby="recommendations">
     {/* The big quote is the visible heading; this one names the section for
         screen readers and search engines. */}
     <HiddenHeading id="recommendations">What colleagues say</HiddenHeading>
@@ -49,14 +46,5 @@ export const Recommendations = () => (
         </li>
       ))}
     </List>
-    <Source>
-      <a
-        href={`${profile.linkedinUrl}details/recommendations/`}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Read them on LinkedIn
-      </a>
-    </Source>
-  </Section>
+  </QuoteBand>
 );

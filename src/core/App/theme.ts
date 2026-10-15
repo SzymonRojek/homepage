@@ -113,6 +113,8 @@ export const themeLight = {
       border: colorNames.testBorder,
     },
     boxBackground: colorNames.white,
+    // The band under the hero, with colleagues' words: white on the cream page.
+    quoteBand: colorNames.white,
     headerLine: colorNames.line,
     tile: {
       border: colorNames.line,
@@ -149,6 +151,9 @@ export const themeDark: typeof themeLight = {
       border: colorNames.mintBorder,
     },
     boxBackground: colorNames.nightCard,
+    // The page itself: a card-coloured band right under the green hero would
+    // read as green on green.
+    quoteBand: colorNames.night,
     headerLine: colorNames.nightLine,
     tile: {
       border: colorNames.nightLine,

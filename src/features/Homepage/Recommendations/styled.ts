@@ -1,4 +1,26 @@
 import styled from "styled-components";
+import { BandSection } from "../Section";
+
+// The first section, on its own band right under the hero. Its edge barely
+// shows (white on cream, and none in the dark theme), so the gap to the next
+// section is kept tight:
+// 80px in all instead of the band's 64px plus the section's 64px.
+export const QuoteBand = styled(BandSection)`
+  margin-top: 0;
+  padding-bottom: 40px;
+
+  & + section {
+    margin-top: 40px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding-bottom: 28px;
+
+    & + section {
+      margin-top: 28px;
+    }
+  }
+`;
 
 export const HiddenHeading = styled.h2`
   position: absolute;
@@ -117,18 +139,5 @@ export const Caption = styled.figcaption`
     font-family: ${({ theme }) => theme.fontDisplay};
     font-size: 15px;
     color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-// The link to the originals sits on the right, under the last column.
-export const Source = styled.p`
-  margin: 24px 0 0;
-  font-size: 15px;
-  text-align: right;
-
-  a {
-    font-weight: 600;
-    color: ${({ theme }) => theme.colors.primary};
-    text-underline-offset: 3px;
   }
 `;
