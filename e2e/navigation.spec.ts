@@ -61,6 +61,26 @@ test.describe("Navigation", () => {
     ).toBeInViewport();
   });
 
+  test("the top bar is see-through over the hero until the page scrolls", async ({
+    page,
+  }) => {
+    // The bar is the wordmark's grandparent: link → row → bar.
+    const bar = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("xpath=../..");
+    const green = "rgb(18, 60, 55)";
+
+    await expect(bar).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    // The hero starts under the bar, so its green shows through.
+    expect((await page.getByRole("banner").boundingBox())?.y).toBe(0);
+
+    await page.evaluate(() => window.scrollTo(0, 400));
+    await expect(bar).toHaveCSS("background-color", green);
+
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(bar).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  });
+
   test("on a phone the links sit behind a menu @mobile", async ({ page }) => {
     const menu = page.getByRole("button", { name: "Menu" });
     const projects = page
@@ -120,10 +140,7 @@ test.describe("Navigation", () => {
   test("a reload keeps the place, without scrolling by itself", async ({
     page,
   }) => {
-    await page
-      .getByRole("button", { name: "Read the case study" })
-      .first()
-      .click();
+    await page.getByRole("button", { name: "Case study" }).first().click();
     await expect(
       page.getByRole("region", { name: "Projects" }).getByRole("article"),
     ).toBeInViewport();

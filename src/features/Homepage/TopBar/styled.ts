@@ -3,23 +3,39 @@ import { ButtonLink } from "../ButtonLink";
 import { contentColumn } from "../../../core/App/contentColumn";
 
 // The top of the deep-green brand band; the menu panel hangs from it on
-// small screens. Focus rings are yellow here, as on the hero and the contact
-// card, because the page's green ring would vanish on green.
-export const Bar = styled.div`
+// small screens. Before the page scrolls it is see-through over the hero,
+// which starts under it (a negative margin of its own height); once the page
+// moves, or the menu opens, it turns solid green with a line under it. Focus
+// rings are yellow here, as on the hero and the contact card, because the
+// page's green ring would vanish on green.
+export const Bar = styled.div<{ $solid: boolean }>`
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  height: ${({ theme }) => theme.layout.topBar.desktop}px;
+  margin-bottom: -${({ theme }) => theme.layout.topBar.desktop}px;
   color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.background};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.brand.line};
+  background: ${({ theme, $solid }) =>
+    $solid ? theme.colors.brand.background : "transparent"};
+  border-bottom: 1px solid
+    ${({ theme, $solid }) => ($solid ? theme.colors.brand.line : "transparent")};
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 
   *:focus-visible {
     outline-color: ${({ theme }) => theme.colors.brand.accent};
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 8px 0;
+    height: ${({ theme }) => theme.layout.topBar.mobile}px;
+    margin-bottom: -${({ theme }) => theme.layout.topBar.mobile}px;
   }
 `;
 

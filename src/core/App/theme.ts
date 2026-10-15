@@ -55,6 +55,8 @@ const common = {
   layout: {
     maxWidth: 1160,
     gutter: { mobile: 16, tablet: 32, desktop: 48 },
+    // The top bar's height; the hero starts this far up, under the bar.
+    topBar: { mobile: 57, desktop: 66 },
   },
   borderRadius: "8px",
   borderRadiusSmall: "4px",
