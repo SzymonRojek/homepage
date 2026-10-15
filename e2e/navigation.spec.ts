@@ -42,6 +42,14 @@ test.describe("Navigation", () => {
     await expect(
       page.getByRole("link", { name: "Send me an email" }),
     ).toBeInViewport();
+    // At the end of the page the jump must not scroll the footer itself,
+    // which would cut off the space above its heading.
+    const footer = page.getByRole("contentinfo");
+    expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
+    const heading = page.getByRole("heading", { name: /^Thanks for reading/ });
+    expect((await heading.boundingBox())!.y).toBeGreaterThan(
+      (await footer.boundingBox())!.y + 40,
+    );
   });
 
   test("the top bar stays visible while scrolling", async ({

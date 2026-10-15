@@ -6,7 +6,8 @@ export const Wrapper = styled.header``;
 // Full width, deep green, with a soft yellow ring in the corner.
 export const Band = styled.div`
   position: relative;
-  overflow: hidden;
+  /* Clips the ring without becoming a scroll container (see the footer). */
+  overflow: clip;
   /* It starts under the see-through top bar (the bar's negative margin pulls
      it up), so its green and its ring show through; the padding keeps the
      content below the bar. */
