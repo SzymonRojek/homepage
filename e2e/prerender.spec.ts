@@ -41,10 +41,10 @@ test.describe("the page without JavaScript", () => {
           page.getByRole("heading", { level: 2, name }),
         ).toBeVisible();
       }
-      // The page's own styles, not the browser's defaults.
+      // The page's own styles (the sand page), not the browser's defaults.
       await expect(page.locator("body")).toHaveCSS(
         "background-color",
-        "rgb(251, 244, 230)",
+        "rgb(244, 234, 214)",
       );
 
       const photo = page.getByRole("img", { name: "Szymon Rojek" });

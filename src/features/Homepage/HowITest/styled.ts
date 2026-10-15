@@ -1,13 +1,31 @@
 import styled from "styled-components";
 
-export const Intro = styled.p`
+export const Intro = styled.div`
+  display: grid;
+  gap: 6px;
   max-width: 46em;
   margin: -8px 0 0;
   font-size: 18px;
   line-height: 1.65;
 
+  /* No word left alone on the last line. */
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* On phones the two lines run on as one paragraph. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    display: block;
     font-size: 16px;
+
+    p {
+      display: inline;
+    }
+
+    p + p::before {
+      content: " ";
+    }
   }
 `;
 
@@ -18,15 +36,15 @@ export const Band = styled.article`
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;
   align-items: start;
-  margin: 36px calc(50% - 50vw) 0;
-  padding: 56px calc(50vw - 50%);
+  margin: 28px calc(50% - 50vw) 0;
+  padding: 40px calc(50vw - 50%);
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding-block: 40px;
+    padding-block: 28px;
   }
 `;
 
@@ -84,14 +102,14 @@ export const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  margin: 48px 0 0;
+  margin: 36px 0 0;
   padding: 0;
   list-style: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 24px;
-    margin-top: 36px;
+    margin-top: 28px;
   }
 `;
 
@@ -118,13 +136,21 @@ export const StepText = styled.p`
   line-height: 1.6;
 `;
 
-export const WhyItMatters = styled.p`
-  margin: 40px 0 0;
+// A small heading over the two sentences, under a thin rule.
+export const WhyItMatters = styled.div`
+  margin-top: 32px;
   padding-top: 20px;
-  line-height: 1.6;
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 
-  strong {
+  h3 {
+    margin: 0;
+    font-size: 18px;
     color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  p {
+    max-width: 760px;
+    margin: 8px 0 0;
+    line-height: 1.6;
   }
 `;

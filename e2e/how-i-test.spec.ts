@@ -14,7 +14,12 @@ test.describe("How I test at work", () => {
     ).toHaveCount(3);
     await expect(section).toContainText("field-by-field values");
     await expect(section).toContainText("stored procedures");
-    await expect(section).toContainText("Why it matters:");
+    await expect(
+      section.getByRole("heading", { level: 3, name: "Why it matters" }),
+    ).toBeVisible();
+    await expect(section).toContainText(
+      "In financial data, one wrong field can mean a wrong holding or a wrong payment. Reconciliation proves that nothing was lost or changed on the way.",
+    );
     // The story in my own words comes first.
     await expect(
       section.getByRole("article", { name: "Beyond the obvious bugs" }),

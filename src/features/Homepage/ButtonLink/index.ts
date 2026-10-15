@@ -37,21 +37,30 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-export const SecondaryButtonLink = styled(ButtonLink)`
-  padding: 10px 19px;
+// The quiet look of a secondary action (Demo, Code, closing the technical
+// details): the card colour with a thin border. On hover the fill takes the
+// page's tone and the border darkens, a clear step like the main buttons'.
+export const secondaryButton = css`
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
-  transition: border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.boxBackground};
+    background: ${({ theme }) => theme.colors.secondaryHover};
     border-color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
+`;
+
+export const SecondaryButtonLink = styled(ButtonLink)`
+  padding: 10px 19px;
+  ${secondaryButton}
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding: 9px 15px;

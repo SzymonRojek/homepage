@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Chips } from "../../Section";
+import { secondaryButton } from "../../ButtonLink";
 import Cross from "./close.svg?react";
 
 type Side = "developer" | "tester";
@@ -9,8 +10,8 @@ const accent = (side: Side) => (side === "developer" ? "dev" : "qa");
 // that read a page's HTML without styles skip [hidden] content.
 export const Article = styled.article<{ $open: boolean }>`
   display: ${({ $open }) => ($open ? "block" : "none")};
-  margin-top: 32px;
-  padding: 40px;
+  margin-top: 24px;
+  padding: 32px;
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -66,7 +67,7 @@ export const Lenses = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-top: 28px;
+  margin-top: 24px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
@@ -252,24 +253,13 @@ export const CloseButton = styled.button`
   width: 44px;
   height: 44px;
   padding: 0;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  background: ${({ theme }) => theme.colors.boxBackground};
-  border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   cursor: pointer;
-  transition: border-color 0.2s;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.textPrimary};
-  }
+  ${secondaryButton}
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
   }
 `;
 
@@ -279,10 +269,10 @@ export const CloseIcon = styled(Cross)`
 `;
 
 export const Part = styled.section`
-  margin-top: 32px;
+  margin-top: 24px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 24px;
+    margin-top: 20px;
   }
 `;
 

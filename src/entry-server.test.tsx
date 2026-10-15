@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { beforeAll, describe, expect, it } from "vitest";
 import { render } from "./entry-server";
+import { themeDark, themeLight } from "./core/App/theme";
 
 // Node, as in the build: no window, document or localStorage. A module that
 // reads them on import or while rendering fails here first.
@@ -24,8 +25,12 @@ describe("render", () => {
   });
 
   it("draws it light, with every case study closed", () => {
-    expect(page.css).toContain("background:#FBF4E6");
-    expect(page.css).not.toContain("background:#0B1513");
+    expect(page.css).toContain(
+      `background:${themeLight.colors.site.background}`,
+    );
+    expect(page.css).not.toContain(
+      `background:${themeDark.colors.site.background}`,
+    );
     expect(page.html).toContain('aria-expanded="false"');
     expect(page.html).not.toContain('aria-expanded="true"');
   });

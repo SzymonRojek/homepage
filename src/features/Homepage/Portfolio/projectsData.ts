@@ -264,6 +264,8 @@ const homepageCaseStudy: CaseStudy = {
     "A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.",
     "After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.",
     "A photo that seemed to flicker on every reload was the text reflowing: the page first appeared in a fallback font, and the photo moved when the web fonts arrived. Preloading the fonts in the HTML fixed it and brought the first paint forward from about 2.2 s to 1.6 s.",
+    "Clicking Contact cut off the top of the footer. The footer clipped its decorative ring with overflow: hidden, which also made it a scroll container, so at the end of the page the browser scrolled the footer itself. overflow: clip clips the same way without scrolling, and an end-to-end test now checks the space above the footer's heading.",
+    "An accessibility check that failed only now and then was right: after a jump down the page, the top bar faded in over 0.2 s, and for that moment its cream and yellow text sat on a half-transparent bar over the light page. The bar now turns solid at once and fades only on the way back over the green hero.",
   ],
 };
 

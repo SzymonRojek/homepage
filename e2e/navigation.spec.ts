@@ -43,12 +43,13 @@ test.describe("Navigation", () => {
       page.getByRole("link", { name: "Send me an email" }),
     ).toBeInViewport();
     // At the end of the page the jump must not scroll the footer itself,
-    // which would cut off the space above its heading.
+    // which would cut off the space above its heading (24px on a phone,
+    // 40px on a desktop; it was 0 when the footer scrolled).
     const footer = page.getByRole("contentinfo");
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", { name: /^Thanks for reading/ });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
-      (await footer.boundingBox())!.y + 40,
+      (await footer.boundingBox())!.y + 20,
     );
   });
 

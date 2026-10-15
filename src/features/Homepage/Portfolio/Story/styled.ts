@@ -3,14 +3,14 @@ import styled from "styled-components";
 // A numbered timeline: the line on the left joins the four steps.
 export const Steps = styled.ol`
   display: grid;
-  gap: 28px;
-  margin: 32px 0 0;
+  gap: 24px;
+  margin: 24px 0 0;
   padding: 0;
   list-style: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    gap: 24px;
-    margin-top: 24px;
+    gap: 20px;
+    margin-top: 20px;
   }
 `;
 
