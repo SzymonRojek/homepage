@@ -127,6 +127,21 @@ test.describe("when the OS theme changes while the page is open", () => {
     expect(saved).toBeNull();
   });
 
+  test("is followed again once the visitor switches back to it", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    await clickThemeSwitch(page);
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    // Back to the OS theme (light): the choice is dropped, not pinned.
+    await clickThemeSwitch(page);
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await page.evaluate(() => localStorage.getItem("dark"))).toBeNull();
+
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("is ignored after the visitor chooses", async ({ page }) => {
     await page.goto("./");
     await clickThemeSwitch(page);

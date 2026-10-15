@@ -55,15 +55,22 @@ describe("themeSlice", () => {
     expect(getInitialDarkTheme()).toBe(false);
   });
 
-  it("toggles the theme and marks it as the visitor's choice", () => {
+  it("toggles away from the OS theme and marks it as the visitor's choice", () => {
     const dark = themeReducer(
       { isDarkTheme: false, hasUserChoice: false },
-      toggleTheme(),
+      toggleTheme(false),
     );
-    const light = themeReducer(dark, toggleTheme());
 
     expect(dark).toEqual({ isDarkTheme: true, hasUserChoice: true });
-    expect(light.isDarkTheme).toBe(false);
+  });
+
+  it("toggling back to the OS theme follows the OS again", () => {
+    const light = themeReducer(
+      { isDarkTheme: true, hasUserChoice: true },
+      toggleTheme(false),
+    );
+
+    expect(light).toEqual({ isDarkTheme: false, hasUserChoice: false });
   });
 
   it("follows OS theme changes until the visitor chooses", () => {
