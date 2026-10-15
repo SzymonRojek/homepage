@@ -4,7 +4,6 @@ import {
   Portrait,
   Picture,
   Photo,
-  Eyes,
   FilterDefs,
   Rail,
   Grip,
@@ -165,33 +164,10 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
             })}
           </feComponentTransfer>
         </filter>
-        {/* Keeps the irises: less red than the skin around them (blue minus
-            red above about -0.1, the skin is -0.15 to -0.37), then tints
-            them blue in their own brightness. */}
-        <filter id="portrait-irises" colorInterpolationFilters="sRGB">
-          <feColorMatrix
-            in="SourceGraphic"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -12 0 12 0 1.2"
-            result="iris"
-          />
-          <feColorMatrix
-            in="SourceGraphic"
-            type="matrix"
-            values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0"
-          />
-          <feComponentTransfer result="blue">
-            <feFuncR type="table" tableValues="0.1 0.62" />
-            <feFuncG type="table" tableValues="0.22 0.8" />
-            <feFuncB type="table" tableValues="0.4 0.96" />
-          </feComponentTransfer>
-          <feComposite in="blue" in2="iris" operator="in" />
-        </filter>
       </FilterDefs>
       <Picture role="img" aria-label={name}>
         <Photo src={src} alt="" draggable={false} />
         <Photo src={src} alt="" draggable={false} $mono />
-        <Eyes src={src} alt="" draggable={false} />
       </Picture>
       <Rail aria-hidden="true">
         <Grip />
