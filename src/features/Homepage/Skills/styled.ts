@@ -56,7 +56,7 @@ export const Skill = styled.li`
 `;
 
 export const Tools = styled.p`
-  margin: 28px 0 0;
+  margin: 20px 0 0;
   font-size: 15px;
   line-height: 1.7;
 

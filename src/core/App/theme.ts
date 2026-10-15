@@ -73,6 +73,9 @@ const common = {
     gutter: { mobile: 16, tablet: 32, desktop: 48 },
     // The top bar's height; the hero starts this far up, under the bar.
     topBar: { mobile: 57, desktop: 66 },
+    // The space above and below a section's content: a band's padding, the
+    // gap before a section on the page colour, and the footer's top.
+    section: { mobile: 24, desktop: 40 },
   },
   borderRadius: "8px",
   borderRadiusSmall: "4px",

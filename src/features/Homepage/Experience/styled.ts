@@ -10,7 +10,7 @@ export const Job = styled.article`
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 
   & + & {
-    margin-top: 40px;
+    margin-top: 28px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

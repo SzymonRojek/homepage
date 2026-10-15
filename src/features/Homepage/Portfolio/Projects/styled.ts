@@ -2,13 +2,13 @@ import styled from "styled-components";
 import a from "color-alpha";
 
 export const OtherProjects = styled.section`
-  margin-top: 48px;
+  margin-top: 36px;
   padding: 24px 28px;
   border: 1px dashed ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadius};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 32px;
+    margin-top: 24px;
     padding: 16px;
   }
 `;
@@ -27,8 +27,8 @@ export const GroupTitle = styled.h3`
 export const List = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  grid-gap: 32px;
-  margin-top: 32px;
+  grid-gap: 24px;
+  margin-top: 24px;
   padding: 0;
   list-style: none;
 
@@ -40,7 +40,7 @@ export const List = styled.ul`
 
 export const Tile = styled.li`
   margin: 0;
-  padding: 32px;
+  padding: 28px;
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 1px solid ${({ theme }) => theme.colors.tile.border};
   transition: border-color 0.3s;
@@ -155,13 +155,13 @@ export const Cards = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  margin: 0 0 32px;
+  margin: 0 0 24px;
   padding: 0;
   list-style: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 `;

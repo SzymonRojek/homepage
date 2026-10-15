@@ -78,12 +78,12 @@ export const List = styled.div`
   grid-template-columns: repeat(2, 1fr);
   align-items: start;
   gap: 24px;
-  margin-top: 44px;
+  margin-top: 32px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-top: 32px;
+    margin-top: 24px;
   }
 `;
 
@@ -98,13 +98,13 @@ export const Column = styled.div`
 
 export const Item = styled.div<{ $order: number }>`
   order: ${({ $order }) => $order};
-  padding: 28px 32px 30px;
+  padding: 24px 28px 26px;
   background: ${({ theme }) => theme.colors.quoteCard};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadius};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 22px 20px 24px;
+    padding: 20px 20px 22px;
   }
 `;
 

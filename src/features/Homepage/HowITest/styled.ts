@@ -36,15 +36,15 @@ export const Band = styled.article`
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;
   align-items: start;
-  margin: 36px calc(50% - 50vw) 0;
-  padding: 56px calc(50vw - 50%);
+  margin: 28px calc(50% - 50vw) 0;
+  padding: 40px calc(50vw - 50%);
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding-block: 40px;
+    padding-block: 28px;
   }
 `;
 
@@ -102,14 +102,14 @@ export const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  margin: 48px 0 0;
+  margin: 36px 0 0;
   padding: 0;
   list-style: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 24px;
-    margin-top: 36px;
+    margin-top: 28px;
   }
 `;
 
@@ -138,7 +138,7 @@ export const StepText = styled.p`
 
 // A small heading over the two sentences, under a thin rule.
 export const WhyItMatters = styled.div`
-  margin-top: 40px;
+  margin-top: 32px;
   padding-top: 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 

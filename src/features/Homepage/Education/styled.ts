@@ -14,7 +14,7 @@ export const Layout = styled.div`
 
 // What I'm working on now, on the deep-green brand band.
 export const Next = styled.article`
-  padding: 32px;
+  padding: 28px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
   border-radius: ${({ theme }) => theme.borderRadius};

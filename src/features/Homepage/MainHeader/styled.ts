@@ -62,7 +62,7 @@ export const BandInner = styled.div`
 // below, and the photo under it ends on the right edge, as on a desktop.
 export const Details = styled.div`
   min-width: 0;
-  padding-bottom: 56px;
+  padding-bottom: 40px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding-bottom: 0;

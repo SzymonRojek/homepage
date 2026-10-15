@@ -10,7 +10,7 @@ import { contentColumn } from "../../../core/App/contentColumn";
 export const Wrapper = styled.footer`
   position: relative;
   overflow: clip;
-  margin-top: 56px;
+  margin-top: ${({ theme }) => theme.layout.section.desktop}px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
 
@@ -32,7 +32,7 @@ export const Wrapper = styled.footer`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 40px;
+    margin-top: ${({ theme }) => theme.layout.section.mobile}px;
   }
 `;
 
@@ -48,7 +48,7 @@ export const Letter = styled.section`
   grid-template-columns: 0.8fr 1.2fr;
   gap: 56px;
   align-items: start;
-  padding-top: 64px;
+  padding-top: ${({ theme }) => theme.layout.section.desktop}px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
@@ -57,7 +57,7 @@ export const Letter = styled.section`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     gap: 18px;
-    padding-top: 44px;
+    padding-top: ${({ theme }) => theme.layout.section.mobile}px;
   }
 `;
 
@@ -122,7 +122,7 @@ export const Bottom = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  margin-top: 56px;
+  margin-top: 40px;
   padding: 20px 0 28px;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.brand.muted};
@@ -141,6 +141,6 @@ export const Bottom = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 40px;
+    margin-top: 28px;
   }
 `;
