@@ -9,16 +9,31 @@ export const Section = styled.section`
   }
 `;
 
-// A section on a full-width band of its own colour, so the page alternates
-// between banded and cream sections instead of one long cream scroll. It
-// breaks out of the content column like the story band in "How I test", and
-// its content keeps the page's edge. "card" is white (the card colour in the
-// dark theme); "quote" is the band under the hero (see quoteBand).
-export const BandSection = styled(Section)<{ $band: "card" | "quote" }>`
+const bands = {
+  card: "cardBand",
+  quote: "quoteBand",
+  test: "testBand",
+} as const;
+
+// A section on a full-width band of its own colour, so each section reads as
+// its own block instead of one long cream scroll. It breaks out of the
+// content column like the story band in "How I test", and its content keeps
+// the page's edge. "card" is white (the card colour in the dark theme);
+// "quote" is the band under the hero (see quoteBand); "test" is the soft test
+// green of "How I test at work". Bands that follow one another meet edge to
+// edge, with no page colour between them.
+export const BandSection = styled(Section).attrs({
+  className: "section-band",
+})<{
+  $band: keyof typeof bands;
+}>`
   margin-inline: calc(50% - 50vw);
   padding: 64px calc(50vw - 50%);
-  background: ${({ theme, $band }) =>
-    $band === "quote" ? theme.colors.quoteBand : theme.colors.boxBackground};
+  background: ${({ theme, $band }) => theme.colors[bands[$band]]};
+
+  .section-band + & {
+    margin-top: 0;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding-block: 44px;
