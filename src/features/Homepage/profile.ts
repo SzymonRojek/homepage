@@ -34,5 +34,7 @@ export const profile = {
     "For me, communication matters most in a team, with mutual respect and time to get to know one another. I care about supporting each other, because that's what shows in the results.",
   // The one sentence that asks for contact, after the team note.
   contactInvite: "If that sounds like your team, I'd like to hear from you.",
-  linkedinUrl: "https://www.linkedin.com/in/szymonrojek/",
+  // The live profile (two dashes), confirmed on 15 October 2026; an old CV
+  // had /in/szymonrojek/.
+  linkedinUrl: "https://www.linkedin.com/in/szymon--rojek/",
 };
