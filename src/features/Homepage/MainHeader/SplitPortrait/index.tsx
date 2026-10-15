@@ -165,9 +165,18 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
           </feComponentTransfer>
         </filter>
       </FilterDefs>
+      {/* One image for screen readers, so the two photos inside are hidden
+          from them. They still carry the name as alt, because search engines
+          (Bing) count an empty alt as missing. */}
       <Picture role="img" aria-label={name}>
-        <Photo src={src} alt="" draggable={false} />
-        <Photo src={src} alt="" draggable={false} $mono />
+        <Photo src={src} alt={name} aria-hidden="true" draggable={false} />
+        <Photo
+          src={src}
+          alt={name}
+          aria-hidden="true"
+          draggable={false}
+          $mono
+        />
       </Picture>
       <Rail aria-hidden="true">
         <Grip />
