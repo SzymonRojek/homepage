@@ -55,6 +55,8 @@ const common = {
   layout: {
     maxWidth: 1160,
     gutter: { mobile: 16, tablet: 32, desktop: 48 },
+    // The top bar's height; the hero starts this far up, under the bar.
+    topBar: { mobile: 57, desktop: 66 },
   },
   borderRadius: "8px",
   borderRadiusSmall: "4px",
@@ -113,6 +115,8 @@ export const themeLight = {
       border: colorNames.testBorder,
     },
     boxBackground: colorNames.white,
+    // The band under the hero, with colleagues' words: white on the cream page.
+    quoteBand: colorNames.white,
     headerLine: colorNames.line,
     tile: {
       border: colorNames.line,
@@ -149,6 +153,9 @@ export const themeDark: typeof themeLight = {
       border: colorNames.mintBorder,
     },
     boxBackground: colorNames.nightCard,
+    // The page itself: a card-coloured band right under the green hero would
+    // read as green on green.
+    quoteBand: colorNames.night,
     headerLine: colorNames.nightLine,
     tile: {
       border: colorNames.nightLine,

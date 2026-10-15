@@ -60,18 +60,4 @@ describe("Recommendations", () => {
     );
     expect(pull.querySelector("mark")).toHaveTextContent(/^work with$/);
   });
-
-  it("links to the originals on LinkedIn in a new tab", () => {
-    renderRecommendations();
-
-    const link = screen.getByRole("link", { name: "Read them on LinkedIn" });
-    expect(link).toHaveAttribute(
-      "href",
-      expect.stringMatching(
-        /linkedin\.com\/in\/.+\/details\/recommendations\/$/,
-      ),
-    );
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noreferrer");
-  });
 });

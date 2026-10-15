@@ -71,7 +71,7 @@ test.describe("search engines and link previews @desktop", () => {
       name: "Szymon Rojek",
       jobTitle: "Software Test Engineer",
       sameAs: [
-        "https://www.linkedin.com/in/szymonrojek/",
+        "https://www.linkedin.com/in/szymon--rojek/",
         "https://github.com/SzymonRojek",
       ],
     });

@@ -55,17 +55,29 @@ describe("CaseStudy", () => {
     // No "repo · language" line: the card and the title say enough.
     expect(screen.queryByText(/homepage ·/)).not.toBeInTheDocument();
   });
-  it("keeps the full case study collapsed until it is opened", () => {
+  it("keeps the technical details collapsed until it is opened", () => {
     renderCaseStudy();
 
-    const details = screen
-      .getByText("Read the full case study")
-      .closest("details");
+    const details = screen.getByText("Technical details").closest("details");
     expect(details).not.toHaveAttribute("open");
 
-    fireEvent.click(screen.getByText("Read the full case study"));
+    fireEvent.click(screen.getByText("Technical details"));
 
     expect(details).toHaveAttribute("open");
+  });
+
+  it("closes the technical details from their end, back at its toggle", () => {
+    renderCaseStudy();
+    const toggle = screen.getByText("Technical details");
+    const details = toggle.closest("details");
+    fireEvent.click(toggle);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Close the technical details" }),
+    );
+
+    expect(details).not.toHaveAttribute("open");
+    expect(toggle).toHaveFocus();
   });
 
   it("has every part of the case study", () => {
@@ -109,7 +121,7 @@ describe("CaseStudy", () => {
 
   it("shows the content of every part, not only the headings", () => {
     renderCaseStudy();
-    fireEvent.click(screen.getByText("Read the full case study"));
+    fireEvent.click(screen.getByText("Technical details"));
 
     expect(screen.getByText("Recruiters can't verify a CV.")).toBeVisible();
     expect(screen.getByText("Static hosting.")).toBeVisible();

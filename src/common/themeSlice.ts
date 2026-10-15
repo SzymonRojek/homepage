@@ -32,9 +32,12 @@ const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    toggleTheme: (state) => {
+    // The payload is the OS theme at the press. A press that lands on it
+    // drops the visitor's choice, so the page follows the OS again; one that
+    // leaves it records the choice, which then wins over the OS.
+    toggleTheme: (state, { payload: systemIsDark }: PayloadAction<boolean>) => {
       state.isDarkTheme = !state.isDarkTheme;
-      state.hasUserChoice = true;
+      state.hasUserChoice = state.isDarkTheme !== systemIsDark;
     },
     systemThemeChanged: (
       state,

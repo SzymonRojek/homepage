@@ -67,13 +67,13 @@ describe("ProjectCard", () => {
     );
     expect(code).toHaveAttribute("target", "_blank");
     expect(code).toHaveAttribute("rel", "noreferrer");
-    expect(screen.queryByRole("link", { name: "Live demo" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Demo" })).toBeNull();
   });
 
-  it("shows the live demo link when there is one", () => {
+  it("shows the demo link when there is one", () => {
     renderCard({ demoUrl: "https://example.com" });
 
-    expect(screen.getByRole("link", { name: "Live demo" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Demo" })).toHaveAttribute(
       "href",
       "https://example.com",
     );
@@ -82,7 +82,7 @@ describe("ProjectCard", () => {
   it("opens the case study with a button that says whether it is open", () => {
     const onToggle = renderCard();
 
-    const button = screen.getByRole("button", { name: "Read the case study" });
+    const button = screen.getByRole("button", { name: "Case study" });
     expect(button).toHaveAttribute("aria-expanded", "false");
     expect(button).not.toHaveAttribute("aria-controls");
 
@@ -90,10 +90,10 @@ describe("ProjectCard", () => {
     expect(onToggle).toHaveBeenCalledOnce();
   });
 
-  it("points the button at the open case study", () => {
+  it("keeps its label once open and points at the open case study", () => {
     renderCard({}, true);
 
-    const button = screen.getByRole("button", { name: "Close the case study" });
+    const button = screen.getByRole("button", { name: "Case study" });
     expect(button).toHaveAttribute("aria-expanded", "true");
     expect(button).toHaveAttribute(
       "aria-controls",

@@ -153,7 +153,7 @@ export const Projects = ({ projects }: ProjectsProps) => {
                       <dt>Demo:</dt>
                       <LinksValue>
                         <Link target="_blank" rel="noreferrer" href={demoUrl}>
-                          Live demo
+                          Open the demo
                         </Link>
                       </LinksValue>
                     </LinksRow>
@@ -189,7 +189,7 @@ export const Projects = ({ projects }: ProjectsProps) => {
                 {demoUrl && (
                   <>
                     <Link target="_blank" rel="noreferrer" href={demoUrl}>
-                      Live demo
+                      Demo
                     </Link>{" "}
                   </>
                 )}

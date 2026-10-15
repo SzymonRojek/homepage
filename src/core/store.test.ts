@@ -43,7 +43,7 @@ describe("saveThemeChoice", () => {
   it("saves the theme when the visitor toggles it", () => {
     const { store, setItem } = createSavingStore();
 
-    store.dispatch(toggleTheme());
+    store.dispatch(toggleTheme(false));
 
     expect(setItem).toHaveBeenCalledOnce();
     expect(setItem).toHaveBeenCalledWith("dark", "true");
@@ -68,7 +68,7 @@ describe("saveThemeChoice", () => {
 
   it("saves only when the theme changes, not on every later action", () => {
     const { store, setItem } = createSavingStore();
-    store.dispatch(toggleTheme());
+    store.dispatch(toggleTheme(false));
     setItem.mockClear();
 
     store.dispatch(openCaseStudy("homepage"));
@@ -76,11 +76,21 @@ describe("saveThemeChoice", () => {
     expect(setItem).not.toHaveBeenCalled();
   });
 
+  it("forgets the choice when the visitor is back on the OS theme", () => {
+    const { store } = createSavingStore();
+    store.dispatch(toggleTheme(false));
+    const removeItem = vi.spyOn(Storage.prototype, "removeItem");
+
+    store.dispatch(toggleTheme(false));
+
+    expect(removeItem).toHaveBeenCalledWith("dark");
+  });
+
   it("stops saving when asked", () => {
     const { store, stopSaving, setItem } = createSavingStore();
 
     stopSaving();
-    store.dispatch(toggleTheme());
+    store.dispatch(toggleTheme(false));
 
     expect(setItem).not.toHaveBeenCalled();
   });

@@ -38,14 +38,14 @@ describe("SplitPortrait", () => {
     expect(screen.queryAllByRole("button")).toHaveLength(0);
   });
 
-  it("draws the same photo three times, as decoration", () => {
+  it("draws the same photo twice, as decoration", () => {
     renderPortrait();
 
     const photos = screen
       .getByRole("img", { name: "Szymon Rojek" })
       .querySelectorAll("img");
-    // Colour, the duotone copy and the blue irises on top.
-    expect(photos).toHaveLength(3);
+    // Colour, and the duotone copy on top; the eyes stay duotone too.
+    expect(photos).toHaveLength(2);
     photos.forEach((photo) => {
       expect(photo).toHaveAttribute("src", "photo.jpg");
       expect(photo).toHaveAttribute("alt", "");

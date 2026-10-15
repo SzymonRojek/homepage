@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { FlowDiagram } from "../FlowDiagram";
 import { Pipeline } from "../Pipeline";
 import { Story } from "../Story";
@@ -17,6 +18,9 @@ import {
   LensPipeline,
   Details,
   Toggle,
+  CloseRow,
+  CloseButton,
+  CloseIcon,
   Part,
   PartTitle,
   Text,
@@ -99,6 +103,15 @@ export const CaseStudy = ({
     quality,
     lessons,
   } = caseStudy;
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  const toggleRef = useRef<HTMLElement>(null);
+
+  // The full write-up is long, so it also closes from its end. Focus goes
+  // back to its toggle, which brings the reader back to where it opened.
+  const closeDetails = () => {
+    if (detailsRef.current) detailsRef.current.open = false;
+    toggleRef.current?.focus();
+  };
 
   return (
     <Article id={id} aria-labelledby={`${id}-title`} tabIndex={-1} $open={open}>
@@ -115,8 +128,8 @@ export const CaseStudy = ({
         <LensColumn id={id} side="developer" lens={developer} />
       </Lenses>
 
-      <Details>
-        <Toggle>Read the full case study</Toggle>
+      <Details ref={detailsRef}>
+        <Toggle ref={toggleRef}>Technical details</Toggle>
 
         <Part>
           <PartTitle>Problem</PartTitle>
@@ -195,6 +208,16 @@ export const CaseStudy = ({
             ))}
           </BulletList>
         </Part>
+
+        <CloseRow>
+          <CloseButton
+            type="button"
+            aria-label="Close the technical details"
+            onClick={closeDetails}
+          >
+            <CloseIcon aria-hidden="true" />
+          </CloseButton>
+        </CloseRow>
       </Details>
     </Article>
   );

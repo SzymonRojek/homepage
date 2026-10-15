@@ -34,6 +34,17 @@ describe("ThemeSwitch", () => {
     );
   });
 
+  it("shows a moon in the light theme and a sun in the dark one", () => {
+    renderSwitch(false);
+    const button = screen.getByRole("button", { name: "Dark mode" });
+    const light = button.innerHTML;
+
+    fireEvent.click(button);
+
+    expect(button.innerHTML).not.toBe(light);
+    expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("toggles the theme and records the visitor's choice", () => {
     const store = renderSwitch(false);
     const button = screen.getByRole("button", { name: "Dark mode" });

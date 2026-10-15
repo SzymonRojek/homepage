@@ -1,24 +1,28 @@
 import { useAppDispatch, useAppSelector } from "../../core/hooks";
-import { selectDarkTheme, toggleTheme } from "../themeSlice";
-import { Wrapper, Button, Box, IconWrapper, Icon } from "./styled";
+import { darkSchemeQuery, selectDarkTheme, toggleTheme } from "../themeSlice";
+import { Button, MoonIcon, SunIcon } from "./styled";
 
+// One press flips the theme. Flipping back to the OS theme follows the OS
+// again (themeSlice), so there is no separate "system" option to find.
 export const ThemeSwitch = () => {
   const isDarkTheme = useAppSelector(selectDarkTheme);
   const dispatch = useAppDispatch();
 
   return (
-    <Wrapper>
-      <Button
-        aria-label="Dark mode"
-        aria-pressed={isDarkTheme}
-        onClick={() => dispatch(toggleTheme())}
-      >
-        <Box>
-          <IconWrapper $moveToRight={isDarkTheme}>
-            <Icon />
-          </IconWrapper>
-        </Box>
-      </Button>
-    </Wrapper>
+    <Button
+      aria-label="Dark mode"
+      aria-pressed={isDarkTheme}
+      onClick={() =>
+        dispatch(
+          toggleTheme(window.matchMedia?.(darkSchemeQuery).matches ?? false),
+        )
+      }
+    >
+      {isDarkTheme ? (
+        <SunIcon aria-hidden="true" />
+      ) : (
+        <MoonIcon aria-hidden="true" />
+      )}
+    </Button>
   );
 };

@@ -23,7 +23,7 @@ describe("structuredData", () => {
         image: "https://szymonrojek.com/szymon-rojek.jpg",
         homeLocation: { "@type": "Place", name: "Hove, UK" },
         sameAs: [
-          "https://www.linkedin.com/in/szymonrojek/",
+          "https://www.linkedin.com/in/szymon--rojek/",
           "https://github.com/SzymonRojek",
         ],
       },

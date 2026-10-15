@@ -8,6 +8,9 @@ import {
   Actions,
   ToggleButton,
   SmallLink,
+  Chevron,
+  ExternalIcon,
+  GitHubIcon,
 } from "./styled";
 
 interface ProjectCardProps {
@@ -17,7 +20,9 @@ interface ProjectCardProps {
 }
 
 // A short card that only points to the project: the name, one sentence and a
-// few facts. The full case study opens below the cards.
+// few facts. The full case study opens below the cards: its button keeps one
+// label, and the chevron (with aria-expanded) shows whether it is open. The
+// two links leave the site, marked with an arrow and the GitHub mark.
 export const ProjectCard = ({
   project: { title, repo, description, demoUrl, teaser, facts },
   expanded,
@@ -40,14 +45,17 @@ export const ProjectCard = ({
         aria-controls={expanded ? `case-study-${repo}` : undefined}
         onClick={onToggle}
       >
-        {expanded ? "Close the case study" : "Read the case study"}
+        Case study
+        <Chevron aria-hidden="true" $expanded={expanded} />
       </ToggleButton>
       {demoUrl && (
         <SmallLink href={demoUrl} target="_blank" rel="noreferrer">
-          Live demo
+          <ExternalIcon aria-hidden="true" />
+          Demo
         </SmallLink>
       )}
       <SmallLink href={repoUrl(repo)} target="_blank" rel="noreferrer">
+        <GitHubIcon aria-hidden="true" />
         Code
       </SmallLink>
     </Actions>

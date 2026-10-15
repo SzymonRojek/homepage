@@ -1,6 +1,6 @@
 # Szymon Rojek: Software Test Engineer
 
-**Live site: [szymonrojek.com](https://szymonrojek.com/)** · [LinkedIn](https://www.linkedin.com/in/szymonrojek/)
+**Live site: [szymonrojek.com](https://szymonrojek.com/)** · [LinkedIn](https://www.linkedin.com/in/szymon--rojek/)
 
 [![CI](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonRojek/homepage/actions/workflows/ci.yml)
 
@@ -267,4 +267,4 @@ All text lives in data files, not in components:
 
 Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image.jpg`, shows the name, title and headline as an image, so redraw it when they change.
 
-To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project then shows as a card whose "Read the case study" button opens the full write-up. Keep this README's case study in step with the homepage one.
+To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project then shows as a card whose "Case study" button opens the full write-up. Keep this README's case study in step with the homepage one.

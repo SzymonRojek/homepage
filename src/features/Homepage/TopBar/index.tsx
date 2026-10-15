@@ -29,8 +29,19 @@ const navLinks = [
 // Contact with the theme switch on the other side of the same row.
 export const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [atTop, setAtTop] = useState(true);
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // See-through over the hero until the page scrolls. It starts at the top,
+  // as in the build's static copy, and checks at once, after a reload too.
+  useEffect(() => {
+    const update = () => setAtTop(window.scrollY <= 0);
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   // An open menu closes on Escape (focus goes back to the button) and on a
   // click or tap outside the bar.
@@ -60,7 +71,7 @@ export const TopBar = () => {
   }, [menuOpen]);
 
   return (
-    <Bar ref={barRef}>
+    <Bar ref={barRef} $solid={!atTop || menuOpen}>
       <Inner>
         <Brand href="#top" title="Back to top">
           <BrandName>{profile.name}</BrandName>

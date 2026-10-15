@@ -1,43 +1,36 @@
-import styled, { css } from "styled-components";
-import SunIcon from "./sun.svg?react";
+import styled from "styled-components";
+import SunSvg from "./sun.svg?react";
+import MoonSvg from "./moon.svg?react";
 
-export const Wrapper = styled.div`
-  display: flex;
-`;
-
+// A small square button in the style of the menu button: the icon shows the
+// theme a press switches to (a moon in light, a sun in dark).
 export const Button = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  background: none;
-  border: none;
-  color: inherit;
-  border-radius: 999px;
-  cursor: pointer;
-`;
-
-export const Box = styled.span`
-  display: flex;
-  width: 48px;
-  padding: 2px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.control};
   border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.brand.accent};
+    border-color: ${({ theme }) => theme.colors.brand.accent};
+  }
 `;
 
-export const IconWrapper = styled.span<{ $moveToRight: boolean }>`
-  display: flex;
-  border-radius: 50%;
-  transition: transform 0.3s;
-
-  ${({ $moveToRight }) =>
-    $moveToRight &&
-    css`
-      transform: translateX(22px);
-    `}
+export const SunIcon = styled(SunSvg)`
+  width: 18px;
+  height: 18px;
 `;
 
-// The knob is the yellow sun, easy to spot on the green bar.
-export const Icon = styled(SunIcon)`
-  color: ${({ theme }) => theme.colors.brand.accent};
+export const MoonIcon = styled(MoonSvg)`
+  width: 18px;
+  height: 18px;
 `;

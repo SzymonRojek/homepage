@@ -7,7 +7,10 @@ export const Wrapper = styled.header``;
 export const Band = styled.div`
   position: relative;
   overflow: hidden;
-  padding: 64px 0 0;
+  /* It starts under the see-through top bar (the bar's negative margin pulls
+     it up), so its green and its ring show through; the padding keeps the
+     content below the bar. */
+  padding: ${({ theme }) => 64 + theme.layout.topBar.desktop}px 0 0;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
 
@@ -29,7 +32,7 @@ export const Band = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding: 40px 0 0;
+    padding: ${({ theme }) => 40 + theme.layout.topBar.mobile}px 0 0;
   }
 `;
 

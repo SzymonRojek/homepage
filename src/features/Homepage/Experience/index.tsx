@@ -1,11 +1,11 @@
-import { Section, SectionHeader } from "../Section";
+import { BandSection, SectionHeader } from "../Section";
 import { jobs } from "../experienceData";
 import { Job, Period, Company, Details, Role, Points } from "./styled";
 
 // The job, right after "How I test at work": only what that section doesn't
 // already say.
 export const Experience = () => (
-  <Section aria-labelledby="experience">
+  <BandSection $band="card" aria-labelledby="experience">
     <SectionHeader id="experience">Experience</SectionHeader>
     {jobs.map(({ role, company, details, period, points }) => (
       <Job key={`${role}-${company}`} aria-label={`${role}, ${company}`}>
@@ -24,5 +24,5 @@ export const Experience = () => (
         </div>
       </Job>
     ))}
-  </Section>
+  </BandSection>
 );

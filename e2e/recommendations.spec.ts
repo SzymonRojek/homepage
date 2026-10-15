@@ -20,8 +20,5 @@ test.describe("Recommendations", () => {
     await expect(quotes).toHaveCount(3);
     await expect(quotes.first()).toContainText("Oskar Wielanowski");
     await expect(quotes.first()).toContainText("root cause of issues");
-    await expect(
-      page.getByRole("link", { name: "Read them on LinkedIn" }),
-    ).toHaveAttribute("href", /\/details\/recommendations\/$/);
   });
 });

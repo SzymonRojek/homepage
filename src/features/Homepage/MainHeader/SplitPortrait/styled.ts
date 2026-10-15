@@ -12,7 +12,9 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
   position: relative;
   align-self: end;
   justify-self: end;
-  width: 340px;
+  /* Smaller than the text block beside it, so the headline leads the hero;
+     the photo is a close crop, so its face reads large at any width. */
+  width: 300px;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   /* The whole photo is the drag area: sideways moves the line, up and down
@@ -40,13 +42,17 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
     outline-offset: 4px;
   }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
+    width: 260px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    width: 280px;
+    width: 240px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     justify-self: end;
-    width: 240px;
+    width: 220px;
   }
 `;
 
@@ -72,21 +78,6 @@ export const Photo = styled.img<{ $mono?: boolean }>`
       filter: url(#portrait-duotone);
       clip-path: inset(0 calc(100% - var(--split)) 0 0);
     `}
-`;
-
-// The irises once more, on top of the duotone: the photo through the
-// #portrait-irises filter (only the iris pixels, in blue), and masked to the
-// two eyes. On the colour side the line hides the duotone, so they show only
-// where the photo is green.
-const iris = (x: string, y: string) =>
-  `radial-gradient(ellipse 2.2% 1.6% at ${x} ${y}, #000 60%, transparent 100%)`;
-const irises = `${iris("35.5%", "48%")}, ${iris("63.5%", "48.2%")}`;
-
-export const Eyes = styled(Photo)`
-  filter: url(#portrait-irises);
-  clip-path: inset(0 calc(100% - var(--split)) 0 0);
-  mask-image: ${irises};
-  -webkit-mask-image: ${irises};
 `;
 
 // The SVG that holds the duotone filter takes no space.
@@ -149,18 +140,21 @@ export const Grip = styled.span`
   }
 `;
 
-// One quiet word beside the grip until the first drag.
+// One quiet word beside the grip until the first drag, on a small green tag
+// so it reads on a light photo as well as a dark one.
 export const Hint = styled.span`
   position: absolute;
   z-index: 3;
   top: 58%;
-  left: calc(${railLeft} + 24px);
+  left: calc(${railLeft} + 20px);
+  padding: 4px 6px 4px 8px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.brand.text};
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  background: ${({ theme }) => theme.colors.brand.background};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transform: translateY(-50%);
   pointer-events: none;
 `;

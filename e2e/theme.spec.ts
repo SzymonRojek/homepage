@@ -1,14 +1,14 @@
 import { test, expect } from "./fixtures";
 
-// On phones the switch sits in the closed menu, so it is found even when
-// hidden; clickThemeSwitch opens the menu first where there is one.
+// On phones the switch sits in the menu, so it is found even when hidden;
+// clickThemeSwitch opens the menu first when the switch is out of sight (a
+// click on the switch leaves the menu open).
 const themeSwitch = (page: import("@playwright/test").Page) =>
   page.getByRole("button", { name: "Dark mode", includeHidden: true });
 
 const clickThemeSwitch = async (page: import("@playwright/test").Page) => {
-  const menu = page.getByRole("button", { name: "Menu" });
-  if (await menu.isVisible()) {
-    await menu.click();
+  if (!(await themeSwitch(page).isVisible())) {
+    await page.getByRole("button", { name: "Menu" }).click();
   }
   await themeSwitch(page).click();
 };
@@ -125,6 +125,21 @@ test.describe("when the OS theme changes while the page is open", () => {
 
     const saved = await page.evaluate(() => localStorage.getItem("dark"));
     expect(saved).toBeNull();
+  });
+
+  test("is followed again once the visitor switches back to it", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    await clickThemeSwitch(page);
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    // Back to the OS theme (light): the choice is dropped, not pinned.
+    await clickThemeSwitch(page);
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
+    expect(await page.evaluate(() => localStorage.getItem("dark"))).toBeNull();
+
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
   });
 
   test("is ignored after the visitor chooses", async ({ page }) => {

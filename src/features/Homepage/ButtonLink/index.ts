@@ -42,10 +42,15 @@ export const SecondaryButtonLink = styled(ButtonLink)`
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.boxBackground};
   border: 1px solid ${({ theme }) => theme.colors.headerLine};
+  transition: border-color 0.2s;
 
   &:hover {
     background: ${({ theme }) => theme.colors.boxBackground};
     border-color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {

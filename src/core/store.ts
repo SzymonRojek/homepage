@@ -18,7 +18,8 @@ export const createAppStore = (preloadedState?: Partial<RootState>) =>
 export type AppStore = ReturnType<typeof createAppStore>;
 export type AppDispatch = AppStore["dispatch"];
 
-// Save only the visitor's own choice, so OS theme changes are never stored.
+// Save only the visitor's own choice, so OS theme changes are never stored,
+// and forget it once the visitor is back on the OS theme.
 export const saveThemeChoice = (store: AppStore) => {
   let isDarkTheme = store.getState().theme.isDarkTheme;
 
@@ -31,6 +32,8 @@ export const saveThemeChoice = (store: AppStore) => {
 
       if (hasUserChoice) {
         localStorage.setItem("dark", String(isDarkTheme));
+      } else {
+        localStorage.removeItem("dark");
       }
     }
   });
