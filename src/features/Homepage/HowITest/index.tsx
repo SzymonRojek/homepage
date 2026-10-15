@@ -1,4 +1,4 @@
-import { Section, SectionHeader } from "../Section";
+import { BandSection, SectionHeader } from "../Section";
 import { howITest } from "../howITestData";
 import {
   Intro,
@@ -19,9 +19,13 @@ const [titleStart, titleEnd] = story.title.split(story.highlight);
 // Professional evidence, before the side projects: my story on the green
 // band, then how I test a data migration in three steps.
 export const HowITest = () => (
-  <Section aria-labelledby="how-i-test">
+  <BandSection $band="test" aria-labelledby="how-i-test">
     <SectionHeader id="how-i-test">{howITest.title}</SectionHeader>
-    <Intro>{howITest.intro}</Intro>
+    <Intro>
+      {howITest.intro.map((line) => (
+        <p key={line}>{line}</p>
+      ))}
+    </Intro>
     <Band aria-labelledby="how-i-test-story">
       <div>
         <StoryTitle id="how-i-test-story">
@@ -49,7 +53,8 @@ export const HowITest = () => (
       ))}
     </Steps>
     <WhyItMatters>
-      <strong>Why it matters:</strong> {howITest.whyItMatters}
+      <h3>Why it matters</h3>
+      <p>{howITest.whyItMatters}</p>
     </WhyItMatters>
-  </Section>
+  </BandSection>
 );

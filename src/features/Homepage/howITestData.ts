@@ -7,8 +7,11 @@ export interface TestingStep {
 // Clients, systems and figures are confidential: describe the approach only.
 export const howITest = {
   title: "How I test at work",
-  intro:
-    "At Equiniti I test financial and shareholder data as it moves between systems. I try to look at a migration from above, so I see the same record as data, as business logic and as code.",
+  // Two lines: what I test, then how I look at it.
+  intro: [
+    "At Equiniti I test financial and shareholder data as it moves between systems.",
+    "I try to look at a migration from above, so I see the same record as data, as business logic and as code.",
+  ],
   // In my own words: what I enjoy most about testing. No systems, no figures.
   story: {
     title: "Beyond the obvious bugs",

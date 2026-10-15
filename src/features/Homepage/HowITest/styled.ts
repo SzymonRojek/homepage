@@ -1,13 +1,31 @@
 import styled from "styled-components";
 
-export const Intro = styled.p`
+export const Intro = styled.div`
+  display: grid;
+  gap: 6px;
   max-width: 46em;
   margin: -8px 0 0;
   font-size: 18px;
   line-height: 1.65;
 
+  /* No word left alone on the last line. */
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* On phones the two lines run on as one paragraph. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    display: block;
     font-size: 16px;
+
+    p {
+      display: inline;
+    }
+
+    p + p::before {
+      content: " ";
+    }
   }
 `;
 
@@ -118,13 +136,21 @@ export const StepText = styled.p`
   line-height: 1.6;
 `;
 
-export const WhyItMatters = styled.p`
-  margin: 40px 0 0;
+// A small heading over the two sentences, under a thin rule.
+export const WhyItMatters = styled.div`
+  margin-top: 40px;
   padding-top: 20px;
-  line-height: 1.6;
   border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
 
-  strong {
+  h3 {
+    margin: 0;
+    font-size: 18px;
     color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  p {
+    max-width: 760px;
+    margin: 8px 0 0;
+    line-height: 1.6;
   }
 `;
