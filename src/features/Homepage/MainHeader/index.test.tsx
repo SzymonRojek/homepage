@@ -24,8 +24,9 @@ describe("MainHeader", () => {
 
     // The roles close the text: no location or right-to-work line.
     expect(screen.getByRole("term")).toHaveTextContent("Looking for");
-    expect(screen.getByRole("definition")).toHaveTextContent(
-      "Test Automation, QA and AI Testing roles",
+    // The exact text: a non-breaking space and hyphen keep its phrases whole.
+    expect(screen.getByRole("definition").textContent).toBe(
+      "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
     );
     expect(
       screen.queryByRole("list", { name: "Right to work and relocation" }),

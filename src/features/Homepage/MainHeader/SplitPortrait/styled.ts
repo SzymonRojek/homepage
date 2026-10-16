@@ -44,8 +44,13 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
     outline-offset: 4px;
   }
 
+  /* On phones, beside "Looking for": its top level with the label (the
+     list's margin), and smaller, so the text keeps room. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    grid-column: 2;
     justify-self: end;
+    width: clamp(128px, 37cqi, 200px);
+    margin-top: 28px;
   }
 `;
 
@@ -159,9 +164,12 @@ export const Caption = styled.p<{ $visible: boolean }>`
     transition: none;
   }
 
+  /* Smaller on phones, where the photo is narrower beside "Looking for",
+     so the longer caption stays inside it. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    bottom: 18px;
-    font-size: 14px;
+    bottom: 14px;
+    padding: 6px 9px;
+    font-size: 13px;
   }
 `;
 

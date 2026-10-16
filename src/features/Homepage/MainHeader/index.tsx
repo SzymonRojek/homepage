@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
 import { profile } from "../profile";
 import { SplitPortrait } from "./SplitPortrait";
@@ -40,7 +41,21 @@ export const MainHeader = () => (
           <Summary>{profile.bio}</Summary>
           <NextRole>
             <dt>{profile.lookingFor.label}</dt>
-            <dd>{profile.lookingFor.value}</dd>
+            <dd>
+              {profile.lookingFor.lines.map((phrases, index) => (
+                <Fragment key={phrases.join(" ")}>
+                  {index > 0 && " "}
+                  <span>
+                    {phrases.map((phrase, at) => (
+                      <Fragment key={phrase}>
+                        {at > 0 && " "}
+                        <span>{phrase}</span>
+                      </Fragment>
+                    ))}
+                  </span>
+                </Fragment>
+              ))}
+            </dd>
           </NextRole>
         </Details>
         <SplitPortrait

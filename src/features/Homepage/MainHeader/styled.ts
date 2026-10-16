@@ -56,9 +56,11 @@ export const BandInner = styled.div`
     gap: 32px;
   }
 
+  /* On phones the text runs full width, and the photo stands beside
+     "Looking for", its top level with the label, on the band's edge. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    column-gap: 16px;
+    row-gap: 0;
   }
 `;
 
@@ -70,8 +72,20 @@ export const Details = styled.div`
      the band's edge. */
   padding-bottom: ${({ theme }) => theme.layout.section.desktop}px;
 
+  /* On phones its lines become the hero grid's own rows (see BandInner),
+     all full width but "Looking for", which shares a row with the photo. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding-bottom: 0;
+    display: contents;
+
+    & > * {
+      grid-column: 1 / -1;
+    }
+
+    & > dl {
+      grid-column: 1;
+      align-self: start;
+      padding-bottom: ${({ theme }) => theme.layout.section.mobile}px;
+    }
   }
 `;
 
@@ -172,13 +186,20 @@ export const NextRole = styled.dl`
     font-family: ${({ theme }) => theme.fontDisplay};
     font-size: 21px;
     font-weight: 700;
+    line-height: 1.3;
     color: ${({ theme }) => theme.colors.brand.text};
-    text-wrap: balance;
+  }
+
+  /* Each part, and each phrase in it, stays whole where it fits: the line
+     breaks between parts first, and between phrases only when a part can't
+     fit. */
+  dd span {
+    display: inline-block;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     dd {
-      font-size: 19px;
+      font-size: 17px;
     }
   }
 `;

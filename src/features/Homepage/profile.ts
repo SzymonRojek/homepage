@@ -14,7 +14,14 @@ export const profile = {
   // Under the bio: the roles I want lead, so HR sees them first.
   lookingFor: {
     label: "Looking for",
-    value: "Test Automation, QA and AI Testing roles",
+    // Two parts of phrases: one line where it fits, else each part on a line
+    // of its own, and only where a part can't fit does it break between its
+    // phrases. A non-breaking space and hyphen keep "AI Testing" and
+    // "Front-End" whole.
+    lines: [
+      ["QA,", "Test Automation,"],
+      ["AI\u00a0Testing,", "Front\u2011End roles"],
+    ],
   },
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
