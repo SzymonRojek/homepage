@@ -1,4 +1,4 @@
-import type { Pipeline } from "./projectsData";
+import type { Gates, Pipeline } from "./projectsData";
 
 const repositoryURL = "https://github.com/SzymonRojek/homepage";
 
@@ -17,4 +17,19 @@ export const sitePipeline: Pipeline = {
   badgeURL: `${repositoryURL}/actions/workflows/ci.yml/badge.svg`,
   workflowURL: `${repositoryURL}/actions/workflows/ci.yml`,
   testsURL: `${repositoryURL}/tree/main/e2e`,
+};
+
+// The same gates, short, on this site's project card, in the order ci.yml
+// runs them: the 80% gate is the coverage threshold in vite.config.ts and
+// the median of 3 is numberOfRuns in lighthouserc.json.
+export const siteGates: Gates = {
+  checks: [
+    "npm audit",
+    "ESLint + TypeScript",
+    "Vitest · 80% coverage gate",
+    "Production build",
+    "Playwright + axe · desktop & mobile",
+    "Lighthouse budgets · median of 3",
+  ],
+  result: "Deploy to GitHub Pages",
 };

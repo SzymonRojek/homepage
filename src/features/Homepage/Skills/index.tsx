@@ -1,4 +1,5 @@
-import { BandSection, SectionHeader } from "../Section";
+import { Section, SectionLabel } from "../Section";
+import { sectionNumber } from "../sections";
 import {
   automationSkills,
   languages,
@@ -30,8 +31,11 @@ const groups = [
 // a soft card: the course I'm preparing for first, tagged "Next", then the
 // ones I've done, newest first. The page's last section, as on a UK CV.
 export const Skills = () => (
-  <BandSection $band="card" aria-labelledby="skills">
-    <SectionHeader id="skills">Skills &amp; learning</SectionHeader>
+  // On the page's colour, between the white Experience and References bands.
+  <Section aria-labelledby="skills">
+    <SectionLabel id="skills" data-number={sectionNumber("skills")}>
+      Skills &amp; learning
+    </SectionLabel>
     <Grid>
       {groups.map(({ accent, title, skills }) => (
         <Group key={title}>
@@ -65,5 +69,5 @@ export const Skills = () => (
         .map(({ name, level }) => `${name} (${level.toLowerCase()})`)
         .join(" · ")}
     </Languages>
-  </BandSection>
+  </Section>
 );

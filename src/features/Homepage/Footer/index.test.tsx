@@ -1,5 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
+import themeReducer from "../../../common/themeSlice";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import { profile } from "../profile";
@@ -7,9 +10,16 @@ import { Footer } from ".";
 
 const renderFooter = () =>
   render(
-    <ThemeProvider theme={themeLight}>
-      <Footer />
-    </ThemeProvider>,
+    <Provider
+      store={configureStore({
+        reducer: { theme: themeReducer },
+        preloadedState: { theme: { isDarkTheme: false, hasUserChoice: false } },
+      })}
+    >
+      <ThemeProvider theme={themeLight}>
+        <Footer />
+      </ThemeProvider>
+    </Provider>,
   );
 
 describe("Footer", () => {
@@ -26,17 +36,20 @@ describe("Footer", () => {
     expect(screen.queryByText(/@/)).not.toBeInTheDocument();
   });
 
-  it("reads like a letter: thanks, a note about teamwork, one invite", () => {
+  it("reads like a letter: a question, then my note and one invite", () => {
     renderFooter();
 
     expect(
-      screen.getByRole("heading", { name: "Thanks for reading this far." }),
+      screen.getByRole("heading", {
+        name: "Looking for a tester who reads the code too?",
+      }),
     ).toBeInTheDocument();
+    // The invite ends the note, in the same paragraph.
     expect(
-      screen.getByText(
-        "If that sounds like your team, I'd like to hear from you.",
-      ),
-    ).toBeInTheDocument();
+      screen.getByText(/^Communication matters most to me in a team/),
+    ).toHaveTextContent(
+      /If that sounds like your team, I’d like to hear from you\.$/,
+    );
     expect(screen.getAllByRole("link", { name: /LinkedIn/ })).toHaveLength(1);
   });
 
@@ -56,8 +69,20 @@ describe("Footer", () => {
     renderFooter();
 
     expect(
-      screen.getByText(/communication matters most in a team/),
+      screen.getByText(/Communication matters most to me in a team/),
     ).toHaveTextContent("mutual respect");
+  });
+
+  it("has the theme switch after GitHub and LinkedIn, in the last line", () => {
+    renderFooter();
+
+    const socials = screen.getAllByRole("list").at(-1) as HTMLElement;
+    const themeSwitch = screen.getByRole("button", { name: "Dark mode" });
+    expect(themeSwitch).toHaveAttribute("aria-pressed", "false");
+    expect(
+      socials.compareDocumentPosition(themeSwitch) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 
   it("links to GitHub and LinkedIn profiles", () => {

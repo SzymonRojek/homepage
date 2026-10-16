@@ -1,15 +1,10 @@
 import { test, expect } from "./fixtures";
 
-// On phones the switch sits in the menu, so it is found even when hidden;
-// clickThemeSwitch opens the menu first when the switch is out of sight (a
-// click on the switch leaves the menu open).
+// The switch is in the footer's last line; a click scrolls to it.
 const themeSwitch = (page: import("@playwright/test").Page) =>
-  page.getByRole("button", { name: "Dark mode", includeHidden: true });
+  page.getByRole("contentinfo").getByRole("button", { name: "Dark mode" });
 
 const clickThemeSwitch = async (page: import("@playwright/test").Page) => {
-  if (!(await themeSwitch(page).isVisible())) {
-    await page.getByRole("button", { name: "Menu" }).click();
-  }
   await themeSwitch(page).click();
 };
 

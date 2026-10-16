@@ -1,4 +1,5 @@
-import { HiddenSectionHeader } from "../Section";
+import { SectionLabel } from "../Section";
+import { sectionNumber } from "../sections";
 import { howITest } from "../howITestData";
 import {
   Block,
@@ -21,7 +22,13 @@ const [titleStart, titleEnd] = story.title.split(story.highlight);
 // screen readers only), then the method in three steps.
 export const HowITest = () => (
   <Block $band="brand" aria-labelledby="how-i-test">
-    <HiddenSectionHeader id="how-i-test">{howITest.title}</HiddenSectionHeader>
+    <SectionLabel
+      id="how-i-test"
+      data-number={sectionNumber("how-i-test")}
+      $onBrand
+    >
+      {howITest.title}
+    </SectionLabel>
     <Bug aria-hidden="true" focusable="false" />
     <Story aria-labelledby="how-i-test-story">
       <div>

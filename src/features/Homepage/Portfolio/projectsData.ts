@@ -1,5 +1,5 @@
 import { githubUserName } from "./githubUserName";
-import { sitePipeline } from "./pipelineData";
+import { siteGates, sitePipeline } from "./pipelineData";
 
 export type ProjectCategory = "Testing" | "Other";
 
@@ -62,6 +62,18 @@ export interface CaseStudy {
   lessons: string[];
 }
 
+// CI gates in the order the workflow runs them, and what follows when all
+// pass. Each one must be a check CI really enforces.
+export interface Gates {
+  checks: string[];
+  result: string;
+}
+
+export interface Stat {
+  value: string;
+  label: string;
+}
+
 export interface Project {
   title: string;
   // GitHub repository name under githubUserName.
@@ -74,7 +86,17 @@ export interface Project {
   // card: what it is, how it's tested, how quality is guarded. The full story
   // opens on click.
   teaser?: string;
+  // The card's heading, when it says more than the project's name (the case
+  // study keeps the name). The card then shows no sentence under it.
+  cardTitle?: string;
   facts?: string[];
+  // In place of the facts: the CI gates the project passes, ticked one by
+  // one as the card comes into view, then the deploy.
+  gates?: Gates;
+  // In place of the facts: a few numbers, large, each counted in the
+  // project's repo. A count can fall when tests change, so recheck them
+  // whenever the project changes.
+  stats?: Stat[];
   // A short line over the name: what kind of project it is.
   tag?: string;
   // The one project shown large, on the deep green; the others sit beside it
@@ -508,10 +530,13 @@ export const projects: Project[] = [
     featured: true,
     teaser:
       "Job offers to the right candidates: matched by role and budget, personalised, and skipping anyone contacted in the last 14 days.",
-    facts: [
-      "Full-stack TypeScript",
-      "Unit, API & e2e tests",
-      "Staging → production",
+    // Counted on origin/main of talent-outreach on 16 October 2026: 144
+    // server and 102 client unit tests, 63 Playwright tests and 56
+    // assertions in the Postman collection.
+    stats: [
+      { value: "200+", label: "unit tests" },
+      { value: "63", label: "Playwright flows" },
+      { value: "56", label: "API checks" },
     ],
     caseStudy: talentOutreachCaseStudy,
   },
@@ -521,13 +546,8 @@ export const projects: Project[] = [
     language: "TypeScript",
     category: "Testing",
     tag: "The site you're on",
-    teaser:
-      "The page you're reading, rebuilt in 2026 and tested like a real product.",
-    facts: [
-      "React + TypeScript",
-      "Playwright & axe in CI",
-      "Lighthouse budgets",
-    ],
+    cardTitle: "Nothing ships unless every gate passes.",
+    gates: siteGates,
     description:
       "Built in React and TypeScript and tested like a production app: Vitest unit tests, Playwright end-to-end tests and axe accessibility scans run in GitHub Actions before every deploy.",
     caseStudy: homepageCaseStudy,

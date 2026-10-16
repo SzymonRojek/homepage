@@ -32,8 +32,8 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
     inset: 0 0 auto;
     height: 28%;
     background: linear-gradient(
-      ${({ theme }) => a(theme.colors.brand.background, 0.45)},
-      ${({ theme }) => a(theme.colors.brand.background, 0)}
+      ${({ theme }) => a(theme.colors.brand.dark, 0.45)},
+      ${({ theme }) => a(theme.colors.brand.dark, 0)}
     );
     pointer-events: none;
   }

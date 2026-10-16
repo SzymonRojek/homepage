@@ -3,7 +3,8 @@ import { contentColumn } from "../../../core/App/contentColumn";
 
 export const Wrapper = styled.header``;
 
-// Full width, deep green, with a soft yellow ring in the corner.
+// Full width, near-black with a green undertone, with a soft yellow ring in
+// the corner.
 export const Band = styled.div`
   position: relative;
   /* Clips the ring without becoming a scroll container (see the footer). */
@@ -16,7 +17,7 @@ export const Band = styled.div`
      content below the bar. */
   padding: ${({ theme }) => 64 + theme.layout.topBar.desktop}px 0 0;
   color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.background};
+  background: ${({ theme }) => theme.colors.brand.dark};
 
   &::after {
     content: "";
@@ -122,29 +123,22 @@ export const Headline = styled.h1`
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.04em;
+  /* The tight letters would pull the words together too; this gives them
+     back room between them. */
+  word-spacing: 0.08em;
 `;
 
+// The highlighted words on a tilted block of mint, the green of a passing
+// test, with near-black letters, like a sticker on the dark. They stay on
+// one line.
 export const Highlight = styled.span`
-  position: relative;
+  display: inline-block;
+  padding: 0 0.12em;
+  color: ${({ theme }) => theme.colors.brand.onHighlight};
+  background: ${({ theme }) => theme.colors.brand.highlight};
+  border-radius: 0.14em;
+  transform: rotate(-2deg);
   white-space: nowrap;
-`;
-
-// A hand-drawn yellow stroke under the highlighted word; decorative.
-export const Underline = styled.svg`
-  position: absolute;
-  left: -2%;
-  bottom: -0.16em;
-  width: 104%;
-  height: 0.3em;
-  overflow: visible;
-
-  path {
-    fill: none;
-    stroke: ${({ theme }) => theme.colors.brand.accent};
-    stroke-width: 5px;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-  }
 `;
 
 // About 70 characters a line, a comfortable reading width.
@@ -185,32 +179,6 @@ export const NextRole = styled.dl`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     dd {
       font-size: 19px;
-    }
-  }
-`;
-
-// How I can work, as plain phrases in one quiet line, so the roles
-// above stay the first thing HR reads. On phones, one phrase a line.
-export const Facts = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 15px;
-  color: ${({ theme }) => theme.colors.brand.muted};
-
-  li + li::before {
-    content: "·";
-    margin: 0 10px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    flex-direction: column;
-    gap: 2px;
-
-    li + li::before {
-      content: none;
     }
   }
 `;

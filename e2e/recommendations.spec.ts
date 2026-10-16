@@ -1,14 +1,14 @@
 import { test, expect } from "./fixtures";
 
 test.describe("Recommendations", () => {
-  test("quotes five colleagues first, right under the hero", async ({
+  test("quotes five colleagues in the last section, before the footer", async ({
     page,
   }) => {
     await page.goto("./");
 
     await expect(
-      page.getByRole("main").getByRole("heading", { level: 2 }).first(),
-    ).toHaveText("Recommendations");
+      page.getByRole("main").getByRole("heading", { level: 2 }).last(),
+    ).toHaveText("References");
     await expect(
       page.getByText("“…you will be fortunate if you get to work with him.”", {
         exact: true,

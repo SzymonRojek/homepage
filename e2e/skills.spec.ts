@@ -20,12 +20,16 @@ test.describe("Skills & learning", () => {
     ]);
   });
 
-  test("is the last section, with ISTQB next and the courses newest first", async ({
+  test("comes right after Experience, with ISTQB next and the courses newest first", async ({
     page,
   }) => {
-    await expect(
-      page.getByRole("main").getByRole("heading", { level: 2 }).last(),
-    ).toHaveText("Skills & learning");
+    const headings = await page
+      .getByRole("main")
+      .getByRole("heading", { level: 2 })
+      .allTextContents();
+    expect(headings.indexOf("Skills & learning")).toBe(
+      headings.indexOf("Experience") + 1,
+    );
 
     const courses = page
       .getByRole("region", { name: "Skills & learning" })

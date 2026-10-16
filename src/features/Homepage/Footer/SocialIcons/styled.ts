@@ -11,7 +11,7 @@ export const List = styled.ul`
 
 export const Item = styled.li``;
 
-// Small squares like the theme switch in the top bar, with the icon in the
+// Small squares like the theme switch beside them, with the icon in the
 // muted cream of the © line beside them, so they stay quiet until hovered.
 export const Link = styled.a`
   display: grid;

@@ -62,10 +62,11 @@ describe("Portfolio", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("opens with one big line and the intro, under a hidden heading", () => {
+  it("opens with its numbered heading, one big line and the intro", () => {
     renderPortfolio();
 
     const heading = screen.getByRole("heading", { level: 2, name: "Projects" });
+    expect(heading).toHaveAttribute("data-number", "02");
     const line = heading.nextElementSibling;
     expect(line).toHaveTextContent(
       /^Built in my own time\. Tested like production\.$/,

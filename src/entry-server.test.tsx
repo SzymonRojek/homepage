@@ -28,9 +28,9 @@ describe("render", () => {
     expect(page.css).toContain(
       `background:${themeLight.colors.site.background}`,
     );
-    expect(page.css).not.toContain(
-      `background:${themeDark.colors.site.background}`,
-    );
+    // The dark theme's bands; its page colour is the light hero's near-black
+    // too, so it can't tell the themes apart.
+    expect(page.css).not.toContain(`background:${themeDark.colors.cardBand}`);
     expect(page.html).toContain('aria-expanded="false"');
     expect(page.html).not.toContain('aria-expanded="true"');
   });

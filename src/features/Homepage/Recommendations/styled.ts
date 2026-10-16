@@ -1,18 +1,11 @@
 import styled from "styled-components";
 import LinkedInMark from "./linkedin.svg?react";
-import { BandSection, bigLine, sectionOpening } from "../Section";
-
-// The first section, on its own band right under the hero; "How I test" meets
-// it edge to edge on its green band.
-export const QuoteBand = styled(BandSection)`
-  margin-top: 0;
-`;
+import { bigLine } from "../Section";
 
 // Jim's verdict, large, like a headline in a magazine, and still: the cards
 // below carry the details.
 export const Pull = styled.figure`
   margin: 0;
-  ${sectionOpening}
 
   blockquote {
     margin: 0;

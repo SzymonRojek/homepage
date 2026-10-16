@@ -24,7 +24,7 @@ const renderTopBar = () =>
 // The menu button is hidden on wide screens, which is all jsdom can see, and
 // a hidden element has no accessible name; it is found by its aria-label.
 describe("TopBar", () => {
-  it("links to every main section in page order, then Contact", () => {
+  it("links to every main section in page order, then Hire me", () => {
     renderTopBar();
 
     const links = within(
@@ -32,21 +32,21 @@ describe("TopBar", () => {
     ).getAllByRole("link");
     expect(links.map(({ textContent }) => textContent)).toEqual([
       "How I test",
-      "Experience",
       "Projects",
-      "Skills",
-      "Contact",
+      "Experience",
+      "References",
+      "Hire me",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "#how-i-test",
-      "#experience",
       "#projects",
-      "#skills",
+      "#experience",
+      "#recommendations",
       "#contact",
     ]);
   });
 
-  it("has a way back to the top, a contact link and the theme switch", () => {
+  it("has a way back to the top and Hire me, no theme switch", () => {
     renderTopBar();
 
     // My name alone as the wordmark, linking back to the top: the job title
@@ -54,37 +54,33 @@ describe("TopBar", () => {
     const brand = screen.getByRole("link", { name: /^Szymon Rojek/ });
     expect(brand).toHaveAttribute("href", "#top");
     expect(brand).toHaveTextContent(/^Szymon Rojek$/);
-    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Hire me" })).toHaveAttribute(
       "href",
       "#contact",
     );
-    expect(
-      screen.getByRole("button", { name: "Dark mode" }),
-    ).toBeInTheDocument();
+    // The theme switch is in the footer.
+    expect(screen.queryByRole("button", { name: "Dark mode" })).toBeNull();
   });
 
-  it("keeps Contact and the theme switch in the menu, after the links", () => {
+  it("keeps Hire me in the menu, after the links", () => {
     renderTopBar();
 
     const nav = screen.getByRole("navigation", { name: "Sections" });
     expect(nav).toHaveAttribute("id", "site-menu");
-    const contact = within(nav).getByRole("link", { name: "Contact" });
-    const lastSection = within(nav).getByRole("link", { name: "Skills" });
+    const contact = within(nav).getByRole("link", { name: "Hire me" });
+    const lastSection = within(nav).getByRole("link", { name: "References" });
     expect(
       lastSection.compareDocumentPosition(contact) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
-    expect(
-      within(nav).getByRole("button", { name: "Dark mode" }),
-    ).toBeInTheDocument();
   });
 
-  it("closes the menu when Contact is chosen", () => {
+  it("closes the menu when Hire me is chosen", () => {
     renderTopBar();
     const button = screen.getByLabelText("Menu");
     fireEvent.click(button);
 
-    fireEvent.click(screen.getByRole("link", { name: "Contact" }));
+    fireEvent.click(screen.getByRole("link", { name: "Hire me" }));
 
     expect(button).toHaveAttribute("aria-expanded", "false");
   });

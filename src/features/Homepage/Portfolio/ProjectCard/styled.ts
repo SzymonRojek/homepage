@@ -127,9 +127,10 @@ export const Facts = styled.ul<Featured>`
   }
 `;
 
-// The buttons keep their own width, never stretched. In one row while they
-// fit; in a narrow card the case study takes the first row and the demo and
-// the code sit side by side under it, all to the left.
+// The buttons keep their own width, never stretched, in one row while they
+// fit. With three of them, a narrow card gives the case study the first row
+// and puts the demo and the code side by side under it, all to the left; two
+// stay side by side until the card has no room left for both.
 export const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -140,13 +141,15 @@ export const Actions = styled.div`
   padding-top: 28px;
 
   @container (max-width: 379px) {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: start;
+    &:has(> :nth-child(3)) {
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: start;
 
-    & > :first-child {
-      grid-column: 1 / -1;
-      justify-self: start;
+      & > :first-child {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
     }
   }
 `;

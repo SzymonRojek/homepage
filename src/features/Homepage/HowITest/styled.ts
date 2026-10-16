@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BandSection, sectionOpening } from "../Section";
+import { BandSection } from "../Section";
 import BugSvg from "./bug.svg?react";
 
 // The whole section is one block on the deep brand green, the same in both
@@ -9,6 +9,9 @@ import BugSvg from "./bug.svg?react";
 // the band a scroll container; "isolate" keeps the bug above the band's
 // background and below its text.
 export const Block = styled(BandSection)`
+  /* The first section, right under the hero: the near-black runs into the
+     green with no page colour between them. */
+  margin-top: 0;
   position: relative;
   isolation: isolate;
   overflow: clip;
@@ -45,7 +48,6 @@ export const Bug = styled(BugSvg)`
 // My story opens the block: the title and the punchline on the left, the
 // story on the right.
 export const Story = styled.article`
-  ${sectionOpening}
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;

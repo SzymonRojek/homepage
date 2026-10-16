@@ -60,6 +60,54 @@ describe("ProjectCard", () => {
     );
   });
 
+  it("shows the CI gates in place of the facts when it has them", () => {
+    renderCard({
+      gates: { checks: ["npm audit"], result: "Deploy to GitHub Pages" },
+    });
+
+    expect(
+      screen.getByRole("list", {
+        name: "Talent Outreach: CI gates, all passing",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("list", { name: "Talent Outreach: key facts" }),
+    ).toBeNull();
+  });
+
+  it("shows numbers in place of the facts when it has them", () => {
+    renderCard({
+      stats: [
+        { value: "200+", label: "unit tests" },
+        { value: "63", label: "Playwright flows" },
+      ],
+    });
+
+    expect(
+      within(screen.getByRole("list", { name: "Talent Outreach: in numbers" }))
+        .getAllByRole("listitem")
+        .map(({ textContent }) => textContent),
+    ).toEqual(["200+ unit tests", "63 Playwright flows"]);
+    expect(
+      screen.queryByRole("list", { name: "Talent Outreach: key facts" }),
+    ).toBeNull();
+  });
+
+  it("can carry a heading of its own, with no sentence under it", () => {
+    renderCard({
+      cardTitle: "Nothing ships unless every gate passes.",
+      teaser: undefined,
+    });
+
+    expect(
+      screen.getByRole("heading", {
+        level: 3,
+        name: "Nothing ships unless every gate passes.",
+      }),
+    ).toBeVisible();
+    expect(screen.queryByText("A longer description.")).toBeNull();
+  });
+
   it("falls back to the description without a teaser", () => {
     renderCard({ teaser: undefined, facts: undefined });
 

@@ -1,5 +1,6 @@
 import { email } from "../email";
 import { profile } from "../profile";
+import { ThemeSwitch } from "../../../common/ThemeSwitch";
 import { SocialIcons } from "./SocialIcons";
 import {
   Wrapper,
@@ -8,23 +9,23 @@ import {
   Heading,
   Message,
   Note,
-  Invite,
   ContactButton,
   Bottom,
+  Tools,
+  Divider,
 } from "./styled";
 import { EnvelopeIcon } from "../ButtonLink";
 
 // The end of the page reads like a short note, not a contact form: the thanks
 // on the left, my words about teamwork and one "Email me" on the right.
-// LinkedIn and GitHub sit in the line underneath.
+// LinkedIn, GitHub and the theme switch sit in the line underneath.
 export const Footer = () => (
   <Wrapper>
     <Inner>
       <Letter aria-labelledby="contact">
-        <Heading id="contact">Thanks for reading this far.</Heading>
+        <Heading id="contact">{profile.contactHeading}</Heading>
         <Message>
           <Note>{profile.teamNote}</Note>
-          <Invite>{profile.contactInvite}</Invite>
           <ContactButton href={`mailto:${email}`} aria-label="Send me an email">
             <EnvelopeIcon aria-hidden="true" />
             Email me
@@ -38,7 +39,11 @@ export const Footer = () => (
         <p suppressHydrationWarning>
           {profile.name} © {new Date().getFullYear()}
         </p>
-        <SocialIcons />
+        <Tools>
+          <SocialIcons />
+          <Divider aria-hidden="true" />
+          <ThemeSwitch />
+        </Tools>
       </Bottom>
     </Inner>
   </Wrapper>

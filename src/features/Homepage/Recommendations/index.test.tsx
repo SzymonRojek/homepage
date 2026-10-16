@@ -39,7 +39,7 @@ const renderRecommendations = () =>
   );
 
 describe("Recommendations", () => {
-  it("names the section with a heading for screen readers", () => {
+  it("names the section with its numbered heading", () => {
     renderRecommendations();
 
     const heading = screen.getByRole("heading", {
@@ -49,6 +49,8 @@ describe("Recommendations", () => {
     expect(screen.getByRole("region", { name: "Recommendations" })).toBe(
       heading.closest("section"),
     );
+    // The last section: "05 / …" in front of its name.
+    expect(heading).toHaveAttribute("data-number", "05");
     // "Peer-reviewed by others" was removed on purpose.
     expect(screen.queryByText(/Peer-reviewed/)).toBeNull();
   });
