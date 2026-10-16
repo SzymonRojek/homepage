@@ -17,7 +17,7 @@ test.describe("Navigation", () => {
   });
 
   test("the top bar links to each section", async ({ page, isMobile }) => {
-    for (const [link, heading] of [
+    for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
       ["Skills", "Skills & learning"],
@@ -25,9 +25,17 @@ test.describe("Navigation", () => {
     ]) {
       await test.step(link, async () => {
         await (await sectionLink(page, link, isMobile)).click();
-        await expect(
-          page.getByRole("heading", { level: 2, name: heading }),
-        ).toBeInViewport();
+        // Some sections' headings are for screen readers only (a clipped
+        // 1px box the viewport check can't see), so the section itself is
+        // checked: it starts just under the top bar.
+        const region = page.getByRole("region", { name: section });
+        await expect(region).toBeInViewport();
+        await expect
+          .poll(async () => Math.round((await region.boundingBox())!.y))
+          .toBeGreaterThanOrEqual(0);
+        await expect
+          .poll(async () => Math.round((await region.boundingBox())!.y))
+          .toBeLessThan(150);
       });
     }
   });

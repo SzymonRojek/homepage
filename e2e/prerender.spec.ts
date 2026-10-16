@@ -18,7 +18,8 @@ test.describe("the page without JavaScript", () => {
     expect(html).toContain("Szymon Rojek");
     expect(html).toContain("I don’t stop at ");
     for (const section of sections) {
-      expect(html).toContain(section);
+      // The raw HTML writes "&" as "&amp;".
+      expect(html).toContain(section.replace("&", "&amp;"));
     }
     expect(html).not.toContain("enable JavaScript");
   });
