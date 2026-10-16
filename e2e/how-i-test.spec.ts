@@ -7,6 +7,16 @@ test.describe("How I test at work", () => {
     await page.goto("./");
 
     const section = page.getByRole("region", { name: "How I test at work" });
+    // My story opens the section, before the method.
+    const story = section.getByRole("article", {
+      name: "Beyond the obvious bugs",
+    });
+    await expect(story).toBeVisible();
+    expect((await story.boundingBox())!.y).toBeLessThan(
+      (await section
+        .getByRole("list", { name: "How I test a data migration" })
+        .boundingBox())!.y,
+    );
     await expect(
       section
         .getByRole("list", { name: "How I test a data migration" })
@@ -14,13 +24,7 @@ test.describe("How I test at work", () => {
     ).toHaveCount(3);
     await expect(section).toContainText("field-by-field values");
     await expect(section).toContainText("stored procedures");
-    await expect(
-      section.getByRole("heading", { level: 3, name: "Why it matters" }),
-    ).toBeVisible();
-    await expect(section).toContainText(
-      "In financial data, one wrong field can mean a wrong holding or a wrong payment. Reconciliation proves that nothing was lost or changed on the way.",
-    );
-    // The story in my own words comes first.
+    // The story in my own words.
     await expect(
       section.getByRole("article", { name: "Beyond the obvious bugs" }),
     ).toContainText("set up a call with the developer");

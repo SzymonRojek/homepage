@@ -61,7 +61,7 @@ describe("SplitPortrait", () => {
     expect(portrait).not.toHaveTextContent("Test");
   });
 
-  it("starts all in colour, with the tester caption and a drag hint", () => {
+  it("starts all in colour, with the tester caption and no hint", () => {
     renderPortrait();
 
     const slider = screen.getByRole("slider", {
@@ -70,20 +70,8 @@ describe("SplitPortrait", () => {
     expect(slider).toHaveValue("0");
     expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
     expect(screen.getByText("All test")).toBeInTheDocument();
-    expect(screen.getByText("Drag")).toHaveAttribute("aria-hidden", "true");
-  });
-
-  it("hides the hint once the line has moved", () => {
-    renderPortrait();
-
-    fireEvent.change(
-      screen.getByRole("slider", {
-        name: "Move the line between code and test",
-      }),
-      { target: { value: "30" } },
-    );
-
-    expect(screen.queryByText("Drag")).toBeNull();
+    // No "Drag" word on the photo: removed on purpose.
+    expect(screen.queryByText(/drag/i)).toBeNull();
   });
 
   it("moves the line when the slider moves", () => {
@@ -131,7 +119,6 @@ describe("SplitPortrait", () => {
 
     fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 140 });
     expect(slider).toHaveAttribute("aria-valuetext", "20% code, 80% test");
-    expect(screen.queryByText("Drag")).toBeNull();
   });
 
   it("puts the line back when the browser turns the touch into a scroll", () => {
@@ -147,8 +134,6 @@ describe("SplitPortrait", () => {
     fireEvent.pointerCancel(portrait);
 
     expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
-    // A scroll is not a drag: the hint stays.
-    expect(screen.getByText("Drag")).toBeInTheDocument();
   });
 
   it("finishes a drag that was let go partway: right to the code end", () => {

@@ -25,6 +25,43 @@ test.describe("Projects", () => {
     await page.goto("./");
   });
 
+  test("opens with the big line and the intro", async ({ page }) => {
+    const section = page.getByRole("region", { name: "Projects" });
+    // Two sentences, each on a line of its own.
+    const first = section.getByText("Built in my own time.", { exact: true });
+    const second = section.getByText("Tested like production.", {
+      exact: true,
+    });
+    await expect(first).toBeVisible();
+    expect((await second.boundingBox())!.y).toBeGreaterThan(
+      (await first.boundingBox())!.y,
+    );
+    // Building in the code colour, testing in the testing colour.
+    await expect(first).toHaveCSS("color", "rgb(169, 74, 34)");
+    await expect(second).toHaveCSS("color", "rgb(28, 116, 87)");
+    await expect(section).toContainText(
+      "Each has two sides: how I built it, and how I proved it works.",
+    );
+  });
+
+  test("features Talent Outreach large on the deep green, the site beside it", async ({
+    page,
+  }) => {
+    const cards = page
+      .getByRole("list", { name: "Case studies" })
+      .getByRole("listitem")
+      .filter({ has: page.getByRole("heading", { level: 3 }) });
+    const featured = cards.filter({ hasText: "Talent Outreach" });
+    const site = cards.filter({ hasText: "This website" });
+
+    await expect(cards.first()).toContainText("Full-stack app");
+    await expect(featured).toHaveCSS("background-color", "rgb(18, 60, 55)");
+    await expect(site).toContainText("The site you're on");
+    await expect(featured).not.toContainText("live demo", {
+      ignoreCase: true,
+    });
+  });
+
   test("shows two case-study cards, all closed", async ({ page }) => {
     const cards = page.getByRole("list", { name: "Case studies" });
 

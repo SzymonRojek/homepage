@@ -1,68 +1,59 @@
 import styled from "styled-components";
+import { BandSection } from "../Section";
 
-export const Intro = styled.div`
-  display: grid;
-  gap: 6px;
-  max-width: 46em;
-  margin: -8px 0 0;
-  font-size: 18px;
-  line-height: 1.65;
+// The whole section is one block on the deep brand green, the same in both
+// themes: cream text, muted cream for the long text, yellow accents. Focus
+// rings are yellow here, as on the hero, because the page's green ring would
+// vanish on green.
+export const Block = styled(BandSection)`
+  color: ${({ theme }) => theme.colors.brand.text};
 
-  /* No word left alone on the last line. */
-  p {
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  /* On phones the two lines run on as one paragraph. */
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    display: block;
-    font-size: 16px;
-
-    p {
-      display: inline;
-    }
-
-    p + p::before {
-      content: " ";
-    }
+  *:focus-visible {
+    outline-color: ${({ theme }) => theme.colors.brand.accent};
   }
 `;
 
-// The story gets the deep-green band across the whole screen. The padding
-// mirrors the pull-out, so the text keeps the page's content edge.
-export const Band = styled.article`
+// My story opens the block: the title and the punchline on the left, the
+// story on the right.
+export const Story = styled.article`
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;
   align-items: start;
-  margin: 28px calc(50% - 50vw) 0;
-  padding: 40px calc(50vw - 50%);
-  color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.background};
+  padding-top: 16px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding-block: 28px;
+    padding-top: 8px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding-top: 0;
   }
 `;
 
+// The story's title is the section's title on screen.
 export const StoryTitle = styled.h3`
   margin: 0;
-  font-size: 40px;
+  font-size: 52px;
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   color: ${({ theme }) => theme.colors.brand.text};
+  text-wrap: balance;
 
   em {
     font-style: normal;
     color: ${({ theme }) => theme.colors.brand.accent};
   }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    font-size: 40px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 30px;
+    font-size: 32px;
   }
 `;
 
@@ -94,63 +85,67 @@ export const StoryText = styled.div`
   p:last-child {
     margin-bottom: 0;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    p {
+      font-size: 16px;
+    }
+  }
 `;
 
-// The three steps side by side, each under a large number in the testing
-// green (4.8:1 on cream, mint in the dark theme: large text needs 3:1).
+// The method under the story: three steps side by side, each under a thin
+// line with a small yellow number; one under another up to tablets.
 export const Steps = styled.ol`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  margin: 36px 0 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  margin: 56px 0 0;
   padding: 0;
   list-style: none;
 
+  li {
+    padding-top: 20px;
+    border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 32px;
     gap: 24px;
-    margin-top: 28px;
+
+    li {
+      padding-top: 16px;
+    }
   }
 `;
 
 export const StepNumber = styled.span`
   display: block;
   font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: 56px;
+  font-size: 14px;
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: ${({ theme }) => theme.colors.qa.accent};
+  color: ${({ theme }) => theme.colors.brand.accent};
 `;
 
 export const StepTitle = styled.h3`
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   font-size: 19px;
   line-height: 1.3;
-  color: ${({ theme }) => theme.colors.textPrimary};
+  color: ${({ theme }) => theme.colors.brand.text};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 18px;
+  }
 `;
 
 export const StepText = styled.p`
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 15px;
-  line-height: 1.6;
-`;
-
-// A small heading over the two sentences, under a thin rule.
-export const WhyItMatters = styled.div`
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
-
-  h3 {
-    margin: 0;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  p {
-    max-width: 760px;
-    margin: 8px 0 0;
-    line-height: 1.6;
-  }
+  line-height: 1.65;
+  color: ${({ theme }) => theme.colors.brand.muted};
 `;

@@ -1,21 +1,11 @@
 import styled from "styled-components";
-import { BandSection } from "../Section";
+import LinkedInMark from "./linkedin.svg?react";
+import { BandSection, bigLine } from "../Section";
 
 // The first section, on its own band right under the hero; "How I test" meets
 // it edge to edge on its green band.
 export const QuoteBand = styled(BandSection)`
   margin-top: 0;
-`;
-
-export const HiddenHeading = styled.h2`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 `;
 
 // Jim's verdict, large, like a headline in a magazine, and still: the cards
@@ -28,43 +18,9 @@ export const Pull = styled.figure`
   }
 
   blockquote p {
+    ${bigLine}
     max-width: 20em;
-    margin: 0;
-    font-family: ${({ theme }) => theme.fontDisplay};
-    font-size: 44px;
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-    color: ${({ theme }) => theme.colors.textPrimary};
   }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    blockquote p {
-      font-size: 34px;
-    }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    blockquote p {
-      font-size: 28px;
-    }
-  }
-`;
-
-// The end of the sentence in yellow: a marker behind dark words in the light
-// theme, yellow words in the dark one. Only a marker gets side padding, so
-// plain yellow words keep normal spacing. The words never split across two
-// lines, so the punchline lands whole on a line of its own.
-export const Mark = styled.mark`
-  white-space: nowrap;
-  padding: 0
-    ${({ theme }) =>
-      theme.colors.quoteMark.background === "transparent" ? "0" : "0.12em"};
-  color: ${({ theme }) => theme.colors.quoteMark.text};
-  background: ${({ theme }) => theme.colors.quoteMark.background};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
 `;
 
 // The full recommendations as cards in two columns that fill like a wall of
@@ -78,12 +34,17 @@ export const List = styled.div`
   grid-template-columns: repeat(2, 1fr);
   align-items: start;
   gap: 24px;
-  margin-top: 32px;
+  /* Room under the big quote, so it stands on its own above the cards. */
+  margin-top: 64px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-top: 24px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-top: 40px;
   }
 `;
 
@@ -97,6 +58,9 @@ export const Column = styled.div`
 `;
 
 export const Item = styled.div<{ $order: number }>`
+  position: relative;
+  /* Clips the watermark at the corner. */
+  overflow: hidden;
   order: ${({ $order }) => $order};
   padding: 24px 28px 26px;
   background: ${({ theme }) => theme.colors.quoteCard};
@@ -112,6 +76,8 @@ export const Item = styled.div<{ $order: number }>`
 // eyetracking), so the byline leads, above a thin rule. The card already
 // reads as a quote, so the text has no quotation marks.
 export const Quote = styled.figure`
+  position: relative;
+  z-index: 1;
   margin: 0;
 
   blockquote {
@@ -158,6 +124,28 @@ export const Byline = styled.span`
   time {
     font-size: 13px;
     white-space: nowrap;
+  }
+`;
+
+// A faint LinkedIn mark in the card's bottom-right corner, like a watermark,
+// cut by the card's edge: it says where the words come from without pulling
+// the eye from them. The text's own colour at low opacity, so it suits both
+// themes; it sits behind the text (which keeps its contrast) and lets clicks
+// through.
+export const Watermark = styled(LinkedInMark)`
+  position: absolute;
+  z-index: 0;
+  right: -10px;
+  bottom: -10px;
+  width: 84px;
+  height: 84px;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  opacity: 0.05;
+  pointer-events: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    width: 64px;
+    height: 64px;
   }
 `;
 

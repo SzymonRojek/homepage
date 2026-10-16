@@ -8,14 +8,14 @@ test.describe("Recommendations", () => {
 
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }).first(),
-    ).toHaveText("What colleagues say");
+    ).toHaveText("Recommendations");
     await expect(
       page.getByText("“…you will be fortunate if you get to work with him.”", {
         exact: true,
       }),
     ).toBeVisible();
     const quotes = page
-      .getByRole("list", { name: "Recommendations" })
+      .getByRole("list", { name: "Recommendations from LinkedIn" })
       .getByRole("listitem");
     await expect(quotes).toHaveCount(4);
     // The newest first, and Oskar's (the second) beside it at the top.

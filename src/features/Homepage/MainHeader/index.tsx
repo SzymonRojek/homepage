@@ -6,6 +6,7 @@ import {
   Band,
   BandInner,
   Details,
+  Eyebrow,
   NameAndTitle,
   Headline,
   Highlight,
@@ -22,12 +23,14 @@ const [before, after] = profile.tagline.split(profile.taglineHighlight);
 // and where I can work, and the photo rising from the band's bottom edge.
 // Contact lives in the top bar and the footer, so the hero has no button of
 // its own. The headline is the h1 and starts with my name and title, which
-// only screen readers and search engines get: the top bar shows them.
+// only screen readers and search engines get: on screen the top bar shows
+// my name and the line over the headline my title.
 export const MainHeader = () => (
   <Wrapper id="top">
     <Band>
       <BandInner>
         <Details>
+          <Eyebrow>{profile.eyebrow}</Eyebrow>
           <Headline>
             {/* The space stays outside the hidden part: a trailing space inside
                 it is dropped from the heading's accessible name. */}
@@ -36,7 +39,7 @@ export const MainHeader = () => (
             <Highlight>
               {/* Before the word, not after: Chrome puts a space at the edge of
                   this positioned SVG in the heading's accessible name, and here
-                  it merges with the space before the word ("wrong ." else). */}
+                  it merges with the space before the word ("green ." else). */}
               <Underline
                 viewBox="0 0 200 20"
                 preserveAspectRatio="none"
@@ -53,7 +56,7 @@ export const MainHeader = () => (
             <dt>{profile.lookingFor.label}</dt>
             <dd>{profile.lookingFor.value}</dd>
           </NextRole>
-          <Facts aria-label="Location and right to work">
+          <Facts aria-label="Right to work and relocation">
             {profile.facts.map((fact) => (
               <li key={fact}>{fact}</li>
             ))}

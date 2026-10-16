@@ -7,12 +7,8 @@ export interface TestingStep {
 // Clients, systems and figures are confidential: describe the approach only.
 export const howITest = {
   title: "How I test at work",
-  // Two lines: what I test, then how I look at it.
-  intro: [
-    "At Equiniti I test financial and shareholder data as it moves between systems.",
-    "I try to look at a migration from above, so I see the same record as data, as business logic and as code.",
-  ],
-  // In my own words: what I enjoy most about testing. No systems, no figures.
+  // In my own words: what I enjoy most about testing. It opens the section,
+  // before the method. No systems, no figures.
   story: {
     title: "Beyond the obvious bugs",
     // The word in the title set in yellow.
@@ -39,6 +35,4 @@ export const howITest = {
       text: "Is it the data, the transformation logic, a stored procedure or the requirement itself? I log it in Azure DevOps with reproduction steps and evidence, and retest the fix with the developers.",
     },
   ] satisfies TestingStep[],
-  whyItMatters:
-    "In financial data, one wrong field can mean a wrong holding or a wrong payment. Reconciliation proves that nothing was lost or changed on the way.",
 };

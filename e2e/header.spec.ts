@@ -8,16 +8,23 @@ test.describe("Header and footer", () => {
   test("shows name, title and page title", async ({ page }) => {
     await expect(page).toHaveTitle(/Szymon Rojek/);
     // The tagline is the h1. It starts with the name and title for screen
-    // readers and search engines; on screen the top bar shows them.
+    // readers and search engines; on screen the top bar shows the name and
+    // the line over the headline the title.
     const headline = page.getByRole("heading", { level: 1 });
     await expect(headline).toHaveAccessibleName(
-      "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+      "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
     );
     const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
     await expect(brand).toBeVisible();
-    // Only the name and the job title: the coding side is told further down.
-    await expect(brand).toHaveText("Szymon RojekSoftware Test Engineer");
+    // Only the name: the job title is over the headline.
+    await expect(brand).toHaveText("Szymon Rojek");
     await expect(headline).toBeVisible();
+    // Over the headline, the title and where I live, in capitals set by CSS.
+    const eyebrow = page
+      .getByRole("banner")
+      .getByText("Software Test Engineer · Hove, UK");
+    await expect(eyebrow).toBeVisible();
+    await expect(eyebrow).toHaveCSS("text-transform", "uppercase");
   });
 
   test("tells recruiters at a glance what I'm looking for", async ({
@@ -31,13 +38,9 @@ test.describe("Header and footer", () => {
     );
     await expect(
       header
-        .getByRole("list", { name: "Location and right to work" })
+        .getByRole("list", { name: "Right to work and relocation" })
         .getByRole("listitem"),
-    ).toHaveText([
-      "Based in Hove, UK",
-      "Full right to work in the UK",
-      "Open to relocation",
-    ]);
+    ).toHaveText(["Full right to work in the UK", "Open to relocation"]);
     await expect(
       header.getByText(/^Four years testing financial data/),
     ).toBeVisible();
@@ -75,12 +78,11 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "What colleagues say",
+      "Recommendations",
       "How I test at work",
       "Experience",
       "Projects",
-      "Skills",
-      "Still learning",
+      "Skills & learning",
     ]);
   });
 
@@ -109,7 +111,7 @@ test.describe("Header and footer", () => {
       .boundingBox();
     if (!photo) throw new Error("No photo");
     await expect(page.getByText("100% tester")).toBeVisible();
-    await expect(page.getByText("Drag", { exact: true })).toBeVisible();
+    await expect(page.getByText("Drag", { exact: true })).toHaveCount(0);
 
     // Grab the yellow grip at the left edge and drag it to the right edge.
     const y = photo.y + photo.height * 0.58;
@@ -119,7 +121,6 @@ test.describe("Header and footer", () => {
     await page.mouse.up();
 
     await expect(page.getByText("…who also codes")).toBeVisible();
-    await expect(page.getByText("Drag", { exact: true })).toHaveCount(0);
   });
 
   test("a short drag let go partway slides on to the end @desktop", async ({

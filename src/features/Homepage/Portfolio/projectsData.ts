@@ -75,6 +75,11 @@ export interface Project {
   // opens on click.
   teaser?: string;
   facts?: string[];
+  // A short line over the name: what kind of project it is.
+  tag?: string;
+  // The one project shown large, on the deep green; the others sit beside it
+  // as white cards.
+  featured?: boolean;
   caseStudy?: CaseStudy;
 }
 
@@ -479,8 +484,16 @@ const talentOutreachCaseStudy: CaseStudy = {
   ],
 };
 
+// The section's title on screen, two sentences on two lines in the colours
+// of the CODE / TEST portrait: building in the code colour, testing in the
+// testing colour. Then the intro.
+export const projectsHeadline: { text: string; side: "code" | "test" }[] = [
+  { text: "Built in my own time.", side: "code" },
+  { text: "Tested like production.", side: "test" },
+];
+
 export const projectsIntro =
-  "Two projects I built in my own time to practise development, and tested the way I test at work. Each one is shown from both sides: how I built it, and how I proved it works.";
+  "Two apps I built to practise development, then tested the way I test at work. Each has two sides: how I built it, and how I proved it works.";
 
 export const projects: Project[] = [
   {
@@ -491,6 +504,8 @@ export const projects: Project[] = [
     description:
       "Full-stack recruitment tool: job offers to candidates by role and budget, personalised, only with consent and not to anyone contacted in the last 14 days, with unit, API, end-to-end and Lighthouse tests and CI/CD through staging to production.",
     demoUrl: "https://talent-outreach.onrender.com/?utm_source=portfolio",
+    tag: "Full-stack app",
+    featured: true,
     teaser:
       "Job offers to the right candidates: matched by role and budget, personalised, and skipping anyone contacted in the last 14 days.",
     facts: [
@@ -505,6 +520,7 @@ export const projects: Project[] = [
     repo: "homepage",
     language: "TypeScript",
     category: "Testing",
+    tag: "The site you're on",
     teaser:
       "The page you're reading, rebuilt in 2026 and tested like a real product.",
     facts: [

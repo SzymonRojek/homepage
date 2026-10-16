@@ -1,8 +1,8 @@
-import { BandSection, SectionHeader } from "../Section";
+import { HiddenSectionHeader } from "../Section";
 import { howITest } from "../howITestData";
 import {
-  Intro,
-  Band,
+  Block,
+  Story,
   StoryTitle,
   Punchline,
   StoryText,
@@ -10,23 +10,18 @@ import {
   StepNumber,
   StepTitle,
   StepText,
-  WhyItMatters,
 } from "./styled";
 
 const { story } = howITest;
 const [titleStart, titleEnd] = story.title.split(story.highlight);
 
-// Professional evidence, before the side projects: my story on the green
-// band, then how I test a data migration in three steps.
+// Professional evidence, before the side projects, as one block on the deep
+// green: my story first, as what only I can say (the section's heading is for
+// screen readers only), then the method in three steps.
 export const HowITest = () => (
-  <BandSection $band="test" aria-labelledby="how-i-test">
-    <SectionHeader id="how-i-test">{howITest.title}</SectionHeader>
-    <Intro>
-      {howITest.intro.map((line) => (
-        <p key={line}>{line}</p>
-      ))}
-    </Intro>
-    <Band aria-labelledby="how-i-test-story">
+  <Block $band="brand" aria-labelledby="how-i-test">
+    <HiddenSectionHeader id="how-i-test">{howITest.title}</HiddenSectionHeader>
+    <Story aria-labelledby="how-i-test-story">
       <div>
         <StoryTitle id="how-i-test-story">
           {titleStart}
@@ -40,7 +35,7 @@ export const HowITest = () => (
           <p key={paragraph}>{paragraph}</p>
         ))}
       </StoryText>
-    </Band>
+    </Story>
     <Steps aria-label="How I test a data migration">
       {howITest.steps.map(({ title, text }, index) => (
         <li key={title}>
@@ -52,9 +47,5 @@ export const HowITest = () => (
         </li>
       ))}
     </Steps>
-    <WhyItMatters>
-      <h3>Why it matters</h3>
-      <p>{howITest.whyItMatters}</p>
-    </WhyItMatters>
-  </BandSection>
+  </Block>
 );

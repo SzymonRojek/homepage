@@ -6,12 +6,16 @@ import {
   testingSkills,
   tools,
 } from "../skillsData";
+import { education } from "../experienceData";
 import {
   Grid,
   Group,
+  LearningGroup,
   GroupTitle,
   SkillList,
   Skill,
+  Course,
+  NextTag,
   Tools,
   Languages,
 } from "./styled";
@@ -22,9 +26,12 @@ const groups = [
   { accent: "dev", title: "Programming", skills: programmingSkills },
 ] as const;
 
+// What I can do, in three short lists, and what I'm learning, as a fourth on
+// a soft card: the course I'm preparing for first, tagged "Next", then the
+// ones I've done, newest first. The page's last section, as on a UK CV.
 export const Skills = () => (
   <BandSection $band="card" aria-labelledby="skills">
-    <SectionHeader id="skills">Skills</SectionHeader>
+    <SectionHeader id="skills">Skills &amp; learning</SectionHeader>
     <Grid>
       {groups.map(({ accent, title, skills }) => (
         <Group key={title}>
@@ -36,6 +43,18 @@ export const Skills = () => (
           </SkillList>
         </Group>
       ))}
+      <LearningGroup>
+        <GroupTitle $accent="learning">Learning</GroupTitle>
+        <SkillList aria-label="Courses and certifications">
+          {education.map(({ title, detail, year, next }) => (
+            <Skill key={title}>
+              {title}
+              {next && <NextTag>Next</NextTag>}
+              <Course>{next ? detail : `${year} · ${detail}`}</Course>
+            </Skill>
+          ))}
+        </SkillList>
+      </LearningGroup>
     </Grid>
     <Tools>
       <strong>Tools:</strong> {tools.join(" · ")}

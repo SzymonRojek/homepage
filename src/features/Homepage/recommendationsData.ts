@@ -54,6 +54,10 @@ export const recommendations: Recommendation[] = [
   },
 ];
 
+// The section's heading, for screen readers only: Jim's sentence and the
+// LinkedIn mark on the cards say it on screen.
+export const recommendationsHeading = "Recommendations";
+
 // One sentence from the recommendations, shown large above them. The words
 // are a part of Jim's quote; the highlight is the end of the sentence.
 export const headline = {

@@ -17,17 +17,25 @@ test.describe("Navigation", () => {
   });
 
   test("the top bar links to each section", async ({ page, isMobile }) => {
-    for (const [link, heading] of [
+    for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
-      ["Skills", "Skills"],
+      ["Skills", "Skills & learning"],
       ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {
         await (await sectionLink(page, link, isMobile)).click();
-        await expect(
-          page.getByRole("heading", { level: 2, name: heading }),
-        ).toBeInViewport();
+        // Some sections' headings are for screen readers only (a clipped
+        // 1px box the viewport check can't see), so the section itself is
+        // checked: it starts just under the top bar.
+        const region = page.getByRole("region", { name: section });
+        await expect(region).toBeInViewport();
+        await expect
+          .poll(async () => Math.round((await region.boundingBox())!.y))
+          .toBeGreaterThanOrEqual(0);
+        await expect
+          .poll(async () => Math.round((await region.boundingBox())!.y))
+          .toBeLessThan(150);
       });
     }
   });
@@ -58,7 +66,7 @@ test.describe("Navigation", () => {
     isMobile,
   }) => {
     await page
-      .getByRole("heading", { name: "Skills" })
+      .getByRole("heading", { name: "Skills & learning" })
       .scrollIntoViewIfNeeded();
 
     await expect(
@@ -124,8 +132,9 @@ test.describe("Navigation", () => {
 
       await projects.click();
       await expect(projects).toBeHidden();
+      // The heading is for screen readers only; the big line under it shows.
       await expect(
-        page.getByRole("heading", { level: 2, name: "Projects" }),
+        page.getByText("Built in my own time.", { exact: true }),
       ).toBeInViewport();
     });
 

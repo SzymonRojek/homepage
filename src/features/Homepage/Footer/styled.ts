@@ -3,14 +3,14 @@ import { ButtonLink } from "../ButtonLink";
 import { contentColumn } from "../../../core/App/contentColumn";
 
 // A full-width footer on the deep-green band, so the page closes the way the
-// hero opens it, with the soft yellow ring in the bottom-left corner.
+// hero opens it, with the soft yellow ring in the bottom-left corner. It meets
+// the last section (Skills, on its own band) edge to edge.
 // "clip", not "hidden": a hidden overflow is a scroll container, and a jump to
 // #contact at the end of the page scrolled the footer itself, cutting off
 // the space above its heading.
 export const Wrapper = styled.footer`
   position: relative;
   overflow: clip;
-  margin-top: ${({ theme }) => theme.layout.section.desktop}px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: ${({ theme }) => theme.colors.brand.background};
 
@@ -29,10 +29,6 @@ export const Wrapper = styled.footer`
 
   *:focus-visible {
     outline-color: ${({ theme }) => theme.colors.brand.accent};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: ${({ theme }) => theme.layout.section.mobile}px;
   }
 `;
 

@@ -6,7 +6,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: my name and job title in the top bar, the headline 'A number can match and still be wrong.', a short bio, the roles I'm looking for, location and right to work, a portrait with a slider between colour (tester) and a green duotone (developer), and below it a quote from a colleague with the first recommendation cards" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: my name in the top bar, 'Software Test Engineer · Hove, UK' over the headline 'I don't stop at green.', a short bio, the roles I'm looking for and my right to work, a portrait with a slider between colour (tester) and a green duotone (developer), and below it a quote from a colleague with the first recommendation cards" />
 </picture>
 
 ## Why this site exists (30-second summary)
@@ -17,7 +17,7 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 143 unit and component tests, 117 end-to-end runs (desktop and mobile)               |
+| Automated tests       | 146 unit and component tests, 117 end-to-end runs (desktop and mobile)               |
 | Coverage              | about 97%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
@@ -81,19 +81,19 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                 | Why                                                                                                                    | Trade-off                                                                                                                     |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                                              | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI                          |
-| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                                           | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                                         |
-| Every section on its own background, the seams measured  | White next to cream (1.09:1) ran the sections together, so each pair of neighbours now differs by about 1.15:1 or more | Three light and four dark tones to keep in step. Every text pair is re-checked for AA, and axe checks it again in both themes |
-| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                                          | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again                            |
-| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                                           | E2E takes about a minute, so it covers only user-visible behaviour                                                            |
-| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                                                 | Styles are checked by the e2e and axe tests instead                                                                           |
-| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                                                    | The background colours live in two places. A unit test keeps them in sync                                                     |
-| Prerender the page into the HTML at build time           | Search engines and AI tools that don't run JavaScript saw an empty page                                                | Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it                |
-| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed                                    | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML                                 |
-| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                                                 | Slower CI, and a stricter budget                                                                                              |
-| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own                           | Even a one-line fix needs a PR and a green pipeline                                                                           |
+| Decision                                                 | Why                                                                                                                    | Trade-off                                                                                                                                   |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                                              | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI                                        |
+| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                                           | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                                                       |
+| Every section on its own background, the seams measured  | White next to cream (1.09:1) ran the sections together, so each pair of neighbours now differs by about 1.15:1 or more | Two page tones per theme plus the brand green to keep in step. Every text pair is re-checked for AA, and axe checks it again in both themes |
+| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                                          | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again                                          |
+| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                                           | E2E takes about a minute, so it covers only user-visible behaviour                                                                          |
+| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                                                 | Styles are checked by the e2e and axe tests instead                                                                                         |
+| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                                                    | The background colours live in two places. A unit test keeps them in sync                                                                   |
+| Prerender the page into the HTML at build time           | Search engines and AI tools that don't run JavaScript saw an empty page                                                | Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it                              |
+| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed                                    | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML                                               |
+| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                                                 | Slower CI, and a stricter budget                                                                                                            |
+| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own                           | Even a one-line fix needs a PR and a green pipeline                                                                                         |
 
 ### Testing, performance, accessibility and security
 
@@ -258,15 +258,15 @@ Work happens on the `dev` branch. Every push to `dev` or `main` and every pull r
 
 All text lives in data files, not in components:
 
-| File                                              | Content                                                                                                 |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `src/features/Homepage/profile.ts`                | Name, job titles, headline, target roles, location, bio, contact text, LinkedIn                         |
-| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word, the phrase marked in each, and the headline quote       |
-| `src/features/Homepage/howITestData.ts`           | The "How I test at work" section                                                                        |
-| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages                                         |
-| `src/features/Homepage/experienceData.ts`         | Experience, and courses for "Still learning"                                                            |
-| `src/features/Homepage/Portfolio/projectsData.ts` | Projects, `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
-| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                            |
+| File                                              | Content                                                                                                                                                                               |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                | Name, job title, the line over the headline, headline, target roles, location, bio, contact text, LinkedIn                                                                            |
+| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word, the phrase marked in each, and the headline quote                                                                                     |
+| `src/features/Homepage/howITestData.ts`           | The "How I test at work" section: my story and the three steps                                                                                                                        |
+| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages for "Skills & learning"                                                                                               |
+| `src/features/Homepage/experienceData.ts`         | Experience, and courses for the "Learning" list in "Skills & learning"                                                                                                                |
+| `src/features/Homepage/Portfolio/projectsData.ts` | Projects (the featured one, tags and facts on the cards, the section's two-line title), `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
+| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                                                                                                          |
 
 Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image.jpg`, shows the name, title and headline as an image, so redraw it when they change.
 

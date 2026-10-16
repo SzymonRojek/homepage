@@ -5,6 +5,7 @@ import { themeLight } from "../../../core/App/theme";
 import { Recommendations } from ".";
 
 vi.mock("../recommendationsData", () => ({
+  recommendationsHeading: "Recommendations",
   headline: {
     text: "A great tester to work with",
     highlight: "work with",
@@ -38,11 +39,38 @@ const renderRecommendations = () =>
   );
 
 describe("Recommendations", () => {
+  it("names the section with a heading for screen readers", () => {
+    renderRecommendations();
+
+    const heading = screen.getByRole("heading", {
+      level: 2,
+      name: "Recommendations",
+    });
+    expect(screen.getByRole("region", { name: "Recommendations" })).toBe(
+      heading.closest("section"),
+    );
+    // "Peer-reviewed by others" was removed on purpose.
+    expect(screen.queryByText(/Peer-reviewed/)).toBeNull();
+  });
+
+  it("marks each card as a LinkedIn recommendation, quietly", () => {
+    renderRecommendations();
+
+    const items = within(
+      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+    ).getAllByRole("listitem");
+    // A decorative mark per card, not a link: the originals aren't linked.
+    for (const item of items) {
+      expect(item.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+      expect(within(item).queryByRole("link")).toBeNull();
+    }
+  });
+
   it("quotes each colleague word for word, the byline first", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations" }),
+      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
     ).getAllByRole("listitem");
     expect(items).toHaveLength(2);
     expect(within(items[0]).getByRole("blockquote")).toHaveTextContent(
@@ -58,7 +86,7 @@ describe("Recommendations", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations" }),
+      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
     ).getAllByRole("listitem");
     expect(items[0].querySelector("time")).toHaveAttribute(
       "datetime",
@@ -74,7 +102,7 @@ describe("Recommendations", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations" }),
+      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
     ).getAllByRole("listitem");
     expect(items[0].querySelector("mark")).toHaveTextContent(/^root cause$/);
     expect(items[1].querySelector("mark")).toHaveTextContent(
