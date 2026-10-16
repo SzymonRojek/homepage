@@ -30,6 +30,15 @@ describe("HowITest", () => {
     ]);
   });
 
+  it("draws a bug behind the story, hidden from screen readers", () => {
+    renderHowITest();
+
+    const section = screen.getByRole("region", { name: "How I test at work" });
+    const bug = section.querySelector(":scope > svg");
+    expect(bug).toHaveAttribute("aria-hidden", "true");
+    expect(bug).toHaveAttribute("focusable", "false");
+  });
+
   it("opens with my story, then the method", () => {
     renderHowITest();
 

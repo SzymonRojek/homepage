@@ -4,6 +4,7 @@ import {
   recommendationsHeading,
 } from "../recommendationsData";
 import { BigLineMark, HiddenSectionHeader } from "../Section";
+import { balanceColumns } from "./balanceColumns";
 import {
   QuoteBand,
   Pull,
@@ -12,7 +13,7 @@ import {
   Item,
   Quote,
   Caption,
-  Byline,
+  RoleLine,
   Highlight,
   Watermark,
 } from "./styled";
@@ -38,6 +39,12 @@ const toDateTime = (date: string) => {
   return `${year}-${String(months.indexOf(month) + 1).padStart(2, "0")}`;
 };
 
+// "Oct 2026" shortened for the card: "Oct ’26".
+const toShortDate = (date: string) => {
+  const [month, year] = date.split(" ");
+  return `${month} ’${year.slice(-2)}`;
+};
+
 const [lead] = headline.text.split(headline.highlight);
 
 // The quote with its key words marked; the words themselves don't change.
@@ -55,14 +62,9 @@ const Marked = ({ text, highlight }: { text: string; highlight: string }) => {
   );
 };
 
-// Two columns: the first, third… recommendation on the left, the second,
-// fourth… on the right, each keeping its place in the list (newest first)
-// for the one-column layout.
-const columns = [0, 1].map((side) =>
-  recommendations
-    .map((recommendation, order) => ({ recommendation, order }))
-    .filter(({ order }) => order % 2 === side),
-);
+// Two columns of about the same height, each card keeping its place in the
+// list (newest first) for the one-column layout.
+const columns = balanceColumns(recommendations);
 
 // What people I worked with wrote on LinkedIn, word for word: Jim's verdict
 // large and still (the heading is for screen readers only), then each
@@ -88,25 +90,26 @@ export const Recommendations = () => (
       {columns.map((column, side) => (
         <Column key={side} role="none">
           {column.map(
-            ({
-              recommendation: { quote, highlight, name, role, date },
-              order,
-            }) => (
+            ({ item: { quote, highlight, name, role, date }, order }) => (
               <Item key={name} role="listitem" $order={order}>
                 <Quote>
                   {/* The byline first, so screen readers also hear who
                       wrote it before what they wrote. */}
                   <Caption>
-                    <Byline>
-                      <strong>{name}</strong>
-                      <time dateTime={toDateTime(date)}>{date}</time>
-                    </Byline>
-                    {role}
+                    <strong>{name}</strong>
+                    <RoleLine>
+                      <span>{role}</span>
+                      <time dateTime={toDateTime(date)}>
+                        {toShortDate(date)}
+                      </time>
+                    </RoleLine>
                   </Caption>
                   <blockquote>
-                    <p>
-                      <Marked text={quote} highlight={highlight} />
-                    </p>
+                    {quote.split("\n\n").map((paragraph) => (
+                      <p key={paragraph}>
+                        <Marked text={paragraph} highlight={highlight} />
+                      </p>
+                    ))}
                   </blockquote>
                 </Quote>
                 {/* Decorative: the list's name says LinkedIn for screen

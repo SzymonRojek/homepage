@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import LinkedInMark from "./linkedin.svg?react";
-import { BandSection, bigLine } from "../Section";
+import { BandSection, bigLine, sectionOpening } from "../Section";
 
 // The first section, on its own band right under the hero; "How I test" meets
 // it edge to edge on its green band.
@@ -12,6 +12,7 @@ export const QuoteBand = styled(BandSection)`
 // below carry the details.
 export const Pull = styled.figure`
   margin: 0;
+  ${sectionOpening}
 
   blockquote {
     margin: 0;
@@ -25,8 +26,9 @@ export const Pull = styled.figure`
 
 // The full recommendations as cards in two columns that fill like a wall of
 // bricks: each column stacks its own cards, so a long one never leaves a gap
-// beside a short one, and no text is cut. The cards alternate between the
-// columns, so the newest two sit side by side at the top. On tablets and
+// beside a short one, and no text is cut. The newest two sit side by side at
+// the top, and the rest are split so the columns end as close together as
+// they can (balanceColumns). On tablets and
 // phones the columns step aside (display: contents) and the cards follow one
 // another, newest first, in one column.
 export const List = styled.div`
@@ -90,6 +92,10 @@ export const Quote = styled.figure`
     line-height: 1.72;
   }
 
+  blockquote p + p {
+    margin-top: 0.75em;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     blockquote p {
       font-size: 16px;
@@ -106,28 +112,30 @@ export const Caption = styled.figcaption`
   border-bottom: 1px solid ${({ theme }) => theme.colors.headerLine};
 
   strong {
+    display: block;
+    margin-bottom: 2px;
     font-family: ${({ theme }) => theme.fontDisplay};
     font-size: 17px;
     color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-// The name on the left and, like a timestamp on a message, the month it was
-// written on the right, so the date can't read as the time in the role.
-export const Byline = styled.span`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 2px;
+// Under the name, the role and, after a dot, the month it was written, both
+// on the left. The date never breaks from its dot.
+export const RoleLine = styled.span`
+  display: block;
 
   time {
-    font-size: 13px;
     white-space: nowrap;
+  }
+
+  time::before {
+    content: "·";
+    margin: 0 8px;
   }
 `;
 
-// A faint LinkedIn mark in the card's bottom-right corner, like a watermark,
+// A faint LinkedIn mark in the card's top-right corner, like a watermark,
 // cut by the card's edge: it says where the words come from without pulling
 // the eye from them. The text's own colour at low opacity, so it suits both
 // themes; it sits behind the text (which keeps its contrast) and lets clicks
@@ -135,8 +143,8 @@ export const Byline = styled.span`
 export const Watermark = styled(LinkedInMark)`
   position: absolute;
   z-index: 0;
+  top: -10px;
   right: -10px;
-  bottom: -10px;
   width: 84px;
   height: 84px;
   color: ${({ theme }) => theme.colors.textPrimary};

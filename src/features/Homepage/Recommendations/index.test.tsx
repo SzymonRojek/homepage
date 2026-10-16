@@ -21,7 +21,7 @@ vi.mock("../recommendationsData", () => ({
       date: "May 2025",
     },
     {
-      quote: "Clear bug reports. A great tester to work with.",
+      quote: "Clear bug reports.\n\nA great tester to work with.",
       highlight: "Clear bug reports",
       name: "Bob Jones",
       role: "Engineer at Acme",
@@ -76,13 +76,29 @@ describe("Recommendations", () => {
     expect(within(items[0]).getByRole("blockquote")).toHaveTextContent(
       /^Finds the root cause\.$/,
     );
-    // Who, then what: the name, date and role come before the quote.
+    // Who, then what: the name, then the role with the date, come before
+    // the quote.
     expect(items[0]).toHaveTextContent(
-      /^Ann SmithMay 2025Developer at AcmeFinds the root cause\.$/,
+      /^Ann SmithDeveloper at AcmeMay ’25Finds the root cause\.$/,
     );
   });
 
-  it("dates each recommendation as a machine-readable month", () => {
+  it("keeps a recommendation's paragraphs as they are on LinkedIn", () => {
+    renderRecommendations();
+
+    const items = within(
+      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+    ).getAllByRole("listitem");
+    const paragraphs = within(items[1])
+      .getByRole("blockquote")
+      .querySelectorAll("p");
+    expect([...paragraphs].map((p) => p.textContent)).toEqual([
+      "Clear bug reports.",
+      "A great tester to work with.",
+    ]);
+  });
+
+  it("dates each recommendation short, with a machine-readable month", () => {
     renderRecommendations();
 
     const items = within(
@@ -96,6 +112,7 @@ describe("Recommendations", () => {
       "datetime",
       "2025-01",
     );
+    expect(items[1].querySelector("time")).toHaveTextContent(/^Jan ’25$/);
   });
 
   it("marks the key words of each recommendation", () => {

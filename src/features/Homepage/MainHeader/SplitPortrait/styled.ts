@@ -13,8 +13,10 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
   align-self: end;
   justify-self: end;
   /* Smaller than the text block beside it, so the headline leads the hero;
-     the photo is a close crop, so its face reads large at any width. */
-  width: 300px;
+     the photo is a close crop, so its face reads large at any width. It
+     shrinks with the band (cqi, see the hero), together with the headline:
+     300px from about 1364px, 200px from about 909px down. */
+  width: clamp(200px, 22cqi, 300px);
   aspect-ratio: 4 / 5;
   overflow: hidden;
   /* The whole photo is the drag area: sideways moves the line, up and down
@@ -42,17 +44,8 @@ export const Portrait = styled.div.attrs<{ $split: number }>(({ $split }) => ({
     outline-offset: 4px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
-    width: 260px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    width: 240px;
-  }
-
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     justify-self: end;
-    width: 220px;
   }
 `;
 

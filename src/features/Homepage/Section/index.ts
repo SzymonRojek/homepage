@@ -40,9 +40,27 @@ export const BandSection = styled(Section).attrs({
   }
 `;
 
+// The room above a section's first visible line, its heading or the big
+// line that speaks for a hidden one, on top of the section's own spacing, so
+// every section opens the same distance below the one before it, with more
+// room above its first line than below. Padding, not margin: a margin would
+// collapse into the margin of a section on the page colour.
+export const sectionOpening = css`
+  padding-top: 32px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    padding-top: 24px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding-top: 16px;
+  }
+`;
+
 // A section's heading, plain: no decorative bar above it (it read as a
 // template).
 export const SectionHeader = styled(SubHeader)`
+  ${sectionOpening}
   margin-bottom: 20px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -100,10 +118,11 @@ export const HiddenSectionHeader = styled.h2`
   border: 0;
 `;
 
-// A section's one big line, under its small heading. Balanced, so no line is
-// left with one word.
+// A section's one big line, which opens it in place of a visible heading.
+// Balanced, so no line is left with one word.
 export const BigLine = styled.p`
   ${bigLine}
+  ${sectionOpening}
   text-wrap: balance;
 `;
 

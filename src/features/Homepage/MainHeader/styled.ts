@@ -8,6 +8,9 @@ export const Band = styled.div`
   position: relative;
   /* Clips the ring without becoming a scroll container (see the footer). */
   overflow: clip;
+  /* The headline and the photo size themselves from the band's width
+     (cqi), so they shrink together and smoothly as the window narrows. */
+  container-type: inline-size;
   /* It starts under the see-through top bar (the bar's negative margin pulls
      it up), so its green and its ring show through; the padding keeps the
      content below the bar. */
@@ -37,18 +40,18 @@ export const Band = styled.div`
   }
 `;
 
-// Text left; the photo right, standing on the band's bottom edge.
+// Text left; the photo right, standing on the band's bottom edge. The photo
+// keeps its own width and the text takes the rest.
 export const BandInner = styled.div`
   ${contentColumn}
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 48px;
   align-items: end;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: 1fr 0.8fr;
     gap: 32px;
   }
 
@@ -62,9 +65,9 @@ export const BandInner = styled.div`
 // below, and the photo under it ends on the right edge, as on a desktop.
 export const Details = styled.div`
   min-width: 0;
-  /* The headline's size follows this column's width (cqi). */
-  container-type: inline-size;
-  padding-bottom: 40px;
+  /* The section rhythm under the text, while the photo beside it stands on
+     the band's edge. */
+  padding-bottom: ${({ theme }) => theme.layout.section.desktop}px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     padding-bottom: 0;
@@ -102,16 +105,20 @@ export const Eyebrow = styled.p`
   }
 `;
 
-// The tagline as the headline and the h1 of the page. It grows with the text
-// column so it fills the width on one line: "I don’t stop at green." is about
-// 9.4 times its font size wide, so 10.4cqi leaves some room. Only on the
-// narrowest phones, at the smallest size, does it break, into balanced lines,
-// so no word is left alone on the last one. Change 10.4cqi with the tagline.
+// The tagline as the headline and the h1 of the page, on one line. Its size
+// follows the band's width, so it only ever shrinks as the window narrows,
+// with no jump where the layout changes. "I don’t stop at green." is about
+// 9.4 times its font size wide, and the tightest fit is the narrowest
+// two-column hero (768px, the photo beside it), so the size falls gently on
+// phones (the first line: 32px at 360px, 47px at 768px) and faster above
+// (the second: 80px from about 1256px, where the column stops growing).
+// Only below 360px, at the smallest size, does it break, into balanced
+// lines. Change the two lines with the tagline or the photo's width.
 export const Headline = styled.h1`
   margin: 12px 0 0;
   text-wrap: balance;
   font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: clamp(32px, 10.4cqi, 80px);
+  font-size: clamp(32px, max(19px + 3.6cqi, 7cqi - 8px), 80px);
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.04em;
