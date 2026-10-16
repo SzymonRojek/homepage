@@ -7,7 +7,6 @@ import {
   FilterDefs,
   Rail,
   Grip,
-  Hint,
   Caption,
   Slider,
 } from "./styled";
@@ -89,21 +88,14 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
     };
     slide.current = requestAnimationFrame(step);
   };
-  // The "Drag" hint shows until the line is first moved.
-  const [moved, setMoved] = useState(false);
-  const update = (value: number) => {
-    setSplit(value);
-    setMoved(true);
-  };
-  // Where a drag started, and whether the hint was gone by then, to undo
-  // both if the browser turns the gesture into a page scroll instead.
+  // Where a drag started, to put the line back if the browser turns the
+  // gesture into a page scroll instead.
   const dragStart = useRef<number | null>(null);
-  const movedBefore = useRef(false);
 
   const moveTo = ({ clientX, currentTarget }: PointerEvent<HTMLDivElement>) => {
     const { left, width } = currentTarget.getBoundingClientRect();
     if (width > 0) {
-      update(clamp(((clientX - left) / width) * 100));
+      setSplit(clamp(((clientX - left) / width) * 100));
     }
   };
 
@@ -116,7 +108,6 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
       onPointerDown={(event) => {
         stopSlide();
         dragStart.current = splitRef.current;
-        movedBefore.current = moved;
         event.currentTarget.setPointerCapture?.(event.pointerId);
         // A mouse moves the line at once; a finger only once it moves, so a
         // tap or the start of a scroll doesn't jump it.
@@ -140,7 +131,6 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
       onPointerCancel={() => {
         if (dragStart.current !== null) {
           setSplit(dragStart.current);
-          setMoved(movedBefore.current);
         }
         dragStart.current = null;
       }}
@@ -181,7 +171,6 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
       <Rail aria-hidden="true">
         <Grip />
       </Rail>
-      {!moved && <Hint aria-hidden="true">Drag</Hint>}
       <Caption aria-live="polite" $visible={caption !== ""}>
         {caption}
       </Caption>
@@ -192,7 +181,7 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
         value={split}
         aria-label="Move the line between code and test"
         aria-valuetext={`${split}% code, ${100 - split}% test`}
-        onChange={({ target }) => update(Number(target.value))}
+        onChange={({ target }) => setSplit(Number(target.value))}
       />
     </Portrait>
   );

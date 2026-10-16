@@ -30,6 +30,36 @@ describe("HowITest", () => {
     ]);
   });
 
+  it("opens with my story, then the method", () => {
+    renderHowITest();
+
+    const section = screen.getByRole("region", { name: "How I test at work" });
+    const story = within(section).getByRole("article", {
+      name: "Beyond the obvious bugs",
+    });
+    const steps = within(section).getByRole("list", {
+      name: "How I test a data migration",
+    });
+    expect(story.compareDocumentPosition(steps)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    // The steps close the section: "Why it matters" was removed on purpose.
+    expect(steps.nextElementSibling).toBeNull();
+    expect(within(section).queryByText(/Why it matters/)).toBeNull();
+  });
+
+  it("numbers the steps for the eye only", () => {
+    renderHowITest();
+
+    const steps = within(
+      screen.getByRole("list", { name: "How I test a data migration" }),
+    ).getAllByRole("listitem");
+    // The list itself gives screen readers the order.
+    expect(
+      steps.map((step) => step.querySelector("[aria-hidden]")?.textContent),
+    ).toEqual(["01", "02", "03"]);
+  });
+
   it("names the reconciliation checks and the stored procedures", () => {
     renderHowITest();
 

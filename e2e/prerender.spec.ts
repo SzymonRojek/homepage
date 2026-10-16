@@ -5,8 +5,7 @@ const sections = [
   "How I test at work",
   "Experience",
   "Projects",
-  "Skills",
-  "Still learning",
+  "Skills & learning",
 ];
 
 // Search engines and AI tools that don't run JavaScript read the page as the
@@ -17,7 +16,7 @@ test.describe("the page without JavaScript", () => {
     const html = await (await request.get("/")).text();
 
     expect(html).toContain("Szymon Rojek");
-    expect(html).toContain("A number can match and still be ");
+    expect(html).toContain("I don’t stop at ");
     for (const section of sections) {
       expect(html).toContain(section);
     }
@@ -33,7 +32,7 @@ test.describe("the page without JavaScript", () => {
       await expect(
         page.getByRole("heading", { level: 1 }),
       ).toHaveAccessibleName(
-        "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+        "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
       );
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       for (const name of sections) {

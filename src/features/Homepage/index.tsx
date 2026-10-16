@@ -7,7 +7,6 @@ import { HowITest } from "./HowITest";
 import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
-import { Education } from "./Education";
 import { Footer } from "./Footer";
 
 export const Homepage = () => {
@@ -29,8 +28,6 @@ export const Homepage = () => {
           <Portfolio />
 
           <Skills />
-
-          <Education />
         </main>
       </Container>
       <Footer />

@@ -51,6 +51,15 @@ describe("ProjectCard", () => {
     ).toHaveLength(2);
   });
 
+  it("shows what kind of project it is over the name", () => {
+    renderCard({ tag: "Full-stack app" });
+
+    const tag = screen.getByText("Full-stack app");
+    expect(tag.nextElementSibling).toBe(
+      screen.getByRole("heading", { level: 3, name: "Talent Outreach" }),
+    );
+  });
+
   it("falls back to the description without a teaser", () => {
     renderCard({ teaser: undefined, facts: undefined });
 

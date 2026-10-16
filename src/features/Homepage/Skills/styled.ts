@@ -1,23 +1,45 @@
 import styled, { css } from "styled-components";
 
-export type Accent = "qa" | "automation" | "dev";
+export type Accent = "qa" | "automation" | "dev" | "learning";
 
-// Three short lists of plain text, no tags: testing, automation, programming.
+// Four short lists of plain text, no tags: testing, automation, programming
+// and learning. Two by two on tablets, one column on phones.
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    grid-template-columns: 1fr;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 40px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
   }
 `;
 
 export const Group = styled.div``;
 
+// What I'm learning on a soft card of the page's tone, so it reads apart from
+// what I can already do, and ISTQB stands out.
+export const LearningGroup = styled.div`
+  padding: 20px 22px 8px;
+  background: ${({ theme }) => theme.colors.site.background};
+  border-radius: ${({ theme }) => theme.borderRadius};
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    padding: 18px 18px 6px;
+  }
+`;
+
 // Testing is green, programming is terracotta, automation sits between them
-// in the brand green.
+// in the brand green; learning is in the headings' ink.
 export const GroupTitle = styled.h3<{ $accent: Accent }>`
   margin: 0;
   font-family: inherit;
@@ -32,7 +54,9 @@ export const GroupTitle = styled.h3<{ $accent: Accent }>`
         ? theme.colors.qa.accent
         : $accent === "dev"
           ? theme.colors.dev.accent
-          : theme.colors.primary
+          : $accent === "learning"
+            ? theme.colors.textPrimary
+            : theme.colors.primary
     };
   `}
 `;
@@ -53,6 +77,29 @@ export const Skill = styled.li`
   &:first-child {
     border-top: 1px solid ${({ theme }) => theme.colors.headerLine};
   }
+`;
+
+// Under a course: when and where, or how far along I am.
+export const Course = styled.span`
+  display: block;
+  margin-top: 2px;
+  font-size: 13.5px;
+  color: ${({ theme }) => theme.colors.muted};
+`;
+
+// The course I'm preparing for: dark green on the yellow accent (7.9:1).
+export const NextTag = styled.span`
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+  color: ${({ theme }) => theme.colors.brand.onAccent};
+  background: ${({ theme }) => theme.colors.brand.accent};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
 `;
 
 export const Tools = styled.p`

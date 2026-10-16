@@ -62,6 +62,8 @@ export const BandInner = styled.div`
 // below, and the photo under it ends on the right edge, as on a desktop.
 export const Details = styled.div`
   min-width: 0;
+  /* The headline's size follows this column's width (cqi). */
+  container-type: inline-size;
   padding-bottom: 40px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -83,25 +85,36 @@ export const NameAndTitle = styled.span`
   border: 0;
 `;
 
-// The tagline as the headline and the h1 of the page. Balanced lines, so no
-// word is left alone on the last one.
-export const Headline = styled.h1`
+// The job title and where I live, in small yellow capitals over the headline,
+// like the "Looking for" label. The text stays in normal case for screen
+// readers; CSS sets the capitals.
+export const Eyebrow = styled.p`
   margin: 24px 0 0;
-  text-wrap: balance;
-  font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: 64px;
-  font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: -0.04em;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    font-size: 48px;
-  }
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.brand.accent};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 22px;
-    font-size: 38px;
+    font-size: 12px;
   }
+`;
+
+// The tagline as the headline and the h1 of the page. It grows with the text
+// column so it fills the width on one line: "I don’t stop at green." is about
+// 9.4 times its font size wide, so 10.4cqi leaves some room. Only on the
+// narrowest phones, at the smallest size, does it break, into balanced lines,
+// so no word is left alone on the last one. Change 10.4cqi with the tagline.
+export const Headline = styled.h1`
+  margin: 12px 0 0;
+  text-wrap: balance;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: clamp(32px, 10.4cqi, 80px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
 `;
 
 export const Highlight = styled.span`
@@ -169,7 +182,7 @@ export const NextRole = styled.dl`
   }
 `;
 
-// Where and how I can work, as plain phrases in one quiet line, so the roles
+// How I can work, as plain phrases in one quiet line, so the roles
 // above stay the first thing HR reads. On phones, one phrase a line.
 export const Facts = styled.ul`
   display: flex;

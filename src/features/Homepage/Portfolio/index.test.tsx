@@ -62,6 +62,23 @@ describe("Portfolio", () => {
     window.history.replaceState(null, "", "/");
   });
 
+  it("opens with one big line and the intro, under a hidden heading", () => {
+    renderPortfolio();
+
+    const heading = screen.getByRole("heading", { level: 2, name: "Projects" });
+    const line = heading.nextElementSibling;
+    expect(line).toHaveTextContent(
+      /^Built in my own time\. Tested like production\.$/,
+    );
+    // Two sentences, each on a line of its own.
+    expect(
+      Array.from(line?.children ?? [], ({ textContent }) => textContent),
+    ).toEqual(["Built in my own time.", "Tested like production."]);
+    expect(line?.nextElementSibling).toHaveTextContent(
+      /^Two apps I built to practise development, then tested the way I test at work\./,
+    );
+  });
+
   it("starts with every case study closed, as cards", () => {
     renderPortfolio();
 

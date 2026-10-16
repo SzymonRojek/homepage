@@ -28,30 +28,30 @@ describe("MainHeader", () => {
       "Test Automation, QA and AI Testing roles",
     );
     const facts = screen.getByRole("list", {
-      name: "Location and right to work",
+      name: "Right to work and relocation",
     });
     expect(
       within(facts)
         .getAllByRole("listitem")
         .map(({ textContent }) => textContent),
-    ).toEqual([
-      "Based in Hove, UK",
-      "Full right to work in the UK",
-      "Open to relocation",
-    ]);
+    ).toEqual(["Full right to work in the UK", "Open to relocation"]);
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
     // The tagline is the h1, led by my name and title for screen readers and
-    // search engines; "wrong" is wrapped for its underline.
+    // search engines; "green" is wrapped for its underline.
     const headline = screen.getByRole("heading", {
       level: 1,
-      name: "Szymon Rojek, Software Test Engineer: A number can match and still be wrong.",
+      name: "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
     });
     expect(headline.querySelector("svg")).toHaveAttribute(
       "aria-hidden",
       "true",
     );
-    // On screen the top bar shows the name and title, not the hero.
-    expect(screen.queryByText("Software Test Engineer")).toBeNull();
+    // Over it, the title and where I live, as a plain line, not a heading.
+    const eyebrow = screen.getByText("Software Test Engineer · Hove, UK");
+    expect(eyebrow.tagName).toBe("P");
+    expect(eyebrow.compareDocumentPosition(headline)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
   });
 
   it("has no skill chips: the bio says it once", () => {

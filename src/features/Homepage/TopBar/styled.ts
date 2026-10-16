@@ -57,11 +57,9 @@ export const Inner = styled.div`
   }
 `;
 
-// The name and title as a two-line wordmark; the browser icon keeps "SR".
+// My name as the wordmark (the job title is over the hero's headline); the
+// browser icon keeps "SR".
 export const Brand = styled.a`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   min-width: 0;
   color: ${({ theme }) => theme.colors.brand.text};
   text-decoration: none;
@@ -70,26 +68,13 @@ export const Brand = styled.a`
 
 export const BrandName = styled.span`
   font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.02em;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 17px;
-  }
-`;
-
-// The job title in yellow (7.9:1 on the green) so HR spots it first.
-export const BrandTitle = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.3;
-  white-space: nowrap;
-  color: ${({ theme }) => theme.colors.brand.accent};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 12px;
+    font-size: 19px;
   }
 `;
 

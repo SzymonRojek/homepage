@@ -20,7 +20,7 @@ test.describe("Navigation", () => {
     for (const [link, heading] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
-      ["Skills", "Skills"],
+      ["Skills", "Skills & learning"],
       ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {
@@ -58,7 +58,7 @@ test.describe("Navigation", () => {
     isMobile,
   }) => {
     await page
-      .getByRole("heading", { name: "Skills" })
+      .getByRole("heading", { name: "Skills & learning" })
       .scrollIntoViewIfNeeded();
 
     await expect(
@@ -124,8 +124,9 @@ test.describe("Navigation", () => {
 
       await projects.click();
       await expect(projects).toBeHidden();
+      // The heading is for screen readers only; the big line under it shows.
       await expect(
-        page.getByRole("heading", { level: 2, name: "Projects" }),
+        page.getByText("Built in my own time.", { exact: true }),
       ).toBeInViewport();
     });
 

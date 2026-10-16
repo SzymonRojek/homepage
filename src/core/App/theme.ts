@@ -45,9 +45,6 @@ const colorNames = {
   mint: "#7FD1A8",
   mintSoft: "rgba(127, 209, 168, 0.1)",
   mintBorder: "rgba(127, 209, 168, 0.35)",
-  // A green-leaning dark for the testing band, between the page and the
-  // brand band (paper text 12.9:1, mint 8.4:1).
-  nightMint: "#0F2A24",
   peach: "#F2A47A",
   peachSoft: "rgba(242, 164, 122, 0.1)",
   peachBorder: "rgba(242, 164, 122, 0.35)",
@@ -143,10 +140,9 @@ export const themeLight = {
     secondaryHover: colorNames.sand,
     // The band under the hero, with colleagues' words: white on the cream page.
     quoteBand: colorNames.white,
-    // "How I test at work": testing is green, so its band is the soft test
-    // green, set apart from the white bands above and below it (ink body
-    // 8.3:1, test green 4.9:1, muted 5.0:1).
-    testBand: colorNames.testSoft,
+    // "How I test at work": one block on the deep brand green, the same in
+    // both themes (cream text 11.1:1, muted 7.4:1, yellow 7.9:1).
+    brandBand: colorNames.deep,
     // "work with him" in the big quote: dark words on a yellow marker, since
     // yellow text on white is only 1.5:1 (ink on sun: 10.6:1).
     quoteMark: { text: colorNames.ink, background: colorNames.sun },
@@ -196,7 +192,7 @@ export const themeDark: typeof themeLight = {
     // The page itself: a card-coloured band right under the green hero would
     // read as green on green.
     quoteBand: colorNames.night,
-    testBand: colorNames.nightMint,
+    brandBand: colorNames.deep,
     // Yellow words on the dark page (12.1:1), no marker.
     quoteMark: { text: colorNames.sun, background: "transparent" },
     // The recommendation cards on the dark page: the card colour.

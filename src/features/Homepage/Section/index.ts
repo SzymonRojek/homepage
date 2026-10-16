@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { SubHeader } from "../SubHeader";
 
 export const Section = styled.section`
@@ -12,16 +12,16 @@ export const Section = styled.section`
 const bands = {
   card: "cardBand",
   quote: "quoteBand",
-  test: "testBand",
+  brand: "brandBand",
 } as const;
 
 // A section on a full-width band of its own colour, so each section reads as
 // its own block instead of one long cream scroll. It breaks out of the
-// content column like the story band in "How I test", and its content keeps
-// the page's edge. "card" is white (the card colour in the dark theme);
-// "quote" is the band under the hero (see quoteBand); "test" is the soft test
-// green of "How I test at work". Bands that follow one another meet edge to
-// edge, with no page colour between them.
+// content column, and its content keeps the page's edge. "card" is white (the
+// card colour in the dark theme); "quote" is the band under the hero (see
+// quoteBand); "brand" is the deep green of "How I test at work", which sets
+// its own cream text. Bands that follow one another meet edge to edge, with
+// no page colour between them.
 export const BandSection = styled(Section).attrs({
   className: "section-band",
 })<{
@@ -40,39 +40,96 @@ export const BandSection = styled(Section).attrs({
   }
 `;
 
-// A short yellow bar above every section heading, the brand accent.
+// A section's heading, plain: no decorative bar above it (it read as a
+// template).
 export const SectionHeader = styled(SubHeader)`
   margin-bottom: 20px;
 
-  &::before {
-    content: "";
-    display: block;
-    width: 44px;
-    height: 6px;
-    margin-bottom: 16px;
-    background: ${({ theme }) => theme.colors.brand.accent};
-    border-radius: 3px;
-  }
-
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-bottom: 16px;
-
-    &::before {
-      margin-bottom: 12px;
-    }
   }
 `;
 
-// One sentence under a section heading.
+// One sentence large, like a headline in a magazine, under a small heading.
+export const bigLine = css`
+  margin: 0;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.colors.textPrimary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    font-size: 34px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 28px;
+  }
+`;
+
+// The key words of a big line in yellow: a marker behind dark words in the
+// light theme, yellow words in the dark one. Only a marker gets side padding,
+// so plain yellow words keep normal spacing. The words never split across two
+// lines, so they land whole.
+export const BigLineMark = styled.mark`
+  white-space: nowrap;
+  padding: 0
+    ${({ theme }) =>
+      theme.colors.quoteMark.background === "transparent" ? "0" : "0.12em"};
+  color: ${({ theme }) => theme.colors.quoteMark.text};
+  background: ${({ theme }) => theme.colors.quoteMark.background};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+`;
+
+// A section heading for screen readers and search engines only, for a
+// section whose big line speaks for it on screen. It still names the section
+// and is where the top bar's link lands.
+export const HiddenSectionHeader = styled.h2`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+`;
+
+// A section's one big line, under its small heading. Balanced, so no line is
+// left with one word.
+export const BigLine = styled.p`
+  ${bigLine}
+  text-wrap: balance;
+`;
+
+// A part of a big line on a line of its own, where the break matters.
+export const BigLineRow = styled.span`
+  display: block;
+`;
+
+// One sentence under a section heading, or under its big line.
 export const SectionIntro = styled.p`
   max-width: 720px;
   margin: -12px 0 24px;
   font-size: 18px;
   line-height: 1.6;
 
+  ${BigLine} + & {
+    margin-top: 20px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin: -8px 0 20px;
     font-size: 16px;
+
+    ${BigLine} + & {
+      margin-top: 16px;
+    }
   }
 `;
 

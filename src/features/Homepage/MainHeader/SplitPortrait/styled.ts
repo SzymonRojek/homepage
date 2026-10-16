@@ -140,25 +140,6 @@ export const Grip = styled.span`
   }
 `;
 
-// One quiet word beside the grip until the first drag, on a small green tag
-// so it reads on a light photo as well as a dark one.
-export const Hint = styled.span`
-  position: absolute;
-  z-index: 3;
-  top: 58%;
-  left: calc(${railLeft} + 20px);
-  padding: 4px 6px 4px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.background};
-  border-radius: ${({ theme }) => theme.borderRadiusSmall};
-  transform: translateY(-50%);
-  pointer-events: none;
-`;
-
 // A short line that appears when the line reaches either edge.
 export const Caption = styled.p<{ $visible: boolean }>`
   position: absolute;
