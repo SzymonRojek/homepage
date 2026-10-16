@@ -17,7 +17,7 @@
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 146 unit and component tests, 117 end-to-end runs (desktop and mobile)               |
+| Automated tests       | 154 unit and component tests, 118 end-to-end runs (desktop and mobile)               |
 | Coverage              | about 97%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
