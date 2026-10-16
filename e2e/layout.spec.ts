@@ -69,4 +69,33 @@ test.describe("Layout", () => {
     const photo = await box(page.getByRole("img", { name: "Szymon Rojek" }));
     expect(Math.round(width - (photo.x + photo.width))).toBe(16);
   });
+
+  test("the headline and the photo only shrink as the window narrows @desktop", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const headline = page.getByRole("heading", { level: 1 });
+    const photo = page.getByRole("img", { name: "Szymon Rojek" });
+
+    // Either side of each breakpoint, where the sizes used to jump: the
+    // headline grew back to 76px when the photo moved under it at 767px.
+    let previous = { font: Infinity, photo: Infinity };
+    for (const width of [1400, 1200, 1199, 992, 991, 768, 767, 600, 360]) {
+      await page.setViewportSize({ width, height: 900 });
+      const font = await headline.evaluate((element) =>
+        parseFloat(getComputedStyle(element).fontSize),
+      );
+      const photoWidth = (await box(photo)).width;
+
+      expect(font, `headline at ${width}px`).toBeLessThanOrEqual(previous.font);
+      expect(photoWidth, `photo at ${width}px`).toBeLessThanOrEqual(
+        previous.photo,
+      );
+      // Still one line: less than two lines' height.
+      expect((await box(headline)).height, `lines at ${width}px`).toBeLessThan(
+        font * 2,
+      );
+      previous = { font, photo: photoWidth };
+    }
+  });
 });

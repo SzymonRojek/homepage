@@ -128,14 +128,6 @@ export const Bottom = styled.div`
     margin: 0;
   }
 
-  a {
-    color: ${({ theme }) => theme.colors.brand.text};
-  }
-
-  a:hover {
-    color: ${({ theme }) => theme.colors.brand.accent};
-  }
-
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 28px;
   }

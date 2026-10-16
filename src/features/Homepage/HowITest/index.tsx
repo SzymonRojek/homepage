@@ -2,6 +2,7 @@ import { HiddenSectionHeader } from "../Section";
 import { howITest } from "../howITestData";
 import {
   Block,
+  Bug,
   Story,
   StoryTitle,
   Punchline,
@@ -21,6 +22,7 @@ const [titleStart, titleEnd] = story.title.split(story.highlight);
 export const HowITest = () => (
   <Block $band="brand" aria-labelledby="how-i-test">
     <HiddenSectionHeader id="how-i-test">{howITest.title}</HiddenSectionHeader>
+    <Bug aria-hidden="true" focusable="false" />
     <Story aria-labelledby="how-i-test-story">
       <div>
         <StoryTitle id="how-i-test-story">

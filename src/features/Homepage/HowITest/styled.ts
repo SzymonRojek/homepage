@@ -1,11 +1,17 @@
 import styled from "styled-components";
-import { BandSection } from "../Section";
+import { BandSection, sectionOpening } from "../Section";
+import BugSvg from "./bug.svg?react";
 
 // The whole section is one block on the deep brand green, the same in both
 // themes: cream text, muted cream for the long text, yellow accents. Focus
 // rings are yellow here, as on the hero, because the page's green ring would
-// vanish on green.
+// vanish on green. "clip" cuts the bug at the band's edges without making
+// the band a scroll container; "isolate" keeps the bug above the band's
+// background and below its text.
 export const Block = styled(BandSection)`
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   color: ${({ theme }) => theme.colors.brand.text};
 
   *:focus-visible {
@@ -13,23 +19,41 @@ export const Block = styled(BandSection)`
   }
 `;
 
+// A faint outline of a bug in the top-right corner, cut by the band's edges,
+// like the yellow ring on the hero and the footer: a motif behind the story,
+// not an illustration.
+export const Bug = styled(BugSvg)`
+  position: absolute;
+  z-index: -1;
+  top: -48px;
+  right: -56px;
+  width: 300px;
+  height: 300px;
+  color: ${({ theme }) => theme.colors.brand.accent};
+  opacity: 0.12;
+  transform: rotate(-25deg);
+  pointer-events: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    top: -28px;
+    right: -40px;
+    width: 180px;
+    height: 180px;
+  }
+`;
+
 // My story opens the block: the title and the punchline on the left, the
 // story on the right.
 export const Story = styled.article`
+  ${sectionOpening}
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;
   align-items: start;
-  padding-top: 16px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding-top: 8px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    padding-top: 0;
   }
 `;
 
