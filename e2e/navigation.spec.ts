@@ -121,15 +121,26 @@ test.describe("Navigation", () => {
       .getByRole("link", { name: /^Szymon Rojek/ })
       .locator("..");
 
+    // Watch every frame from the click: the first colour after the
+    // see-through outline must already be the final green. A fade would show
+    // a paler green first, leaving the cream links on the light page.
+    const firstChange = pill.evaluate(
+      (el) =>
+        new Promise<string>((resolve) => {
+          const start = getComputedStyle(el).backgroundColor;
+          const frame = () => {
+            const now = getComputedStyle(el).backgroundColor;
+            if (now !== start) resolve(now);
+            else requestAnimationFrame(frame);
+          };
+          requestAnimationFrame(frame);
+        }),
+    );
     await page
       .getByRole("navigation", { name: "Sections" })
       .getByRole("link", { name: "Experience" })
       .click();
-    // Read straight after the jump: a fade would still be see-through here,
-    // leaving the cream links on the light page.
-    expect(
-      await pill.evaluate((el) => getComputedStyle(el).backgroundColor),
-    ).toBe("rgba(18, 60, 55, 0.94)");
+    expect(await firstChange).toBe("rgba(18, 60, 55, 0.94)");
   });
 
   test("on a phone the links sit behind a menu @mobile", async ({ page }) => {
