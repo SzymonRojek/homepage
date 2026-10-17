@@ -19,6 +19,33 @@ export const Job = styled.article`
   }
 `;
 
+// When and where. On phones the period moves to the right of the company,
+// on the same line; the HTML keeps it first, so it is still read first.
+export const Meta = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 16px;
+    align-items: baseline;
+
+    & > :nth-child(1) {
+      grid-column: 2;
+      grid-row: 1;
+      white-space: nowrap;
+    }
+
+    & > :nth-child(2) {
+      grid-column: 1;
+      grid-row: 1;
+      margin-top: 0;
+    }
+
+    & > :nth-child(3) {
+      grid-column: 1 / -1;
+    }
+  }
+`;
+
 export const Period = styled.p`
   margin: 0;
   font-size: 15px;

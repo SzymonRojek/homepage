@@ -6,10 +6,8 @@ import {
   Bug,
   Story,
   StoryTitle,
-  Punchline,
   StoryText,
   Steps,
-  StepNumber,
   StepTitle,
   StepSummary,
   StepPoints,
@@ -33,14 +31,11 @@ export const HowITest = () => (
     </SectionLabel>
     <Bug aria-hidden="true" focusable="false" />
     <Story aria-labelledby="how-i-test-story">
-      <div>
-        <StoryTitle id="how-i-test-story">
-          {titleStart}
-          <em>{story.highlight}</em>
-          {titleEnd}
-        </StoryTitle>
-        <Punchline>{story.punchline}</Punchline>
-      </div>
+      <StoryTitle id="how-i-test-story">
+        {titleStart}
+        <em>{story.highlight}</em>
+        {titleEnd}
+      </StoryTitle>
       <StoryText>
         {story.paragraphs.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
@@ -48,11 +43,8 @@ export const HowITest = () => (
       </StoryText>
     </Story>
     <Steps aria-label="How I test a data migration">
-      {howITest.steps.map(({ title, summary, points }, index) => (
+      {howITest.steps.map(({ title, summary, points }) => (
         <li key={title}>
-          <StepNumber aria-hidden="true">
-            {String(index + 1).padStart(2, "0")}
-          </StepNumber>
           <StepTitle>{title}</StepTitle>
           <StepSummary>{summary}</StepSummary>
           <StepPoints>

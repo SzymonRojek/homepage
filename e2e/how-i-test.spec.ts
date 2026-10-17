@@ -34,4 +34,26 @@ test.describe("How I test at work", () => {
       page.getByRole("main").getByRole("heading", { level: 2 }).first(),
     ).toHaveText("How I test at work");
   });
+
+  test("starts the bug level with the section's label", async ({ page }) => {
+    await page.goto("./");
+
+    const { label, bug } = await page
+      .getByRole("region", { name: "How I test at work" })
+      .evaluate((section) => {
+        // The label's line, not its padding.
+        const range = document.createRange();
+        range.selectNodeContents(section.querySelector("h2")!);
+        // The drawing itself, not the empty space of the rotated SVG.
+        const ink = Array.from(
+          section.querySelectorAll(":scope > svg *"),
+          (shape) => shape.getBoundingClientRect(),
+        ).filter(({ height }) => height > 0);
+        return {
+          label: range.getBoundingClientRect().top,
+          bug: Math.min(...ink.map(({ top }) => top)),
+        };
+      });
+    expect(Math.abs(bug - label)).toBeLessThan(2);
+  });
 });

@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { ButtonLink } from "../ButtonLink";
-import { contentColumn } from "../../../core/App/contentColumn";
+import { columnInset, contentColumn } from "../../../core/App/contentColumn";
 
 // A full-width footer on the hero's near-black, so the page closes the way
-// the hero opens it, with the soft yellow ring in the bottom-left corner. It meets
+// the hero opens it, with the soft yellow ring in the bottom-left corner of
+// the content column, cut by the band's bottom edge. It meets
 // the last section (Skills, on its own band) edge to edge.
 // "clip", not "hidden": a hidden overflow is a scroll container, and a jump to
 // #contact at the end of the page scrolled the footer itself, cutting off
@@ -18,7 +19,7 @@ export const Wrapper = styled.footer`
     content: "";
     position: absolute;
     bottom: -170px;
-    left: -150px;
+    left: calc(${columnInset} - 150px);
     width: 400px;
     height: 400px;
     border: 72px solid ${({ theme }) => theme.colors.brand.accent};

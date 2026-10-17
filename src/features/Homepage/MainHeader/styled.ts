@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { contentColumn } from "../../../core/App/contentColumn";
+import { columnInset, contentColumn } from "../../../core/App/contentColumn";
 
 export const Wrapper = styled.header``;
 
 // Full width, near-black with a green undertone, with a soft yellow ring in
-// the corner.
+// the top-right corner of the content column, cut by the band's top edge.
 export const Band = styled.div`
   position: relative;
   /* Clips the ring without becoming a scroll container (see the footer). */
@@ -23,7 +23,7 @@ export const Band = styled.div`
     content: "";
     position: absolute;
     top: -150px;
-    right: -150px;
+    right: calc(${columnInset} - 150px);
     width: 440px;
     height: 440px;
     border: 72px solid ${({ theme }) => theme.colors.brand.accent};

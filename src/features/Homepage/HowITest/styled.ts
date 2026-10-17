@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { columnInset } from "../../../core/App/contentColumn";
 import { BandSection } from "../Section";
 import BugSvg from "./bug.svg?react";
 
@@ -22,14 +23,17 @@ export const Block = styled(BandSection)`
   }
 `;
 
-// A faint outline of a bug in the top-right corner, cut by the band's edges,
-// like the yellow ring on the hero and the footer: a motif behind the story,
-// not an illustration.
+// A faint outline of a bug in the top-right corner of the content column,
+// cut by the band's right edge up to the column's full width, a motif behind
+// the story, not an illustration. Its top is level with
+// the section's label ("01 / How I test at work"): the band's padding and the
+// label's opening, less the empty space above the drawing in the rotated SVG
+// (22px, 13px on phones).
 export const Bug = styled(BugSvg)`
   position: absolute;
   z-index: -1;
-  top: -48px;
-  right: -56px;
+  top: ${({ theme }) => theme.layout.section.desktop + 32 - 22}px;
+  right: calc(${columnInset} - 56px);
   width: 300px;
   height: 300px;
   color: ${({ theme }) => theme.colors.brand.accent};
@@ -37,16 +41,19 @@ export const Bug = styled(BugSvg)`
   transform: rotate(-25deg);
   pointer-events: none;
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    top: ${({ theme }) => theme.layout.section.desktop + 24 - 22}px;
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    top: -28px;
-    right: -40px;
+    top: ${({ theme }) => theme.layout.section.mobile + 16 - 13}px;
+    right: calc(${columnInset} - 40px);
     width: 180px;
     height: 180px;
   }
 `;
 
-// My story opens the block: the title and the punchline on the left, the
-// story on the right.
+// My story opens the block: the title on the left, the story on the right.
 export const Story = styled.article`
   display: grid;
   grid-template-columns: 1fr 1.25fr;
@@ -83,23 +90,6 @@ export const StoryTitle = styled.h3`
   }
 `;
 
-export const Punchline = styled.p`
-  margin: 18px 0 0;
-  font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.6;
-  color: ${({ theme }) => theme.colors.brand.accent};
-
-  &::before {
-    content: "“";
-  }
-
-  &::after {
-    content: "”";
-  }
-`;
-
 export const StoryText = styled.div`
   p {
     margin: 0 0 14px;
@@ -119,45 +109,49 @@ export const StoryText = styled.div`
   }
 `;
 
-// The method under the story: one panel, so the three stages read as one
-// process, split into three, so each stands on its own. A yellow arrow sits
-// on each divider and points to the next stage (down when they stand one
-// under another). Each stage: "Stage 01" in yellow, the title, one short line
-// and a few ticked points. Up to tablets the stages stack, with the title and
-// the line on the left and the points on the right; on phones each stage is
-// one column.
+// The method under the story: three stages side by side, split by thin
+// lines, so each stands on its own, and joined by a yellow arrow on each line
+// pointing to the next stage (down when they stack), so they read as one
+// process. No frame or panel (it looked like a table) and no numbers (the
+// arrows give the order). Each stage: the title, one short line and a few
+// ticked points. Up to tablets the stages stack, with the title and the line
+// on the left and the points on the right; on phones each stage is one column.
 export const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 56px 0 0;
   padding: 0;
   list-style: none;
-  border: 1px solid ${({ theme }) => theme.colors.brand.line};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  background: ${({ theme }) => theme.colors.brand.surface};
 
   > li {
     position: relative;
     display: grid;
     grid-template-areas:
-      "number"
       "title"
       "summary"
       "points";
     align-content: start;
-    padding: 28px 32px 32px;
+    padding: 0 32px;
+  }
+
+  > li:first-child {
+    padding-left: 0;
+  }
+
+  > li:last-child {
+    padding-right: 0;
   }
 
   > li + li {
     border-left: 1px solid ${({ theme }) => theme.colors.brand.line};
   }
 
-  /* The arrow to the next stage, on the divider, level with "Stage 0x".
+  /* The arrow to the next stage, on the divider, level with the title.
      Decorative: the list already gives the order. */
   > li + li::before {
     content: "→" / "";
     position: absolute;
-    top: 24px;
+    top: -1px;
     left: -15px;
     display: grid;
     place-items: center;
@@ -173,7 +167,7 @@ export const Steps = styled.ol`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
     > li {
-      padding: 24px 24px 28px;
+      padding: 0 24px;
     }
   }
 
@@ -181,67 +175,54 @@ export const Steps = styled.ol`
     grid-template-columns: minmax(0, 1fr);
     margin-top: 40px;
 
-    > li {
+    > li,
+    > li:first-child,
+    > li:last-child {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto 1fr;
       grid-template-areas:
-        "number points"
         "title points"
         "summary points";
       column-gap: 32px;
-      padding: 28px;
+      padding: 0 0 32px;
     }
 
-    > li + li {
+    > li:last-child {
+      padding-bottom: 0;
+    }
+
+    > li:not(:first-child) {
       border-left: 0;
       border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+      /* Clear of the arrow on the divider. */
+      padding-top: 36px;
     }
 
     > li + li::before {
       content: "↓" / "";
       top: -15px;
-      left: 28px;
+      left: 0;
     }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 32px;
 
-    > li {
+    > li,
+    > li:first-child,
+    > li:last-child {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: none;
       grid-template-areas:
-        "number"
         "title"
         "summary"
         "points";
-      padding: 24px 20px;
+      padding-bottom: 28px;
     }
 
-    > li + li::before {
-      left: 20px;
+    > li:last-child {
+      padding-bottom: 0;
     }
-  }
-`;
-
-// "Stage 01": the word is drawn by CSS, so the number alone is the text.
-export const StepNumber = styled.span`
-  grid-area: number;
-  margin-bottom: 12px;
-  font-family: ${({ theme }) => theme.fontMono};
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.brand.accent};
-
-  &::before {
-    content: "Stage " / "";
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    /* Clear of the arrow on the divider above. */
-    padding-top: 6px;
   }
 `;
 

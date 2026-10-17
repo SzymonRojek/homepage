@@ -22,8 +22,6 @@ export const howITest = {
     paragraphs: [
       "I've found bugs not only in the migrated data, but in the stored procedures that move it. When there was no data to test yet, I read the procedures against the requirements and mapping documents, questioned the solution designers, and walked through tricky cases with the developer who wrote them.",
     ],
-    // The last line, shown large next to the title.
-    punchline: "The best bugs were hiding in the code itself.",
   },
   // Shortened on 2026-10-17 from a paragraph each into a line and a few
   // points, so a recruiter can skim them; same facts, nothing added.
@@ -51,7 +49,7 @@ export const howITest = {
     {
       title: "Trace each defect to its root cause",
       summary:
-        "The data, the transformation logic, a stored procedure or the requirement itself?",
+        "I find where it comes from: the data, the transformation logic, a stored procedure or the requirement itself.",
       points: [
         "Logged in Azure DevOps",
         "Reproduction steps and evidence attached",

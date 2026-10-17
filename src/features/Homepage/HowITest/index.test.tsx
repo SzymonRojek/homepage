@@ -55,19 +55,20 @@ describe("HowITest", () => {
     // The steps close the section: "Why it matters" was removed on purpose.
     expect(steps.nextElementSibling).toBeNull();
     expect(within(section).queryByText(/Why it matters/)).toBeNull();
+    // So was the yellow punchline under the story's title.
+    expect(within(section).queryByText(/The best bugs/)).toBeNull();
   });
 
-  it("numbers the steps for the eye only", () => {
+  it("gives the stages in order without numbers", () => {
     renderHowITest();
 
-    const steps = Array.from(
-      screen.getByRole("list", { name: "How I test a data migration" })
-        .children,
-    );
-    // The list itself gives screen readers the order.
-    expect(
-      steps.map((step) => step.querySelector("[aria-hidden]")?.textContent),
-    ).toEqual(["01", "02", "03"]);
+    const steps = screen.getByRole("list", {
+      name: "How I test a data migration",
+    });
+    // An ordered list gives screen readers the order; the arrows between the
+    // stages show it on screen, so no numbers are drawn.
+    expect(steps.tagName).toBe("OL");
+    expect(steps).not.toHaveTextContent(/\b0[1-3]\b/);
   });
 
   it("gives each step a short line and a list of points to skim", () => {
