@@ -21,25 +21,42 @@ const numbers = () =>
     .getAllByRole("listitem")
     .map((item) => item.querySelector("strong") as HTMLElement);
 
-// A browser where the list starts below the screen and IntersectionObserver
-// reports when it comes into view.
+// A browser where IntersectionObserver first reports the list below the
+// screen, then when it comes into view.
 const belowTheScreen = () => {
-  let report: (entries: { isIntersecting: boolean }[]) => void = () => {};
+  let report: (entries: Partial<IntersectionObserverEntry>[]) => void =
+    () => {};
   vi.stubGlobal(
     "IntersectionObserver",
     class {
       constructor(callback: typeof report) {
         report = callback;
       }
-      observe() {}
+      observe() {
+        report([
+          {
+            isIntersecting: false,
+            intersectionRatio: 0,
+            boundingClientRect: { top: 2000 } as DOMRect,
+            rootBounds: { height: 800 } as DOMRect,
+          },
+        ]);
+      }
       disconnect() {}
     },
   );
   vi.stubGlobal("matchMedia", () => ({ matches: false }));
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
-    top: 2000,
-  } as DOMRect);
-  return () => act(() => report([{ isIntersecting: true }]));
+  return () =>
+    act(() =>
+      report([
+        {
+          isIntersecting: true,
+          intersectionRatio: 1,
+          boundingClientRect: { top: 100 } as DOMRect,
+          rootBounds: { height: 800 } as DOMRect,
+        },
+      ]),
+    );
 };
 
 afterEach(() => {

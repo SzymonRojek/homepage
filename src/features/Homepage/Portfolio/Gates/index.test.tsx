@@ -20,27 +20,44 @@ const wrapper = () =>
   screen.getByRole("list", { name: "This website: CI gates, all passing" })
     .parentElement as HTMLElement;
 
-// A browser where the list starts below the screen and IntersectionObserver
-// reports when it comes into view.
-const belowTheScreen = ({ reducedMotion = false } = {}) => {
-  let report: (entries: { isIntersecting: boolean }[]) => void = () => {};
+// A browser where IntersectionObserver first reports where the list starts
+// (below the screen unless told otherwise), then when it comes into view.
+const belowTheScreen = ({ reducedMotion = false, top = 2000 } = {}) => {
+  let report: (entries: Partial<IntersectionObserverEntry>[]) => void =
+    () => {};
   vi.stubGlobal(
     "IntersectionObserver",
     class {
       constructor(callback: typeof report) {
         report = callback;
       }
-      observe() {}
+      observe() {
+        report([
+          {
+            isIntersecting: false,
+            intersectionRatio: 0,
+            boundingClientRect: { top } as DOMRect,
+            rootBounds: { height: 800 } as DOMRect,
+          },
+        ]);
+      }
       disconnect() {}
     },
   );
   vi.stubGlobal("matchMedia", (query: string) => ({
     matches: reducedMotion && query.includes("reduce"),
   }));
-  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
-    top: 2000,
-  } as DOMRect);
-  return (isIntersecting: boolean) => act(() => report([{ isIntersecting }]));
+  return (isIntersecting: boolean) =>
+    act(() =>
+      report([
+        {
+          isIntersecting,
+          intersectionRatio: isIntersecting ? 1 : 0,
+          boundingClientRect: { top: isIntersecting ? 100 : 900 } as DOMRect,
+          rootBounds: { height: 800 } as DOMRect,
+        },
+      ]),
+    );
 };
 
 afterEach(() => {
@@ -93,10 +110,7 @@ describe("Gates", () => {
   });
 
   it("doesn't restart in front of the visitor when already on screen", () => {
-    belowTheScreen();
-    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
-      top: 100,
-    } as DOMRect);
+    belowTheScreen({ top: 100 });
     renderGates();
 
     expect(wrapper()).not.toHaveAttribute("data-state");

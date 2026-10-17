@@ -17,6 +17,9 @@ describe("Portrait", () => {
 
     const photo = screen.getByRole("img", { name: "Szymon Rojek" });
     expect(photo).toHaveAttribute("src", "photo.jpg");
+    // The largest paint on the page: fetched first (Lighthouse's "LCP request
+    // discovery").
+    expect(photo).toHaveAttribute("fetchpriority", "high");
     expect(screen.getAllByRole("img")).toEqual([photo]);
     expect(screen.queryByRole("slider")).toBeNull();
     expect(screen.queryAllByRole("link")).toHaveLength(0);

@@ -62,7 +62,9 @@ export const Portrait = ({ src, name }: PortraitProps) => {
           </feComponentTransfer>
         </filter>
       </FilterDefs>
-      <Photo src={src} alt={name} draggable={false} />
+      {/* The page's largest paint: fetched ahead of everything else, and
+          React gives the preload it writes for the <head> the same priority. */}
+      <Photo src={src} alt={name} draggable={false} fetchPriority="high" />
     </Frame>
   );
 };

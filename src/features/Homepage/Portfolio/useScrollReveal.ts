@@ -8,6 +8,11 @@ import { useEffect, type RefObject } from "react";
 // itself, not on React state, so React's output stays the same as the
 // build's. Pass functions defined outside the component, so they never
 // change.
+//
+// Where the element starts comes from the observer's first report, not from
+// getBoundingClientRect: reading the layout right after React has added the
+// page's styles made the browser lay the whole page out at once (Lighthouse's
+// "Forced reflow"), once per animated card.
 export const useScrollReveal = (
   ref: RefObject<HTMLElement | null>,
   prepare: (element: HTMLElement) => void,
@@ -18,22 +23,32 @@ export const useScrollReveal = (
     if (
       !element ||
       typeof IntersectionObserver === "undefined" ||
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ||
-      element.getBoundingClientRect().top < window.innerHeight
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
     ) {
       return;
     }
 
-    prepare(element);
+    let waiting = false;
     let stop: (() => void) | void;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some(({ isIntersecting }) => isIntersecting)) {
+        const entry = entries[entries.length - 1];
+        if (!waiting) {
+          // The first report: on screen (or above it) stays finished.
+          const screenBottom = entry.rootBounds?.height ?? window.innerHeight;
+          if (entry.boundingClientRect.top < screenBottom) {
+            observer.disconnect();
+            return;
+          }
+          waiting = true;
+          prepare(element);
+        }
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
           observer.disconnect();
           stop = play(element);
         }
       },
-      { threshold: 0.6 },
+      { threshold: [0, 0.6] },
     );
     observer.observe(element);
     return () => {
