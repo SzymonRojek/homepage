@@ -22,7 +22,7 @@ import {
 } from "./styled";
 
 const groups = [
-  { accent: "qa", title: "Testing & data", skills: testingSkills },
+  { accent: "qa", title: "Testing", skills: testingSkills },
   { accent: "automation", title: "Test automation", skills: automationSkills },
   { accent: "dev", title: "Programming", skills: programmingSkills },
 ] as const;

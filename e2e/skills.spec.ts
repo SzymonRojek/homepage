@@ -13,7 +13,7 @@ test.describe("Skills & learning", () => {
         .getByRole("region", { name: "Skills & learning" })
         .getByRole("heading", { level: 3 }),
     ).toHaveText([
-      "Testing & data",
+      "Testing",
       "Test automation",
       "Programming",
       "Learning",
@@ -61,11 +61,11 @@ test.describe("Skills & learning", () => {
   test("lists testing skills, data and SQL first", async ({ page }) => {
     const skills = page
       .getByRole("region", { name: "Skills & learning" })
-      .getByRole("list", { name: "Testing & data skills" })
+      .getByRole("list", { name: "Testing skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(5);
-    await expect(skills.first()).toHaveText("Data migration & ETL testing");
+    await expect(skills).toHaveCount(4);
+    await expect(skills.first()).toHaveText("Data migration & ETL");
     await expect(skills.nth(1)).toHaveText(
       "SQL reconciliation (T-SQL, SQL Server)",
     );
@@ -87,8 +87,8 @@ test.describe("Skills & learning", () => {
       .getByRole("list", { name: "Programming skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(5);
-    await expect(skills.first()).toHaveText("TypeScript & React");
+    await expect(skills).toHaveCount(3);
+    await expect(skills.first()).toHaveText("JavaScript, React, Redux, TypeScript");
   });
 
   test("lists the languages under the tools", async ({ page }) => {

@@ -40,7 +40,7 @@ describe("Skills", () => {
       within(section)
         .getAllByRole("heading", { level: 3 })
         .map(({ textContent }) => textContent),
-    ).toEqual(["Testing & data", "Test automation", "Programming", "Learning"]);
+    ).toEqual(["Testing", "Test automation", "Programming", "Learning"]);
     expect(within(section).getByText("Tools:").closest("p")).toHaveTextContent(
       "Tools: Git · VS Code",
     );

@@ -34,7 +34,7 @@ describe("structuredData", () => {
     const { knowsAbout } = page.mainEntity;
 
     expect(knowsAbout).toHaveLength(15);
-    expect(knowsAbout[0]).toBe("Data migration & ETL testing");
+    expect(knowsAbout[0]).toBe("Data migration & ETL");
     expect(knowsAbout).toContain("Playwright & TypeScript");
   });
 });

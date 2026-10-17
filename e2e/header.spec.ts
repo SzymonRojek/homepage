@@ -121,7 +121,7 @@ test.describe("Header and footer", () => {
     );
     await expect(
       footer.getByRole("heading", {
-        name: "Need a tester who codes, or a developer who tests?",
+        name: "Let’s ship something that doesn’t break.",
       }),
     ).toBeVisible();
   });

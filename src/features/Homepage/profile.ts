@@ -27,7 +27,7 @@ export const profile = {
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
   bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
   // The footer's heading: the question a team asks, in the page's theme.
-  contactHeading: "Need a tester who codes, or a developer who tests?",
+  contactHeading: "Let’s ship something that doesn’t break.",
   // What matters to me in a team, in my own words, and the one invite to get
   // in touch, as one paragraph in the footer.
   teamNote:

@@ -64,7 +64,7 @@ test.describe("Navigation", () => {
     const footer = page.getByRole("contentinfo");
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", {
-      name: "Need a tester who codes, or a developer who tests?",
+      name: "Let’s ship something that doesn’t break.",
     });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
       (await footer.boundingBox())!.y + 20,

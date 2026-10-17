@@ -19,7 +19,7 @@ const expectOneEdge = async (page: Page, gutter: number) => {
     footer: (
       await box(
         page.getByRole("heading", {
-          name: "Need a tester who codes, or a developer who tests?",
+          name: "Let’s ship something that doesn’t break.",
         }),
       )
     ).x,
