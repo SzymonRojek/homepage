@@ -17,3 +17,10 @@ export const headlineWidth = `calc(9.76 * ${headlineSize})`;
 // follow the band's width alone and fell to two thirds of the text's height
 // by 768px, looking small next to the headline.
 export const photoHeight = `calc(225px + 1.875 * ${headlineSize})`;
+
+// Browsers without container queries (Safari before 16, still on Macs that
+// skipped its updates) drop every rule with cqi, and the hero fell apart:
+// one column, the photo 1160px wide under the text. So each size is set
+// first in vw, the window's width, which the band all but fills; browsers
+// that know cqi take the second rule.
+export const inWindowWidth = (size: string) => size.replaceAll("cqi", "vw");

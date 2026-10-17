@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import a from "color-alpha";
-import { photoHeight } from "../sizes";
+import { inWindowWidth, photoHeight } from "../sizes";
+
+// On phones the photo's height follows the band's width (sizes.ts).
+const phoneHeight = `clamp(160px, 46cqi, ${photoHeight})`;
 
 // The photo stands on the bottom edge of the hero, with no frame of its own.
 // Its right edge lines up with the content column.
@@ -14,6 +17,7 @@ export const Frame = styled.div`
      where the one-line headline needs the room (below about 860px); then the
      photo is cropped at the shoulders and the head keeps its size. */
   width: 100%;
+  height: ${inWindowWidth(photoHeight)};
   height: ${photoHeight};
 
   /* On phones, beside "Looking for": its top level with the label (the
@@ -22,8 +26,10 @@ export const Frame = styled.div`
      layout changes, and it shrinks with the screen from about 680px down. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-column: 2;
-    height: clamp(160px, 46cqi, ${photoHeight});
-    width: min(200px, calc(0.8 * clamp(160px, 46cqi, ${photoHeight})));
+    height: ${inWindowWidth(phoneHeight)};
+    height: ${phoneHeight};
+    width: min(200px, calc(0.8 * ${inWindowWidth(phoneHeight)}));
+    width: min(200px, calc(0.8 * ${phoneHeight}));
     margin-top: 28px;
   }
 `;
@@ -61,10 +67,14 @@ export const Photo = styled.img`
   object-fit: cover;
   object-position: center bottom;
   filter: url(#portrait-duotone);
+  /* The two fades meet where both are opaque. Only the top one intersects:
+     Safari before 16 composites the bottom one too, onto nothing, and with
+     "intersect" there the photo vanished; "add" there is what the spec does
+     anyway. */
   -webkit-mask-image: ${fade};
-  -webkit-mask-composite: source-in;
+  -webkit-mask-composite: source-in, source-over;
   mask-image: ${fade};
-  mask-composite: intersect;
+  mask-composite: intersect, add;
 `;
 
 // The SVG that holds the duotone filter takes no space.

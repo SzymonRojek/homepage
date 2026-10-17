@@ -37,7 +37,7 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 - **Playwright** + **@axe-core/playwright**: `playwright.config.ts`, tests in `e2e/`
 - **GitHub Actions** (`.github/workflows/ci.yml`):
   - Every push to `main` or `dev` and every PR to `main` or `dev` runs `npm audit` (shipped deps, high+), lint, typecheck, unit tests with a coverage gate, build, e2e and Lighthouse budgets (`lighthouserc.json`, median of 3 runs).
-  - The same pushes and PRs run the e2e suite again in WebKit, Safari's engine, in a `safari` job on `macos-latest` (`SAFARI=1`: Desktop Safari, iPad Pro 11 upright and landscape, iPhone 17, iPhone SE; tablets run only the untagged tests). Added on 2026-10-17; deploys don't wait for it, so it isn't one of the gates on the site.
+  - `.github/workflows/safari.yml` runs the e2e suite in WebKit, Safari's engine, on `macos-latest` (`SAFARI=1`: Desktop Safari, iPad Pro 11 upright and landscape, iPhone 17, iPhone SE; tablets run only the untagged tests): by itself at 07:00 UTC on the 1st of every other month, and from "Run workflow" whenever a change might need it (the user's choice on 2026-10-17: a one-page site doesn't need Safari on every push; the scheduled run is the reminder, and GitHub emails when it fails). Not part of the deploy gate. GitHub turns scheduled workflows off after 60 days without a commit in a public repo, and emails before it does; re-enable it from the Actions tab.
   - `.github/workflows/mutation.yml`: manual "Run workflow" (optional `mutate` glob) runs Stryker with 4 workers, writes the score per file to the run summary and uploads `reports/mutation` as the `mutation-report` artifact. Not part of the deploy gate.
   - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`. Major updates of `eslint`, `@eslint/js` and `typescript` are ignored: `eslint-plugin-react` supports ESLint 9 only and `typescript-eslint` supports TypeScript below 6.1. Merge a Dependabot PR only when its CI is green, and run `npm ci` locally after pulling dependency changes.
   - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
@@ -76,7 +76,7 @@ npm run deploy     # manual deploy: build, then gh-pages publishes dist/ (CI doe
 
 > Stryker note: `@stryker-mutator/vitest-runner` does not activate mutants with Vitest 5 (0 tests ran per mutant, giving a false 13.6% score), so `stryker.config.json` uses the command runner with `coverageAnalysis: "off"` and long timeouts. Check `testsCompleted` in `reports/mutation/mutation.json` before trusting a low score.
 
-> Playwright note: on macOS 12 Playwright cannot install its own Chromium. Local runs therefore use the installed Google Chrome (`channel: "chrome"`), and CI uses the bundled Chromium. WebKit doesn't run on macOS 12 at all (Playwright refuses it, its macOS 15 build needs `libswiftObservation.dylib`, which macOS 12 lacks, and the Mac's own Safari is 15.6, too old for container queries), so the Safari projects run only in CI's `safari` job.
+> Playwright note: on macOS 12 Playwright cannot install its own Chromium. Local runs therefore use the installed Google Chrome (`channel: "chrome"`), and CI uses the bundled Chromium. WebKit doesn't run on macOS 12 at all (Playwright refuses it, its macOS 15 build needs `libswiftObservation.dylib`, which macOS 12 lacks, and the Mac's own Safari is 15.6, too old for container queries), so the Safari projects run only in the `Safari` workflow on GitHub.
 
 ## Architecture
 
