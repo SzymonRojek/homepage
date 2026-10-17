@@ -20,15 +20,37 @@ for (const { screen, viewport } of [
         await new Promise((resolve) => setTimeout(resolve, late));
         await route.continue();
       });
+      // Each shift with what moved, so a failure says where the lines broke
+      // differently (CI runs Linux, where text is set a little differently).
       await page.addInitScript(() => {
-        const shifts: number[] = [];
+        const shifts: { value: number; moved: string[] }[] = [];
         Object.assign(window, { shifts });
         new PerformanceObserver((list) => {
           for (const entry of list.getEntries() as (PerformanceEntry & {
             value: number;
             hadRecentInput: boolean;
+            sources: {
+              node: Node | null;
+              previousRect: DOMRectReadOnly;
+              currentRect: DOMRectReadOnly;
+            }[];
           })[]) {
-            if (!entry.hadRecentInput) shifts.push(entry.value);
+            if (entry.hadRecentInput) continue;
+            shifts.push({
+              value: entry.value,
+              moved: entry.sources.map(
+                ({ node, previousRect, currentRect }) => {
+                  const element =
+                    node instanceof Element ? node : node?.parentElement;
+                  const text = element?.textContent?.trim().slice(0, 40);
+                  const dy = Math.round(currentRect.y - previousRect.y);
+                  const dh = Math.round(
+                    currentRect.height - previousRect.height,
+                  );
+                  return `${element?.tagName} "${text}" moved ${dy}px, height ${dh}px`;
+                },
+              ),
+            });
           }
         }).observe({ type: "layout-shift", buffered: true });
       });
@@ -46,13 +68,24 @@ for (const { screen, viewport } of [
         .toBe(true);
       await page.waitForTimeout(500);
 
-      const total = await page.evaluate(() =>
-        (window as unknown as { shifts: number[] }).shifts.reduce(
-          (sum, value) => sum + value,
-          0,
-        ),
-      );
-      expect(total).toBeLessThan(0.01);
+      const { shifts, fallbacks } = await page.evaluate(() => ({
+        shifts: (
+          window as unknown as {
+            shifts: { value: number; moved: string[] }[];
+          }
+        ).shifts,
+        // Whether this machine has a system font for each fallback face.
+        fallbacks: [...document.fonts]
+          .filter(({ family }) => family.includes("Fallback"))
+          .map(
+            ({ family, weight, status }) => `${family} ${weight}: ${status}`,
+          ),
+      }));
+      const total = shifts.reduce((sum, { value }) => sum + value, 0);
+      expect(
+        total,
+        JSON.stringify({ shifts, fallbacks }, null, 2),
+      ).toBeLessThan(0.01);
     });
   });
 }
