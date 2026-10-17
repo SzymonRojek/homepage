@@ -82,7 +82,7 @@ describe("Portfolio", () => {
   it("starts with every case study closed, as cards", () => {
     renderPortfolio();
 
-    expect(screen.getAllByRole("button", { name: "Case study" })).toHaveLength(
+    expect(screen.getAllByRole("button", { name: /^Case study/ })).toHaveLength(
       2,
     );
     expect(screen.queryByRole("article")).toBeNull();
@@ -91,7 +91,7 @@ describe("Portfolio", () => {
 
   it("opens a case study with both sides, tester first", () => {
     renderPortfolio();
-    fireEvent.click(screen.getAllByRole("button", { name: "Case study" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /^Case study/ })[0]);
 
     expect(lensHeadings()).toEqual(["How I proved it works", "How I built it"]);
   });

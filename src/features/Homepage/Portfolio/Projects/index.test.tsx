@@ -159,7 +159,7 @@ describe("Projects", () => {
       within(cards).getByRole("heading", { name: "Studied" }),
     ).toBeVisible();
     expect(
-      within(cards).getByRole("button", { name: "Case study" }),
+      within(cards).getByRole("button", { name: /^Case study/ }),
     ).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
     expect(
@@ -183,7 +183,7 @@ describe("Projects", () => {
       }),
     ]);
     const [first, second] = screen.getAllByRole("button", {
-      name: "Case study",
+      name: /^Case study/,
     });
 
     fireEvent.click(first);
@@ -198,7 +198,7 @@ describe("Projects", () => {
     expect(window.location.hash).toBe("#case-study-second");
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Case study", expanded: true }),
+      screen.getByRole("button", { name: /^Case study/, expanded: true }),
     );
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
     expect(window.location.hash).toBe("#projects");
@@ -222,7 +222,7 @@ describe("Projects", () => {
     expect(screen.getByText("First, tested.")).not.toBeVisible();
     expect(screen.getByText("Second, built.")).not.toBeVisible();
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Case study" })[1]);
+    fireEvent.click(screen.getAllByRole("button", { name: /^Case study/ })[1]);
     expect(screen.getByText("Second, built.")).toBeVisible();
     expect(screen.getByText("First, tested.")).not.toBeVisible();
   });
@@ -236,7 +236,7 @@ describe("Projects", () => {
       }),
     ]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Case study" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Case study/ }));
 
     expect(screen.getByRole("article", { name: "First" })).toHaveFocus();
   });
@@ -249,7 +249,7 @@ describe("Projects", () => {
         caseStudy: caseStudy("First"),
       }),
     ]);
-    fireEvent.click(screen.getByRole("button", { name: "Case study" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Case study/ }));
 
     const article = screen.getByRole("article", { name: "First" });
     expect(article).toHaveTextContent(/First, tested\..*First, built\./);

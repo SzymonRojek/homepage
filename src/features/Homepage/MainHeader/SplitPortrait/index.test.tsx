@@ -168,7 +168,7 @@ describe("SplitPortrait", () => {
     expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
   });
 
-  it("leaves the line where it is after a tap or a tiny move", () => {
+  it("slides the line to the other end after a tap or a tiny move", () => {
     renderPortrait();
     const slider = screen.getByRole("slider", {
       name: "Move the line between code and test",
@@ -179,7 +179,28 @@ describe("SplitPortrait", () => {
 
     fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 40 });
     fireEvent.pointerMove(portrait, { pointerType: "touch", clientX: 41 });
-    fireEvent.pointerUp(portrait);
+    fireEvent.pointerUp(portrait, { pointerType: "touch" });
+
+    // A touchscreen needs no drag (WCAG 2.5.7): a tap does the same.
+    expect(slider).toHaveAttribute("aria-valuetext", "100% code, 0% test");
+
+    // And a second tap goes back.
+    fireEvent.pointerDown(portrait, { pointerType: "touch", clientX: 60 });
+    fireEvent.pointerUp(portrait, { pointerType: "touch" });
+    expect(slider).toHaveAttribute("aria-valuetext", "0% code, 100% test");
+  });
+
+  it("leaves the line where it is after a mouse click on it", () => {
+    renderPortrait();
+    const slider = screen.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+    const portrait = slider.parentElement!;
+    portrait.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect;
+    fireEvent.change(slider, { target: { value: "40" } });
+
+    fireEvent.pointerDown(portrait, { pointerType: "mouse", clientX: 41 });
+    fireEvent.pointerUp(portrait, { pointerType: "mouse" });
 
     expect(slider).toHaveAttribute("aria-valuetext", "41% code, 59% test");
   });

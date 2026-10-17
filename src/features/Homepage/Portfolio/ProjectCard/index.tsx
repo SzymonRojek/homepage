@@ -45,6 +45,11 @@ export const ProjectCard = ({
   onToggle,
 }: ProjectCardProps) => {
   const $featured = featured === true;
+  // Every card has the same three buttons, so screen readers hear which
+  // project each is for ("Case study: Talent Outreach"), from the part of
+  // the title before its colon; on screen the card says it. Each name starts
+  // with the button's visible words (WCAG 2.5.3, Label in Name).
+  const forProject = (label: string) => `${label}: ${title.split(":")[0]}`;
   // A card with its own heading says it there; under the project's name the
   // sentence falls back to the description.
   const sentence = cardTitle ? teaser : (teaser ?? description);
@@ -66,6 +71,7 @@ export const ProjectCard = ({
       <Actions>
         <ToggleButton
           type="button"
+          aria-label={forProject("Case study")}
           aria-expanded={expanded}
           aria-controls={expanded ? `case-study-${repo}` : undefined}
           onClick={onToggle}
@@ -77,6 +83,7 @@ export const ProjectCard = ({
         {demoUrl && (
           <SmallLink
             href={demoUrl}
+            aria-label={forProject("Demo")}
             target="_blank"
             rel="noreferrer"
             $featured={$featured}
@@ -87,6 +94,7 @@ export const ProjectCard = ({
         )}
         <SmallLink
           href={repoUrl(repo)}
+          aria-label={forProject("Code")}
           target="_blank"
           rel="noreferrer"
           $featured={$featured}

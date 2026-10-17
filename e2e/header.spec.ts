@@ -180,6 +180,30 @@ test.describe("Header and footer", () => {
     await expect(page.getByText("…who also codes")).toBeVisible();
   });
 
+  test("on a phone a tap moves the line to the other end, with no drag @mobile", async ({
+    page,
+  }) => {
+    const photo = page.getByRole("img", { name: "Szymon Rojek" });
+    const slider = page.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+
+    // WCAG 2.5.7: a single tap does what the drag does.
+    await photo.tap();
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "100% code, 0% test",
+    );
+    await expect(page.getByText("…who also codes")).toBeVisible();
+
+    await photo.tap();
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "0% code, 100% test",
+    );
+    await expect(page.getByText("100% tester")).toBeVisible();
+  });
+
   test("footer is a short letter with email, and LinkedIn below it", async ({
     page,
   }) => {
