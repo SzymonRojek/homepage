@@ -24,18 +24,32 @@ describe("Portrait", () => {
     expect(screen.queryByText(/tester|codes/)).toBeNull();
   });
 
-  it("maps the photo to the brand duotone, deep green to cream", () => {
+  it("maps the photo to the brand duotone, the hero's near-black to cream", () => {
     const { container } = renderPortrait();
 
     const filter = container.querySelector("filter#portrait-duotone");
     expect(filter).not.toBeNull();
-    // The red channel runs from the deep green's red (0x12 = 0.0706) to the
-    // cream's (0xFB = 0.9843), through levels and gamma.
+    // The red channel runs from the near-black's red (0x0B = 0.0431), so the
+    // shadows melt into the band, to the cream's (0xFB = 0.9843), through
+    // levels and gamma.
     const red = filter!.querySelector("feFuncR")!.getAttribute("tableValues")!;
     const values = red.split(" ").map(Number);
     expect(values).toHaveLength(21);
-    expect(values[0]).toBeCloseTo(0.0706, 3);
+    expect(values[0]).toBeCloseTo(0.0431, 3);
     expect(values.at(-1)).toBeCloseTo(0.9843, 3);
     expect(values).toEqual([...values].sort((x, y) => x - y));
+  });
+
+  it("puts a decorative light behind the photo, hidden from screen readers", () => {
+    const { container } = renderPortrait();
+
+    // In the photo's frame, before the photo: the light first, then the
+    // duotone filter's SVG, both hidden; the photo is the only image.
+    const photo = screen.getByRole("img", { name: "Szymon Rojek" });
+    const glow = photo.parentElement!.firstElementChild;
+    expect(glow?.tagName).toBe("SPAN");
+    expect(glow).toHaveAttribute("aria-hidden", "true");
+    expect(glow).toBeEmptyDOMElement();
+    expect(container.querySelectorAll("[aria-hidden='true']")).toHaveLength(2);
   });
 });

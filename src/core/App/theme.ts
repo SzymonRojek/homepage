@@ -110,6 +110,9 @@ const brand = {
   // leaving the yellow to the buttons.
   highlight: colorNames.mint,
   onHighlight: colorNames.night,
+  // The soft light behind the hero photo's head, so the dark hair keeps its
+  // outline on the dark band.
+  glow: colorNames.deepRaised,
   text: colorNames.cream,
   muted: colorNames.brandMuted,
   line: colorNames.brandLine,
