@@ -24,8 +24,9 @@ const numbers = () =>
 // A browser where IntersectionObserver first reports the list below the
 // screen, then when it comes into view.
 const belowTheScreen = () => {
-  let report: (entries: Partial<IntersectionObserverEntry>[]) => void =
-    () => {};
+  let report: (
+    entries: Partial<IntersectionObserverEntry>[],
+  ) => void = () => {};
   vi.stubGlobal(
     "IntersectionObserver",
     class {

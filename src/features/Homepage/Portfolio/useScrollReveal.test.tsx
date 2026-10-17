@@ -15,8 +15,9 @@ const Box = () => {
 // IntersectionObserver that reports what the test tells it, the first report
 // as soon as it starts observing, as a browser does.
 const observer = (first: Partial<IntersectionObserverEntry>) => {
-  let report: (entries: Partial<IntersectionObserverEntry>[]) => void =
-    () => {};
+  let report: (
+    entries: Partial<IntersectionObserverEntry>[],
+  ) => void = () => {};
   const disconnect = vi.fn();
   vi.stubGlobal(
     "IntersectionObserver",
