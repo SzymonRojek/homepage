@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { SubHeader } from "../SubHeader";
 
 export const Section = styled.section`
   margin-top: ${({ theme }) => theme.layout.section.desktop}px;
@@ -40,11 +39,10 @@ export const BandSection = styled(Section).attrs({
   }
 `;
 
-// The room above a section's first visible line, its heading or the big
-// line that speaks for a hidden one, on top of the section's own spacing, so
-// every section opens the same distance below the one before it, with more
-// room above its first line than below. Padding, not margin: a margin would
-// collapse into the margin of a section on the page colour.
+// The room above a section's heading, on top of the section's own spacing,
+// so every section opens the same distance below the one before it, with
+// more room above its first line than below. Padding, not margin: a margin
+// would collapse into the margin of a section on the page colour.
 export const sectionOpening = css`
   padding-top: 32px;
 
@@ -57,14 +55,25 @@ export const sectionOpening = css`
   }
 `;
 
-// A section's heading, plain: no decorative bar above it (it read as a
-// template).
-export const SectionHeader = styled(SubHeader)`
+// A section's heading: its name, small, in monospace, after its number in
+// the page ("01 / How I test at work"), above the section's big line or its
+// content. The number comes from data-number (sectionNumber) through CSS,
+// so screen readers and the page's text get the name alone. The button
+// colour on the page, yellow on the green band ($onBrand).
+export const SectionLabel = styled.h2<{ $onBrand?: boolean }>`
   ${sectionOpening}
-  margin-bottom: 20px;
+  margin: 0 0 16px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: ${({ theme, $onBrand }) =>
+    $onBrand ? theme.colors.brand.accent : theme.colors.primary};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-bottom: 16px;
+  &::before {
+    content: attr(data-number) " / ";
+    content: attr(data-number) " / " / "";
   }
 `;
 
@@ -103,26 +112,10 @@ export const BigLineMark = styled.mark`
   -webkit-box-decoration-break: clone;
 `;
 
-// A section heading for screen readers and search engines only, for a
-// section whose big line speaks for it on screen. It still names the section
-// and is where the top bar's link lands.
-export const HiddenSectionHeader = styled.h2`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-`;
-
-// A section's one big line, which opens it in place of a visible heading.
-// Balanced, so no line is left with one word.
+// A section's one big line, under its heading. Balanced, so no line is left
+// with one word.
 export const BigLine = styled.p`
   ${bigLine}
-  ${sectionOpening}
   text-wrap: balance;
 `;
 

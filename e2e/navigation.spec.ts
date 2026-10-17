@@ -11,6 +11,16 @@ const sectionLink = async (page: Page, name: string, isMobile: boolean) => {
     .getByRole("link", { name });
 };
 
+// Scrolls in small steps, as a wheel or a finger does (one big step counts
+// as a jump, after which the top bar stays in sight).
+const scrollBy = async (page: Page, distance: number) => {
+  const steps = Math.ceil(Math.abs(distance) / 100);
+  for (let step = 0; step < steps; step++) {
+    await page.evaluate((dy) => window.scrollBy(0, dy), distance / steps);
+    await page.waitForTimeout(30);
+  }
+};
+
 test.describe("Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("./");
@@ -20,14 +30,12 @@ test.describe("Navigation", () => {
     for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
-      ["Skills", "Skills & learning"],
+      ["References", "References"],
       ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {
         await (await sectionLink(page, link, isMobile)).click();
-        // Some sections' headings are for screen readers only (a clipped
-        // 1px box the viewport check can't see), so the section itself is
-        // checked: it starts just under the top bar.
+        // The section itself is checked: it starts just under the top bar.
         const region = page.getByRole("region", { name: section });
         await expect(region).toBeInViewport();
         await expect
@@ -44,7 +52,7 @@ test.describe("Navigation", () => {
     page,
     isMobile,
   }) => {
-    await (await sectionLink(page, "Contact", isMobile)).click();
+    await (await sectionLink(page, "Hire me", isMobile)).click();
 
     await expect(page).toHaveURL(/#contact$/);
     await expect(
@@ -55,47 +63,84 @@ test.describe("Navigation", () => {
     // 40px on a desktop; it was 0 when the footer scrolled).
     const footer = page.getByRole("contentinfo");
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
-    const heading = page.getByRole("heading", { name: /^Thanks for reading/ });
+    const heading = page.getByRole("heading", {
+      name: "Looking for a tester who reads the code too?",
+    });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
       (await footer.boundingBox())!.y + 20,
     );
   });
 
-  test("the top bar stays visible while scrolling", async ({
+  test("the top bar is an outline at the top, lifts on scroll, hides past the hero and returns on scroll up", async ({
     page,
-    isMobile,
   }) => {
-    await page
-      .getByRole("heading", { name: "Skills & learning" })
-      .scrollIntoViewIfNeeded();
+    // The pill is the wordmark's parent.
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+    const gap = page.viewportSize()!.width <= 767 ? 8 : 12;
 
-    await expect(
-      page.getByRole("link", { name: /^Szymon Rojek/ }),
-    ).toBeInViewport();
-    // On a phone the switch is in the menu; the menu button stays in the bar.
-    await expect(
-      page.getByRole("button", { name: isMobile ? "Menu" : "Dark mode" }),
-    ).toBeInViewport();
+    await test.step("at the top: a rounded outline over the hero", async () => {
+      expect(
+        parseFloat(
+          await pill.evaluate((el) => getComputedStyle(el).borderTopLeftRadius),
+        ),
+      ).toBeGreaterThanOrEqual(24);
+      expect(Math.round((await pill.boundingBox())!.y)).toBe(gap);
+      expect((await page.getByRole("banner").boundingBox())?.y).toBe(0);
+      await expect(pill).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+      await expect(pill).toHaveCSS("box-shadow", "none");
+    });
+
+    await test.step("scrolled within the hero: raised, with a shadow", async () => {
+      await scrollBy(page, 200);
+      await expect(pill).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+      await expect(pill).not.toHaveCSS("box-shadow", "none");
+      await expect(pill).toBeInViewport();
+    });
+
+    await test.step("scrolling down past the hero: out of sight", async () => {
+      await scrollBy(page, 1500);
+      await expect(pill).not.toBeInViewport();
+    });
+
+    await test.step("scrolling up: back, raised", async () => {
+      await scrollBy(page, -300);
+      await expect(pill).toBeInViewport();
+      await expect
+        .poll(async () => Math.round((await pill.boundingBox())!.y))
+        .toBe(gap);
+      await expect(pill).not.toHaveCSS("box-shadow", "none");
+    });
   });
 
-  test("the top bar is see-through over the hero until the page scrolls", async ({
+  test("after a jump down the page the top bar is solid at once, never mid-fade @desktop", async ({
     page,
   }) => {
-    // The bar is the wordmark's grandparent: link → row → bar.
-    const bar = page
+    const pill = page
       .getByRole("link", { name: /^Szymon Rojek/ })
-      .locator("xpath=../..");
-    const green = "rgb(18, 60, 55)";
+      .locator("..");
 
-    await expect(bar).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-    // The hero starts under the bar, so its green shows through.
-    expect((await page.getByRole("banner").boundingBox())?.y).toBe(0);
-
-    await page.evaluate(() => window.scrollTo(0, 400));
-    await expect(bar).toHaveCSS("background-color", green);
-
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await expect(bar).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    // Watch every frame from the click: the first colour after the
+    // see-through outline must already be the final green. A fade would show
+    // a paler green first, leaving the cream links on the light page.
+    const firstChange = pill.evaluate(
+      (el) =>
+        new Promise<string>((resolve) => {
+          const start = getComputedStyle(el).backgroundColor;
+          const frame = () => {
+            const now = getComputedStyle(el).backgroundColor;
+            if (now !== start) resolve(now);
+            else requestAnimationFrame(frame);
+          };
+          requestAnimationFrame(frame);
+        }),
+    );
+    await page
+      .getByRole("navigation", { name: "Sections" })
+      .getByRole("link", { name: "Experience" })
+      .click();
+    expect(await firstChange).toBe("rgba(18, 60, 55, 0.94)");
   });
 
   test("on a phone the links sit behind a menu @mobile", async ({ page }) => {
@@ -113,15 +158,16 @@ test.describe("Navigation", () => {
       expect(overflow).toBeLessThanOrEqual(0);
     });
 
-    await test.step("Contact and the switch are hidden until it opens", async () => {
+    await test.step("Hire me is hidden until it opens", async () => {
       const nav = page.getByRole("navigation", { name: "Sections" });
-      await expect(nav.getByRole("link", { name: "Contact" })).toBeHidden();
+      await expect(nav.getByRole("link", { name: "Hire me" })).toBeHidden();
 
       await menu.click();
-      await expect(nav.getByRole("link", { name: "Contact" })).toBeVisible();
-      await expect(
-        nav.getByRole("button", { name: "Dark mode" }),
-      ).toBeVisible();
+      await expect(nav.getByRole("link", { name: "Hire me" })).toBeVisible();
+      // The theme switch is in the footer, not the menu.
+      await expect(nav.getByRole("button", { name: "Dark mode" })).toHaveCount(
+        0,
+      );
       await page.keyboard.press("Escape");
     });
 
@@ -132,7 +178,7 @@ test.describe("Navigation", () => {
 
       await projects.click();
       await expect(projects).toBeHidden();
-      // The heading is for screen readers only; the big line under it shows.
+      // The section's small heading, then its big line under it.
       await expect(
         page.getByText("Built in my own time.", { exact: true }),
       ).toBeInViewport();

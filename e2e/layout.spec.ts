@@ -11,11 +11,16 @@ const box = async (locator: Locator) => {
 // left edges line up at the expected gutter and nothing scrolls sideways.
 const expectOneEdge = async (page: Page, gutter: number) => {
   const edges = {
-    topBar: (await box(page.getByRole("link", { name: /^Szymon Rojek/ }))).x,
+    // The floating pill around the wordmark starts on the edge.
+    topBar: (
+      await box(page.getByRole("link", { name: /^Szymon Rojek/ }).locator(".."))
+    ).x,
     hero: (await box(page.getByRole("heading", { level: 1 }))).x,
     footer: (
       await box(
-        page.getByRole("heading", { name: "Thanks for reading this far." }),
+        page.getByRole("heading", {
+          name: "Looking for a tester who reads the code too?",
+        }),
       )
     ).x,
     section: (

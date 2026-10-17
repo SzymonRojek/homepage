@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { ButtonLink } from "../ButtonLink";
 import { contentColumn } from "../../../core/App/contentColumn";
 
-// A full-width footer on the deep-green band, so the page closes the way the
-// hero opens it, with the soft yellow ring in the bottom-left corner. It meets
+// A full-width footer on the hero's near-black, so the page closes the way
+// the hero opens it, with the soft yellow ring in the bottom-left corner. It meets
 // the last section (Skills, on its own band) edge to edge.
 // "clip", not "hidden": a hidden overflow is a scroll container, and a jump to
 // #contact at the end of the page scrolled the footer itself, cutting off
@@ -12,7 +12,7 @@ export const Wrapper = styled.footer`
   position: relative;
   overflow: clip;
   color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.background};
+  background: ${({ theme }) => theme.colors.brand.dark};
 
   &::before {
     content: "";
@@ -89,12 +89,6 @@ export const Note = styled.p`
   }
 `;
 
-export const Invite = styled(Note)`
-  margin-top: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.brand.text};
-`;
-
 // As wide as its words. On phones it sits on the right, closing the note.
 export const ContactButton = styled(ButtonLink)`
   margin-top: 24px;
@@ -112,7 +106,8 @@ export const ContactButton = styled(ButtonLink)`
   }
 `;
 
-// The last line: copyright on the left, GitHub and LinkedIn on the right.
+// The last line: copyright on the left, GitHub, LinkedIn and the theme
+// switch on the right.
 export const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
@@ -131,4 +126,19 @@ export const Bottom = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 28px;
   }
+`;
+
+// GitHub and LinkedIn, then the theme switch, all small squares alike. A thin
+// line sets the switch apart, since it changes the page while the two links
+// leave it.
+export const Tools = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const Divider = styled.span`
+  width: 1px;
+  height: 24px;
+  background: ${({ theme }) => theme.colors.brand.line};
 `;

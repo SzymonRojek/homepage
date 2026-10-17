@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
 import { profile } from "../profile";
 import { SplitPortrait } from "./SplitPortrait";
@@ -10,13 +11,11 @@ import {
   NameAndTitle,
   Headline,
   Highlight,
-  Underline,
   Summary,
   NextRole,
-  Facts,
 } from "./styled";
 
-// The tagline is the big headline, with a hand-drawn underline under one word.
+// The tagline is the big headline, its last words on a tilted green block.
 const [before, after] = profile.tagline.split(profile.taglineHighlight);
 
 // The deep-green brand band: the tagline as the headline, the roles I want
@@ -36,31 +35,28 @@ export const MainHeader = () => (
                 it is dropped from the heading's accessible name. */}
             <NameAndTitle>{`${profile.name}, ${profile.title}:`}</NameAndTitle>{" "}
             {before}
-            <Highlight>
-              {/* Before the word, not after: Chrome puts a space at the edge of
-                  this positioned SVG in the heading's accessible name, and here
-                  it merges with the space before the word ("green ." else). */}
-              <Underline
-                viewBox="0 0 200 20"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path d="M3 14 C 50 4, 120 4, 197 10" />
-              </Underline>
-              {profile.taglineHighlight}
-            </Highlight>
+            <Highlight>{profile.taglineHighlight}</Highlight>
             {after}
           </Headline>
           <Summary>{profile.bio}</Summary>
           <NextRole>
             <dt>{profile.lookingFor.label}</dt>
-            <dd>{profile.lookingFor.value}</dd>
+            <dd>
+              {profile.lookingFor.lines.map((phrases, index) => (
+                <Fragment key={phrases.join(" ")}>
+                  {index > 0 && " "}
+                  <span>
+                    {phrases.map((phrase, at) => (
+                      <Fragment key={phrase}>
+                        {at > 0 && " "}
+                        <span>{phrase}</span>
+                      </Fragment>
+                    ))}
+                  </span>
+                </Fragment>
+              ))}
+            </dd>
           </NextRole>
-          <Facts aria-label="Right to work and relocation">
-            {profile.facts.map((fact) => (
-              <li key={fact}>{fact}</li>
-            ))}
-          </Facts>
         </Details>
         <SplitPortrait
           src={szymonRojekProfile}

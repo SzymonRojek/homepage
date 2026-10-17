@@ -19,15 +19,15 @@ export const Homepage = () => {
       <MainHeader />
       <Container>
         <main id="main" tabIndex={-1}>
-          <Recommendations />
-
           <HowITest />
-
-          <Experience />
 
           <Portfolio />
 
+          <Experience />
+
           <Skills />
+
+          <Recommendations />
         </main>
       </Container>
       <Footer />

@@ -3,10 +3,10 @@ import {
   recommendations,
   recommendationsHeading,
 } from "../recommendationsData";
-import { BigLineMark, HiddenSectionHeader } from "../Section";
+import { BandSection, BigLineMark, SectionLabel } from "../Section";
+import { sectionNumber } from "../sections";
 import { balanceColumns } from "./balanceColumns";
 import {
-  QuoteBand,
   Pull,
   List,
   Column,
@@ -71,10 +71,15 @@ const columns = balanceColumns(recommendations);
 // recommendation in full with its key words marked and a faint LinkedIn mark
 // in its corner, so it's clear where they come from.
 export const Recommendations = () => (
-  <QuoteBand $band="quote" aria-labelledby="recommendations">
-    <HiddenSectionHeader id="recommendations">
+  // The last section, on its own band (white; one step up in the dark
+  // theme), after Skills on the page's colour; the footer meets it.
+  <BandSection $band="quote" aria-labelledby="recommendations">
+    <SectionLabel
+      id="recommendations"
+      data-number={sectionNumber("recommendations")}
+    >
       {recommendationsHeading}
-    </HiddenSectionHeader>
+    </SectionLabel>
     <Pull>
       <blockquote>
         <p>
@@ -121,5 +126,5 @@ export const Recommendations = () => (
         </Column>
       ))}
     </List>
-  </QuoteBand>
+  </BandSection>
 );

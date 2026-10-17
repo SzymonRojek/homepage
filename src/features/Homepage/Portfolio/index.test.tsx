@@ -20,7 +20,6 @@ vi.mock("./projectsData", async (importOriginal) => {
     diagrams: [],
     decisions: [],
     quality: [],
-    lessons: [],
   };
   return {
     ...actual,
@@ -62,10 +61,11 @@ describe("Portfolio", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("opens with one big line and the intro, under a hidden heading", () => {
+  it("opens with its numbered heading, one big line and the intro", () => {
     renderPortfolio();
 
     const heading = screen.getByRole("heading", { level: 2, name: "Projects" });
+    expect(heading).toHaveAttribute("data-number", "02");
     const line = heading.nextElementSibling;
     expect(line).toHaveTextContent(
       /^Built in my own time\. Tested like production\.$/,
@@ -82,7 +82,7 @@ describe("Portfolio", () => {
   it("starts with every case study closed, as cards", () => {
     renderPortfolio();
 
-    expect(screen.getAllByRole("button", { name: "Case study" })).toHaveLength(
+    expect(screen.getAllByRole("button", { name: /^Case study/ })).toHaveLength(
       2,
     );
     expect(screen.queryByRole("article")).toBeNull();
@@ -91,7 +91,7 @@ describe("Portfolio", () => {
 
   it("opens a case study with both sides, tester first", () => {
     renderPortfolio();
-    fireEvent.click(screen.getAllByRole("button", { name: "Case study" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /^Case study/ })[0]);
 
     expect(lensHeadings()).toEqual(["How I proved it works", "How I built it"]);
   });

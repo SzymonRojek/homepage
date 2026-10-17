@@ -3,9 +3,10 @@ import { expect, test } from "./fixtures";
 
 const sections = [
   "How I test at work",
-  "Experience",
   "Projects",
+  "Experience",
   "Skills & learning",
+  "References",
 ];
 
 // Search engines and AI tools that don't run JavaScript read the page as the

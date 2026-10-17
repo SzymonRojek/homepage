@@ -24,7 +24,6 @@ const caseStudy: CaseStudyData = {
     { decision: "Static data", why: "Rate limits.", tradeOff: "Manual edits." },
   ],
   quality: [{ area: "Testing", text: "Unit and e2e tests." }],
-  lessons: ["Write the failing test first."],
 };
 
 const renderCaseStudy = () =>
@@ -95,7 +94,6 @@ describe("CaseStudy", () => {
       "Architecture",
       "Key decisions and trade-offs",
       "Testing, performance, accessibility and security",
-      "Lessons learned",
     ]);
     expect(
       screen.getByRole("list", { name: "Pipeline", hidden: true }),
@@ -126,7 +124,8 @@ describe("CaseStudy", () => {
     expect(screen.getByText("Recruiters can't verify a CV.")).toBeVisible();
     expect(screen.getByText("Static hosting.")).toBeVisible();
     expect(screen.getByText("Unit and e2e tests.")).toBeVisible();
-    expect(screen.getByText("Write the failing test first.")).toBeVisible();
+    // "Lessons learned" was removed on purpose.
+    expect(screen.queryByText(/Lessons learned/)).toBeNull();
   });
 
   it("shows both columns, tester first, each with its own link target", () => {

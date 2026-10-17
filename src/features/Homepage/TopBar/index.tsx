@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { ThemeSwitch } from "../../../common/ThemeSwitch";
 import { profile } from "../profile";
+import { useBarState } from "./useBarState";
 import {
   Bar,
   Inner,
   Brand,
   BrandName,
+  Dot,
   Nav,
   NavList,
   NavLink,
@@ -18,29 +19,21 @@ import {
 // Each href points to the id of a section heading.
 const navLinks = [
   { href: "#how-i-test", label: "How I test" },
-  { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience" },
+  { href: "#recommendations", label: "References" },
 ];
 
-// On wide screens the links, Contact and the theme switch sit in the bar. On
-// phones and tablets they move into a menu behind a button: the links, then
-// Contact with the theme switch on the other side of the same row.
+// A floating pill: on wide screens the links and "Hire me" sit in it; on
+// phones and tablets they move into a rounded panel under it, behind a
+// button: the links, then "Hire me". The theme switch is in the footer.
 export const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [atTop, setAtTop] = useState(true);
+  const scrollState = useBarState();
+  // An open menu keeps the bar raised and in sight.
+  const state = menuOpen ? "raised" : scrollState;
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  // See-through over the hero until the page scrolls. It starts at the top,
-  // as in the build's static copy, and checks at once, after a reload too.
-  useEffect(() => {
-    const update = () => setAtTop(window.scrollY <= 0);
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
 
   // An open menu closes on Escape (focus goes back to the button) and on a
   // click or tap outside the bar.
@@ -70,9 +63,10 @@ export const TopBar = () => {
   }, [menuOpen]);
 
   return (
-    <Bar ref={barRef} $solid={!atTop || menuOpen}>
-      <Inner>
+    <Bar ref={barRef} $state={state}>
+      <Inner $state={state}>
         <Brand href="#top" title="Back to top">
+          <Dot aria-hidden="true" />
           <BrandName>{profile.name}</BrandName>
         </Brand>
         <Nav id="site-menu" aria-label="Sections" $open={menuOpen}>
@@ -87,9 +81,8 @@ export const TopBar = () => {
           </NavList>
           <MenuFooter>
             <ContactLink href="#contact" onClick={() => setMenuOpen(false)}>
-              Contact
+              Hire me
             </ContactLink>
-            <ThemeSwitch />
           </MenuFooter>
         </Nav>
         <MenuButton

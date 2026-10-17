@@ -120,12 +120,21 @@ export const SplitPortrait = ({ src, name, captions }: SplitPortraitProps) => {
           moveTo(event);
         }
       }}
-      onPointerUp={() => {
+      onPointerUp={({ pointerType }) => {
         const start = dragStart.current;
         dragStart.current = null;
+        if (start === null) {
+          return;
+        }
         // Let go partway: finish the move in the direction of the drag.
-        if (start !== null && Math.abs(splitRef.current - start) >= NUDGE) {
+        if (Math.abs(splitRef.current - start) >= NUDGE) {
           slideTo(splitRef.current > start ? 100 : 0);
+        } else if (pointerType !== "mouse") {
+          // A tap (or a finger that hardly moved) slides the line to the
+          // other end, so a touchscreen needs no drag (WCAG 2.5.7). A scroll
+          // never gets here: the browser cancels the pointer instead. A
+          // mouse already has a single click: it moves the line at once.
+          slideTo(start < 50 ? 100 : 0);
         }
       }}
       onPointerCancel={() => {

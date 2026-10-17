@@ -22,11 +22,13 @@ export const Grid = styled.div`
 
 export const Group = styled.div``;
 
-// What I'm learning on a soft card of the page's tone, so it reads apart from
-// what I can already do, and ISTQB stands out.
+// What I'm learning on a white card with a thin border on the page's colour
+// (the card colour in the dark theme), so it reads apart from what I can
+// already do, and ISTQB stands out.
 export const LearningGroup = styled.div`
   padding: 20px 22px 8px;
-  background: ${({ theme }) => theme.colors.site.background};
+  background: ${({ theme }) => theme.colors.boxBackground};
+  border: 1px solid ${({ theme }) => theme.colors.headerLine};
   border-radius: ${({ theme }) => theme.borderRadius};
 
   li:last-child {

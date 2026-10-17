@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
@@ -19,35 +19,32 @@ const renderHeader = () =>
   );
 
 describe("MainHeader", () => {
-  it("shows who I am, the roles I want and where I can work", () => {
+  it("shows who I am and the roles I want, without where I live", () => {
     renderHeader();
 
-    // The roles lead; where and how I can work follows as plain phrases.
+    // The roles close the text: no location or right-to-work line.
     expect(screen.getByRole("term")).toHaveTextContent("Looking for");
-    expect(screen.getByRole("definition")).toHaveTextContent(
-      "Test Automation, QA and AI Testing roles",
+    // The exact text: a non-breaking space and hyphen keep its phrases whole.
+    expect(screen.getByRole("definition").textContent).toBe(
+      "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
     );
-    const facts = screen.getByRole("list", {
-      name: "Right to work and relocation",
-    });
     expect(
-      within(facts)
-        .getAllByRole("listitem")
-        .map(({ textContent }) => textContent),
-    ).toEqual(["Full right to work in the UK", "Open to relocation"]);
+      screen.queryByRole("list", { name: "Right to work and relocation" }),
+    ).toBeNull();
+    expect(screen.queryByText(/Hove|right to work|relocation/i)).toBeNull();
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
     // The tagline is the h1, led by my name and title for screen readers and
-    // search engines; "green" is wrapped for its underline.
+    // search engines; "green." sits on its tilted block.
     const headline = screen.getByRole("heading", {
       level: 1,
       name: "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
     });
-    expect(headline.querySelector("svg")).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
-    // Over it, the title and where I live, as a plain line, not a heading.
-    const eyebrow = screen.getByText("Software Test Engineer · Hove, UK");
+    expect(headline.querySelector("svg")).toBeNull();
+    expect(screen.getByText("green.").parentElement).toBe(headline);
+    // Over it, the title, as a plain line, not a heading.
+    const eyebrow = screen.getByText("Software Test Engineer", {
+      selector: "p",
+    });
     expect(eyebrow.tagName).toBe("P");
     expect(eyebrow.compareDocumentPosition(headline)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,

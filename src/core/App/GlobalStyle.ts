@@ -23,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
            with 100vw, which includes the scrollbar; clip, never scroll, the
            sliver. "clip" keeps the sticky top bar working. */
         overflow-x: clip;
-        font-family: "Inter", sans-serif;
+        font-family: "Geist", sans-serif;
         font-size: 17px;
         line-height: 1.5;
         color: ${({ theme }) => theme.colors.site.text};

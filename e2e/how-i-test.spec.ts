@@ -29,13 +29,9 @@ test.describe("How I test at work", () => {
       section.getByRole("article", { name: "Beyond the obvious bugs" }),
     ).toContainText("set up a call with the developer");
 
-    // The job comes straight after how I test there, so they read as one.
-    const headings = await page
-      .getByRole("main")
-      .getByRole("heading", { level: 2 })
-      .allTextContents();
-    expect(headings.indexOf("Experience")).toBe(
-      headings.indexOf("How I test at work") + 1,
-    );
+    // The first section, right under the hero.
+    await expect(
+      page.getByRole("main").getByRole("heading", { level: 2 }).first(),
+    ).toHaveText("How I test at work");
   });
 });

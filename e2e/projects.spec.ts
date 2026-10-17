@@ -3,6 +3,10 @@ import { test, expect } from "./fixtures";
 
 const TALENT = "Talent Outreach: job offers to the right candidates";
 const HOMEPAGE = "This website: built and tested like a real product";
+// The card's own heading; its case study keeps the project's name.
+const HOMEPAGE_CARD = "Nothing ships unless every gate passes.";
+const cardHeading = (name: string) =>
+  name === HOMEPAGE ? HOMEPAGE_CARD : name;
 
 // Experience and story cards are articles too, so case studies are looked for
 // inside the Projects section only.
@@ -14,7 +18,7 @@ const openCaseStudy = async (page: Page, name: string) => {
   await page
     .getByRole("list", { name: "Case studies" })
     .getByRole("listitem")
-    .filter({ has: page.getByRole("heading", { name }) })
+    .filter({ has: page.getByRole("heading", { name: cardHeading(name) }) })
     .getByRole("button", { name: "Case study" })
     .click();
   return page.getByRole("article", { name });
@@ -52,11 +56,18 @@ test.describe("Projects", () => {
       .getByRole("listitem")
       .filter({ has: page.getByRole("heading", { level: 3 }) });
     const featured = cards.filter({ hasText: "Talent Outreach" });
-    const site = cards.filter({ hasText: "This website" });
+    const site = cards.filter({ hasText: HOMEPAGE_CARD });
 
     await expect(cards.first()).toContainText("Full-stack app");
     await expect(featured).toHaveCSS("background-color", "rgb(18, 60, 55)");
     await expect(site).toContainText("The site you're on");
+    // Numbers on the featured card, the CI gates on the site's.
+    await expect(
+      featured.getByRole("list", { name: /in numbers$/ }).getByRole("listitem"),
+    ).toHaveText(["200+ unit tests", "63 Playwright flows", "56 API checks"]);
+    await expect(
+      site.getByRole("list", { name: /CI gates, all passing$/ }),
+    ).toBeVisible();
     await expect(featured).not.toContainText("live demo", {
       ignoreCase: true,
     });
@@ -67,7 +78,7 @@ test.describe("Projects", () => {
 
     await expect(cards.getByRole("heading", { level: 3 })).toHaveText([
       TALENT,
-      HOMEPAGE,
+      HOMEPAGE_CARD,
     ]);
     await expect(cards.getByRole("button", { name: "Case study" })).toHaveCount(
       2,
@@ -215,7 +226,6 @@ test.describe("Projects", () => {
       "Architecture",
       "Key decisions and trade-offs",
       "Testing, performance, accessibility and security",
-      "Lessons learned",
     ]);
     await expect(
       caseStudy.getByRole("list", { name: /^Delivery/ }).getByRole("listitem"),
@@ -293,6 +303,48 @@ test.describe("Projects", () => {
     await expect(
       caseStudy.getByRole("link", { name: "CI status" }),
     ).toHaveAttribute("href", /actions\/workflows\/ci\.yml$/);
+  });
+
+  test("the site's gates tick and the numbers count up as the cards come into view @desktop", async ({
+    page,
+  }) => {
+    const gates = page
+      .getByRole("list", { name: /CI gates, all passing$/ })
+      .locator("..");
+    const numbers = page
+      .getByRole("list", { name: /in numbers$/ })
+      .locator("strong");
+
+    // Below the screen, they wait: empty rings, and numbers at zero.
+    await expect(gates).toHaveAttribute("data-state", "waiting");
+    await expect(numbers.first()).toHaveAttribute("data-shown", "0+");
+    await page
+      .getByRole("list", { name: "Case studies" })
+      .scrollIntoViewIfNeeded();
+    await page.mouse.wheel(0, 200);
+    await expect(gates).toHaveAttribute("data-state", "running");
+    // Counted to the end, the drawn numbers give way to the real ones.
+    for (const number of await numbers.all()) {
+      await expect(number).not.toHaveAttribute("data-shown");
+    }
+    await expect(numbers).toHaveText(["200+", "63", "56"]);
+  });
+
+  test("with reduced motion every gate and number shows at once", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.reload();
+
+    await expect(
+      page.getByRole("list", { name: /CI gates, all passing$/ }).locator(".."),
+    ).not.toHaveAttribute("data-state");
+    await expect(
+      page
+        .getByRole("list", { name: /in numbers$/ })
+        .locator("strong")
+        .first(),
+    ).not.toHaveAttribute("data-shown");
   });
 
   test("renders without loading or error states", async ({ page }) => {

@@ -6,18 +6,18 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: my name in the top bar, 'Software Test Engineer · Hove, UK' over the headline 'I don't stop at green.', a short bio, the roles I'm looking for and my right to work, a portrait with a slider between colour (tester) and a green duotone (developer), and below it a quote from a colleague with the first recommendation cards" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a floating top bar with my name and a yellow 'Hire me' button; on a near-black hero, 'Software Test Engineer' over the headline 'I don't stop at green.' with 'green.' on a tilted mint block, a short bio, the roles I'm looking for and a portrait with a slider between colour (tester) and a green duotone (developer); then '01 / How I test at work' on a deep green band, and '02 / Projects' with two project cards, one showing its test numbers and the other the CI gates this site passes" />
 </picture>
 
 ## Why this site exists (30-second summary)
 
 - **Who:** Software Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
-- **Looking for:** Test Automation, QA and AI Testing roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
+- **Looking for:** QA, Test Automation, AI Testing and Front-End roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 154 unit and component tests, 118 end-to-end runs (desktop and mobile)               |
+| Automated tests       | 175 unit and component tests, 121 end-to-end runs (desktop and mobile)               |
 | Coverage              | about 97%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |
@@ -38,17 +38,13 @@ The case studies start closed. A link can open one at a chosen side, so each CV 
 
 ### Problem
 
-A CV can list tools, but a recruiter can't verify them. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.
-
 The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.
 
 ### Constraints
 
 - Free static hosting on GitHub Pages at my own domain, with no server.
 - One maintainer with limited time, so automation has to catch regressions.
-- Privacy: no phone number anywhere on the site.
 - WCAG AA colour contrast in both the light and the dark theme.
-- An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome and CI uses Playwright's Chromium.
 
 ### Architecture
 
@@ -81,29 +77,30 @@ flowchart LR
 
 ### Key decisions and trade-offs
 
-| Decision                                                 | Why                                                                                                                    | Trade-off                                                                                                                                   |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| A colour-block design: one green band, one yellow accent | A calm, memorable first impression for HR, instead of gradients and glows                                              | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI                                        |
-| One shared content column for the bar, hero and sections | The edges line up at every screen width, and wider screens get wider margins                                           | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                                                       |
-| Every section on its own background, the seams measured  | White next to cream (1.09:1) ran the sections together, so each pair of neighbours now differs by about 1.15:1 or more | Two page tones per theme plus the brand green to keep in step. Every text pair is re-checked for AA, and axe checks it again in both themes |
-| Static project data instead of the GitHub API            | Rate limits on shared networks could show recruiters an error                                                          | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again                                          |
-| Test pyramid: Vitest, then Playwright, then axe          | Fast feedback on logic, real confidence in what visitors see                                                           | E2E takes about a minute, so it covers only user-visible behaviour                                                                          |
-| 80% coverage gate that leaves out styles                 | Coverage should measure logic, not CSS                                                                                 | Styles are checked by the e2e and axe tests instead                                                                                         |
-| Paint the theme before JavaScript loads                  | Reloading in dark mode briefly flashed a light page                                                                    | The background colours live in two places. A unit test keeps them in sync                                                                   |
-| Prerender the page into the HTML at build time           | Search engines and AI tools that don't run JavaScript saw an empty page                                                | Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it                              |
-| Self-hosted font and a right-sized photo                 | Google Fonts blocked rendering, and the photo was three times larger than displayed                                    | Font updates are manual: the woff2 files live in `public/fonts` and are preloaded in the HTML                                               |
-| Lighthouse judged on the median of three runs            | The default (best run) could let a budget pass by luck                                                                 | Slower CI, and a stricter budget                                                                                                            |
-| Protected `main`, dev-first workflow, PRs I merge myself | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own                           | Even a one-line fix needs a PR and a green pipeline                                                                                         |
+| Decision                                                                                                                  | Why                                                                                                                        | Trade-off                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A colour-block design: a near-black hero and footer, one deep green band, a mint "green." and a yellow accent for actions | A calm, memorable first impression for HR, instead of gradients and glows; the page opens and closes on the same dark      | Every text colour pair is checked for WCAG AA by hand in `theme.ts`, and axe checks them again in CI                                                                                         |
+| One shared content column for the bar, hero and sections                                                                  | The edges line up at every screen width, and wider screens get wider margins                                               | Full-width bands need an inner wrapper. An e2e test measures the edges at four widths                                                                                                        |
+| A floating top bar that hides while you read                                                                              | It barely shows over the hero, lifts off once the page scrolls, and slides away while you read down, back on any scroll up | Its three states depend on scroll position, so the rule is a pure function with its own unit tests, and an e2e test scrolls through them                                                     |
+| Every section on its own background, the seams measured                                                                   | White next to cream (1.09:1) ran the sections together, so each pair of neighbours now differs by about 1.15:1 or more     | Sand and white take turns between the dark and the green, so moving a section means re-checking its neighbours. Every text pair is re-checked for AA, and axe checks it again in both themes |
+| Static project data instead of the GitHub API                                                                             | Rate limits on shared networks could show recruiters an error                                                              | Descriptions are updated by hand. An e2e fixture fails if the page ever calls the GitHub API again                                                                                           |
+| Test pyramid: Vitest, then Playwright, then axe                                                                           | Fast feedback on logic, real confidence in what visitors see                                                               | E2E takes about a minute, so it covers only user-visible behaviour                                                                                                                           |
+| 80% coverage gate that leaves out styles                                                                                  | Coverage should measure logic, not CSS                                                                                     | Styles are checked by the e2e and axe tests instead                                                                                                                                          |
+| Paint the theme before JavaScript loads                                                                                   | Reloading in dark mode briefly flashed a light page                                                                        | The background colours live in two places. A unit test keeps them in sync                                                                                                                    |
+| Prerender the page into the HTML at build time                                                                            | Search engines and AI tools that don't run JavaScript saw an empty page                                                    | Components must render without a browser. A unit test renders the page in Node and fails if one reaches for it                                                                               |
+| Self-hosted fonts and a right-sized photo                                                                                 | Google Fonts blocked rendering, and the photo was three times larger than displayed                                        | Font updates are manual: three variable woff2 fonts live in `public/fonts`, and the two of the first screen are preloaded in the HTML                                                        |
+| Lighthouse judged on the median of three runs                                                                             | The default (best run) could let a budget pass by luck                                                                     | Slower CI, and a stricter budget                                                                                                                                                             |
+| Protected `main`, dev-first workflow, PRs I merge myself                                                                  | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own                               | Even a one-line fix needs a PR and a green pipeline                                                                                                                                          |
 
 ### Testing, performance, accessibility and security
 
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and also checks that the top bar, the hero and the sections line up at several screen widths. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Other end-to-end tests read the page with JavaScript turned off and check what search engines and link previews get: the structured data, the share image, the sitemap and both case studies in the HTML. Unit tests also check that every quoted recommendation, and the phrase marked in it, is word for word from the original. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and also checks that the top bar, the hero and the sections line up at several screen widths, that the headline and photo only shrink as the window narrows, that the top bar hides past the hero and returns on scroll up, and that the CI gates and the numbers on the project cards animate only once in view. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Other end-to-end tests read the page with JavaScript turned off and check what search engines and link previews get: the structured data, the share image, the sitemap and both case studies in the HTML. Unit tests also check that every quoted recommendation, and the phrase marked in it, is word for word from the original. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
 
 **Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo raised the mobile performance score from 0.84 to about 0.9 on my machine and brought the first paint forward from 3.0 s to about 2.2 s. The photo went from 117 KB to 54 KB, and the JavaScript is about 117 KB gzipped. The build also writes the whole page into the HTML (`scripts/prerender.ts`), so it can be read without JavaScript, and in the light theme React takes it over as it is, so the photo isn't drawn twice.
 
-**Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks, labelled lists, a theme button with `aria-pressed`, a phone menu that is hidden from the keyboard and screen readers while closed, and decorative icons hidden from screen readers.
+**Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks (each section a numbered h2), labelled lists, a theme button with `aria-pressed`, a phone menu that is hidden from the keyboard and screen readers while closed, and decorative icons hidden from screen readers. The portrait's slider works with the arrow keys, a mouse click or a single tap, so it never needs a drag (WCAG 2.5.7). Buttons that repeat on both project cards say which project they are for ("Case study: Talent Outreach"), and every animation stops with reduced motion.
 
-**Security.** There are no secrets and no runtime API calls. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every week, targeted at `dev`. External links use `rel="noreferrer"`, and no phone number is published. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
+**Security.** There are no secrets and no runtime API calls. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every week, targeted at `dev`. External links use `rel="noreferrer"`. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
 
 ### Outcomes
 
@@ -112,21 +109,6 @@ flowchart LR
 - No light flash on reload in dark mode, proven by a test that records the background colour on every frame.
 - Lighthouse accessibility, best practices and SEO all score 100; performance is held by a CI budget.
 - Every deploy has passed the full pipeline, because `main` accepts nothing else.
-
-### Lessons learned
-
-- A bug I couldn't reproduce, a light flash on reload, became solvable once I wrote a failing test that recorded the background colour on every frame.
-- A fix can look broken because of browser caching. I now check what the server actually serves before changing the code again.
-- When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.
-- End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.
-- Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.
-- Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants, and slow runs on a busy machine can turn into timeouts that look like caught bugs.
-- A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
-- A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.
-- After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.
-- A photo that seemed to flicker on every reload was the text reflowing: the page first appeared in a fallback font, and the photo moved when the web fonts arrived. Preloading the fonts in the HTML fixed it and brought the first paint forward from about 2.2 s to 1.6 s.
-- Clicking Contact cut off the top of the footer. The footer clipped its decorative ring with overflow: hidden, which also made it a scroll container, so at the end of the page the browser scrolled the footer itself. overflow: clip clips the same way without scrolling, and an end-to-end test now checks the space above the footer's heading.
-- An accessibility check that failed only now and then was right: after a jump down the page, the top bar faded in over 0.2 s, and for that moment its cream and yellow text sat on a half-transparent bar over the light page. The bar now turns solid at once and fades only on the way back over the green hero.
 
 ## Case study: Talent Outreach, job offers to the right candidates
 
@@ -203,30 +185,18 @@ flowchart LR
 - Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
 
-### Lessons learned
-
-- Anything a server returns on failure needs the same care as a success response.
-- Edge cases like an empty list deserve their own test.
-- Testing with more data than one page is cheap and catches paging bugs.
-- Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports.
-- Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.
-- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.
-- A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
-
----
-
 ## For developers
 
 ### Tech stack
 
-| Area      | Tools                                                                                 |
-| --------- | ------------------------------------------------------------------------------------- |
-| Front-end | React 19, TypeScript (strict), Vite                                                   |
-| State     | Redux Toolkit (theme)                                                                 |
-| Styling   | styled-components with light and dark themes, self-hosted Inter and Plus Jakarta Sans |
-| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker                 |
-| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot                               |
-| Hosting   | GitHub Pages, deployed automatically from `main`                                      |
+| Area      | Tools                                                                                               |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| Front-end | React 19, TypeScript (strict), Vite                                                                 |
+| State     | Redux Toolkit (theme)                                                                               |
+| Styling   | styled-components with light and dark themes, self-hosted Bricolage Grotesque, Geist and Geist Mono |
+| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker                               |
+| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot                                             |
+| Hosting   | GitHub Pages, deployed automatically from `main`                                                    |
 
 ### Getting started
 
@@ -258,15 +228,15 @@ Work happens on the `dev` branch. Every push to `dev` or `main` and every pull r
 
 All text lives in data files, not in components:
 
-| File                                              | Content                                                                                                                                                                               |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/features/Homepage/profile.ts`                | Name, job title, the line over the headline, headline, target roles, location, bio, contact text, LinkedIn                                                                            |
-| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word, the phrase marked in each, and the headline quote                                                                                     |
-| `src/features/Homepage/howITestData.ts`           | The "How I test at work" section: my story and the three steps                                                                                                                        |
-| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages for "Skills & learning"                                                                                               |
-| `src/features/Homepage/experienceData.ts`         | Experience, and courses for the "Learning" list in "Skills & learning"                                                                                                                |
-| `src/features/Homepage/Portfolio/projectsData.ts` | Projects (the featured one, tags and facts on the cards, the section's two-line title), `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
-| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view                                                                                                                          |
+| File                                              | Content                                                                                                                                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/features/Homepage/profile.ts`                | Name, job title, the line over the headline, headline, target roles, location (search data only), bio, the footer's heading and note, LinkedIn                                                          |
+| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word, the phrase marked in each, and the headline quote                                                                                                       |
+| `src/features/Homepage/howITestData.ts`           | The "How I test at work" section: my story and the three steps                                                                                                                                          |
+| `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages for "Skills & learning"                                                                                                                 |
+| `src/features/Homepage/experienceData.ts`         | Experience, and courses for the "Learning" list in "Skills & learning"                                                                                                                                  |
+| `src/features/Homepage/Portfolio/projectsData.ts` | Projects (the featured one, tags and the numbers or CI gates on the cards, the section's two-line title), `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
+| `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view, and the gates on this site's card                                                                                                         |
 
 Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image.jpg`, shows the name, title and headline as an image, so redraw it when they change.
 

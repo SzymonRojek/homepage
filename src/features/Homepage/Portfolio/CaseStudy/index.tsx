@@ -101,7 +101,6 @@ export const CaseStudy = ({
     diagrams,
     decisions,
     quality,
-    lessons,
   } = caseStudy;
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const toggleRef = useRef<HTMLElement>(null);
@@ -198,15 +197,6 @@ export const CaseStudy = ({
               </div>
             ))}
           </QualityList>
-        </Part>
-
-        <Part>
-          <PartTitle>Lessons learned</PartTitle>
-          <BulletList>
-            {lessons.map((lesson) => (
-              <li key={lesson}>{lesson}</li>
-            ))}
-          </BulletList>
         </Part>
 
         <CloseRow>

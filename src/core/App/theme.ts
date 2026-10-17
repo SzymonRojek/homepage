@@ -76,9 +76,8 @@ const common = {
   },
   borderRadius: "8px",
   borderRadiusSmall: "4px",
-  fontDisplay: '"Plus Jakarta Sans", Inter, sans-serif',
-  fontMono:
-    'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
+  fontDisplay: '"Bricolage Grotesque", Geist, sans-serif',
+  fontMono: '"Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
 };
 
 // The brand band: the same deep green in both themes, cream text (11.1:1),
@@ -86,6 +85,16 @@ const common = {
 // green text (7.9:1).
 const brand = {
   background: colorNames.deep,
+  // The hero and the footer: near-black with a green undertone, so the page
+  // opens and closes on the same dark and the deep green stands out in it
+  // (the tilted "green." in the headline, the top bar, the How I test band).
+  // Cream text on it 17.1:1, muted cream 11.4:1, yellow 12.1:1.
+  dark: colorNames.night,
+  // "green." in the hero's headline: the green of a passing test, a block
+  // that stands out on the dark (10.3:1) with near-black letters (10.2:1),
+  // leaving the yellow to the buttons.
+  highlight: colorNames.mint,
+  onHighlight: colorNames.night,
   text: colorNames.cream,
   muted: colorNames.brandMuted,
   line: colorNames.brandLine,
@@ -97,6 +106,10 @@ const brand = {
   // Under the scrolled top bar: it lifts the bar off whatever passes beneath,
   // even the same green (the story band) or the dark theme's dark bands.
   barShadow: "0 6px 16px rgba(0, 0, 0, 0.22)",
+  // Under the raised top bar: a light edge along its top and two shadows, one
+  // close and one far, so it reads as a layer floating over the page.
+  pillShadow:
+    "inset 0 1px 0 rgba(251, 244, 230, 0.12), 0 2px 6px rgba(0, 0, 0, 0.16), 0 16px 36px rgba(0, 0, 0, 0.3)",
 };
 
 // The CI terminal is dark in both themes.
@@ -138,7 +151,8 @@ export const themeLight = {
     cardBand: colorNames.white,
     // A secondary button under the pointer: the page's sand behind its text.
     secondaryHover: colorNames.sand,
-    // The band under the hero, with colleagues' words: white on the cream page.
+    // References, the last section: white, after Skills on the sand, so the
+    // bands alternate down to the near-black footer.
     quoteBand: colorNames.white,
     // "How I test at work": one block on the deep brand green, the same in
     // both themes (cream text 11.1:1, muted 7.4:1, yellow 7.9:1).
@@ -148,7 +162,10 @@ export const themeLight = {
     quoteMark: { text: colorNames.ink, background: colorNames.sun },
     // The recommendation cards: white on the white band, with a thin border,
     // so the whole band reads as one white block above the cream section.
-    quoteCard: colorNames.white,
+    // On the white References band: the page's sand, so each card reads as a
+    // block (1.19:1, the step between sections), as the white cards do on
+    // the sand.
+    quoteCard: colorNames.sand,
     // The key phrase in each recommendation.
     quoteHighlight: colorNames.sunMarker,
     headerLine: colorNames.line,
@@ -189,13 +206,13 @@ export const themeDark: typeof themeLight = {
     boxBackground: colorNames.nightCard,
     cardBand: colorNames.nightBand,
     secondaryHover: colorNames.nightBand,
-    // The page itself: a card-coloured band right under the green hero would
-    // read as green on green.
-    quoteBand: colorNames.night,
+    // One step up from the page, after Skills on it, so the bands alternate
+    // down to the near-black footer.
+    quoteBand: colorNames.nightBand,
     brandBand: colorNames.deep,
     // Yellow words on the dark page (12.1:1), no marker.
     quoteMark: { text: colorNames.sun, background: "transparent" },
-    // The recommendation cards on the dark page: the card colour.
+    // The recommendation cards on the dark References band: the card colour.
     quoteCard: colorNames.nightCard,
     quoteHighlight: colorNames.sunMarkerNight,
     headerLine: colorNames.nightLine,

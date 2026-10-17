@@ -19,10 +19,10 @@ test.describe("Header and footer", () => {
     // Only the name: the job title is over the headline.
     await expect(brand).toHaveText("Szymon Rojek");
     await expect(headline).toBeVisible();
-    // Over the headline, the title and where I live, in capitals set by CSS.
+    // Over the headline, the title, in capitals set by CSS.
     const eyebrow = page
       .getByRole("banner")
-      .getByText("Software Test Engineer · Hove, UK");
+      .getByText("Software Test Engineer", { exact: true });
     await expect(eyebrow).toBeVisible();
     await expect(eyebrow).toHaveCSS("text-transform", "uppercase");
   });
@@ -34,13 +34,10 @@ test.describe("Header and footer", () => {
 
     await expect(header.getByRole("term")).toHaveText("Looking for");
     await expect(header.getByRole("definition")).toHaveText(
-      "Test Automation, QA and AI Testing roles",
+      "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
     );
-    await expect(
-      header
-        .getByRole("list", { name: "Right to work and relocation" })
-        .getByRole("listitem"),
-    ).toHaveText(["Full right to work in the UK", "Open to relocation"]);
+    // No location or right-to-work line in the hero.
+    await expect(header.getByText(/Hove|relocation/)).toHaveCount(0);
     await expect(
       header.getByText(/^Four years testing financial data/),
     ).toBeVisible();
@@ -55,12 +52,12 @@ test.describe("Header and footer", () => {
   }) => {
     // The hero has no links: contact lives in the top bar and the footer.
     await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
-    // On a phone Contact sits in the menu.
+    // On a phone "Hire me" sits in the menu.
     if (isMobile) {
       await page.getByRole("button", { name: "Menu" }).click();
     }
     await expect(
-      page.getByRole("link", { name: "Contact", exact: true }),
+      page.getByRole("link", { name: "Hire me", exact: true }),
     ).toHaveAttribute("href", "#contact");
     await expect(
       page
@@ -78,12 +75,21 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "Recommendations",
       "How I test at work",
-      "Experience",
       "Projects",
+      "Experience",
       "Skills & learning",
+      "References",
     ]);
+    // Each heading shows its number in front, in page order (01 / …).
+    expect(
+      await page
+        .getByRole("main")
+        .getByRole("heading", { level: 2 })
+        .evaluateAll((headings) =>
+          headings.map((heading) => heading.getAttribute("data-number")),
+        ),
+    ).toEqual(["01", "02", "03", "04", "05"]);
   });
 
   test("the portrait's line moves with the keyboard", async ({ page }) => {
@@ -174,6 +180,30 @@ test.describe("Header and footer", () => {
     await expect(page.getByText("…who also codes")).toBeVisible();
   });
 
+  test("on a phone a tap moves the line to the other end, with no drag @mobile", async ({
+    page,
+  }) => {
+    const photo = page.getByRole("img", { name: "Szymon Rojek" });
+    const slider = page.getByRole("slider", {
+      name: "Move the line between code and test",
+    });
+
+    // WCAG 2.5.7: a single tap does what the drag does.
+    await photo.tap();
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "100% code, 0% test",
+    );
+    await expect(page.getByText("…who also codes")).toBeVisible();
+
+    await photo.tap();
+    await expect(slider).toHaveAttribute(
+      "aria-valuetext",
+      "0% code, 100% test",
+    );
+    await expect(page.getByText("100% tester")).toBeVisible();
+  });
+
   test("footer is a short letter with email, and LinkedIn below it", async ({
     page,
   }) => {
@@ -186,9 +216,13 @@ test.describe("Header and footer", () => {
       footer.getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
     await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
-    await expect(footer).toContainText("communication matters most in a team");
+    await expect(footer).toContainText(
+      "Communication matters most to me in a team",
+    );
     await expect(
-      footer.getByRole("heading", { name: "Thanks for reading this far." }),
+      footer.getByRole("heading", {
+        name: "Looking for a tester who reads the code too?",
+      }),
     ).toBeVisible();
   });
 });
