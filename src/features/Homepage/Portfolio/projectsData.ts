@@ -206,7 +206,7 @@ const homepageCaseStudy: CaseStudy = {
         "Commit on dev",
         "Dependency audit",
         "Lint and type check",
-        "Unit tests with 80% coverage gate",
+        "Unit tests with 90% coverage gate",
         "Production build",
         "Playwright and axe on desktop and mobile",
         "Lighthouse budgets",
@@ -230,7 +230,7 @@ const homepageCaseStudy: CaseStudy = {
         "End-to-end tests take about a minute, so they cover only user-visible behaviour.",
     },
     {
-      decision: "An 80% coverage gate that leaves out styles",
+      decision: "A 90% coverage gate that leaves out styles",
       why: "Coverage should measure logic, not CSS.",
       tradeOff: "Styles are checked by the end-to-end and axe tests instead.",
     },

@@ -7,7 +7,7 @@ export const sitePipeline: Pipeline = {
   name: ".github/workflows/ci.yml",
   checks: [
     "ESLint and a strict TypeScript type check",
-    "Vitest unit and component tests with an 80% coverage gate",
+    "Vitest unit and component tests with a 90% coverage gate",
     "40+ Playwright tests on desktop and mobile, with axe scans of both themes",
     "Lighthouse budgets on the median of three runs",
     "npm audit on every push and weekly Dependabot updates",
@@ -20,13 +20,13 @@ export const sitePipeline: Pipeline = {
 };
 
 // The same gates, short, on this site's project card, in the order ci.yml
-// runs them: the 80% gate is the coverage threshold in vite.config.ts and
+// runs them: the 90% gate is the coverage threshold in vite.config.ts and
 // the median of 3 is numberOfRuns in lighthouserc.json.
 export const siteGates: Gates = {
   checks: [
     "npm audit",
     "ESLint + TypeScript",
-    "Vitest · 80% coverage gate",
+    "Vitest · 90% coverage gate",
     "Production build",
     "Playwright + axe · desktop & mobile",
     "Lighthouse budgets · median of 3",

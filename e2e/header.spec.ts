@@ -104,6 +104,21 @@ test.describe("Header and footer", () => {
     await expect(page.getByText(/100% tester|who also codes/)).toHaveCount(0);
   });
 
+  // A version that shifted with the mouse was dropped at the user's request.
+  test("the photo stays still under the mouse @desktop", async ({ page }) => {
+    const photo = page.getByRole("banner").getByRole("img", {
+      name: "Szymon Rojek",
+    });
+    const before = await photo.boundingBox();
+    const hero = (await page.getByRole("banner").boundingBox())!;
+
+    await page.mouse.move(hero.x + 20, hero.y + hero.height / 2);
+    await page.mouse.move(hero.x + 10, hero.y + 20);
+    await page.waitForTimeout(400);
+    expect(await photo.boundingBox()).toEqual(before);
+    await expect(photo).toHaveCSS("transform", "none");
+  });
+
   test("footer is a short letter with email, and LinkedIn below it", async ({
     page,
   }) => {

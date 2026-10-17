@@ -81,23 +81,49 @@ test.describe("Layout", () => {
 
     // Either side of each breakpoint, where the sizes used to jump: the
     // headline grew back to 76px when the photo moved under it at 767px.
-    let previous = { font: Infinity, photo: Infinity };
+    let previous = { font: Infinity, photo: Infinity, photoHeight: Infinity };
     for (const width of [1400, 1200, 1199, 992, 991, 768, 767, 600, 360]) {
       await page.setViewportSize({ width, height: 900 });
       const font = await headline.evaluate((element) =>
         parseFloat(getComputedStyle(element).fontSize),
       );
-      const photoWidth = (await box(photo)).width;
+      const { width: photoWidth, height: photoHeight } = await box(photo);
 
       expect(font, `headline at ${width}px`).toBeLessThanOrEqual(previous.font);
       expect(photoWidth, `photo at ${width}px`).toBeLessThanOrEqual(
         previous.photo,
       );
+      expect(photoHeight, `photo's height at ${width}px`).toBeLessThanOrEqual(
+        previous.photoHeight,
+      );
       // Still one line: less than two lines' height.
       expect((await box(headline)).height, `lines at ${width}px`).toBeLessThan(
         font * 2,
       );
-      previous = { font, photo: photoWidth };
+      previous = { font, photo: photoWidth, photoHeight };
+    }
+  });
+
+  // It used to follow the window alone, shrinking from 1364px while the
+  // headline held 80px until 1257px, and fell to 0.84 of the text's height at
+  // 768px: small next to the headline.
+  test("the photo stays about as tall as the text beside it @desktop", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const hero = page.getByRole("banner");
+    const photo = hero.getByRole("img", { name: "Szymon Rojek" });
+
+    for (const width of [1440, 1200, 1024, 900, 800, 768]) {
+      await page.setViewportSize({ width, height: 900 });
+      // From the job title over the headline to the end of "Looking for".
+      const top = (await box(hero.getByText("Test Engineer", { exact: true })))
+        .y;
+      const end = await box(hero.getByRole("definition"));
+      const ratio = (await box(photo)).height / (end.y + end.height - top);
+
+      expect(ratio, `photo to text at ${width}px`).toBeGreaterThanOrEqual(0.95);
+      expect(ratio, `photo to text at ${width}px`).toBeLessThanOrEqual(1.3);
     }
   });
 
@@ -179,7 +205,9 @@ test.describe("Layout", () => {
   }) => {
     await page.goto("./");
     const width = page.viewportSize()!.width;
-    const found = await box(page.getByRole("link", { name: "Send me an email" }));
+    const found = await box(
+      page.getByRole("link", { name: "Send me an email" }),
+    );
     expect(Math.round(width - (found.x + found.width))).toBe(16);
   });
 });

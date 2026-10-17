@@ -1,5 +1,5 @@
 import { useTheme } from "styled-components";
-import { Frame, Photo, FilterDefs } from "./styled";
+import { Frame, Glow, Photo, FilterDefs } from "./styled";
 
 interface PortraitProps {
   src: string;
@@ -10,8 +10,9 @@ interface PortraitProps {
 const channels = (hex: string) =>
   [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
 
-// The photo in a duotone of the brand colours: black to the deep brand
-// green, white to cream. The photo is bright and flat, taken in daylight:
+// The photo in a duotone of the brand colours: black to the hero's own
+// near-black, white to cream, so the jacket and the beard's shadows melt into
+// the band and only the face and hair stay lit. The photo is bright and flat, taken in daylight:
 // mapped straight from dark to light it came out pale. Levels (a black and a
 // white point) and a gamma over 1 deepen the shadows and the mid-tones, so
 // the face keeps its shape.
@@ -27,16 +28,20 @@ const toneTable = (dark: number, light: number) =>
     return (dark + (light - dark) * level ** GAMMA).toFixed(4);
   }).join(" ");
 
-// One still photo, in the duotone, standing on the band's bottom edge. It
-// replaced a photo with a sliding line between colour and duotone, and its
-// captions, on 2026-10-17.
+// One photo, its background cut out, standing on the band's bottom edge and
+// melting into the band: no frame, its bottom and sides fading out, and a
+// soft green light behind the head that keeps the dark hair's outline. It
+// stays still (a version that shifted with the mouse was dropped at once). It
+// replaced a square photo on 2026-10-17, which had replaced a photo with a
+// sliding line between colour and duotone, and its captions.
 export const Portrait = ({ src, name }: PortraitProps) => {
   const { colors } = useTheme();
-  const dark = channels(colors.brand.background);
+  const dark = channels(colors.brand.dark);
   const light = channels(colors.brand.text);
 
   return (
     <Frame>
+      <Glow aria-hidden="true" />
       <FilterDefs aria-hidden="true" focusable="false">
         <filter id="portrait-duotone" colorInterpolationFilters="sRGB">
           <feColorMatrix

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import szymonRojekProfile from "./szymonRojekProfile.jpg";
+import szymonRojekCutout from "./szymonRojekCutout.webp";
 import { profile } from "../profile";
 import { Portrait } from "./Portrait";
 import {
@@ -58,7 +58,7 @@ export const MainHeader = () => (
             </dd>
           </NextRole>
         </Details>
-        <Portrait src={szymonRojekProfile} name={profile.name} />
+        <Portrait src={szymonRojekCutout} name={profile.name} />
       </BandInner>
     </Band>
   </Wrapper>

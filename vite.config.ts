@@ -26,7 +26,9 @@ export default defineConfig({
       ],
       reporter: ["text-summary", "html"],
       // Raise these as tests are added; CI fails if coverage drops below them.
-      thresholds: { statements: 80, branches: 80, functions: 80, lines: 80 },
+      // 90 since 2026-10-17 (it was 80), with coverage at about 98% and branches
+      // at 92%: the site shows this gate, and 80% read as the coverage itself.
+      thresholds: { statements: 90, branches: 90, functions: 90, lines: 90 },
     },
   },
 });

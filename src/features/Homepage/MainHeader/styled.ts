@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { columnInset, contentColumn } from "../../../core/App/contentColumn";
+import { headlineSize, headlineWidth, photoHeight } from "./sizes";
 
 export const Wrapper = styled.header``;
 
@@ -41,14 +42,18 @@ export const Band = styled.div`
   }
 `;
 
-// Text left; the photo right, standing on the band's bottom edge. The photo
-// keeps its own width and the text takes the rest.
+// Text left; the photo right, standing on the band's bottom edge. The text
+// column is never narrower than the headline on one line; the photo's column
+// is as wide as a 4:5 photo of its height (sizes.ts), or the room that is
+// left, and the text takes the rest.
 export const BandInner = styled.div`
   ${contentColumn}
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns:
+    minmax(calc(${headlineWidth} + 8px), 1fr)
+    minmax(0, calc(0.8 * ${photoHeight}));
   gap: 48px;
   align-items: end;
 
@@ -59,6 +64,7 @@ export const BandInner = styled.div`
   /* On phones the text runs full width, and the photo stands beside
      "Looking for", its top level with the label, on the band's edge. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 16px;
     row-gap: 0;
   }
@@ -128,12 +134,12 @@ export const Eyebrow = styled.p`
 // phones (the first line: 32px at 360px, 47px at 768px) and faster above
 // (the second: 80px from about 1256px, where the column stops growing).
 // Only below 360px, at the smallest size, does it break, into balanced
-// lines. Change the two lines with the tagline or the photo's width.
+// lines. Change the two lines with the tagline, and its width in sizes.ts.
 export const Headline = styled.h1`
   margin: 12px 0 0;
   text-wrap: balance;
   font-family: ${({ theme }) => theme.fontDisplay};
-  font-size: clamp(32px, max(19px + 3.6cqi, 7cqi - 8px), 80px);
+  font-size: ${headlineSize};
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.04em;

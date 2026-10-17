@@ -104,6 +104,13 @@ test.describe("Navigation", () => {
       await expect(pill).not.toBeInViewport();
     });
 
+    await test.step("a slight move up: still out of sight", async () => {
+      await scrollBy(page, -30);
+      // Longer than the bar's slide, so it would have come back by now.
+      await page.waitForTimeout(500);
+      await expect(pill).not.toBeInViewport();
+    });
+
     await test.step("scrolling up: back, raised", async () => {
       await scrollBy(page, -300);
       await expect(pill).toBeInViewport();
