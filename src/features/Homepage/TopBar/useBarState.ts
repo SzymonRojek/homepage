@@ -13,6 +13,12 @@ export type BarState = "top" | "raised" | "hidden";
 // doesn't make it flicker.
 const nudge = 4;
 
+// How far the page must scroll back up, from where it last turned, before the
+// hidden bar returns: a slight move up no longer brings it back at once (it
+// came back after 4px, too soon for the user, 2026-10-17). Going down still
+// hides it from the first step.
+export const revealAfter = 48;
+
 // A move of more than this in one step is a jump (a link to a section, the
 // End key), not scrolling: the bar stays in sight for the next link.
 export const isJump = (y: number, lastY: number, viewport: number) =>
@@ -28,16 +34,20 @@ export const fadesOverHero = (y: number, heroBottom: number, reach: number) =>
 // How far down the window the floating bar reaches (its gap and height).
 const barReach = 80;
 
+// "turnY" is where the page last turned from going down to going up.
 export const nextBarState = (
   state: BarState,
   y: number,
   lastY: number,
   viewport: number,
+  turnY = lastY,
 ): BarState => {
   if (y <= 0) return "top";
   if (isJump(y, lastY, viewport)) return "raised";
   if (y > lastY + nudge) return "hidden";
-  if (y < lastY - nudge) return "raised";
+  if (y < lastY - nudge) {
+    return state === "hidden" && turnY - y < revealAfter ? "hidden" : "raised";
+  }
   // Not moved at all: the first check on a page that opened part way down,
   // at a section from a link.
   return state === "top" && y === lastY ? "raised" : state;
@@ -62,6 +72,9 @@ export const useBarState = () => {
 
   useEffect(() => {
     let lastY = window.scrollY;
+    // The lowest point of the latest way down: going back up is measured
+    // from here (revealAfter).
+    let turnY = lastY;
     let current: BarState = "top";
     const show = (next: BarState) => {
       current = next;
@@ -97,17 +110,18 @@ export const useBarState = () => {
           fadesOverHero(y, heroBottom, barReach),
       );
       if (isRestoringScroll()) {
-        lastY = y;
+        lastY = turnY = y;
         show("hidden");
         return;
       }
       if (holding) {
         waitForQuiet();
-        lastY = y;
+        lastY = turnY = y;
         show(y <= 0 ? "top" : "raised");
         return;
       }
-      show(nextBarState(current, y, lastY, window.innerHeight));
+      if (y > lastY + nudge || y > turnY) turnY = y;
+      show(nextBarState(current, y, lastY, window.innerHeight, turnY));
       if (Math.abs(y - lastY) > nudge || y <= 0) lastY = y;
     };
     const onClick = (event: MouseEvent) => {

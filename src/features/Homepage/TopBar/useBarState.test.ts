@@ -1,6 +1,11 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { fadesOverHero, nextBarState, useBarState } from "./useBarState";
+import {
+  fadesOverHero,
+  nextBarState,
+  revealAfter,
+  useBarState,
+} from "./useBarState";
 
 // A window 900px tall.
 const viewport = 900;
@@ -20,9 +25,17 @@ describe("nextBarState", () => {
     expect(nextBarState("top", 3, 0, viewport)).toBe("top");
   });
 
-  it("comes back, raised, as soon as the page scrolls up", () => {
-    expect(nextBarState("hidden", 1500, 1600, viewport)).toBe("raised");
-    expect(nextBarState("hidden", 200, 300, viewport)).toBe("raised");
+  it("comes back, raised, once the page has scrolled up 48px since it turned", () => {
+    expect(revealAfter).toBe(48);
+    // Turned at 1600: 40px up is not enough yet, 48px is.
+    expect(nextBarState("hidden", 1560, 1600, viewport, 1600)).toBe("hidden");
+    expect(nextBarState("hidden", 1552, 1560, viewport, 1600)).toBe("raised");
+    expect(nextBarState("hidden", 1500, 1600, viewport, 1600)).toBe("raised");
+    expect(nextBarState("hidden", 200, 300, viewport, 300)).toBe("raised");
+  });
+
+  it("stays raised while the page keeps scrolling up", () => {
+    expect(nextBarState("raised", 1590, 1600, viewport, 1600)).toBe("raised");
   });
 
   it("ignores a tremble of a few pixels", () => {
@@ -89,6 +102,25 @@ describe("useBarState", () => {
     expect(result.current.state).toBe("hidden");
     scrollTo(2000);
     expect(result.current.state).toBe("hidden");
+  });
+
+  it("comes back only after a little way up, counted from the last turn", () => {
+    const { result } = renderHook(() => useBarState());
+
+    scrollTo(300);
+    scrollTo(600);
+    expect(result.current.state).toBe("hidden");
+    // 40px up: still hidden.
+    scrollTo(580);
+    scrollTo(560);
+    expect(result.current.state).toBe("hidden");
+    // Down again: the count starts over from here (590).
+    scrollTo(590);
+    scrollTo(550);
+    expect(result.current.state).toBe("hidden");
+    // 50px up from the turn: back, raised.
+    scrollTo(540);
+    expect(result.current.state).toBe("raised");
   });
 
   it("comes back once the visitor scrolls up after the reload", () => {
