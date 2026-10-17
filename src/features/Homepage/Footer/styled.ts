@@ -26,6 +26,13 @@ export const Wrapper = styled.footer`
     border-radius: 50%;
     opacity: 0.12;
     pointer-events: none;
+
+    /* Safari before 16 has no clip, and the ring hung 170px below the page
+       (issue #33). A hidden overflow would bring back the jump bug above,
+       so there the ring is left out. */
+    @supports not (overflow: clip) {
+      display: none;
+    }
   }
 
   *:focus-visible {

@@ -264,6 +264,7 @@ export const ContactLink = styled(ButtonLink)`
      on to the contact; still with reduced motion. */
   &::after {
     /* Decorative: the link's name stays "Hire me". */
+    content: "→";
     content: "→" / "";
     display: inline-block;
     margin-left: 6px;
@@ -300,8 +301,11 @@ export const MenuButton = styled.button`
   display: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    display: grid;
-    place-items: center;
+    /* Flex, not grid: Safari before 16 doesn't centre a grid inside a
+       button, and the lines sat at its top (issue #33). */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: none;
     align-self: stretch;
     aspect-ratio: 1;

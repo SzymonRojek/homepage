@@ -43,6 +43,7 @@ export const List = styled.ul<{ $featured: boolean }>`
   }
 
   strong[data-shown]::after {
+    content: attr(data-shown);
     content: attr(data-shown) / "";
     position: absolute;
     top: 0;
