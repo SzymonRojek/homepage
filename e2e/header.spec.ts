@@ -46,14 +46,11 @@ test.describe("Header and footer", () => {
     );
   });
 
-  test("has contact links in the top bar and the footer", async ({
-    page,
-    isMobile,
-  }) => {
+  test("has contact links in the top bar and the footer", async ({ page }) => {
     // The hero has no links: contact lives in the top bar and the footer.
     await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
-    // On a phone "Hire me" sits in the menu.
-    if (isMobile) {
+    // Up to 991px (phones, an upright tablet) "Hire me" sits in the menu.
+    if (page.viewportSize()!.width <= 991) {
       await page.getByRole("button", { name: "Menu" }).click();
     }
     await expect(
@@ -102,6 +99,48 @@ test.describe("Header and footer", () => {
     await expect(photo).toHaveCSS("filter", /portrait-duotone/);
     await expect(page.getByRole("slider")).toHaveCount(0);
     await expect(page.getByText(/100% tester|who also codes/)).toHaveCount(0);
+  });
+
+  // A box of the right size can still show nothing: the duotone filter, the
+  // mask and the cut-out all have to work in the browser for the face to
+  // appear. So this reads the pixels on screen: the lit face and hair are
+  // about 15% of the photo; a missing photo leaves only the dark band.
+  test("the photo is drawn on screen, not only laid out", async ({ page }) => {
+    const photo = page.getByRole("banner").getByRole("img", {
+      name: "Szymon Rojek",
+    });
+    await expect(photo).toBeVisible();
+    await expect
+      .poll(() =>
+        photo.evaluate((image) => (image as HTMLImageElement).complete),
+      )
+      .toBe(true);
+
+    const png = (await photo.screenshot()).toString("base64");
+    const litShare = await page.evaluate(async (data) => {
+      const image = new Image();
+      image.src = `data:image/png;base64,${data}`;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext("2d")!;
+      context.drawImage(image, 0, 0);
+      const pixels = context.getImageData(0, 0, image.width, image.height).data;
+      let lit = 0;
+      for (let index = 0; index < pixels.length; index += 4) {
+        const luminance =
+          0.2126 * pixels[index] +
+          0.7152 * pixels[index + 1] +
+          0.0722 * pixels[index + 2];
+        if (luminance > 90) lit++;
+      }
+      return lit / (pixels.length / 4);
+    }, png);
+
+    expect(litShare, "share of light pixels in the photo").toBeGreaterThan(
+      0.05,
+    );
   });
 
   // A version that shifted with the mouse was dropped at the user's request.

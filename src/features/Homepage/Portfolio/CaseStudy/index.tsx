@@ -107,9 +107,11 @@ export const CaseStudy = ({
 
   // The full write-up is long, so it also closes from its end. Focus goes
   // back to its toggle, which brings the reader back to where it opened.
+  // Safari moves the focus there but doesn't scroll to it, so it scrolls too.
   const closeDetails = () => {
     if (detailsRef.current) detailsRef.current.open = false;
     toggleRef.current?.focus();
+    toggleRef.current?.scrollIntoView?.({ block: "center" });
   };
 
   return (

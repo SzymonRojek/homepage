@@ -15,6 +15,21 @@ for (const colorScheme of ["light", "dark"] as const) {
       ).toBeVisible();
 
       const scan = async () => {
+        // Text still fading in (the site's CI gates tick in one by one as they
+        // come into view) reads as too faint mid-way; axe checks it once in
+        // place. Endless ones, such as the top bar's pulsing dot, are left.
+        await page.evaluate(() =>
+          Promise.all(
+            document
+              .getAnimations()
+              .filter(
+                (animation) =>
+                  animation.playState === "running" &&
+                  animation.effect?.getTiming().iterations !== Infinity,
+              )
+              .map((animation) => animation.finished.catch(() => undefined)),
+          ),
+        );
         const { violations } = await new AxeBuilder({ page }).analyze();
         return violations
           .filter(({ impact }) => impact === "serious" || impact === "critical")

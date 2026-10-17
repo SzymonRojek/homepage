@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { themeLight } from "../../../../core/App/theme";
 import type { CaseStudy as CaseStudyData } from "../projectsData";
 import { CaseStudy } from ".";
@@ -69,6 +69,10 @@ describe("CaseStudy", () => {
     renderCaseStudy();
     const toggle = screen.getByText("Technical details");
     const details = toggle.closest("details");
+    // Safari doesn't scroll to a focused element by itself (jsdom has no
+    // scrollIntoView at all).
+    const scrollIntoView = vi.fn();
+    toggle.scrollIntoView = scrollIntoView;
     fireEvent.click(toggle);
 
     fireEvent.click(
@@ -77,6 +81,7 @@ describe("CaseStudy", () => {
 
     expect(details).not.toHaveAttribute("open");
     expect(toggle).toHaveFocus();
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: "center" });
   });
 
   it("has every part of the case study", () => {
