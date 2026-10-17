@@ -27,6 +27,9 @@ const colorNames = {
   brandLine: "rgba(251, 244, 230, 0.25)",
   brandControl: "rgba(251, 244, 230, 0.15)",
   brandControlBorder: "rgba(251, 244, 230, 0.55)",
+  // A faint cream wash on the green band, for a panel that must read as one
+  // piece (the How I test stages); muted text keeps 6.8:1 on it.
+  brandSurface: "rgba(251, 244, 230, 0.05)",
   testGreen: "#1C7457",
   testSoft: "#E3F2EA",
   testBorder: "#B8DCCB",
@@ -103,6 +106,7 @@ const brand = {
   onAccent: colorNames.deep,
   control: colorNames.brandControl,
   controlBorder: colorNames.brandControlBorder,
+  surface: colorNames.brandSurface,
   // Under the scrolled top bar: it lifts the bar off whatever passes beneath,
   // even the same green (the story band) or the dark theme's dark bands.
   barShadow: "0 6px 16px rgba(0, 0, 0, 0.22)",

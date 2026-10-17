@@ -119,76 +119,129 @@ export const StoryText = styled.div`
   }
 `;
 
-// The method under the story: three steps side by side, each under a thin
-// line, with a small yellow number beside the title, one short line and a few
-// ticked points. Up to tablets they stand one under another, with the title
-// and the line on the left and the points on the right; on phones each step
-// is one column again.
+// The method under the story: one panel, so the three stages read as one
+// process, split into three, so each stands on its own. A yellow arrow sits
+// on each divider and points to the next stage (down when they stand one
+// under another). Each stage: "Stage 01" in yellow, the title, one short line
+// and a few ticked points. Up to tablets the stages stack, with the title and
+// the line on the left and the points on the right; on phones each stage is
+// one column.
 export const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 40px;
   margin: 56px 0 0;
   padding: 0;
   list-style: none;
+  border: 1px solid ${({ theme }) => theme.colors.brand.line};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  background: ${({ theme }) => theme.colors.brand.surface};
 
   > li {
+    position: relative;
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
     grid-template-areas:
-      "number title"
-      ". summary"
-      ". points";
+      "number"
+      "title"
+      "summary"
+      "points";
     align-content: start;
-    padding-top: 24px;
-    border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+    padding: 28px 32px 32px;
+  }
+
+  > li + li {
+    border-left: 1px solid ${({ theme }) => theme.colors.brand.line};
+  }
+
+  /* The arrow to the next stage, on the divider, level with "Stage 0x".
+     Decorative: the list already gives the order. */
+  > li + li::before {
+    content: "→" / "";
+    position: absolute;
+    top: 24px;
+    left: -15px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.colors.brand.accent};
+    color: ${({ theme }) => theme.colors.brand.onAccent};
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
-    gap: 32px;
+    > li {
+      padding: 24px 24px 28px;
+    }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
     margin-top: 40px;
 
     > li {
-      grid-template-columns: 36px minmax(0, 1fr) minmax(0, 1fr);
-      grid-template-rows: auto 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
       grid-template-areas:
-        "number title points"
-        ". summary points";
+        "number points"
+        "title points"
+        "summary points";
+      column-gap: 32px;
+      padding: 28px;
+    }
+
+    > li + li {
+      border-left: 0;
+      border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+    }
+
+    > li + li::before {
+      content: "↓" / "";
+      top: -15px;
+      left: 28px;
     }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 32px;
-    gap: 28px;
 
     > li {
-      grid-template-columns: 32px minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       grid-template-rows: none;
       grid-template-areas:
-        "number title"
-        ". summary"
-        ". points";
-      padding-top: 20px;
+        "number"
+        "title"
+        "summary"
+        "points";
+      padding: 24px 20px;
+    }
+
+    > li + li::before {
+      left: 20px;
     }
   }
 `;
 
-// Level with the title's first line.
+// "Stage 01": the word is drawn by CSS, so the number alone is the text.
 export const StepNumber = styled.span`
   grid-area: number;
+  margin-bottom: 12px;
   font-family: ${({ theme }) => theme.fontMono};
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 26px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: ${({ theme }) => theme.colors.brand.accent};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    line-height: 24px;
+  &::before {
+    content: "Stage " / "";
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    /* Clear of the arrow on the divider above. */
+    padding-top: 6px;
   }
 `;
 
@@ -240,10 +293,10 @@ export const StepPoints = styled.ul`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
-    margin: 4px 0 0 32px;
+    margin-top: 0;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin: 16px 0 0;
+    margin-top: 16px;
   }
 `;
