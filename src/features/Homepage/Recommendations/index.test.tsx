@@ -6,10 +6,9 @@ import { Recommendations } from ".";
 
 vi.mock("../recommendationsData", () => ({
   recommendationsHeading: "Recommendations",
-  headline: {
-    text: "A great tester to work with",
-    highlight: "work with",
-    from: "Bob Jones",
+  recommendationsTitle: {
+    lines: ["In the words of", "the people I’ve worked with"],
+    highlight: "worked with",
   },
   recommendations: [
     {
@@ -129,12 +128,27 @@ describe("Recommendations", () => {
     );
   });
 
-  it("shows one sentence large above them, still, with its end marked", () => {
+  it("opens with one big line, its key word marked, before the cards", () => {
     renderRecommendations();
 
-    const [pull] = screen.getAllByRole("figure");
-    expect(pull).toHaveTextContent(/^“…A great tester to work with\.”$/);
-    expect(pull.querySelector("mark")).toHaveTextContent(/^work with$/);
+    const line = screen.getByText(
+      (_, element) =>
+        element?.tagName === "P" &&
+        element.textContent === "In the words of the people I’ve worked with",
+    );
+    expect(line.querySelector("mark")).toHaveTextContent(/^worked with$/);
+    // Two lines on purpose, the marked words ending the second.
+    expect(Array.from(line.children, (row) => row.textContent)).toEqual([
+      "In the words of",
+      "the people I’ve worked with",
+    ]);
+    expect(
+      line.compareDocumentPosition(
+        screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      ),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    // Jim's sentence shown large as a quote was replaced on purpose.
+    expect(screen.queryByText(/^“…/)).toBeNull();
     expect(screen.queryByRole("button")).toBeNull();
   });
 });

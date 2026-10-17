@@ -1,13 +1,18 @@
 import {
-  headline,
   recommendations,
   recommendationsHeading,
+  recommendationsTitle,
 } from "../recommendationsData";
-import { BandSection, BigLineMark, SectionLabel } from "../Section";
+import {
+  BandSection,
+  BigLine,
+  BigLineMark,
+  BigLineRow,
+  SectionLabel,
+} from "../Section";
 import { sectionNumber } from "../sections";
 import { balanceColumns } from "./balanceColumns";
 import {
-  Pull,
   List,
   Column,
   Item,
@@ -45,7 +50,8 @@ const toShortDate = (date: string) => {
   return `${month} ’${year.slice(-2)}`;
 };
 
-const [lead] = headline.text.split(headline.highlight);
+const [titleLead, titleLine] = recommendationsTitle.lines;
+const [titleStart, titleEnd] = titleLine.split(recommendationsTitle.highlight);
 
 // The quote with its key words marked; the words themselves don't change.
 const Marked = ({ text, highlight }: { text: string; highlight: string }) => {
@@ -66,10 +72,10 @@ const Marked = ({ text, highlight }: { text: string; highlight: string }) => {
 // list (newest first) for the one-column layout.
 const columns = balanceColumns(recommendations);
 
-// What people I worked with wrote on LinkedIn, word for word: Jim's verdict
-// large and still (the heading is for screen readers only), then each
-// recommendation in full with its key words marked and a faint LinkedIn mark
-// in its corner, so it's clear where they come from.
+// What people I worked with wrote on LinkedIn, word for word: one big line
+// saying who they are, then each recommendation in full with its key words
+// marked and a faint LinkedIn mark in its corner, so it's clear where they
+// come from.
 export const Recommendations = () => (
   // The last section, on its own band (white; one step up in the dark
   // theme), after Skills on the page's colour; the footer meets it.
@@ -80,14 +86,16 @@ export const Recommendations = () => (
     >
       {recommendationsHeading}
     </SectionLabel>
-    <Pull>
-      <blockquote>
-        <p>
-          “…{lead}
-          <BigLineMark>{headline.highlight}</BigLineMark>.”
-        </p>
-      </blockquote>
-    </Pull>
+    {/* The space keeps the lines apart for screen readers and in the page's
+        text, where the line break doesn't show. */}
+    <BigLine>
+      <BigLineRow>{titleLead}</BigLineRow>{" "}
+      <BigLineRow>
+        {titleStart}
+        <BigLineMark>{recommendationsTitle.highlight}</BigLineMark>
+        {titleEnd}
+      </BigLineRow>
+    </BigLine>
     {/* A <ul> can hold only <li>, and the two columns need a wrapper each,
         so the list is built from roles; the columns are invisible to screen
         readers, which hear one list of all the recommendations. */}
