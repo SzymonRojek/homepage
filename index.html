@@ -123,6 +123,65 @@
           U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
           U+2212, U+2215, U+FEFF, U+FFFD;
       }
+      /* Until those files arrive the text is drawn in a system font. Plain
+         sans-serif set it wider or narrower, so lines broke elsewhere and
+         the page moved when the real fonts swapped in (layout shift 0.056 in
+         PageSpeed, 2026-10-17). These fallbacks scale a system font to the
+         real one: size-adjust measured on the page's own text, then tuned
+         so the fewest blocks change their line count at 14 widths from
+         320px to 1440px (Geist 103.2% of Arial, its bold 101% of Arial
+         Bold, Bricolage Grotesque, only bold on the page, 101.5%), ascent
+         and descent from the real font, divided by size-adjust. Arial on
+         Macs and iPhones, Liberation Sans (Arial's metrics) on Linux,
+         Roboto (within 1% of Arial's widths) on Android. Only for the
+         letters the real fonts have: a sign they lack (→, ✓) still comes
+         from the system's own font, as before, not from Arial. Measure
+         again if the fonts or the text change much; e2e/fonts.spec.ts
+         checks it. */
+      @font-face {
+        font-family: "Geist Fallback";
+        font-weight: 100 549;
+        src:
+          local("Arial"), local("ArialMT"), local("Liberation Sans"),
+          local("LiberationSans"), local("Roboto"), local("Roboto-Regular");
+        size-adjust: 103.2%;
+        ascent-override: 97.9%;
+        descent-override: 28.1%;
+        line-gap-override: 0%;
+        unicode-range:
+          U+0000-02FF, U+0304, U+0308, U+0329, U+1E00-1EFF, U+2000-206F, U+20AC,
+          U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Geist Fallback";
+        font-weight: 550 1000;
+        src:
+          local("Arial Bold"), local("Arial-BoldMT"),
+          local("Liberation Sans Bold"), local("LiberationSans-Bold"),
+          local("Roboto Bold"), local("Roboto-Bold");
+        size-adjust: 101%;
+        ascent-override: 100%;
+        descent-override: 28.7%;
+        line-gap-override: 0%;
+        unicode-range:
+          U+0000-02FF, U+0304, U+0308, U+0329, U+1E00-1EFF, U+2000-206F, U+20AC,
+          U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: "Bricolage Fallback";
+        font-weight: 100 1000;
+        src:
+          local("Arial Bold"), local("Arial-BoldMT"),
+          local("Liberation Sans Bold"), local("LiberationSans-Bold"),
+          local("Roboto Bold"), local("Roboto-Bold");
+        size-adjust: 101.5%;
+        ascent-override: 91.6%;
+        descent-override: 26.6%;
+        line-gap-override: 0%;
+        unicode-range:
+          U+0000-02FF, U+0304, U+0308, U+0329, U+1E00-1EFF, U+2000-206F, U+20AC,
+          U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
     </style>
     <script>
       try {

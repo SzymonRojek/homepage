@@ -120,12 +120,16 @@ describe("useInitialScroll", () => {
     expect(scrollIntoView).toHaveBeenCalledOnce();
   });
 
-  it("waits for the faces index.html declares", async () => {
+  it("waits for the faces index.html downloads", async () => {
     const { readFileSync } = await import("node:fs");
     const html = readFileSync("index.html", "utf8");
+    // The fallback faces are system fonts (local()): nothing to wait for.
     const declared = new Set(
-      [...html.matchAll(/font-family: "([^"]+)"/g)].map(([, name]) => name),
+      [...html.matchAll(/@font-face \{([^}]*)\}/g)]
+        .filter(([, face]) => face.includes("url("))
+        .map(([, face]) => /font-family: "([^"]+)"/.exec(face)![1]),
     );
+    expect(declared.size).toBe(3);
 
     const waitedFor = pageFonts.map((font) =>
       font.replace(/^\d+ 1em /, "").replaceAll('"', ""),
