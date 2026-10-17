@@ -352,6 +352,7 @@ Error generating stack: `+e.message+`
      on to the contact; still with reduced motion. */
   &::after {
     /* Decorative: the link's name stays "Hire me". */
+    content: "→";
     content: "→" / "";
     display: inline-block;
     margin-left: 6px;
@@ -381,8 +382,11 @@ Error generating stack: `+e.message+`
   display: none;
 
   @media (max-width: ${({theme:e})=>e.breakpoints.tabletVerticalMax}px) {
-    display: grid;
-    place-items: center;
+    /* Flex, not grid: Safari before 16 doesn't centre a grid inside a
+       button, and the lines sat at its top (issue #33). */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: none;
     align-self: stretch;
     aspect-ratio: 1;
@@ -503,6 +507,11 @@ Error generating stack: `+e.message+`
   position: relative;
   /* Clips the ring without becoming a scroll container (see the footer). */
   overflow: clip;
+  /* Safari before 16 has no clip: its decorations widened the page and
+     left empty space under the footer (issue #33). */
+  @supports not (overflow: clip) {
+    overflow: hidden;
+  }
   /* The headline and the photo size themselves from the band's width
      (cqi), so they shrink together and smoothly as the window narrows. */
   container-type: inline-size;
@@ -914,6 +923,11 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
   position: relative;
   isolation: isolate;
   overflow: clip;
+  /* Safari before 16 has no clip: its decorations widened the page and
+     left empty space under the footer (issue #33). */
+  @supports not (overflow: clip) {
+    overflow: hidden;
+  }
   color: ${({theme:e})=>e.colors.story.text};
 `,vo=F(go)`
   position: absolute;
@@ -1024,6 +1038,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
   /* The arrow to the next stage, on the divider, level with the title.
      Decorative: the list already gives the order. */
   > li + li::before {
+    content: "→";
     content: "→" / "";
     position: absolute;
     top: -1px;
@@ -1074,6 +1089,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
     }
 
     > li + li::before {
+      content: "↓";
       content: "↓" / "";
       top: -15px;
       left: 0;
@@ -1137,6 +1153,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
 
   li::before {
     /* Decorative: the empty alt keeps screen readers from saying "tick". */
+    content: "✓";
     content: "✓" / "";
     font-weight: 700;
     color: ${({theme:e})=>e.colors.story.tick};
@@ -2253,6 +2270,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
   color: ${({theme:e})=>e.colors.qa.accent};
 
   &::before {
+    content: "→";
     content: "→" / "";
     margin-right: 8px;
   }
@@ -2294,6 +2312,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
   }
 
   strong[data-shown]::after {
+    content: attr(data-shown);
     content: attr(data-shown) / "";
     position: absolute;
     top: 0;
@@ -2393,6 +2412,7 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
 
   li::before {
     /* Decorative: the empty alt keeps screen readers from saying "tick". */
+    content: "✓";
     content: "✓" / "";
     margin-right: 8px;
     font-weight: 700;
@@ -2543,6 +2563,13 @@ I'd gladly work with him in the future and you will be fortunate if you get to w
     border-radius: 50%;
     opacity: 0.12;
     pointer-events: none;
+
+    /* Safari before 16 has no clip, and the ring hung 170px below the page
+       (issue #33). A hidden overflow would bring back the jump bug above,
+       so there the ring is left out. */
+    @supports not (overflow: clip) {
+      display: none;
+    }
   }
 
   *:focus-visible {
