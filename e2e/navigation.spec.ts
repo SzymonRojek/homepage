@@ -282,6 +282,18 @@ test.describe("Navigation", () => {
     });
   });
 
+  test("the menu button brightens under the pointer like the links @mobile", async ({
+    page,
+  }) => {
+    const menu = page.getByRole("button", { name: "Menu" });
+    const colour = () => menu.evaluate((el) => getComputedStyle(el).color);
+
+    // The links' muted cream (#B9CEC7), then their cream (#FBF4E6), not yellow.
+    expect(await colour()).toBe("rgb(185, 206, 199)");
+    await menu.hover();
+    await expect.poll(colour).toBe("rgb(251, 244, 230)");
+  });
+
   test("a reload keeps the place, without scrolling by itself", async ({
     page,
   }) => {

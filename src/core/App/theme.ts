@@ -34,6 +34,10 @@ const colorNames = {
   brandLine: "rgba(251, 244, 230, 0.25)",
   brandControl: "rgba(251, 244, 230, 0.15)",
   brandControlBorder: "rgba(251, 244, 230, 0.55)",
+  // The footer's small squares: a faint fill and edge on the near-black, so
+  // the icons (muted cream, 11.4:1) carry them and they don't catch the eye.
+  brandQuiet: "rgba(251, 244, 230, 0.05)",
+  brandQuietBorder: "rgba(251, 244, 230, 0.18)",
   testGreen: "#1C7457",
   // The bug behind How I test: the deep green faint on white, the yellow
   // faint on the green.
@@ -114,6 +118,8 @@ const brand = {
   onAccent: colorNames.deep,
   control: colorNames.brandControl,
   controlBorder: colorNames.brandControlBorder,
+  quiet: colorNames.brandQuiet,
+  quietBorder: colorNames.brandQuietBorder,
   // Under the scrolled top bar: it lifts the bar off whatever passes beneath,
   // even the same green (the story band) or the dark theme's dark bands.
   barShadow: "0 6px 16px rgba(0, 0, 0, 0.22)",

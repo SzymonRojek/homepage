@@ -149,6 +149,6 @@ export const Tools = styled.div`
 
 export const Divider = styled.span`
   width: 1px;
-  height: 24px;
+  height: 20px;
   background: ${({ theme }) => theme.colors.brand.line};
 `;
