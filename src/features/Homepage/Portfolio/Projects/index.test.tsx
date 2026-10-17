@@ -26,7 +26,6 @@ const caseStudy = (headline: string): CaseStudy => ({
   diagrams: [],
   decisions: [],
   quality: [],
-  lessons: [],
 });
 
 const renderProjects = (projects: Project[]) =>

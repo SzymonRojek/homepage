@@ -20,7 +20,6 @@ vi.mock("./projectsData", async (importOriginal) => {
     diagrams: [],
     decisions: [],
     quality: [],
-    lessons: [],
   };
   return {
     ...actual,

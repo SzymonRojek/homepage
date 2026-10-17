@@ -38,17 +38,13 @@ The case studies start closed. A link can open one at a chosen side, so each CV 
 
 ### Problem
 
-A CV can list tools, but a recruiter can't verify them. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.
-
 The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.
 
 ### Constraints
 
 - Free static hosting on GitHub Pages at my own domain, with no server.
 - One maintainer with limited time, so automation has to catch regressions.
-- Privacy: no phone number anywhere on the site.
 - WCAG AA colour contrast in both the light and the dark theme.
-- An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome and CI uses Playwright's Chromium.
 
 ### Architecture
 
@@ -112,21 +108,6 @@ flowchart LR
 - No light flash on reload in dark mode, proven by a test that records the background colour on every frame.
 - Lighthouse accessibility, best practices and SEO all score 100; performance is held by a CI budget.
 - Every deploy has passed the full pipeline, because `main` accepts nothing else.
-
-### Lessons learned
-
-- A bug I couldn't reproduce, a light flash on reload, became solvable once I wrote a failing test that recorded the background colour on every frame.
-- A fix can look broken because of browser caching. I now check what the server actually serves before changing the code again.
-- When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.
-- End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.
-- Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.
-- Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants, and slow runs on a busy machine can turn into timeouts that look like caught bugs.
-- A test that rendered the whole page pushed coverage to 98% while it only checked the theme. I mocked the page in that test; coverage fell to an honest 86%.
-- A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.
-- After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.
-- A photo that seemed to flicker on every reload was the text reflowing: the page first appeared in a fallback font, and the photo moved when the web fonts arrived. Preloading the fonts in the HTML fixed it and brought the first paint forward from about 2.2 s to 1.6 s.
-- Clicking Contact cut off the top of the footer. The footer clipped its decorative ring with overflow: hidden, which also made it a scroll container, so at the end of the page the browser scrolled the footer itself. overflow: clip clips the same way without scrolling, and an end-to-end test now checks the space above the footer's heading.
-- An accessibility check that failed only now and then was right: after a jump down the page, the top bar faded in over 0.2 s, and for that moment its cream and yellow text sat on a half-transparent bar over the light page. The bar now turns solid at once and fades only on the way back over the green hero.
 
 ## Case study: Talent Outreach, job offers to the right candidates
 
@@ -202,18 +183,6 @@ flowchart LR
 - Lists silently stopped at 100 records, because Airtable pages its results.
 - Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
-
-### Lessons learned
-
-- Anything a server returns on failure needs the same care as a success response.
-- Edge cases like an empty list deserve their own test.
-- Testing with more data than one page is cheap and catches paging bugs.
-- Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports.
-- Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.
-- A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.
-- A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.
-
----
 
 ## For developers
 

@@ -59,7 +59,6 @@ export interface CaseStudy {
   diagrams: { title: string; steps: string[] }[];
   decisions: Decision[];
   quality: { area: QualityArea; text: string }[];
-  lessons: string[];
 }
 
 // CI gates in the order the workflow runs them, and what follows when all
@@ -182,15 +181,12 @@ const homepageCaseStudy: CaseStudy = {
     ],
   },
   problem: [
-    "A CV can say “Playwright” and “CI/CD”, but a recruiter can't check it. I wanted the portfolio itself to be the evidence: readable by HR in 30 seconds, and able to stand up to a hiring manager's review of the code.",
     "The earlier version loaded my projects from the GitHub API in the visitor's browser. That API allows 60 unauthenticated requests per hour per IP address, so a recruiter on a shared office network could see an error box in the middle of a tester's portfolio.",
   ],
   constraints: [
     "Free static hosting on GitHub Pages at my own domain, with no server.",
     "One maintainer with limited time, so automation has to catch regressions.",
-    "Privacy: no phone number anywhere on the site.",
     "WCAG AA colour contrast in both the light and the dark theme.",
-    "An older Mac (macOS 12) where Playwright can't install its own browser, so local runs use the installed Chrome.",
   ],
   diagrams: [
     {
@@ -280,19 +276,6 @@ const homepageCaseStudy: CaseStudy = {
       area: "Security",
       text: "No secrets and no runtime API calls. npm audit fails CI on high-severity advisories in the code shipped to visitors, and Dependabot proposes updates every week. External links use rel=“noreferrer”. Development-only tools still carry some advisories, but they never reach the browser.",
     },
-  ],
-  lessons: [
-    "A bug I couldn't reproduce, a light flash on reload, became solvable once I wrote a failing test that recorded the background colour on every frame.",
-    "A fix can look broken because of browser caching. I now check what the server actually serves before changing the code again.",
-    "When removing well-tested code lowered coverage, I added tests for real branches instead of lowering the threshold.",
-    "End-to-end tests hard-code the text a visitor sees instead of importing it from the data files, so a content mistake can't pass by testing itself.",
-    "Lighthouse CI judges the best of three runs by default. I switched to the median so the budget can't pass by luck.",
-    "Mutation testing with Stryker showed that 80%+ coverage hid real gaps: a saved dark theme, the state on page load, the commas between interests and the content of each case-study section were never checked. After targeted tests, every mutant in those files was caught. The tool needed checking too: a runner bug first reported 13.6% because no tests ran for most mutants.",
-    "A flaky end-to-end test pointed to a real race: a case-study link that changed the address just after the page loaded was ignored, because React had not attached its listener yet. A unit test now reproduces it, and the page reads the address again once the listener is ready.",
-    "After the redesign, Lighthouse performance dropped below the budget. The cause was a small pulsing dot: its animated shadow made the browser repaint on every frame. Animating only its size and opacity moved the work off the main thread, and the score went back above the budget.",
-    "A photo that seemed to flicker on every reload was the text reflowing: the page first appeared in a fallback font, and the photo moved when the web fonts arrived. Preloading the fonts in the HTML fixed it and brought the first paint forward from about 2.2 s to 1.6 s.",
-    "Clicking Contact cut off the top of the footer. The footer clipped its decorative ring with overflow: hidden, which also made it a scroll container, so at the end of the page the browser scrolled the footer itself. overflow: clip clips the same way without scrolling, and an end-to-end test now checks the space above the footer's heading.",
-    "An accessibility check that failed only now and then was right: after a jump down the page, the top bar faded in over 0.2 s, and for that moment its cream and yellow text sat on a half-transparent bar over the light page. The bar now turns solid at once and fades only on the way back over the green hero.",
   ],
 };
 
@@ -494,15 +477,6 @@ const talentOutreachCaseStudy: CaseStudy = {
       area: "Security",
       text: "The Airtable token lives only on the server and error responses no longer leak it. Login tokens are HMAC-signed and expire after 8 hours, with constant-time comparisons and a lockout on the visitor's real address. The demo login exists only where it is switched on. Opt-out links have their own signature, user text is escaped in every email, the server has no CORS, and public feedback has a bot trap, a rate limit and moderation.",
     },
-  ],
-  lessons: [
-    "A review found the Airtable token leaking in error responses. Anything a server returns on failure needs the same care as a success response.",
-    "Unchecking every recipient sent the email to all of them: an empty selection was treated as “no filter”. Edge cases like an empty list deserve their own test.",
-    "Lists silently stopped at 100 records because Airtable pages its results. Testing with more data than one page is cheap and catches this.",
-    "Monitoring can leak too: opt-out tokens in page addresses had to be removed from error reports before they were sent.",
-    "Lighthouse in CI caught what the tests missed: a low-contrast avatar and a button without an accessible name.",
-    "A public demo needs product decisions, not only code: an outbox instead of real email, a nightly reset, a one-click login and a request for made-up data.",
-    "A fake API makes end-to-end tests fast and safe, but only if it behaves like the real one, including its errors.",
   ],
 };
 

@@ -226,7 +226,6 @@ test.describe("Projects", () => {
       "Architecture",
       "Key decisions and trade-offs",
       "Testing, performance, accessibility and security",
-      "Lessons learned",
     ]);
     await expect(
       caseStudy.getByRole("list", { name: /^Delivery/ }).getByRole("listitem"),
