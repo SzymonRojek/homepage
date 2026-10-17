@@ -114,6 +114,24 @@ test.describe("Navigation", () => {
     });
   });
 
+  test("after a jump down the page the top bar is solid at once, never mid-fade @desktop", async ({
+    page,
+  }) => {
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+
+    await page
+      .getByRole("navigation", { name: "Sections" })
+      .getByRole("link", { name: "Experience" })
+      .click();
+    // Read straight after the jump: a fade would still be see-through here,
+    // leaving the cream links on the light page.
+    expect(
+      await pill.evaluate((el) => getComputedStyle(el).backgroundColor),
+    ).toBe("rgba(18, 60, 55, 0.94)");
+  });
+
   test("on a phone the links sit behind a menu @mobile", async ({ page }) => {
     const menu = page.getByRole("button", { name: "Menu" });
     const projects = page

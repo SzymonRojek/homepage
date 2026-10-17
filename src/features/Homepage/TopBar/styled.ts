@@ -72,10 +72,14 @@ export const Inner = styled.div<{ $state: BarState }>`
   border: 1px solid ${({ theme }) => a(theme.colors.brand.text, 0.18)};
   border-radius: 999px;
   pointer-events: auto;
-  transition:
-    background-color 0.25s,
-    border-color 0.25s,
-    box-shadow 0.25s;
+  /* Raised at once: a jump down the page lands over the light sections,
+     where a fading bar would leave its cream links unreadable for a moment
+     (axe caught it mid-fade). It fades only back to the outline, over the
+     dark hero. */
+  transition: ${({ $state }) =>
+    $state === "top"
+      ? "background-color 0.25s, border-color 0.25s, box-shadow 0.25s"
+      : "none"};
 
   ${({ $state }) => $state !== "top" && raised}
 
