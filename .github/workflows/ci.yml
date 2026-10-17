@@ -43,6 +43,28 @@ jobs:
           name: dist
           path: dist
 
+  # The e2e suite again in WebKit, Safari's engine, on a desktop, an iPad (both ways round) and two iPhones.
+  # A macOS runner, since Playwright's WebKit there is the closest to Safari. Deploys don't wait for it.
+  safari:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install webkit
+      # The runner has 3 cores, so Playwright would pick 1 worker; the Chrome job gets 2.
+      - run: npm run test:e2e -- --workers=2
+        env:
+          SAFARI: 1
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-safari
+          path: playwright-report
+
   deploy:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

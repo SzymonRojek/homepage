@@ -262,7 +262,7 @@ const homepageCaseStudy: CaseStudy = {
   quality: [
     {
       area: "Testing",
-      text: "Vitest and Testing Library cover logic and components. Playwright runs against the production build in desktop and mobile Chrome, with tests grouped by page section and named steps. Role-based locators also check that every control has an accessible name.",
+      text: "Vitest and Testing Library cover logic and components. Playwright runs against the production build in desktop and mobile Chrome, and again in Safari on a desktop, an iPad and iPhones, with tests grouped by page section and named steps. Role-based locators also check that every control has an accessible name.",
     },
     {
       area: "Performance",

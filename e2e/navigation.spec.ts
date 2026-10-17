@@ -1,9 +1,10 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "./fixtures";
 
-// On phones the section links sit behind the menu button.
-const sectionLink = async (page: Page, name: string, isMobile: boolean) => {
-  if (isMobile) {
+// Up to tabletVerticalMax (991px) the section links sit behind the menu
+// button; an iPad on its side is wider and has them in the bar.
+const sectionLink = async (page: Page, name: string) => {
+  if (page.viewportSize()!.width <= 991) {
     await page.getByRole("button", { name: "Menu" }).click();
   }
   return page
@@ -12,11 +13,16 @@ const sectionLink = async (page: Page, name: string, isMobile: boolean) => {
 };
 
 // Scrolls in small steps, as a wheel or a finger does (one big step counts
-// as a jump, after which the top bar stays in sight).
+// as a jump, after which the top bar stays in sight). Each step is instant,
+// as a wheel's is: the page's smooth scrolling applies only to scrolls from
+// script, and in Safari the steps were still gliding when the test went on.
 const scrollBy = async (page: Page, distance: number) => {
   const steps = Math.ceil(Math.abs(distance) / 100);
   for (let step = 0; step < steps; step++) {
-    await page.evaluate((dy) => window.scrollBy(0, dy), distance / steps);
+    await page.evaluate(
+      (dy) => window.scrollBy({ top: dy, behavior: "instant" }),
+      distance / steps,
+    );
     await page.waitForTimeout(30);
   }
 };
@@ -26,7 +32,7 @@ test.describe("Navigation", () => {
     await page.goto("./");
   });
 
-  test("the top bar links to each section", async ({ page, isMobile }) => {
+  test("the top bar links to each section", async ({ page }) => {
     for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
@@ -34,7 +40,7 @@ test.describe("Navigation", () => {
       ["How I test", "How I test at work"],
     ]) {
       await test.step(link, async () => {
-        await (await sectionLink(page, link, isMobile)).click();
+        await (await sectionLink(page, link)).click();
         // The section itself is checked: it starts just under the top bar.
         const region = page.getByRole("region", { name: section });
         await expect(region).toBeInViewport();
@@ -48,11 +54,8 @@ test.describe("Navigation", () => {
     }
   });
 
-  test("the contact button scrolls to the contact card", async ({
-    page,
-    isMobile,
-  }) => {
-    await (await sectionLink(page, "Hire me", isMobile)).click();
+  test("the contact button scrolls to the contact card", async ({ page }) => {
+    await (await sectionLink(page, "Hire me")).click();
 
     await expect(page).toHaveURL(/#contact$/);
     await expect(
@@ -433,12 +436,17 @@ test.describe("Navigation", () => {
     ).toBeInViewport();
   });
 
-  test("keyboard users can skip straight to the content", async ({ page }) => {
+  test("keyboard users can skip straight to the content", async ({
+    page,
+    browserName,
+  }) => {
     const skip = page.getByRole("link", { name: "Skip to content" });
     // The page renders with JavaScript; a Tab pressed earlier has nothing to focus.
     await expect(skip).toBeAttached();
 
-    await page.keyboard.press("Tab");
+    // Safari's Tab skips links unless "Press Tab to highlight each item" is
+    // on in its settings; Option+Tab reaches them.
+    await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
     await expect(skip).toBeFocused();
     await expect(skip).toBeInViewport();
 
