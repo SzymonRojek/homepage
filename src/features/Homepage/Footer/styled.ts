@@ -80,13 +80,14 @@ export const Heading = styled.h2`
   }
 `;
 
-// About 70 characters a line, as in the hero's bio.
-export const Message = styled.div`
-  max-width: 36em;
-`;
+// The note and the button. Only the note is kept narrow, so the button can
+// reach the content's right edge below desktops.
+export const Message = styled.div``;
 
-// What matters to me in a team, in my own words.
+// What matters to me in a team, in my own words. About 70 characters a line,
+// as in the hero's bio.
 export const Note = styled.p`
+  max-width: 36em;
   margin: 0;
   font-size: 17px;
   line-height: 1.7;
@@ -97,7 +98,8 @@ export const Note = styled.p`
   }
 `;
 
-// As wide as its words. On phones it sits on the right, closing the note.
+// As wide as its words. Below desktops (tablets and phones) it sits on the
+// right, closing the note.
 export const ContactButton = styled(ButtonLink)`
   margin-top: 24px;
   color: ${({ theme }) => theme.colors.brand.onAccent};
@@ -107,7 +109,7 @@ export const ContactButton = styled(ButtonLink)`
     background: ${({ theme }) => theme.colors.brand.accentHover};
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
     display: flex;
     width: fit-content;
     margin-left: auto;

@@ -50,17 +50,22 @@ export const Bar = styled.div<{ $state: BarState }>`
   }
 `;
 
-// The raised look: deep green, a little see-through, with the page blurred
-// under it, and the layered shadow.
+// The raised look: deep green (a step lighter in the dark theme, where How I
+// test is the deep green), a little see-through, with the page blurred under
+// it, and the layered shadow.
 const raised = css`
-  background: ${({ theme }) => a(theme.colors.brand.background, 0.94)};
-  border-color: ${({ theme }) => a(theme.colors.brand.text, 0.14)};
+  background: ${({ theme }) => a(theme.colors.topBar, 0.94)};
+  border-color: ${({ theme }) => theme.colors.topBarEdge};
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: ${({ theme }) => theme.colors.brand.pillShadow};
 `;
 
-export const Inner = styled.div<{ $state: BarState }>`
+export const Inner = styled.div<{
+  $state: BarState;
+  $smooth: boolean;
+  $filled: boolean;
+}>`
   position: relative;
   display: flex;
   align-items: center;
@@ -72,16 +77,16 @@ export const Inner = styled.div<{ $state: BarState }>`
   border: 1px solid ${({ theme }) => a(theme.colors.brand.text, 0.18)};
   border-radius: 999px;
   pointer-events: auto;
-  /* Raised at once: a jump down the page lands over the light sections,
-     where a fading bar would leave its cream links unreadable for a moment
-     (axe caught it mid-fade). It fades only back to the outline, over the
-     dark hero. */
-  transition: ${({ $state }) =>
-    $state === "top"
+  /* It fills smoothly while it is over the dark hero ($smooth), and at once
+     after a jump: a jump lands over the light sections, where a fading bar
+     would leave its cream links unreadable for a moment (axe caught it
+     mid-fade). Back to the outline it always fades, over the hero. */
+  transition: ${({ $state, $smooth }) =>
+    $state === "top" || $smooth
       ? "background-color 0.25s, border-color 0.25s, box-shadow 0.25s"
       : "none"};
 
-  ${({ $state }) => $state !== "top" && raised}
+  ${({ $filled }) => $filled && raised}
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -165,8 +170,8 @@ export const Nav = styled.nav<{ $open: boolean }>`
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     display: block;
     color: ${({ theme }) => theme.colors.brand.text};
-    background: ${({ theme }) => theme.colors.brand.background};
-    border: 1px solid ${({ theme }) => a(theme.colors.brand.text, 0.14)};
+    background: ${({ theme }) => theme.colors.topBar};
+    border: 1px solid ${({ theme }) => theme.colors.topBarEdge};
     box-shadow: ${({ theme }) => theme.colors.brand.pillShadow};
     visibility: ${({ $open }) => ($open ? "visible" : "hidden")};
     opacity: ${({ $open }) => ($open ? 1 : 0)};
@@ -200,7 +205,9 @@ export const NavList = styled.ul`
   }
 `;
 
-// Muted cream words; under the pointer they brighten on a soft pill.
+// Muted cream words that brighten to cream under the pointer, nothing more.
+// A soft pill behind each link read as a highlight inside the pill bar, and a
+// yellow line under the word looked wrong (both dropped on 2026-10-17).
 export const NavLink = styled.a`
   display: block;
   padding: 8px 12px;
@@ -209,21 +216,20 @@ export const NavLink = styled.a`
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.brand.muted};
   text-decoration: none;
-  border-radius: 999px;
-  transition:
-    color 0.2s,
-    background 0.2s;
+  transition: color 0.2s;
 
   &:hover {
     color: ${({ theme }) => theme.colors.brand.text};
-    background: ${({ theme }) => theme.colors.brand.control};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 
   /* Large tap targets in the menu panel. */
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     padding: 12px 14px;
     font-size: 17px;
-    border-radius: 16px;
   }
 `;
 
@@ -247,21 +253,41 @@ export const ContactLink = styled(ButtonLink)`
   background: ${({ theme }) => theme.colors.brand.accent};
   border-radius: 999px;
 
+  /* The arrow nudges forward under the pointer or keyboard focus, pointing
+     on to the contact; still with reduced motion. */
   &::after {
     /* Decorative: the link's name stays "Hire me". */
     content: "→" / "";
+    display: inline-block;
     margin-left: 6px;
+    transition: transform 0.2s ease-out;
   }
 
   &:hover {
     background: ${({ theme }) => theme.colors.brand.accentHover};
   }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition: none;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: none;
+    }
+  }
 `;
 
 // On phones and tablets the menu button is the three lines alone, no circle
 // behind them (dropped on 2026-10-17), at the pill's right end with a tap
-// area as tall as the pill. Yellow under the pointer, as the links are; its
-// focus ring stays inside the pill.
+// area as tall as the pill. Yellow under the pointer; its focus ring stays
+// inside the pill.
 export const MenuButton = styled.button`
   display: none;
 

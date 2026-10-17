@@ -25,12 +25,9 @@ const expectOneEdge = async (page: Page, gutter: number) => {
     ).x,
     section: (
       await box(
-        page.getByText(
-          "“…you will be fortunate if you get to work with him.”",
-          {
-            exact: true,
-          },
-        ),
+        page.getByText("In the words of the people I’ve worked with", {
+          exact: true,
+        }),
       )
     ).x,
   };
@@ -152,5 +149,37 @@ test.describe("Layout", () => {
         ).toBeLessThan(1);
       }
     }
+  });
+
+  test("the Email me button sits on the right below desktops, under the note on desktops @desktop", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const button = page.getByRole("link", { name: "Send me an email" });
+
+    for (const { width, gutter } of [
+      { width: 1024, gutter: 32 },
+      { width: 800, gutter: 32 },
+    ]) {
+      await page.setViewportSize({ width, height: 900 });
+      const found = await box(button);
+      expect(Math.round(width - (found.x + found.width)), `${width}px`).toBe(
+        gutter,
+      );
+    }
+
+    // On a desktop it starts under the note, on its left edge.
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const note = await box(page.getByText(/^Communication matters most to me/));
+    expect(Math.round((await box(button)).x)).toBe(Math.round(note.x));
+  });
+
+  test("on a phone the Email me button sits on the right @mobile", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const width = page.viewportSize()!.width;
+    const found = await box(page.getByRole("link", { name: "Send me an email" }));
+    expect(Math.round(width - (found.x + found.width))).toBe(16);
   });
 });

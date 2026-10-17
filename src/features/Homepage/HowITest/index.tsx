@@ -16,17 +16,13 @@ import {
 const { story } = howITest;
 const [titleStart, titleEnd] = story.title.split(story.highlight);
 
-// Professional evidence, before the side projects, as one block on the deep
-// green: my story first, as what only I can say (the section's heading is for
+// Professional evidence, before the side projects, as one block (white in
+// the light theme, deep green in the dark one): my story first, as what only I can say (the section's heading is for
 // screen readers only), then the method in three steps, each a line and a
 // few ticked points to skim.
 export const HowITest = () => (
-  <Block $band="brand" aria-labelledby="how-i-test">
-    <SectionLabel
-      id="how-i-test"
-      data-number={sectionNumber("how-i-test")}
-      $onBrand
-    >
+  <Block $band="story" aria-labelledby="how-i-test">
+    <SectionLabel id="how-i-test" data-number={sectionNumber("how-i-test")}>
       {howITest.title}
     </SectionLabel>
     <Bug aria-hidden="true" focusable="false" />

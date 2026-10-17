@@ -3,24 +3,21 @@ import { columnInset } from "../../../core/App/contentColumn";
 import { BandSection } from "../Section";
 import BugSvg from "./bug.svg?react";
 
-// The whole section is one block on the deep brand green, the same in both
-// themes: cream text, muted cream for the long text, yellow accents. Focus
-// rings are yellow here, as on the hero, because the page's green ring would
-// vanish on green. "clip" cuts the bug at the band's edges without making
-// the band a scroll container; "isolate" keeps the bug above the band's
-// background and below its text.
+// The whole section is one block: white with the page's ink in the light
+// theme, the deep brand green with cream text in the dark one, so it changes
+// with the theme like every section between the hero and the footer. The
+// buttons' colour (primary) suits both, deep green on white and yellow on the
+// green, so the label, the arrows and the focus rings use it. "clip" cuts the
+// bug at the band's edges without making the band a scroll container;
+// "isolate" keeps the bug above the band's background and below its text.
 export const Block = styled(BandSection)`
-  /* The first section, right under the hero: the near-black runs into the
-     green with no page colour between them. */
+  /* The first section, right under the hero, with no page colour between
+     the near-black and its band. */
   margin-top: 0;
   position: relative;
   isolation: isolate;
   overflow: clip;
-  color: ${({ theme }) => theme.colors.brand.text};
-
-  *:focus-visible {
-    outline-color: ${({ theme }) => theme.colors.brand.accent};
-  }
+  color: ${({ theme }) => theme.colors.story.text};
 `;
 
 // A faint outline of a bug in the top-right corner of the content column,
@@ -36,8 +33,7 @@ export const Bug = styled(BugSvg)`
   right: calc(${columnInset} - 56px);
   width: 300px;
   height: 300px;
-  color: ${({ theme }) => theme.colors.brand.accent};
-  opacity: 0.12;
+  color: ${({ theme }) => theme.colors.story.bug};
   transform: rotate(-25deg);
   pointer-events: none;
 
@@ -73,12 +69,20 @@ export const StoryTitle = styled.h3`
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.035em;
-  color: ${({ theme }) => theme.colors.brand.text};
+  color: ${({ theme }) => theme.colors.story.text};
   text-wrap: balance;
 
+  /* As "worked with" in References: dark words on a yellow marker in the
+     light theme (yellow text on white is only 1.5:1), yellow words in the
+     dark one. */
   em {
+    padding: 0
+      ${({ theme }) =>
+        theme.colors.quoteMark.background === "transparent" ? "0" : "0.1em"};
     font-style: normal;
-    color: ${({ theme }) => theme.colors.brand.accent};
+    color: ${({ theme }) => theme.colors.quoteMark.text};
+    background: ${({ theme }) => theme.colors.quoteMark.background};
+    border-radius: ${({ theme }) => theme.borderRadiusSmall};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
@@ -95,7 +99,7 @@ export const StoryText = styled.div`
     margin: 0 0 14px;
     font-size: 17px;
     line-height: 1.7;
-    color: ${({ theme }) => theme.colors.brand.muted};
+    color: ${({ theme }) => theme.colors.story.body};
   }
 
   p:last-child {
@@ -110,7 +114,7 @@ export const StoryText = styled.div`
 `;
 
 // The method under the story: three stages side by side, split by thin
-// lines, so each stands on its own, and joined by a yellow arrow on each line
+// lines, so each stands on its own, and joined by an arrow on each line
 // pointing to the next stage (down when they stack), so they read as one
 // process. No frame or panel (it looked like a table) and no numbers (the
 // arrows give the order). Each stage: the title, one short line and a few
@@ -143,7 +147,7 @@ export const Steps = styled.ol`
   }
 
   > li + li {
-    border-left: 1px solid ${({ theme }) => theme.colors.brand.line};
+    border-left: 1px solid ${({ theme }) => theme.colors.story.line};
   }
 
   /* The arrow to the next stage, on the divider, level with the title.
@@ -158,8 +162,8 @@ export const Steps = styled.ol`
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: ${({ theme }) => theme.colors.brand.accent};
-    color: ${({ theme }) => theme.colors.brand.onAccent};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.onPrimary};
     font-size: 15px;
     font-weight: 700;
     line-height: 1;
@@ -193,7 +197,7 @@ export const Steps = styled.ol`
 
     > li:not(:first-child) {
       border-left: 0;
-      border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+      border-top: 1px solid ${({ theme }) => theme.colors.story.line};
       /* Clear of the arrow on the divider. */
       padding-top: 36px;
     }
@@ -232,7 +236,7 @@ export const StepTitle = styled.h3`
   font-size: 20px;
   line-height: 1.3;
   letter-spacing: -0.01em;
-  color: ${({ theme }) => theme.colors.brand.text};
+  color: ${({ theme }) => theme.colors.story.text};
   text-wrap: balance;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
@@ -245,7 +249,7 @@ export const StepSummary = styled.p`
   margin: 10px 0 0;
   font-size: 16px;
   line-height: 1.55;
-  color: ${({ theme }) => theme.colors.brand.muted};
+  color: ${({ theme }) => theme.colors.story.body};
   text-wrap: pretty;
 `;
 
@@ -259,7 +263,7 @@ export const StepPoints = styled.ul`
   list-style: none;
   font-size: 15px;
   line-height: 1.45;
-  color: ${({ theme }) => theme.colors.brand.text};
+  color: ${({ theme }) => theme.colors.story.text};
 
   li {
     display: grid;
@@ -270,7 +274,7 @@ export const StepPoints = styled.ul`
     /* Decorative: the empty alt keeps screen readers from saying "tick". */
     content: "✓" / "";
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.brand.accent};
+    color: ${({ theme }) => theme.colors.story.tick};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
