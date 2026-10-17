@@ -55,28 +55,45 @@ describe("HowITest", () => {
     // The steps close the section: "Why it matters" was removed on purpose.
     expect(steps.nextElementSibling).toBeNull();
     expect(within(section).queryByText(/Why it matters/)).toBeNull();
+    // So was the yellow punchline under the story's title.
+    expect(within(section).queryByText(/The best bugs/)).toBeNull();
   });
 
-  it("numbers the steps for the eye only", () => {
+  it("gives the stages in order without numbers", () => {
     renderHowITest();
 
-    const steps = within(
-      screen.getByRole("list", { name: "How I test a data migration" }),
-    ).getAllByRole("listitem");
-    // The list itself gives screen readers the order.
+    const steps = screen.getByRole("list", {
+      name: "How I test a data migration",
+    });
+    // An ordered list gives screen readers the order; the arrows between the
+    // stages show it on screen, so no numbers are drawn.
+    expect(steps.tagName).toBe("OL");
+    expect(steps).not.toHaveTextContent(/\b0[1-3]\b/);
+  });
+
+  it("gives each step a short line and a list of points to skim", () => {
+    renderHowITest();
+
+    const steps = Array.from(
+      screen.getByRole("list", { name: "How I test a data migration" })
+        .children,
+    ) as HTMLElement[];
     expect(
-      steps.map((step) => step.querySelector("[aria-hidden]")?.textContent),
-    ).toEqual(["01", "02", "03"]);
+      steps.map((step) => within(step).getAllByRole("listitem").length),
+    ).toEqual([3, 4, 3]);
+    expect(
+      within(steps[1]).getByText("A number can match and still be wrong."),
+    ).toBeVisible();
   });
 
   it("names the reconciliation checks and the stored procedures", () => {
     renderHowITest();
 
     expect(
-      screen.getByText(/Record counts, totals, field-by-field values/),
+      screen.getByText("Record counts, totals and field-by-field values"),
     ).toBeVisible();
     expect(
-      screen.getByText(/read the stored procedures that transform the data/),
+      screen.getByText(/The stored procedures that transform the data/),
     ).toBeVisible();
   });
 
@@ -85,7 +102,7 @@ describe("HowITest", () => {
 
     expect(
       screen.getByRole("article", { name: "Beyond the obvious bugs" }),
-    ).toHaveTextContent("in the stored procedures themselves");
+    ).toHaveTextContent("in the stored procedures that move it");
     // No internal system names, only the approach.
     expect(screen.queryByText(/SunStar|Sirius|\bAST\b/)).toBeNull();
   });

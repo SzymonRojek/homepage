@@ -9,7 +9,7 @@ interface StatsProps {
   featured: boolean;
 }
 
-const duration = 1200;
+const duration = 1800;
 
 // "200+" as the number to count to and what follows it.
 const parse = (value: string) => {

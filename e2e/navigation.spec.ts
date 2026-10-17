@@ -64,14 +64,14 @@ test.describe("Navigation", () => {
     const footer = page.getByRole("contentinfo");
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", {
-      name: "Looking for a tester who reads the code too?",
+      name: "Let’s ship something that doesn’t break.",
     });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
       (await footer.boundingBox())!.y + 20,
     );
   });
 
-  test("the top bar is an outline at the top, lifts on scroll, hides past the hero and returns on scroll up", async ({
+  test("the top bar is an outline at the top, goes with scrolling down and returns raised on scroll up", async ({
     page,
   }) => {
     // The pill is the wordmark's parent.
@@ -92,14 +92,14 @@ test.describe("Navigation", () => {
       await expect(pill).toHaveCSS("box-shadow", "none");
     });
 
-    await test.step("scrolled within the hero: raised, with a shadow", async () => {
+    await test.step("scrolling down, still over the hero: out of sight, never filled", async () => {
       await scrollBy(page, 200);
-      await expect(pill).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-      await expect(pill).not.toHaveCSS("box-shadow", "none");
-      await expect(pill).toBeInViewport();
+      await expect(pill).not.toBeInViewport();
+      // It left as the outline it was.
+      await expect(pill).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
     });
 
-    await test.step("scrolling down past the hero: out of sight", async () => {
+    await test.step("further down: still out of sight", async () => {
       await scrollBy(page, 1500);
       await expect(pill).not.toBeInViewport();
     });
@@ -112,6 +112,42 @@ test.describe("Navigation", () => {
         .toBe(gap);
       await expect(pill).not.toHaveCSS("box-shadow", "none");
     });
+  });
+
+  test("the top bar stays in sight after each section link, for the next one @desktop", async ({
+    page,
+  }) => {
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+    const nav = page.getByRole("navigation", { name: "Sections" });
+
+    // The links scroll smoothly, in steps that would otherwise read as
+    // scrolling down and hide the bar.
+    for (const name of ["Projects", "Experience", "References"]) {
+      await nav.getByRole("link", { name }).click();
+      await expect(page).toHaveURL(
+        new RegExp(
+          `#${name === "References" ? "recommendations" : name.toLowerCase()}$`,
+        ),
+      );
+      await page.waitForTimeout(800);
+      await expect(pill).toBeInViewport();
+    }
+    // Once the link's scroll has settled, an ordinary scroll down still
+    // hides it.
+    await expect
+      .poll(async () => {
+        const before = await page.evaluate(() => window.scrollY);
+        await page.waitForTimeout(500);
+        return (await page.evaluate(() => window.scrollY)) - before;
+      })
+      .toBe(0);
+    for (let step = 0; step < 6; step++) {
+      await page.mouse.wheel(0, 100);
+      await page.waitForTimeout(40);
+    }
+    await expect(pill).not.toBeInViewport();
   });
 
   test("after a jump down the page the top bar is solid at once, never mid-fade @desktop", async ({
@@ -141,6 +177,23 @@ test.describe("Navigation", () => {
       .getByRole("link", { name: "Experience" })
       .click();
     expect(await firstChange).toBe("rgba(18, 60, 55, 0.94)");
+  });
+
+  test("coming back over the hero, the top bar fills smoothly @desktop", async ({
+    page,
+  }) => {
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+
+    // Down a little, then back up, still over the hero.
+    await scrollBy(page, 300);
+    await scrollBy(page, -100);
+    // Raised, and its fill fades in (a jump fills it at once, see above).
+    await expect(pill).toHaveCSS("background-color", "rgba(18, 60, 55, 0.94)");
+    expect(
+      await pill.evaluate((el) => getComputedStyle(el).transitionProperty),
+    ).toContain("background-color");
   });
 
   test("on a phone the links sit behind a menu @mobile", async ({ page }) => {
@@ -199,6 +252,34 @@ test.describe("Navigation", () => {
         .getByRole("navigation", { name: "Sections" })
         .getByRole("link", { name: "Projects" }),
     ).toBeVisible();
+  });
+
+  test("a link under the pointer only brightens, with no background or line @desktop", async ({
+    page,
+  }) => {
+    const link = page
+      .getByRole("navigation", { name: "Sections" })
+      .getByRole("link", { name: "Projects" });
+    const look = () =>
+      link.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          color: style.color,
+          background: style.backgroundColor,
+          line: style.textDecorationLine,
+        };
+      });
+
+    await link.hover();
+    // The brand's cream (#FBF4E6), once the fade ends.
+    await expect
+      .poll(async () => (await look()).color)
+      .toBe("rgb(251, 244, 230)");
+    // A soft pill behind the link and a yellow line under it were dropped.
+    expect(await look()).toMatchObject({
+      background: "rgba(0, 0, 0, 0)",
+      line: "none",
+    });
   });
 
   test("a reload keeps the place, without scrolling by itself", async ({
@@ -262,5 +343,28 @@ test.describe("Navigation", () => {
     await page.keyboard.press("Enter");
 
     await expect(page.getByRole("main")).toBeFocused();
+  });
+});
+
+test.describe("Navigation in the dark theme", () => {
+  test.use({ colorScheme: "dark" });
+
+  test("the raised top bar stands out over the How I test band", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+    // Down, then a little back up: the bar returns, raised.
+    await scrollBy(page, 800);
+    await scrollBy(page, -150);
+
+    // Both are greens: the bar a step lighter (#1C4D46) than the band
+    // (#123C37), which is the deep green in the dark theme.
+    await expect(pill).toHaveCSS("background-color", "rgba(28, 77, 70, 0.94)");
+    await expect(
+      page.getByRole("region", { name: "How I test at work" }),
+    ).toHaveCSS("background-color", "rgb(18, 60, 55)");
   });
 });

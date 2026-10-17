@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import szymonRojekProfile from "./szymonRojekProfile.jpg";
 import { profile } from "../profile";
-import { SplitPortrait } from "./SplitPortrait";
+import { Portrait } from "./Portrait";
 import {
   Wrapper,
   Band,
@@ -58,11 +58,7 @@ export const MainHeader = () => (
             </dd>
           </NextRole>
         </Details>
-        <SplitPortrait
-          src={szymonRojekProfile}
-          name={profile.name}
-          captions={profile.portraitCaptions}
-        />
+        <Portrait src={szymonRojekProfile} name={profile.name} />
       </BandInner>
     </Band>
   </Wrapper>

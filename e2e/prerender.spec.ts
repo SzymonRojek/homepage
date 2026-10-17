@@ -34,7 +34,7 @@ test.describe("the page without JavaScript", () => {
       await expect(
         page.getByRole("heading", { level: 1 }),
       ).toHaveAccessibleName(
-        "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
+        "Szymon Rojek, Test Engineer: I don’t stop at green.",
       );
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       for (const name of sections) {
@@ -50,13 +50,11 @@ test.describe("the page without JavaScript", () => {
 
       const photo = page.getByRole("img", { name: "Szymon Rojek" });
       await expect(photo).toBeVisible();
-      const loaded = await photo
-        .locator("img")
-        .evaluateAll((images) =>
-          images.map((image) => (image as HTMLImageElement).naturalWidth > 0),
-        );
-      expect(loaded.length).toBeGreaterThan(0);
-      expect(loaded).not.toContain(false);
+      expect(
+        await photo.evaluate(
+          (image) => (image as HTMLImageElement).naturalWidth > 0,
+        ),
+      ).toBe(true);
     });
   });
 });

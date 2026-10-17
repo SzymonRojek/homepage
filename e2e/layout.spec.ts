@@ -19,18 +19,15 @@ const expectOneEdge = async (page: Page, gutter: number) => {
     footer: (
       await box(
         page.getByRole("heading", {
-          name: "Looking for a tester who reads the code too?",
+          name: "Let’s ship something that doesn’t break.",
         }),
       )
     ).x,
     section: (
       await box(
-        page.getByText(
-          "“…you will be fortunate if you get to work with him.”",
-          {
-            exact: true,
-          },
-        ),
+        page.getByText("In the words of the people I’ve worked with", {
+          exact: true,
+        }),
       )
     ).x,
   };
@@ -102,5 +99,87 @@ test.describe("Layout", () => {
       );
       previous = { font, photo: photoWidth };
     }
+  });
+
+  test("the rings and the bug stay next to the content however wide the window @desktop", async ({
+    page,
+  }) => {
+    await page.goto("./");
+
+    // Each decoration's distance from the content edge beside it: the hero's
+    // ring from the photo's right edge, the footer's ring from its heading's
+    // left edge, the bug from the How I test steps' right edge.
+    const offsets = async () =>
+      page.evaluate(() => {
+        const rect = (element: Element | null) => {
+          if (!element) throw new Error("Element not found");
+          return element.getBoundingClientRect();
+        };
+        const hero = document.querySelector("#top > div");
+        const footer = document.querySelector("footer");
+        const howITest = document.querySelector(
+          '[aria-labelledby="how-i-test"]',
+        );
+        return {
+          heroRing:
+            rect(hero).right -
+            parseFloat(getComputedStyle(hero!, "::after").right) -
+            rect(document.querySelector('img[alt="Szymon Rojek"]')).right,
+          footerRing:
+            rect(footer).left +
+            parseFloat(getComputedStyle(footer!, "::before").left) -
+            rect(footer!.querySelector("h2")).left,
+          bug:
+            rect(howITest!.querySelector(":scope > svg")).right -
+            rect(howITest!.querySelector("ol")).right,
+        };
+      });
+
+    // From the column's full width (1256px) up the content stops growing,
+    // and the decorations must stop moving with it.
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const atColumnWidth = await offsets();
+    for (const width of [1600, 1920, 2560]) {
+      await page.setViewportSize({ width, height: 900 });
+      const wide = await offsets();
+      for (const part of ["heroRing", "footerRing", "bug"] as const) {
+        expect(
+          Math.abs(wide[part] - atColumnWidth[part]),
+          `${part} at ${width}px`,
+        ).toBeLessThan(1);
+      }
+    }
+  });
+
+  test("the Email me button sits on the right below desktops, under the note on desktops @desktop", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const button = page.getByRole("link", { name: "Send me an email" });
+
+    for (const { width, gutter } of [
+      { width: 1024, gutter: 32 },
+      { width: 800, gutter: 32 },
+    ]) {
+      await page.setViewportSize({ width, height: 900 });
+      const found = await box(button);
+      expect(Math.round(width - (found.x + found.width)), `${width}px`).toBe(
+        gutter,
+      );
+    }
+
+    // On a desktop it starts under the note, on its left edge.
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const note = await box(page.getByText(/^Communication matters most to me/));
+    expect(Math.round((await box(button)).x)).toBe(Math.round(note.x));
+  });
+
+  test("on a phone the Email me button sits on the right @mobile", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const width = page.viewportSize()!.width;
+    const found = await box(page.getByRole("link", { name: "Send me an email" }));
+    expect(Math.round(width - (found.x + found.width))).toBe(16);
   });
 });

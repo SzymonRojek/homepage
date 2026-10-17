@@ -6,6 +6,9 @@ for (const colorScheme of ["light", "dark"] as const) {
     test.use({ colorScheme });
 
     test("has no serious accessibility violations", async ({ page }) => {
+      // Three full axe scans (closed, then each case study opened in full):
+      // about 15 s alone, past the 30 s limit on a busy machine.
+      test.slow();
       await page.goto("./");
       await expect(
         page.getByRole("list", { name: "Case studies" }),

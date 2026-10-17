@@ -1,7 +1,7 @@
 import { BandSection, SectionLabel } from "../Section";
 import { sectionNumber } from "../sections";
 import { jobs } from "../experienceData";
-import { Job, Period, Company, Details, Role, Points } from "./styled";
+import { Job, Meta, Period, Company, Details, Role, Points } from "./styled";
 
 // The job, right after "How I test at work": only what that section doesn't
 // already say.
@@ -14,11 +14,11 @@ export const Experience = () => (
     </SectionLabel>
     {jobs.map(({ role, company, details, period, points }) => (
       <Job key={`${role}-${company}`} aria-label={`${role}, ${company}`}>
-        <div>
+        <Meta>
           <Period>{period}</Period>
           <Company>{company}</Company>
           <Details>{details}</Details>
-        </div>
+        </Meta>
         <div>
           <Role>{role}</Role>
           <Points>

@@ -17,6 +17,13 @@ const colorNames = {
   // under the pointer; text on them keeps AA (cream on green 14.6:1, green on
   // amber 6.0:1).
   deepHover: "#0A2622",
+  // The raised top bar in the dark theme: a step lighter than the deep
+  // green (1.27:1), so it stands out over the How I test band, which is the
+  // deep green there. Cream 8.7:1, muted cream 5.8:1, yellow 6.2:1.
+  deepRaised: "#1C4D46",
+  // Its thin edge in the dark theme, where it parts the bar from the dark
+  // page; the light theme needs none, as the green stands clear of it.
+  creamEdge: "rgba(251, 244, 230, 0.14)",
   sun: "#FFC94D",
   sunHover: "#EBAA27",
   // The sun as a soft marker behind body text: 7.9:1 with the body ink on
@@ -28,6 +35,10 @@ const colorNames = {
   brandControl: "rgba(251, 244, 230, 0.15)",
   brandControlBorder: "rgba(251, 244, 230, 0.55)",
   testGreen: "#1C7457",
+  // The bug behind How I test: the deep green faint on white, the yellow
+  // faint on the green.
+  deepFaint: "rgba(18, 60, 55, 0.07)",
+  sunFaint: "rgba(255, 201, 77, 0.12)",
   testSoft: "#E3F2EA",
   testBorder: "#B8DCCB",
   terracotta: "#A94A22",
@@ -106,10 +117,11 @@ const brand = {
   // Under the scrolled top bar: it lifts the bar off whatever passes beneath,
   // even the same green (the story band) or the dark theme's dark bands.
   barShadow: "0 6px 16px rgba(0, 0, 0, 0.22)",
-  // Under the raised top bar: a light edge along its top and two shadows, one
-  // close and one far, so it reads as a layer floating over the page.
-  pillShadow:
-    "inset 0 1px 0 rgba(251, 244, 230, 0.12), 0 2px 6px rgba(0, 0, 0, 0.16), 0 16px 36px rgba(0, 0, 0, 0.3)",
+  // Under the raised top bar and its menu panel: two shadows, one close and
+  // one far, so it reads as a layer floating over the page. No light inner
+  // edge along the top: on top of the border it made the top line look
+  // twice as thick (dropped on 2026-10-17).
+  pillShadow: "0 2px 6px rgba(0, 0, 0, 0.16), 0 16px 36px rgba(0, 0, 0, 0.3)",
 };
 
 // The CI terminal is dark in both themes.
@@ -154,9 +166,18 @@ export const themeLight = {
     // References, the last section: white, after Skills on the sand, so the
     // bands alternate down to the near-black footer.
     quoteBand: colorNames.white,
-    // "How I test at work": one block on the deep brand green, the same in
-    // both themes (cream text 11.1:1, muted 7.4:1, yellow 7.9:1).
-    brandBand: colorNames.deep,
+    // "How I test at work", right under the hero: white in the light theme,
+    // so the bands alternate (dark, white, sand, white, sand, white, dark),
+    // with the page's ink (headings 16.1:1, body 9.8:1), its line, green
+    // ticks (5.6:1) and a faint green bug. "obvious" takes quoteMark.
+    storyBand: colorNames.white,
+    story: {
+      text: colorNames.ink,
+      body: colorNames.inkBody,
+      line: colorNames.line,
+      tick: colorNames.testGreen,
+      bug: colorNames.deepFaint,
+    },
     // "work with him" in the big quote: dark words on a yellow marker, since
     // yellow text on white is only 1.5:1 (ink on sun: 10.6:1).
     quoteMark: { text: colorNames.ink, background: colorNames.sun },
@@ -168,6 +189,10 @@ export const themeLight = {
     quoteCard: colorNames.sand,
     // The key phrase in each recommendation.
     quoteHighlight: colorNames.sunMarker,
+    // The raised top bar and its menu panel: the deep green, with no edge (a
+    // cream line round the green read as a faded rim on the light page).
+    topBar: colorNames.deep,
+    topBarEdge: "transparent",
     headerLine: colorNames.line,
     tile: {
       border: colorNames.line,
@@ -209,12 +234,25 @@ export const themeDark: typeof themeLight = {
     // One step up from the page, after Skills on it, so the bands alternate
     // down to the near-black footer.
     quoteBand: colorNames.nightBand,
-    brandBand: colorNames.deep,
+    // The deep brand green in the dark theme, the page's one strong colour
+    // block: cream text (11.1:1), muted cream (7.4:1), yellow ticks (7.9:1).
+    storyBand: colorNames.deep,
+    story: {
+      text: colorNames.cream,
+      body: colorNames.brandMuted,
+      line: colorNames.brandLine,
+      tick: colorNames.sun,
+      bug: colorNames.sunFaint,
+    },
     // Yellow words on the dark page (12.1:1), no marker.
     quoteMark: { text: colorNames.sun, background: "transparent" },
     // The recommendation cards on the dark References band: the card colour.
     quoteCard: colorNames.nightCard,
     quoteHighlight: colorNames.sunMarkerNight,
+    // A step lighter than the How I test band, the deep green here, with a
+    // thin even edge that parts it from the dark page.
+    topBar: colorNames.deepRaised,
+    topBarEdge: colorNames.creamEdge,
     headerLine: colorNames.nightLine,
     tile: {
       border: colorNames.nightLine,

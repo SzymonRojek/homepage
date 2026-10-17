@@ -79,7 +79,8 @@ describe("Stats", () => {
     // Screen readers and search engines get the real numbers throughout.
     expect(tests).toHaveTextContent(/^200\+$/);
 
-    act(() => vi.advanceTimersByTime(1000));
+    // The count lasts 1.8 s; past it, the real numbers alone.
+    act(() => vi.advanceTimersByTime(1300));
     for (const strong of numbers()) {
       expect(strong).not.toHaveAttribute("data-shown");
     }

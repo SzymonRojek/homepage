@@ -37,12 +37,12 @@ describe("MainHeader", () => {
     // search engines; "green." sits on its tilted block.
     const headline = screen.getByRole("heading", {
       level: 1,
-      name: "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
+      name: "Szymon Rojek, Test Engineer: I don’t stop at green.",
     });
     expect(headline.querySelector("svg")).toBeNull();
     expect(screen.getByText("green.").parentElement).toBe(headline);
     // Over it, the title, as a plain line, not a heading.
-    const eyebrow = screen.getByText("Software Test Engineer", {
+    const eyebrow = screen.getByText("Test Engineer", {
       selector: "p",
     });
     expect(eyebrow.tagName).toBe("P");

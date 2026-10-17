@@ -29,9 +29,10 @@ const navLinks = [
 // button: the links, then "Hire me". The theme switch is in the footer.
 export const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const scrollState = useBarState();
+  const { state: scrollState, smooth, filled: scrollFilled } = useBarState();
   // An open menu keeps the bar raised and in sight.
   const state = menuOpen ? "raised" : scrollState;
+  const filled = menuOpen || scrollFilled;
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -64,7 +65,7 @@ export const TopBar = () => {
 
   return (
     <Bar ref={barRef} $state={state}>
-      <Inner $state={state}>
+      <Inner $state={state} $smooth={smooth} $filled={filled}>
         <Brand href="#top" title="Back to top">
           <Dot aria-hidden="true" />
           <BrandName>{profile.name}</BrandName>

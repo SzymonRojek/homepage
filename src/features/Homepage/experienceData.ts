@@ -10,7 +10,7 @@ export interface Job {
 
 export const jobs: Job[] = [
   {
-    role: "Software Test Engineer",
+    role: "Test Engineer",
     company: "Equiniti, Worthing",
     details: "Financial services and shareholder registry",
     period: "Sep 2022 – now",

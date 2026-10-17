@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
 
 // The time between two gates, and how long one takes to tick.
-const gap = 0.35;
-const tickTime = 0.25;
+const gap = 0.5;
+const tickTime = 0.35;
 
 const appear = keyframes`
   from {

@@ -10,7 +10,7 @@ test.describe("Recommendations", () => {
       page.getByRole("main").getByRole("heading", { level: 2 }).last(),
     ).toHaveText("References");
     await expect(
-      page.getByText("“…you will be fortunate if you get to work with him.”", {
+      page.getByText("In the words of the people I’ve worked with", {
         exact: true,
       }),
     ).toBeVisible();
@@ -24,6 +24,10 @@ test.describe("Recommendations", () => {
     await expect(karthikeyan.locator("mark")).toHaveText(
       "highly skilled professional",
     );
+    // Jim's closing line, marked in his card.
+    await expect(
+      quotes.filter({ hasText: "Jim Grinsfelder" }).locator("mark"),
+    ).toHaveText("you will be fortunate if you get to work with him");
     expect((await karthikeyan.boundingBox())!.y).toBeLessThan(
       (await quotes.filter({ hasText: "Jim Grinsfelder" }).boundingBox())!.y,
     );

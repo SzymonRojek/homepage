@@ -14,7 +14,7 @@ test.describe("search engines and link previews @desktop", () => {
   });
 
   test("the head describes the page in British English", async ({ page }) => {
-    await expect(page).toHaveTitle("Szymon Rojek | Software Test Engineer");
+    await expect(page).toHaveTitle("Szymon Rojek | Test Engineer");
     await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
@@ -69,7 +69,7 @@ test.describe("search engines and link previews @desktop", () => {
     expect(person).toMatchObject({
       "@type": "Person",
       name: "Szymon Rojek",
-      jobTitle: "Software Test Engineer",
+      jobTitle: "Test Engineer",
       sameAs: [
         "https://www.linkedin.com/in/szymon--rojek/",
         "https://github.com/SzymonRojek",

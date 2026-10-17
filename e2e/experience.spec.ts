@@ -8,7 +8,7 @@ test.describe("Experience", () => {
   test("shows the current job in four points", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
     await expect(
-      experience.getByRole("heading", { name: "Software Test Engineer" }),
+      experience.getByRole("heading", { name: "Test Engineer" }),
     ).toBeVisible();
     await expect(experience.getByText("Sep 2022 – now")).toBeVisible();
     await expect(experience.getByText("Equiniti, Worthing")).toBeVisible();

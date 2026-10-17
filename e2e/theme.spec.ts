@@ -36,6 +36,48 @@ test.describe("with a light OS theme", () => {
       await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
     });
   });
+
+  test("every section between the hero and the footer changes its background", async ({
+    page,
+  }) => {
+    await page.goto("./");
+    const backgrounds = () =>
+      page.evaluate(() =>
+        Array.from(
+          document.querySelectorAll("main section[aria-labelledby]"),
+          (section) => {
+            const heading = document.getElementById(
+              section.getAttribute("aria-labelledby")!,
+            );
+            // The colour behind the section: its own, else the page's.
+            const own = getComputedStyle(section).backgroundColor;
+            return {
+              name: heading?.tagName === "H2" ? heading.textContent : null,
+              color:
+                own === "rgba(0, 0, 0, 0)"
+                  ? getComputedStyle(document.body).backgroundColor
+                  : own,
+            };
+          },
+        ).filter(({ name }) => name),
+      );
+
+    const light = await backgrounds();
+    await clickThemeSwitch(page);
+    await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    // Read once the page has finished turning dark, not mid-change.
+    await expect(page.locator("body")).toHaveCSS(
+      "background-color",
+      "rgb(11, 21, 19)",
+    );
+    const dark = await backgrounds();
+
+    // How I test included: it was the deep green in both themes once.
+    expect(light.map(({ name }) => name)).toContain("How I test at work");
+    light.forEach(({ name, color }, index) => {
+      expect(dark[index].color, `${name}`).not.toBe(color);
+    });
+  });
 });
 
 test.describe("with a dark OS theme", () => {

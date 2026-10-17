@@ -11,16 +11,16 @@ export const Section = styled.section`
 const bands = {
   card: "cardBand",
   quote: "quoteBand",
-  brand: "brandBand",
+  story: "storyBand",
 } as const;
 
 // A section on a full-width band of its own colour, so each section reads as
 // its own block instead of one long cream scroll. It breaks out of the
 // content column, and its content keeps the page's edge. "card" is white (the
 // card colour in the dark theme); "quote" is the band under the hero (see
-// quoteBand); "brand" is the deep green of "How I test at work", which sets
-// its own cream text. Bands that follow one another meet edge to edge, with
-// no page colour between them.
+// quoteBand); "story" is "How I test at work": white in the light theme, the
+// deep brand green in the dark one (see storyBand). Bands that follow one
+// another meet edge to edge, with no page colour between them.
 export const BandSection = styled(Section).attrs({
   className: "section-band",
 })<{
@@ -59,8 +59,8 @@ export const sectionOpening = css`
 // the page ("01 / How I test at work"), above the section's big line or its
 // content. The number comes from data-number (sectionNumber) through CSS,
 // so screen readers and the page's text get the name alone. The button
-// colour on the page, yellow on the green band ($onBrand).
-export const SectionLabel = styled.h2<{ $onBrand?: boolean }>`
+// colour (deep green in the light theme, yellow in the dark one).
+export const SectionLabel = styled.h2`
   ${sectionOpening}
   margin: 0 0 16px;
   font-family: ${({ theme }) => theme.fontMono};
@@ -68,8 +68,7 @@ export const SectionLabel = styled.h2<{ $onBrand?: boolean }>`
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: 0;
-  color: ${({ theme, $onBrand }) =>
-    $onBrand ? theme.colors.brand.accent : theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
 
   &::before {
     content: attr(data-number) " / ";

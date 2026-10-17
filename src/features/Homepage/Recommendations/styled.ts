@@ -1,21 +1,5 @@
 import styled from "styled-components";
 import LinkedInMark from "./linkedin.svg?react";
-import { bigLine } from "../Section";
-
-// Jim's verdict, large, like a headline in a magazine, and still: the cards
-// below carry the details.
-export const Pull = styled.figure`
-  margin: 0;
-
-  blockquote {
-    margin: 0;
-  }
-
-  blockquote p {
-    ${bigLine}
-    max-width: 20em;
-  }
-`;
 
 // The full recommendations as cards in two columns that fill like a wall of
 // bricks: each column stacks its own cards, so a long one never leaves a gap
@@ -29,17 +13,17 @@ export const List = styled.div`
   grid-template-columns: repeat(2, 1fr);
   align-items: start;
   gap: 24px;
-  /* Room under the big quote, so it stands on its own above the cards. */
-  margin-top: 64px;
+  /* Room under the big line, so it stands on its own above the cards. */
+  margin-top: 48px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-top: 48px;
+    margin-top: 40px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    margin-top: 40px;
+    margin-top: 32px;
   }
 `;
 

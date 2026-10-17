@@ -1,4 +1,9 @@
 import { describe, expect, it } from "vitest";
+import {
+  automationSkills,
+  programmingSkills,
+  testingSkills,
+} from "./skillsData";
 import { structuredData, structuredDataJson } from "./structuredData";
 
 describe("structuredData", () => {
@@ -19,7 +24,7 @@ describe("structuredData", () => {
       mainEntity: {
         "@type": "Person",
         name: "Szymon Rojek",
-        jobTitle: "Software Test Engineer",
+        jobTitle: "Test Engineer",
         image: "https://szymonrojek.com/szymon-rojek.jpg",
         homeLocation: { "@type": "Place", name: "Hove, UK" },
         sameAs: [
@@ -33,8 +38,11 @@ describe("structuredData", () => {
   it("lists the skills shown on the page, testing first", () => {
     const { knowsAbout } = page.mainEntity;
 
-    expect(knowsAbout).toHaveLength(15);
-    expect(knowsAbout[0]).toBe("Data migration & ETL testing");
+    // Every skill in the three lists on the page, none more.
+    expect(knowsAbout).toHaveLength(
+      testingSkills.length + automationSkills.length + programmingSkills.length,
+    );
+    expect(knowsAbout[0]).toBe("Data migration & ETL");
     expect(knowsAbout).toContain("Playwright & TypeScript");
   });
 });

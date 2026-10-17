@@ -54,7 +54,9 @@ export const recommendations: Recommendation[] = [
     quote:
       "Working with Szymon is a pleasure. He is thoughtful and thorough. His write-ups included everything needed to reproduce the conditions and defects he was reporting. He's got a solid understanding of SQL and the context within which we were both working.\n\n" +
       "I'd gladly work with him in the future and you will be fortunate if you get to work with him.",
-    highlight: "thoughtful and thorough",
+    // His closing line, marked in his card since it no longer stands large
+    // above the cards (2026-10-17).
+    highlight: "you will be fortunate if you get to work with him",
     name: "Jim Grinsfelder",
     role: "Senior Database Engineer at Equiniti",
     relation: "worked with me on a different team",
@@ -74,10 +76,13 @@ export const recommendations: Recommendation[] = [
 // The section's heading, "05 / References" on screen, as in the top bar.
 export const recommendationsHeading = "References";
 
-// One sentence from the recommendations, shown large above them. The words
-// are a part of Jim's quote; the highlight is the end of the sentence.
-export const headline = {
-  text: "you will be fortunate if you get to work with him",
-  highlight: "work with him",
-  from: "Jim Grinsfelder",
+// The section's big line, above the cards, with its key words marked. It
+// avoids "recommended" (the heading already says References) and job titles
+// (not everyone who wrote one is an engineer). It replaced Jim's sentence
+// shown large on 2026-10-17; that sentence is now marked in his card.
+// Two lines on purpose, as the Projects headline: a short lead-in, then the
+// line that carries the meaning and ends on the marked words.
+export const recommendationsTitle = {
+  lines: ["In the words of", "the people I’ve worked with"],
+  highlight: "worked with",
 };

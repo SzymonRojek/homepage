@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { ButtonLink } from "../ButtonLink";
-import { contentColumn } from "../../../core/App/contentColumn";
+import { columnInset, contentColumn } from "../../../core/App/contentColumn";
 
 // A full-width footer on the hero's near-black, so the page closes the way
-// the hero opens it, with the soft yellow ring in the bottom-left corner. It meets
+// the hero opens it, with the soft yellow ring in the bottom-left corner of
+// the content column, cut by the band's bottom edge. It meets
 // the last section (Skills, on its own band) edge to edge.
 // "clip", not "hidden": a hidden overflow is a scroll container, and a jump to
 // #contact at the end of the page scrolled the footer itself, cutting off
@@ -18,7 +19,7 @@ export const Wrapper = styled.footer`
     content: "";
     position: absolute;
     bottom: -170px;
-    left: -150px;
+    left: calc(${columnInset} - 150px);
     width: 400px;
     height: 400px;
     border: 72px solid ${({ theme }) => theme.colors.brand.accent};
@@ -57,28 +58,36 @@ export const Letter = styled.section`
   }
 `;
 
-// As large as the hero's headline style, so the page ends the way it opens.
+// Smaller than the hero's headline (it was 46px and broke into four lines in
+// its column on large screens), so the question reads in two or three.
 export const Heading = styled.h2`
   margin: 0;
-  font-size: 46px;
+  font-size: 36px;
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: ${({ theme }) => theme.colors.brand.text};
   text-wrap: balance;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+  /* Narrower column on small laptops and landscape tablets, before the
+     footer goes to one column. */
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
     font-size: 32px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 28px;
   }
 `;
 
-// About 70 characters a line, as in the hero's bio.
-export const Message = styled.div`
-  max-width: 36em;
-`;
+// The note and the button. Only the note is kept narrow, so the button can
+// reach the content's right edge below desktops.
+export const Message = styled.div``;
 
-// What matters to me in a team, in my own words.
+// What matters to me in a team, in my own words. About 70 characters a line,
+// as in the hero's bio.
 export const Note = styled.p`
+  max-width: 36em;
   margin: 0;
   font-size: 17px;
   line-height: 1.7;
@@ -89,7 +98,8 @@ export const Note = styled.p`
   }
 `;
 
-// As wide as its words. On phones it sits on the right, closing the note.
+// As wide as its words. Below desktops (tablets and phones) it sits on the
+// right, closing the note.
 export const ContactButton = styled(ButtonLink)`
   margin-top: 24px;
   color: ${({ theme }) => theme.colors.brand.onAccent};
@@ -99,7 +109,7 @@ export const ContactButton = styled(ButtonLink)`
     background: ${({ theme }) => theme.colors.brand.accentHover};
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
     display: flex;
     width: fit-content;
     margin-left: auto;

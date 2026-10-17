@@ -41,7 +41,7 @@ describe("Footer", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Looking for a tester who reads the code too?",
+        name: "Let’s ship something that doesn’t break.",
       }),
     ).toBeInTheDocument();
     // The invite ends the note, in the same paragraph.
