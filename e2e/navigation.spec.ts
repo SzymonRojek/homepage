@@ -356,8 +356,9 @@ test.describe("Navigation in the dark theme", () => {
     const pill = page
       .getByRole("link", { name: /^Szymon Rojek/ })
       .locator("..");
-    // A jump keeps the bar in sight, raised.
-    await page.evaluate(() => window.scrollTo(0, 800));
+    // Down, then a little back up: the bar returns, raised.
+    await scrollBy(page, 800);
+    await scrollBy(page, -150);
 
     // Both are greens: the bar a step lighter (#1C4D46) than the band
     // (#123C37), which is the deep green in the dark theme.

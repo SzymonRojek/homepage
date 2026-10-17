@@ -80,7 +80,13 @@ export const useBarState = () => {
       const y = window.scrollY;
       const hero = document.getElementById("top");
       const heroBottom = hero ? hero.offsetTop + hero.offsetHeight : 0;
-      setSmooth(fadesOverHero(y, heroBottom, barReach));
+      // A link's scroll starts over the hero but lands on the light
+      // sections: it fills at once, as a jump does.
+      setSmooth(
+        !holding &&
+          !isJump(y, lastY, window.innerHeight) &&
+          fadesOverHero(y, heroBottom, barReach),
+      );
       if (holding) {
         waitForQuiet();
         lastY = y;
@@ -96,6 +102,7 @@ export const useBarState = () => {
         event.target.closest('a[href^="#"]')
       ) {
         holding = true;
+        setSmooth(false);
         waitForQuiet();
       }
     };

@@ -65,6 +65,11 @@ test.describe("with a light OS theme", () => {
     const light = await backgrounds();
     await clickThemeSwitch(page);
     await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    // Read once the page has finished turning dark, not mid-change.
+    await expect(page.locator("body")).toHaveCSS(
+      "background-color",
+      "rgb(11, 21, 19)",
+    );
     const dark = await backgrounds();
 
     // How I test included: it was the deep green in both themes once.
