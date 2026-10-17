@@ -1,4 +1,9 @@
 import { describe, expect, it } from "vitest";
+import {
+  automationSkills,
+  programmingSkills,
+  testingSkills,
+} from "./skillsData";
 import { structuredData, structuredDataJson } from "./structuredData";
 
 describe("structuredData", () => {
@@ -33,7 +38,10 @@ describe("structuredData", () => {
   it("lists the skills shown on the page, testing first", () => {
     const { knowsAbout } = page.mainEntity;
 
-    expect(knowsAbout).toHaveLength(15);
+    // Every skill in the three lists on the page, none more.
+    expect(knowsAbout).toHaveLength(
+      testingSkills.length + automationSkills.length + programmingSkills.length,
+    );
     expect(knowsAbout[0]).toBe("Data migration & ETL");
     expect(knowsAbout).toContain("Playwright & TypeScript");
   });
