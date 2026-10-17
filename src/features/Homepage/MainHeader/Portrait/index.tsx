@@ -3,6 +3,8 @@ import { Frame, Glow, Photo, FilterDefs } from "./styled";
 
 interface PortraitProps {
   src: string;
+  // The same photo at half the size (460px): enough for most phones.
+  smallSrc: string;
   name: string;
 }
 
@@ -34,8 +36,8 @@ const toneTable = (dark: number, light: number) =>
 // stays still (a version that shifted with the mouse was dropped at once). It
 // replaced a square photo on 2026-10-17, which had replaced a photo with a
 // sliding line between colour and duotone, and its captions.
-export const Portrait = ({ src, name }: PortraitProps) => {
-  const { colors } = useTheme();
+export const Portrait = ({ src, smallSrc, name }: PortraitProps) => {
+  const { colors, breakpoints } = useTheme();
   const dark = channels(colors.brand.dark);
   const light = channels(colors.brand.text);
 
@@ -62,7 +64,20 @@ export const Portrait = ({ src, name }: PortraitProps) => {
           </feComponentTransfer>
         </filter>
       </FilterDefs>
-      <Photo src={src} alt={name} draggable={false} />
+      {/* The page's largest paint: fetched ahead of everything else, and
+          React gives the preload it writes for the <head> the same priority
+          and choice of sizes. The square photo fills its frame, so it needs
+          the frame's height: on phones about 46% of the screen's width (Frame in
+          styled.ts), elsewhere at most 375px. Most phones take the 460px copy
+          (a third of the bytes); 3x screens and desktops at 2x the 920px. */}
+      <Photo
+        src={src}
+        srcSet={`${smallSrc} 460w, ${src} 920w`}
+        sizes={`(max-width: ${breakpoints.mobileMax}px) 46vw, 375px`}
+        alt={name}
+        draggable={false}
+        fetchPriority="high"
+      />
     </Frame>
   );
 };

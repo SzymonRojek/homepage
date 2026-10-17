@@ -60,8 +60,11 @@ const isRestoringScroll = () =>
   document.documentElement.dataset.restoringScroll !== undefined;
 
 // Follows the page's scroll. It starts at "top", as the build's static copy
-// does, and checks at once, so a page that opens at a section shows the
-// raised bar.
+// does, and checks in the next frame, so a page that opens at a section
+// shows the raised bar. Not at once: reading the scroll right after React
+// has drawn the page (the dark theme draws it anew) made the browser lay the
+// whole page out there and then, and again once the other effects had
+// changed it (Lighthouse's "Forced reflow", about 200 ms on a slow phone).
 // "smooth" says whether a change of fill may fade (fadesOverHero). "filled"
 // is the look the bar last showed: a hidden bar keeps it while it slides
 // away, so leaving the top it goes as the outline, never flashing green.
@@ -71,10 +74,10 @@ export const useBarState = () => {
   const [filled, setFilled] = useState(false);
 
   useEffect(() => {
-    let lastY = window.scrollY;
+    let lastY = 0;
     // The lowest point of the latest way down: going back up is measured
     // from here (revealAfter).
-    let turnY = lastY;
+    let turnY = 0;
     let current: BarState = "top";
     const show = (next: BarState) => {
       current = next;
@@ -135,10 +138,14 @@ export const useBarState = () => {
       }
     };
 
-    update();
+    const firstCheck = requestAnimationFrame(() => {
+      lastY = turnY = window.scrollY;
+      update();
+    });
     window.addEventListener("scroll", update, { passive: true });
     document.addEventListener("click", onClick);
     return () => {
+      cancelAnimationFrame(firstCheck);
       window.removeEventListener("scroll", update);
       document.removeEventListener("click", onClick);
       clearTimeout(quiet);

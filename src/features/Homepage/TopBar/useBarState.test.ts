@@ -1,5 +1,5 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   fadesOverHero,
   nextBarState,
@@ -75,13 +75,42 @@ describe("useBarState", () => {
       fireEvent.scroll(window);
     });
 
+  // The hook checks the scroll in the next frame: the test runs it.
+  let frames: FrameRequestCallback[] = [];
+  const nextFrame = () =>
+    act(() => frames.splice(0).forEach((frame) => frame(0)));
+
+  beforeEach(() => {
+    frames = [];
+    vi.stubGlobal("requestAnimationFrame", (frame: FrameRequestCallback) =>
+      frames.push(frame),
+    );
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+  });
+
   afterEach(() => {
+    vi.unstubAllGlobals();
     delete document.documentElement.dataset.restoringScroll;
     Object.defineProperty(window, "scrollY", { value: 0, configurable: true });
   });
 
+  it("reads the scroll only in the next frame, so it forces no layout", () => {
+    // A page opened part way down, at a section from a link.
+    const read = vi.fn(() => 1200);
+    Object.defineProperty(window, "scrollY", { get: read, configurable: true });
+
+    const { result } = renderHook(() => useBarState());
+    expect(read).not.toHaveBeenCalled();
+    expect(result.current.state).toBe("top");
+
+    nextFrame();
+    expect(read).toHaveBeenCalled();
+    expect(result.current.state).toBe("raised");
+  });
+
   it("is only an outline on a page that opens at the top", () => {
     const { result } = renderHook(() => useBarState());
+    nextFrame();
 
     expect(result.current.state).toBe("top");
   });
@@ -95,6 +124,7 @@ describe("useBarState", () => {
     });
 
     const { result } = renderHook(() => useBarState());
+    nextFrame();
     expect(result.current.state).toBe("hidden");
 
     // The fonts arrive and the page moves a little, up or down.
@@ -106,6 +136,7 @@ describe("useBarState", () => {
 
   it("comes back only after a little way up, counted from the last turn", () => {
     const { result } = renderHook(() => useBarState());
+    nextFrame();
 
     scrollTo(300);
     scrollTo(600);
@@ -130,6 +161,7 @@ describe("useBarState", () => {
       configurable: true,
     });
     const { result } = renderHook(() => useBarState());
+    nextFrame();
 
     delete document.documentElement.dataset.restoringScroll;
     scrollTo(1900);

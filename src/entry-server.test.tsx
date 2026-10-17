@@ -38,6 +38,10 @@ describe("render", () => {
   it("keeps React's image preloads out of #root, for the <head>", () => {
     expect(page.html).not.toMatch(/^<link/);
     expect(page.preloads).toMatch(/^<link rel="preload" as="image"/);
+    // The photo, the largest paint, is fetched first.
+    expect(page.preloads).toMatch(
+      /<link [^>]*szymonRojekCutout[^>]*fetchpriority="high"/i,
+    );
   });
 
   it("brings the structured data for the <head>", () => {

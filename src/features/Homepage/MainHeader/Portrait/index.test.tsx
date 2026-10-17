@@ -7,7 +7,7 @@ import { Portrait } from ".";
 const renderPortrait = () =>
   render(
     <ThemeProvider theme={themeLight}>
-      <Portrait src="photo.jpg" name="Szymon Rojek" />
+      <Portrait src="photo.jpg" smallSrc="photo-460.jpg" name="Szymon Rojek" />
     </ThemeProvider>,
   );
 
@@ -17,6 +17,16 @@ describe("Portrait", () => {
 
     const photo = screen.getByRole("img", { name: "Szymon Rojek" });
     expect(photo).toHaveAttribute("src", "photo.jpg");
+    // The largest paint on the page: fetched first (Lighthouse's "LCP request
+    // discovery").
+    expect(photo).toHaveAttribute("fetchpriority", "high");
+    // Half the size for phones, where the frame is at most about 330px tall
+    // (Lighthouse's "Improve image delivery").
+    expect(photo).toHaveAttribute(
+      "srcset",
+      "photo-460.jpg 460w, photo.jpg 920w",
+    );
+    expect(photo).toHaveAttribute("sizes", "(max-width: 767px) 46vw, 375px");
     expect(screen.getAllByRole("img")).toEqual([photo]);
     expect(screen.queryByRole("slider")).toBeNull();
     expect(screen.queryAllByRole("link")).toHaveLength(0);

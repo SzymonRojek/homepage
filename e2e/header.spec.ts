@@ -180,3 +180,43 @@ test.describe("Header and footer", () => {
     ).toBeVisible();
   });
 });
+
+// The browser picks the photo's size from srcset: Lighthouse's phone (412px
+// wide, 1.75x) needs about 330px of photo and takes the 460px copy; a 3x
+// phone and a 2x desktop the 920px one, so they stay sharp.
+for (const { screen, viewport, scale, file } of [
+  {
+    screen: "Lighthouse's phone",
+    viewport: { width: 412, height: 823 },
+    scale: 1.75,
+    file: /szymonRojekCutout460-[^/]*\.webp$/,
+  },
+  {
+    screen: "a 3x phone",
+    viewport: { width: 390, height: 844 },
+    scale: 3,
+    file: /szymonRojekCutout-[^/]*\.webp$/,
+  },
+  {
+    screen: "a 2x desktop",
+    viewport: { width: 1440, height: 900 },
+    scale: 2,
+    file: /szymonRojekCutout-[^/]*\.webp$/,
+  },
+]) {
+  test.describe(`the photo on ${screen}`, () => {
+    test.use({ viewport, deviceScaleFactor: scale });
+
+    test("comes in the size the screen needs", async ({ page }) => {
+      await page.goto("./");
+      const photo = page.getByRole("banner").getByRole("img", {
+        name: "Szymon Rojek",
+      });
+      await expect
+        .poll(() =>
+          photo.evaluate((image) => (image as HTMLImageElement).currentSrc),
+        )
+        .toMatch(file);
+    });
+  });
+}
