@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { columnInset, contentColumn } from "../../../core/App/contentColumn";
-import { headlineSize, headlineWidth, photoHeight } from "./sizes";
+import {
+  headlineSize,
+  headlineWidth,
+  inWindowWidth,
+  photoHeight,
+} from "./sizes";
 
 export const Wrapper = styled.header``;
 
@@ -51,6 +56,9 @@ export const BandInner = styled.div`
   position: relative;
   z-index: 1;
   display: grid;
+  grid-template-columns:
+    minmax(calc(${inWindowWidth(headlineWidth)} + 8px), 1fr)
+    minmax(0, calc(0.8 * ${inWindowWidth(photoHeight)}));
   grid-template-columns:
     minmax(calc(${headlineWidth} + 8px), 1fr)
     minmax(0, calc(0.8 * ${photoHeight}));
@@ -139,6 +147,7 @@ export const Headline = styled.h1`
   margin: 12px 0 0;
   text-wrap: balance;
   font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: ${inWindowWidth(headlineSize)};
   font-size: ${headlineSize};
   font-weight: 800;
   line-height: 1.04;
