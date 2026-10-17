@@ -14,7 +14,7 @@ test.describe("Skills & learning", () => {
         .getByRole("heading", { level: 3 }),
     ).toHaveText([
       "Testing",
-      "Test automation",
+      "Automation",
       "Programming",
       "Learning",
     ]);
@@ -74,7 +74,7 @@ test.describe("Skills & learning", () => {
   test("lists automation skills, Playwright first", async ({ page }) => {
     const skills = page
       .getByRole("region", { name: "Skills & learning" })
-      .getByRole("list", { name: "Test automation skills" })
+      .getByRole("list", { name: "Automation skills" })
       .getByRole("listitem");
 
     await expect(skills).toHaveCount(5);
