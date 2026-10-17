@@ -34,7 +34,7 @@ test.describe("the page without JavaScript", () => {
       await expect(
         page.getByRole("heading", { level: 1 }),
       ).toHaveAccessibleName(
-        "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
+        "Szymon Rojek, Test Engineer: I don’t stop at green.",
       );
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       for (const name of sections) {

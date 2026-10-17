@@ -12,7 +12,7 @@ test.describe("Header and footer", () => {
     // the line over the headline the title.
     const headline = page.getByRole("heading", { level: 1 });
     await expect(headline).toHaveAccessibleName(
-      "Szymon Rojek, Software Test Engineer: I don’t stop at green.",
+      "Szymon Rojek, Test Engineer: I don’t stop at green.",
     );
     const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
     await expect(brand).toBeVisible();
@@ -22,7 +22,7 @@ test.describe("Header and footer", () => {
     // Over the headline, the title, in capitals set by CSS.
     const eyebrow = page
       .getByRole("banner")
-      .getByText("Software Test Engineer", { exact: true });
+      .getByText("Test Engineer", { exact: true });
     await expect(eyebrow).toBeVisible();
     await expect(eyebrow).toHaveCSS("text-transform", "uppercase");
   });

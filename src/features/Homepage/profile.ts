@@ -1,6 +1,6 @@
 // Where I live: in the page's structured data only, not on screen.
 const basedIn = "Hove, UK";
-const title = "Software Test Engineer";
+const title = "Test Engineer";
 
 export const profile = {
   name: "Szymon Rojek",

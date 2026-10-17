@@ -1,4 +1,4 @@
-# Szymon Rojek: Software Test Engineer
+# Szymon Rojek: Test Engineer
 
 **Live site: [szymonrojek.com](https://szymonrojek.com/)** · [LinkedIn](https://www.linkedin.com/in/szymon--rojek/)
 
@@ -6,18 +6,18 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
-  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a floating top bar with my name and a yellow 'Hire me' button; on a near-black hero, 'Software Test Engineer' over the headline 'I don't stop at green.' with 'green.' on a tilted mint block, a short bio, the roles I'm looking for and a portrait in a green duotone; then '01 / How I test at work' on a deep green band, and '02 / Projects' with two project cards, one showing its test numbers and the other the CI gates this site passes" />
+  <img src="docs/screenshot-light.png" alt="Screenshot of the homepage: a floating top bar with my name and a yellow 'Hire me' button; on a near-black hero, 'Test Engineer' over the headline 'I don't stop at green.' with 'green.' on a tilted mint block, a short bio, the roles I'm looking for and a portrait in a green duotone; then '01 / How I test at work' on a deep green band, and '02 / Projects' with two project cards, one showing its test numbers and the other the CI gates this site passes" />
 </picture>
 
 ## Why this site exists (30-second summary)
 
-- **Who:** Software Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
+- **Who:** Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
 - **Looking for:** QA, Test Automation, AI Testing and Front-End roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------ |
-| Automated tests       | 165 unit and component tests, 118 end-to-end runs (desktop and mobile)               |
+| Automated tests       | 166 unit and component tests, 118 end-to-end runs (desktop and mobile)               |
 | Coverage              | about 97%, with an 80% gate that fails CI                                            |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                |

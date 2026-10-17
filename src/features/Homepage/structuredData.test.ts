@@ -19,7 +19,7 @@ describe("structuredData", () => {
       mainEntity: {
         "@type": "Person",
         name: "Szymon Rojek",
-        jobTitle: "Software Test Engineer",
+        jobTitle: "Test Engineer",
         image: "https://szymonrojek.com/szymon-rojek.jpg",
         homeLocation: { "@type": "Place", name: "Hove, UK" },
         sameAs: [

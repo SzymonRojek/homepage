@@ -46,11 +46,12 @@ export const Meta = styled.div`
   }
 `;
 
+// Quiet, like a timestamp, as the dates on the recommendation cards.
 export const Period = styled.p`
   margin: 0;
   font-size: 15px;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.qa.accent};
+  color: ${({ theme }) => theme.colors.muted};
 `;
 
 export const Company = styled.p`
