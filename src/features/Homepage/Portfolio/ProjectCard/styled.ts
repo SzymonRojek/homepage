@@ -119,6 +119,7 @@ export const Facts = styled.ul<Featured>`
 
   li::before {
     /* Decorative: the empty alt keeps screen readers from saying "tick". */
+    content: "✓";
     content: "✓" / "";
     margin-right: 8px;
     font-weight: 700;

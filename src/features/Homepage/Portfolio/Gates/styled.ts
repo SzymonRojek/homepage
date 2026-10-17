@@ -116,6 +116,7 @@ export const Result = styled.p`
   color: ${({ theme }) => theme.colors.qa.accent};
 
   &::before {
+    content: "→";
     content: "→" / "";
     margin-right: 8px;
   }

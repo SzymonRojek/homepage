@@ -17,6 +17,11 @@ export const Block = styled(BandSection)`
   position: relative;
   isolation: isolate;
   overflow: clip;
+  /* Safari before 16 has no clip: its decorations widened the page and
+     left empty space under the footer (issue #33). */
+  @supports not (overflow: clip) {
+    overflow: hidden;
+  }
   color: ${({ theme }) => theme.colors.story.text};
 `;
 
@@ -153,6 +158,7 @@ export const Steps = styled.ol`
   /* The arrow to the next stage, on the divider, level with the title.
      Decorative: the list already gives the order. */
   > li + li::before {
+    content: "→";
     content: "→" / "";
     position: absolute;
     top: -1px;
@@ -203,6 +209,7 @@ export const Steps = styled.ol`
     }
 
     > li + li::before {
+      content: "↓";
       content: "↓" / "";
       top: -15px;
       left: 0;
@@ -272,6 +279,7 @@ export const StepPoints = styled.ul`
 
   li::before {
     /* Decorative: the empty alt keeps screen readers from saying "tick". */
+    content: "✓";
     content: "✓" / "";
     font-weight: 700;
     color: ${({ theme }) => theme.colors.story.tick};

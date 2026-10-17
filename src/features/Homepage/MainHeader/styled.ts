@@ -15,6 +15,11 @@ export const Band = styled.div`
   position: relative;
   /* Clips the ring without becoming a scroll container (see the footer). */
   overflow: clip;
+  /* Safari before 16 has no clip: its decorations widened the page and
+     left empty space under the footer (issue #33). */
+  @supports not (overflow: clip) {
+    overflow: hidden;
+  }
   /* The headline and the photo size themselves from the band's width
      (cqi), so they shrink together and smoothly as the window narrows. */
   container-type: inline-size;

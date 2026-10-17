@@ -12,7 +12,7 @@
 
 | At a glance           |                                                                                                                                                            |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automated tests       | 178 unit and component tests, 138 end-to-end runs in Chrome (desktop and mobile) on every push, and 316 in Safari (desktop, iPad, iPhone) every two months |
+| Automated tests       | 180 unit and component tests, 138 end-to-end runs in Chrome (desktop and mobile) on every push, and 316 in Safari (desktop, iPad, iPhone) every two months |
 | Coverage              | about 98%, with a 90% gate that fails CI                                                                                                                   |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push                                                                       |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                                                                                      |
