@@ -27,7 +27,7 @@ test.describe("How I test at work", () => {
     // The story in my own words.
     await expect(
       section.getByRole("article", { name: "Beyond the obvious bugs" }),
-    ).toContainText("set up a call with the developer");
+    ).toContainText("walked through tricky cases with the developer");
 
     // The first section, right under the hero.
     await expect(

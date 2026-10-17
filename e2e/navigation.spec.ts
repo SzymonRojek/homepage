@@ -64,7 +64,7 @@ test.describe("Navigation", () => {
     const footer = page.getByRole("contentinfo");
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", {
-      name: "Looking for a tester who reads the code too?",
+      name: "Need a tester who codes, or a developer who tests?",
     });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
       (await footer.boundingBox())!.y + 20,
@@ -112,6 +112,42 @@ test.describe("Navigation", () => {
         .toBe(gap);
       await expect(pill).not.toHaveCSS("box-shadow", "none");
     });
+  });
+
+  test("the top bar stays in sight after each section link, for the next one @desktop", async ({
+    page,
+  }) => {
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+    const nav = page.getByRole("navigation", { name: "Sections" });
+
+    // The links scroll smoothly, in steps that would otherwise read as
+    // scrolling down and hide the bar.
+    for (const name of ["Projects", "Experience", "References"]) {
+      await nav.getByRole("link", { name }).click();
+      await expect(page).toHaveURL(
+        new RegExp(
+          `#${name === "References" ? "recommendations" : name.toLowerCase()}$`,
+        ),
+      );
+      await page.waitForTimeout(800);
+      await expect(pill).toBeInViewport();
+    }
+    // Once the link's scroll has settled, an ordinary scroll down still
+    // hides it.
+    await expect
+      .poll(async () => {
+        const before = await page.evaluate(() => window.scrollY);
+        await page.waitForTimeout(500);
+        return (await page.evaluate(() => window.scrollY)) - before;
+      })
+      .toBe(0);
+    for (let step = 0; step < 6; step++) {
+      await page.mouse.wheel(0, 100);
+      await page.waitForTimeout(40);
+    }
+    await expect(pill).not.toBeInViewport();
   });
 
   test("after a jump down the page the top bar is solid at once, never mid-fade @desktop", async ({

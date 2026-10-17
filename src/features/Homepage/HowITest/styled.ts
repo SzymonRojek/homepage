@@ -120,7 +120,10 @@ export const StoryText = styled.div`
 `;
 
 // The method under the story: three steps side by side, each under a thin
-// line with a small yellow number; one under another up to tablets.
+// line, with a small yellow number beside the title, one short line and a few
+// ticked points. Up to tablets they stand one under another, with the title
+// and the line on the left and the points on the right; on phones each step
+// is one column again.
 export const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -129,49 +132,118 @@ export const Steps = styled.ol`
   padding: 0;
   list-style: none;
 
-  li {
-    padding-top: 20px;
+  > li {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    grid-template-areas:
+      "number title"
+      ". summary"
+      ". points";
+    align-content: start;
+    padding-top: 24px;
     border-top: 1px solid ${({ theme }) => theme.colors.brand.line};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
+    gap: 32px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
     grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+    gap: 32px;
     margin-top: 40px;
+
+    > li {
+      grid-template-columns: 36px minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "number title points"
+        ". summary points";
+    }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     margin-top: 32px;
-    gap: 24px;
+    gap: 28px;
 
-    li {
-      padding-top: 16px;
+    > li {
+      grid-template-columns: 32px minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas:
+        "number title"
+        ". summary"
+        ". points";
+      padding-top: 20px;
     }
   }
 `;
 
+// Level with the title's first line.
 export const StepNumber = styled.span`
-  display: block;
-  font-family: ${({ theme }) => theme.fontDisplay};
+  grid-area: number;
+  font-family: ${({ theme }) => theme.fontMono};
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
+  line-height: 26px;
   color: ${({ theme }) => theme.colors.brand.accent};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    line-height: 24px;
+  }
 `;
 
 export const StepTitle = styled.h3`
-  margin: 8px 0 0;
-  font-size: 19px;
+  grid-area: title;
+  margin: 0;
+  font-size: 20px;
   line-height: 1.3;
+  letter-spacing: -0.01em;
   color: ${({ theme }) => theme.colors.brand.text};
+  text-wrap: balance;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     font-size: 18px;
   }
 `;
 
-export const StepText = styled.p`
+export const StepSummary = styled.p`
+  grid-area: summary;
   margin: 10px 0 0;
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.55;
   color: ${({ theme }) => theme.colors.brand.muted};
+  text-wrap: pretty;
+`;
+
+export const StepPoints = styled.ul`
+  grid-area: points;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.45;
+  color: ${({ theme }) => theme.colors.brand.text};
+
+  li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+
+  li::before {
+    /* Decorative: the empty alt keeps screen readers from saying "tick". */
+    content: "✓" / "";
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.brand.accent};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletVerticalMax}px) {
+    margin: 4px 0 0 32px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin: 16px 0 0;
+  }
 `;

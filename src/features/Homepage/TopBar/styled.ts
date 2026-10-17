@@ -258,10 +258,10 @@ export const ContactLink = styled(ButtonLink)`
   }
 `;
 
-// On phones and tablets the menu button is the pill's right end: a circle as
-// tall as the pill, flush with its border, so its curve is the pill's own
-// rounded end, filled a shade lighter like the end of a segmented control.
-// Lighter still while the menu is open. Its focus ring stays inside the pill.
+// On phones and tablets the menu button is the three lines alone, no circle
+// behind them (dropped on 2026-10-17), at the pill's right end with a tap
+// area as tall as the pill. Yellow under the pointer, as the links are; its
+// focus ring stays inside the pill.
 export const MenuButton = styled.button`
   display: none;
 
@@ -273,15 +273,14 @@ export const MenuButton = styled.button`
     aspect-ratio: 1;
     padding: 0;
     color: ${({ theme }) => theme.colors.brand.text};
-    background: ${({ theme }) => theme.colors.brand.control};
+    background: none;
     border: 0;
     border-radius: 50%;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: color 0.2s;
 
-    &:hover,
-    &[aria-expanded="true"] {
-      background: ${({ theme }) => a(theme.colors.brand.text, 0.24)};
+    &:hover {
+      color: ${({ theme }) => theme.colors.brand.accent};
     }
 
     &:focus-visible {

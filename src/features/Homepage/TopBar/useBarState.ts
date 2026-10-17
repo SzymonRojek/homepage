@@ -36,8 +36,31 @@ export const useBarState = () => {
 
   useEffect(() => {
     let lastY = window.scrollY;
+    // A link to a section scrolls there smoothly, in many small steps that
+    // would read as scrolling down and hide the bar. Until that scroll ends,
+    // the bar stays raised, in sight for the next link.
+    // It holds for as long as the link's scroll keeps moving: each scroll
+    // step restarts a short quiet timer. No fixed limit, since a long smooth
+    // scroll on a busy machine can outlast any, and no scrollend: Chrome
+    // fires one right after the click, before the smooth scroll starts.
+    let holding = false;
+    let quiet: ReturnType<typeof setTimeout> | undefined;
+    const release = () => {
+      holding = false;
+      clearTimeout(quiet);
+    };
+    const waitForQuiet = () => {
+      clearTimeout(quiet);
+      quiet = setTimeout(release, 400);
+    };
     const update = () => {
       const y = window.scrollY;
+      if (holding) {
+        waitForQuiet();
+        lastY = y;
+        setState(y <= 0 ? "top" : "raised");
+        return;
+      }
       const hero = document.getElementById("top");
       const heroBottom = hero ? hero.offsetTop + hero.offsetHeight : 0;
       const viewport = window.innerHeight;
@@ -46,10 +69,24 @@ export const useBarState = () => {
       );
       if (Math.abs(y - lastY) > nudge || y <= 0) lastY = y;
     };
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest('a[href^="#"]')
+      ) {
+        holding = true;
+        waitForQuiet();
+      }
+    };
 
     update();
     window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    document.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("scroll", update);
+      document.removeEventListener("click", onClick);
+      clearTimeout(quiet);
+    };
   }, []);
 
   return state;

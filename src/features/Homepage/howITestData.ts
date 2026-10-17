@@ -1,6 +1,9 @@
 export interface TestingStep {
   title: string;
-  text: string;
+  // One short line under the title: what the step is about.
+  summary: string;
+  // What the step covers, as short ticked points to skim.
+  points: string[];
 }
 
 // How I test at work, from the experience section and my own description.
@@ -13,26 +16,47 @@ export const howITest = {
     title: "Beyond the obvious bugs",
     // The word in the title set in yellow.
     highlight: "obvious",
+    // Shortened on 2026-10-17 from two paragraphs, keeping all three points:
+    // bugs in the stored procedures, reading them against the requirements
+    // and mapping documents, and going through cases with the developers.
     paragraphs: [
-      "More than once I found bugs not only in the data that came with a code drop after a deployment, but in the stored procedures themselves.",
-      "Sometimes there was no data to test yet. I like to analyse and dig, so I read the stored procedures and checked them against the business requirements and the mapping documents, and asked the solution designers more questions. Several times I set up a call with the developer who wrote the code, to go through an interesting case together.",
+      "I've found bugs not only in the migrated data, but in the stored procedures that move it. When there was no data to test yet, I read the procedures against the requirements and mapping documents, questioned the solution designers, and walked through tricky cases with the developer who wrote them.",
     ],
     // The last line, shown large next to the title.
-    punchline:
-      "Sometimes the bug was hiding in the code itself. Those were the finds I enjoyed most.",
+    punchline: "The best bugs were hiding in the code itself.",
   },
+  // Shortened on 2026-10-17 from a paragraph each into a line and a few
+  // points, so a recruiter can skim them; same facts, nothing added.
   steps: [
     {
       title: "Understand the rules, then design the tests",
-      text: "I turn requirements, mapping documents and transformation rules into positive and negative test cases, each traceable back to the rule it checks and peer-reviewed before anything is run.",
+      summary:
+        "Requirements, mapping documents and transformation rules become test cases.",
+      points: [
+        "Positive and negative cases",
+        "Each traced back to the rule it checks",
+        "Peer-reviewed before anything is run",
+      ],
     },
     {
       title: "Reconcile with SQL and check the logic",
-      text: "Record counts, totals, field-by-field values, empty values, duplicates and relationships between tables. A number can match and still be wrong, so I also check results against the business rules and read the stored procedures that transform the data.",
+      summary: "A number can match and still be wrong.",
+      points: [
+        "Record counts, totals and field-by-field values",
+        "Empty values, duplicates and relationships between tables",
+        "Results checked against the business rules",
+        "The stored procedures that transform the data",
+      ],
     },
     {
       title: "Trace each defect to its root cause",
-      text: "Is it the data, the transformation logic, a stored procedure or the requirement itself? I log it in Azure DevOps with reproduction steps and evidence, and retest the fix with the developers.",
+      summary:
+        "The data, the transformation logic, a stored procedure or the requirement itself?",
+      points: [
+        "Logged in Azure DevOps",
+        "Reproduction steps and evidence attached",
+        "The fix retested with the developers",
+      ],
     },
   ] satisfies TestingStep[],
 };

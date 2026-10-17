@@ -57,18 +57,25 @@ export const Letter = styled.section`
   }
 `;
 
-// As large as the hero's headline style, so the page ends the way it opens.
+// Smaller than the hero's headline (it was 46px and broke into four lines in
+// its column on large screens), so the question reads in two or three.
 export const Heading = styled.h2`
   margin: 0;
-  font-size: 46px;
+  font-size: 36px;
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: ${({ theme }) => theme.colors.brand.text};
   text-wrap: balance;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+  /* Narrower column on small laptops and landscape tablets, before the
+     footer goes to one column. */
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
     font-size: 32px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 28px;
   }
 `;
 

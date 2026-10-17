@@ -26,15 +26,8 @@ export const profile = {
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
   bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
-  // Shown on the photo when its line is dragged all the way to one side:
-  // all colour (test) or all black and white (code). Read together they are
-  // one sentence.
-  portraitCaptions: {
-    test: "100% tester",
-    code: "…who also codes",
-  },
   // The footer's heading: the question a team asks, in the page's theme.
-  contactHeading: "Looking for a tester who reads the code too?",
+  contactHeading: "Need a tester who codes, or a developer who tests?",
   // What matters to me in a team, in my own words, and the one invite to get
   // in touch, as one paragraph in the footer.
   teamNote:
