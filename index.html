@@ -42,6 +42,12 @@
         visibility: hidden;
         background: none;
       }
+      /* After a reload below the top, the page stays unseen until the script
+         after #root has jumped back to its place, so it never shows the top
+         first. */
+      html[data-restoring-scroll="pending"] body {
+        visibility: hidden;
+      }
       /* Self-hosted variable fonts (from @fontsource-variable, OFL), one file
          per alphabet for every weight: Bricolage Grotesque for headings,
          Geist for text and Geist Mono for tiny labels. */
@@ -130,6 +136,23 @@
         // Storage blocked: the app sets the theme once it loads.
       }
     </script>
+    <script>
+      // A reload below the top goes back there (the script after #root), with
+      // the top bar out of sight until useInitialScroll has finished: a
+      // reload is not the visitor scrolling up. The position is saved by
+      // useInitialScroll, under the same key.
+      try {
+        const [visit] = performance.getEntriesByType("navigation");
+        if (
+          visit?.type === "reload" &&
+          Number(sessionStorage.getItem("scrollY")) > 0
+        ) {
+          document.documentElement.dataset.restoringScroll = "pending";
+        }
+      } catch {
+        // Storage blocked: the page starts at the top.
+      }
+    </script>
     <title>Szymon Rojek | Test Engineer</title>
     <meta
       name="description"
@@ -177,6 +200,21 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // The build's copy of the page is in #root by now: jump back to the
+      // saved place before the first paint, then show the page.
+      if (document.documentElement.dataset.restoringScroll === "pending") {
+        try {
+          window.scrollTo({
+            top: Number(sessionStorage.getItem("scrollY")),
+            behavior: "instant",
+          });
+        } catch {
+          // Storage blocked: useInitialScroll tries again.
+        }
+        document.documentElement.dataset.restoringScroll = "";
+      }
+    </script>
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

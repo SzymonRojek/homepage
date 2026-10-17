@@ -31,6 +31,13 @@ export const Bar = styled.div<{ $state: BarState }>`
       : "none"};
   transition: transform 0.3s ease;
 
+  /* Hidden from the first paint while a reload goes back to its place
+     (useBarState), before React has drawn the hidden state. */
+  html[data-restoring-scroll] & {
+    transform: translateY(calc(-100% - ${pillGap.desktop}px));
+    transition: none;
+  }
+
   &:focus-within {
     transform: none;
   }

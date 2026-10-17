@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 // "top": the page hasn't moved, and the bar is only an outline over the
 // hero. "hidden": the page scrolls down, from the very first step, over the
-// hero too, and the bar slides away. "raised": the page scrolls up (or jumped
-// to a section, or was reloaded halfway down), and the bar comes back,
-// lifted off the page. (Until 2026-10-17 it first lifted off over the hero
+// hero too, and the bar slides away; also after a reload below the top, until
+// the visitor scrolls up. "raised": the page scrolls up (or jumped to a
+// section, or opened part way down at one), and the bar comes back, lifted
+// off the page. (Until 2026-10-17 it first lifted off over the hero
 // and hid only past it; the user wanted it simply to go with scrolling down.)
 export type BarState = "top" | "raised" | "hidden";
 
@@ -37,12 +38,20 @@ export const nextBarState = (
   if (isJump(y, lastY, viewport)) return "raised";
   if (y > lastY + nudge) return "hidden";
   if (y < lastY - nudge) return "raised";
-  // Not moved at all: the first check after a reload halfway down.
+  // Not moved at all: the first check on a page that opened part way down,
+  // at a section from a link.
   return state === "top" && y === lastY ? "raised" : state;
 };
 
+// While a reload goes back to its place (index.html and useInitialScroll mark
+// <html> until it is done), the bar stays hidden: a reload is not the visitor
+// scrolling up. Issue #25.
+const isRestoringScroll = () =>
+  document.documentElement.dataset.restoringScroll !== undefined;
+
 // Follows the page's scroll. It starts at "top", as the build's static copy
-// does, and checks at once, so a reload halfway down shows the raised bar.
+// does, and checks at once, so a page that opens at a section shows the
+// raised bar.
 // "smooth" says whether a change of fill may fade (fadesOverHero). "filled"
 // is the look the bar last showed: a hidden bar keeps it while it slides
 // away, so leaving the top it goes as the outline, never flashing green.
@@ -87,6 +96,11 @@ export const useBarState = () => {
           !isJump(y, lastY, window.innerHeight) &&
           fadesOverHero(y, heroBottom, barReach),
       );
+      if (isRestoringScroll()) {
+        lastY = y;
+        show("hidden");
+        return;
+      }
       if (holding) {
         waitForQuiet();
         lastY = y;
