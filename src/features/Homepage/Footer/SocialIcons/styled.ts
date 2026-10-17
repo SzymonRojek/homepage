@@ -16,11 +16,11 @@ export const Item = styled.li``;
 export const Link = styled.a`
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   color: ${({ theme }) => theme.colors.brand.muted};
-  background: ${({ theme }) => theme.colors.brand.control};
-  border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
+  background: ${({ theme }) => theme.colors.brand.quiet};
+  border: 1px solid ${({ theme }) => theme.colors.brand.quietBorder};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   transition:
     color 0.2s,
@@ -35,6 +35,6 @@ export const Link = styled.a`
 export const styleIcon = (
   Icon: ComponentType<SVGProps<SVGSVGElement>>,
 ) => styled(Icon)`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 `;

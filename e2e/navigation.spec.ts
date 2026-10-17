@@ -282,6 +282,18 @@ test.describe("Navigation", () => {
     });
   });
 
+  test("the menu button brightens under the pointer like the links @mobile", async ({
+    page,
+  }) => {
+    const menu = page.getByRole("button", { name: "Menu" });
+    const colour = () => menu.evaluate((el) => getComputedStyle(el).color);
+
+    // The links' muted cream (#B9CEC7), then their cream (#FBF4E6), not yellow.
+    expect(await colour()).toBe("rgb(185, 206, 199)");
+    await menu.hover();
+    await expect.poll(colour).toBe("rgb(251, 244, 230)");
+  });
+
   test("a reload keeps the place, without scrolling by itself", async ({
     page,
   }) => {
@@ -318,8 +330,8 @@ test.describe("Navigation", () => {
     const frames = await page.evaluate(
       () => (window as unknown as { scrollFrames: number[] }).scrollFrames,
     );
-    // No animation: the page jumps from the top (before React renders) to the
-    // saved place, never through the page in between. Small moves near it are
+    // No animation: the page jumps from the top (before the first paint) to
+    // the saved place, never through the page in between. Small moves near it are
     // allowed: as each font arrives (two families, five files), Chrome's
     // scroll anchoring shifts the position so the same content stays in view,
     // sometimes in the same frame as the jump.
@@ -329,6 +341,89 @@ test.describe("Navigation", () => {
     for (const y of positions) {
       expect(Math.abs(y - place), seen).toBeLessThan(200);
     }
+  });
+
+  test("a reload below the top never shows the top bar, until a scroll up (#25)", async ({
+    page,
+  }) => {
+    const pill = page
+      .getByRole("link", { name: /^Szymon Rojek/ })
+      .locator("..");
+    await scrollBy(page, 1500);
+    await expect(pill).not.toBeInViewport();
+    const place = await page.evaluate(() => Math.round(window.scrollY));
+
+    // Record, on every frame of the reload, whether the visitor can see the
+    // pill: the page is shown and the pill is on screen.
+    await page.addInitScript(() => {
+      const frames: { y: number; seen: boolean }[] = [];
+      Object.assign(window, { barFrames: frames });
+      const record = () => {
+        const wordmark = document.querySelector('a[href="#top"]');
+        const pill = wordmark?.parentElement?.getBoundingClientRect();
+        const shown =
+          document.body !== null &&
+          getComputedStyle(document.body).visibility === "visible";
+        frames.push({
+          y: Math.round(window.scrollY),
+          seen: shown && pill !== undefined && pill.bottom > 1,
+        });
+        requestAnimationFrame(record);
+      };
+      requestAnimationFrame(record);
+    });
+    await page.reload();
+    // Within a few lines: scroll anchoring may move it as the fonts arrive.
+    await expect
+      .poll(() => page.evaluate(() => Math.round(window.scrollY)))
+      .toBeGreaterThan(place - 200);
+    await page.waitForTimeout(500);
+
+    const frames = await page.evaluate(
+      () =>
+        (window as unknown as { barFrames: { y: number; seen: boolean }[] })
+          .barFrames,
+    );
+    expect(frames.length).toBeGreaterThan(0);
+    expect(
+      frames.filter(({ seen }) => seen),
+      "frames with the top bar in sight",
+    ).toEqual([]);
+
+    await scrollBy(page, -300);
+    await expect(pill).toBeInViewport();
+  });
+
+  test("a reload at the top stays at the top, even when the browser skips pagehide (#26)", async ({
+    page,
+  }) => {
+    // A reload part way down leaves that place saved.
+    await scrollBy(page, 1500);
+    await page.reload();
+    await expect
+      .poll(() => page.evaluate(() => Math.round(window.scrollY)))
+      .toBeGreaterThan(1000);
+
+    // From here nothing this page saves on pagehide is kept, as on an iPhone
+    // that skips it (window.event is the event being handled).
+    await page.evaluate(() => {
+      const setItem = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (key, value) {
+        if (window.event?.type !== "pagehide") {
+          setItem.call(this, key, value);
+        }
+      };
+    });
+    await scrollBy(page, -2000);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await page.waitForTimeout(300);
+    await page.reload();
+    await page.waitForTimeout(800);
+
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(
+      page.getByRole("link", { name: /^Szymon Rojek/ }).locator(".."),
+    ).toBeInViewport();
   });
 
   test("keyboard users can skip straight to the content", async ({ page }) => {

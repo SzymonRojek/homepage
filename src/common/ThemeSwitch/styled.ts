@@ -7,12 +7,12 @@ import MoonSvg from "./moon.svg?react";
 export const Button = styled.button`
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  color: ${({ theme }) => theme.colors.brand.text};
-  background: ${({ theme }) => theme.colors.brand.control};
-  border: 1px solid ${({ theme }) => theme.colors.brand.controlBorder};
+  color: ${({ theme }) => theme.colors.brand.muted};
+  background: ${({ theme }) => theme.colors.brand.quiet};
+  border: 1px solid ${({ theme }) => theme.colors.brand.quietBorder};
   border-radius: ${({ theme }) => theme.borderRadiusSmall};
   cursor: pointer;
   transition:
@@ -26,11 +26,11 @@ export const Button = styled.button`
 `;
 
 export const SunIcon = styled(SunSvg)`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 `;
 
 export const MoonIcon = styled(MoonSvg)`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 `;

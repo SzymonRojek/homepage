@@ -31,6 +31,13 @@ export const Bar = styled.div<{ $state: BarState }>`
       : "none"};
   transition: transform 0.3s ease;
 
+  /* Hidden from the first paint while a reload goes back to its place
+     (useBarState), before React has drawn the hidden state. */
+  html[data-restoring-scroll] & {
+    transform: translateY(calc(-100% - ${pillGap.desktop}px));
+    transition: none;
+  }
+
   &:focus-within {
     transform: none;
   }
@@ -286,8 +293,9 @@ export const ContactLink = styled(ButtonLink)`
 
 // On phones and tablets the menu button is the three lines alone, no circle
 // behind them (dropped on 2026-10-17), at the pill's right end with a tap
-// area as tall as the pill. Yellow under the pointer; its focus ring stays
-// inside the pill.
+// area as tall as the pill. Muted cream that brightens to cream under the
+// pointer, like the section links (it turned yellow until 2026-10-17); its
+// focus ring stays inside the pill.
 export const MenuButton = styled.button`
   display: none;
 
@@ -298,7 +306,7 @@ export const MenuButton = styled.button`
     align-self: stretch;
     aspect-ratio: 1;
     padding: 0;
-    color: ${({ theme }) => theme.colors.brand.text};
+    color: ${({ theme }) => theme.colors.brand.muted};
     background: none;
     border: 0;
     border-radius: 50%;
@@ -306,7 +314,7 @@ export const MenuButton = styled.button`
     transition: color 0.2s;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.brand.accent};
+      color: ${({ theme }) => theme.colors.brand.text};
     }
 
     &:focus-visible {

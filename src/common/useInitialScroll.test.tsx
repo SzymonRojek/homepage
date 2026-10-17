@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useInitialScroll } from "./useInitialScroll";
+import { pageFonts, useInitialScroll } from "./useInitialScroll";
 
 const Page = () => {
   useInitialScroll();
@@ -34,7 +34,15 @@ describe("useInitialScroll", () => {
     scrollTo.mockReset();
     sessionStorage.clear();
     window.history.replaceState(null, "", "/");
+    vi.useRealTimers();
+    delete document.documentElement.dataset.restoringScroll;
   });
+
+  const scrollAt = (y: number) =>
+    Object.defineProperty(window, "scrollY", {
+      value: y,
+      configurable: true,
+    });
 
   it("on a visit from a link, jumps to the #section at once", () => {
     navigateAs("navigate");
@@ -88,7 +96,7 @@ describe("useInitialScroll", () => {
     sessionStorage.setItem("scrollY", "1234");
 
     render(<Page />);
-    expect(load).toHaveBeenCalledWith('800 1em "Plus Jakarta Sans"');
+    expect(load).toHaveBeenCalledWith('400 1em "Bricolage Grotesque"');
     expect(scrollTo).not.toHaveBeenCalled();
 
     fontsLoaded();
@@ -112,17 +120,73 @@ describe("useInitialScroll", () => {
     expect(scrollIntoView).toHaveBeenCalledOnce();
   });
 
+  it("waits for the faces index.html declares", async () => {
+    const { readFileSync } = await import("node:fs");
+    const html = readFileSync("index.html", "utf8");
+    const declared = new Set(
+      [...html.matchAll(/font-family: "([^"]+)"/g)].map(([, name]) => name),
+    );
+
+    const waitedFor = pageFonts.map((font) =>
+      font.replace(/^\d+ 1em /, "").replaceAll('"', ""),
+    );
+
+    expect(new Set(waitedFor)).toEqual(declared);
+  });
+
   it("saves the position when the page is left", () => {
     navigateAs("navigate");
     render(<Page />);
-    Object.defineProperty(window, "scrollY", {
-      value: 777,
-      configurable: true,
-    });
+    scrollAt(777);
 
     fireEvent(window, new Event("pagehide"));
 
     expect(sessionStorage.getItem("scrollY")).toBe("777");
+  });
+
+  it("saves the position when the page is hidden", () => {
+    navigateAs("navigate");
+    render(<Page />);
+    scrollAt(555);
+    Object.defineProperty(document, "visibilityState", {
+      value: "hidden",
+      configurable: true,
+    });
+
+    fireEvent(document, new Event("visibilitychange"));
+
+    expect(sessionStorage.getItem("scrollY")).toBe("555");
+    Reflect.deleteProperty(document, "visibilityState");
+  });
+
+  it("saves the position while the page scrolls, so pagehide isn't needed (#26)", () => {
+    vi.useFakeTimers();
+    navigateAs("navigate");
+    sessionStorage.setItem("scrollY", "1500");
+    render(<Page />);
+
+    // Back at the top: the old place must not survive a reload.
+    scrollAt(0);
+    fireEvent.scroll(window);
+    vi.advanceTimersByTime(100);
+
+    expect(sessionStorage.getItem("scrollY")).toBe("0");
+  });
+
+  it("after a reload, lets the top bar back once the page is in place", async () => {
+    navigateAs("reload");
+    sessionStorage.setItem("scrollY", "1234");
+    // Set by index.html before the first paint.
+    document.documentElement.dataset.restoringScroll = "";
+
+    render(<Page />);
+
+    await vi.waitFor(() =>
+      expect(document.documentElement).not.toHaveAttribute(
+        "data-restoring-scroll",
+      ),
+    );
+    expect(scrollTo).toHaveBeenCalledOnce();
   });
 
   it("lets the page, not the browser, restore the position", () => {
