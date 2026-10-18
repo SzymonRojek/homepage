@@ -91,7 +91,7 @@ const common = {
   },
   borderRadius: "8px",
   borderRadiusSmall: "4px",
-  fontDisplay: '"Bricolage Grotesque", Geist, sans-serif',
+  fontDisplay: '"Bricolage Grotesque", "Bricolage Fallback", sans-serif',
   fontMono: '"Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
 };
 

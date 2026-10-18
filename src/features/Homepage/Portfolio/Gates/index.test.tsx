@@ -23,8 +23,9 @@ const wrapper = () =>
 // A browser where IntersectionObserver first reports where the list starts
 // (below the screen unless told otherwise), then when it comes into view.
 const belowTheScreen = ({ reducedMotion = false, top = 2000 } = {}) => {
-  let report: (entries: Partial<IntersectionObserverEntry>[]) => void =
-    () => {};
+  let report: (
+    entries: Partial<IntersectionObserverEntry>[],
+  ) => void = () => {};
   vi.stubGlobal(
     "IntersectionObserver",
     class {

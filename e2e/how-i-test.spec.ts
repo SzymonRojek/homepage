@@ -57,3 +57,44 @@ test.describe("How I test at work", () => {
     expect(Math.abs(bug - label)).toBeLessThan(2);
   });
 });
+
+// On phones the title is one line with room to spare at every width. A fixed
+// 32px fitted at 412px by 1px, so a system that sets text a little wider
+// (Linux, as in PageSpeed) broke it onto two lines once the real font
+// arrived, and the page moved.
+for (const width of [360, 375, 390, 412, 430, 600, 767]) {
+  test.describe(`the How I test title at ${width}px`, () => {
+    test.use({ viewport: { width, height: 800 } });
+
+    test("is one line with room to spare", async ({ page }) => {
+      await page.goto("./");
+      await page.evaluate(() => document.fonts.ready);
+      const title = page.getByRole("heading", {
+        name: "Beyond the obvious bugs",
+      });
+
+      const { size, lines, spare } = await title.evaluate((heading) => {
+        const style = getComputedStyle(heading);
+        const oneLine = heading.cloneNode(true) as HTMLElement;
+        oneLine.removeAttribute("id");
+        oneLine.style.cssText =
+          "position: absolute; visibility: hidden; white-space: nowrap";
+        heading.after(oneLine);
+        const needs = oneLine.getBoundingClientRect().width;
+        oneLine.remove();
+        return {
+          size: parseFloat(style.fontSize),
+          lines: Math.round(
+            heading.getBoundingClientRect().height /
+              parseFloat(style.lineHeight),
+          ),
+          spare: 1 - needs / heading.clientWidth,
+        };
+      });
+
+      expect(size).toBeLessThanOrEqual(32);
+      expect(lines).toBe(1);
+      expect(spare).toBeGreaterThan(0.02);
+    });
+  });
+}
