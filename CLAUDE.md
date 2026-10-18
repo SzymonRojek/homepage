@@ -172,21 +172,23 @@ e2e/
 
 A to-do list in priority order (updated 2026-10-18). Performance is done: PageSpeed mobile 96 with layout shift 0.001, desktop 100 (PRs #36 and #37, 2026-10-18); the 10-minute cache (GitHub Pages), the unused JavaScript and the latin-ext font file (for the "ś" in Dawid Kwaśnik's name) stay as they are on purpose. "Me" is the agent, with the user's yes before each step that changes something outside this repo; "the user" is a step only the user can take.
 
-1. **GitHub:**
+1. **English only (the user, 2026-10-18):** the website is written in English only at the moment, British English as in Conventions; no Polish and no PL/EN switch until the user asks.
+   - [ ] Me: check every word a visitor, a search engine or a sharer sees (the page, the build's HTML, the head and JSON-LD, the share card, `manifest.json`, the README) for anything that isn't English, and list it for the user. People's names keep their own spelling (Dawid Kwaśnik) unless the user decides otherwise.
+2. **GitHub:**
    - [ ] Me: set the `homepage` repo's website to `https://szymonrojek.com` and replace its outdated description ("…Redux & Saga…").
    - [ ] Me: link the site from the profile README and the talent-outreach README footer (separate repos: a commit and push each, with the user's yes).
    - [ ] The user: the profile's Website field (GitHub settings).
-2. **LinkedIn (the user):**
+3. **LinkedIn (the user):**
    - [ ] Refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/) (the share card was redrawn on 2026-10-17).
    - [ ] Add the site to the profile's Website field and Featured section, if not done yet.
-3. **Search engines (the user), after the SEO release (PR #15, live on 2026-10-13):**
+4. **Search engines (the user), after the SEO release (PR #15, live on 2026-10-13):**
    - [ ] **Bing Webmaster Tools:** URL Inspection failed with "We were not able to connect to the DNS" because the domain is new (registered 2026-10-13). The DNS was checked and resolves correctly on public resolvers, so nothing needs fixing. Try URL Inspection again (due since 2026-10-15); if it still fails, contact Bing Webmaster support with those two facts. The site is imported, and the sitemap stays submitted.
    - [ ] **Google Search Console:** on or after 2026-10-20, check that the home page is indexed and that Enhancements → Profile page shows no errors.
-4. **Accessibility,** from a review on 2026-10-14 (the automated checks pass):
+5. **Accessibility,** from a review on 2026-10-14 (the automated checks pass):
    - [ ] Me: run axe once with every impact level and list the moderate and minor findings for the user to decide on. `e2e/accessibility.spec.ts` fails only on serious and critical violations; the CI gate stays as it is unless the user asks.
    - [ ] The user: 10 minutes with VoiceOver (Cmd+F5) and the keyboard alone (Tab, Enter, Escape), 200% and 400% zoom, and Windows high contrast (forced colours) if a Windows machine is at hand.
    - [ ] To decide: external links open a new tab without saying so. Consider visually hidden "(opens in a new tab)" text for screen readers; best practice, not a WCAG failure.
-5. **Waiting on the user** (from the recruiter review):
+6. **Waiting on the user** (from the recruiter review):
    - [ ] The 2012–2022 career years ("Earlier career"), the ISTQB exam date and the exact Microsoft AI course names in `experienceData.ts`.
 
 ## Roadmap
@@ -201,7 +203,7 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
   - Curated projects.
   - Playwright + axe tests and the CI pipeline shown in the homepage case study.
   - SEO/Open Graph tags, icons and README.
-  - Optional, not done: PL/EN i18n.
+  - Not now: PL/EN i18n. The site is English only for the moment (the user, 2026-10-18); see the to-do list.
 
 Do these phases one at a time, in separate commits or PRs. Do not mix tooling changes with feature work.
 
