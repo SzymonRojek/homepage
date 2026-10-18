@@ -40,7 +40,8 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
   - `.github/workflows/safari.yml` runs the e2e suite in WebKit, Safari's engine, on `macos-latest` (`SAFARI=1`: Desktop Safari, iPad Pro 11 upright and landscape, iPhone 17, iPhone SE; tablets run only the untagged tests): by itself at 07:00 UTC on the 1st of every other month, and from "Run workflow" whenever a change might need it (the user's choice on 2026-10-17: a one-page site doesn't need Safari on every push; the scheduled run is the reminder, and GitHub emails when it fails). Not part of the deploy gate. GitHub turns scheduled workflows off after 60 days without a commit in a public repo, and emails before it does; re-enable it from the Actions tab.
   - `.github/workflows/mutation.yml`: manual "Run workflow" (optional `mutate` glob) runs Stryker with 4 workers, writes the score per file to the run summary and uploads `reports/mutation` as the `mutation-report` artifact. Not part of the deploy gate.
   - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`. Major updates of `eslint`, `@eslint/js` and `typescript` are ignored: `eslint-plugin-react` supports ESLint 9 only and `typescript-eslint` supports TypeScript below 6.1. Merge a Dependabot PR only when its CI is green, and run `npm ci` locally after pulling dependency changes.
-  - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
+  - Only pushes to `main` (merged PRs) deploy: the `deploy` job publishes the `dist/` its run built and tested with GitHub's own Pages actions (`upload-pages-artifact`, `deploy-pages`), through the `github-pages` environment. Pages' source is GitHub Actions, not a branch, so nothing else can publish the site, and there is no manual deploy command.
+  - Every workflow's token only reads (`permissions: contents: read`); the deploy job alone gets `pages: write` and `id-token: write`. Checkouts keep no credentials (`persist-credentials: false`), so the steps that run other people's code (`npm ci`, the build, the tests) can't push. Every action used is GitHub's own (`actions/*`).
 
 ## Git workflow (mandatory)
 
@@ -51,11 +52,12 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 3. Changes reach `main` only through a **Pull Request `dev → main`** that **the user merges** on GitHub. Open the PR only when the user asks; never merge it yourself.
 4. `main` always comes last: local checks → push to `dev` (CI runs lint, typecheck and tests, no deploy) → user reviews → PR → user merges → deploy.
 
-This is enforced in three places:
+This is enforced in four places:
 
 - **GitHub ruleset on `main`:** no direct pushes, PR required, CI must pass, no bypass (not even for the admin account the agent uses).
 - **`.claude/settings.json`:** `deny` blocks `git push` to `main` and `gh pr merge`; `ask` requires approval for every other `git push`.
 - **CI:** `.github/workflows/ci.yml` deploys only from `main`.
+- **GitHub Pages:** the site is published only by that deploy job (Pages' source is GitHub Actions, and the `github-pages` environment is limited to `main`), so there is no branch to push to and no manual deploy.
 
 ## Commands
 
@@ -71,7 +73,6 @@ npm run test:mutation    # Stryker mutation testing; manual, about an hour local
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
-npm run deploy     # manual deploy: build, then gh-pages publishes dist/ (CI does this on push to main)
 ```
 
 > Stryker note: `@stryker-mutator/vitest-runner` does not activate mutants with Vitest 5 (0 tests ran per mutant, giving a false 13.6% score), so `stryker.config.json` uses the command runner with `coverageAnalysis: "off"` and long timeouts. Check `testsCompleted` in `reports/mutation/mutation.json` before trusting a low score.
@@ -170,16 +171,38 @@ e2e/
 
 ## Open items
 
-1. Waiting on the user (from the recruiter review): the 2012–2022 career years ("Earlier career"), the ISTQB exam date and the exact Microsoft AI course names in `experienceData.ts`.
-2. Search engines, after the SEO release (PR #15, live on 2026-10-13):
-   - **Bing Webmaster Tools:** URL Inspection failed with "We were not able to connect to the DNS" because the domain is new (registered 2026-10-13). The DNS was checked and resolves correctly on public resolvers, so nothing needs fixing. Try URL Inspection again from 2026-10-15; if it still fails after 2026-10-16, contact Bing Webmaster support with those two facts. The site is imported, and the sitemap stays submitted.
-   - **Google Search Console:** around 2026-10-20, check that the home page is indexed and that Enhancements → Profile page shows no errors.
-   - **LinkedIn:** refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/), and add the site to the profile's Website field and Featured section, if not done yet.
-   - **GitHub:** set the profile's Website field to `https://szymonrojek.com`, set the `homepage` repo's website and replace its outdated description ("…Redux & Saga…"), and link the site from the profile README and the talent-outreach README footer. Waiting on the user's yes.
-3. Accessibility, from a review on 2026-10-14 (the automated checks pass):
-   - **axe moderate and minor findings:** `e2e/accessibility.spec.ts` fails only on serious and critical violations. Run axe once with every impact and decide what to fix; the CI gate stays as it is unless the user asks.
-   - **Manual checks (the user):** 10 minutes with VoiceOver (Cmd+F5) and the keyboard alone (Tab, Enter, Escape, arrow keys on the photo), 200% and 400% zoom, and Windows high contrast (forced colours) if a Windows machine is at hand.
-   - **External links:** they open a new tab without saying so. Consider visually hidden "(opens in a new tab)" text for screen readers; best practice, not a WCAG failure.
+A to-do list in priority order (updated 2026-10-18). Performance is done: PageSpeed mobile 96 with layout shift 0.001, desktop 100 (PRs #36 and #37, 2026-10-18); the 10-minute cache (GitHub Pages), the unused JavaScript and the latin-ext font file (for the "ś" in Dawid Kwaśnik's name) stay as they are on purpose. "Me" is the agent, with the user's yes before each step that changes something outside this repo; "the user" is a step only the user can take.
+
+1. **English only (the user, 2026-10-18):** the website is written in English only at the moment, British English as in Conventions; no Polish and no PL/EN switch until the user asks.
+   - [ ] Me: check every word a visitor, a search engine or a sharer sees (the page, the build's HTML, the head and JSON-LD, the share card, `manifest.json`, the README) for anything that isn't English, and list it for the user. People's names keep their own spelling (Dawid Kwaśnik) unless the user decides otherwise.
+2. **CI security, then a staging site (2026-10-18):** first tighten the pipeline, in a commit of its own, then deploy every tested `dev` build to a staging site, so changes are checked on real devices (an iPhone too) before they reach `main`.
+   - [x] Me: the workflows' token only reads (`permissions: contents: read`), with write access in the deploy job alone, and every checkout keeps no credentials (`persist-credentials: false`).
+   - [x] Me: no route to the live site skips the gates. `npm run deploy` and the `gh-pages` package are gone, and production deploys with GitHub's own Pages actions from the build CI tested, not from a branch.
+   - [ ] Me: pin any action from outside GitHub (`cloudflare/wrangler-action`, when staging comes) to a full commit SHA; Dependabot keeps them up to date. There are none now: `peaceiris/actions-gh-pages` went with the branch deploy.
+   - [ ] Me: a Dependabot `cooldown` of about 7 days for npm, so a new package version is taken only once it has been public for a while.
+   - [ ] The user, or me through `gh` with a yes: in the repo settings, turn on secret scanning and push protection, make the default workflow token read-only and stop Actions approving PRs, and require approval for workflow runs from all outside contributors.
+   - [ ] The user: when merging the PR with the new deploy job, set Pages' source to GitHub Actions (Settings → Pages; if the deploy job ran before the switch and failed, re-run it), then check that szymonrojek.com and "Enforce HTTPS" are still set there. Limit the `github-pages` environment to `main` (Settings → Environments → `github-pages` → Deployment branches and tags). Once a deploy from Actions has worked, the `gh-pages` branch can be deleted.
+   - [ ] To decide (the user): a separate free Cloudflare account for staging alone (on `*.pages.dev`), or a token on the account that holds the domain; and whether each staging deploy waits for the user's approval (a required reviewer on the `staging` environment).
+   - [ ] Me: the staging site on Cloudflare Pages. On a push to `dev`, once every check has passed, a separate job takes the built `dist/` and deploys it with a pinned `wrangler`; only that job gets the token, through a `staging` environment limited to `dev`. The token can edit Cloudflare Pages and nothing else, has an expiry date, and the user puts it into GitHub's secrets (never into a file or a chat). No `pull_request_target` or `workflow_run` triggers, and no Cloudflare Access (its token would end up in the Playwright traces, which are public in this repo).
+   - [ ] Me: `noindex` on staging only, as a header the staging deploy adds, never in the page's code, with a `seo` test that the production build has none. The staging URL comes from the deploy step's output and is never written into the repo.
+   - [ ] Me: the e2e suite against staging (a `BASE_URL` in `playwright.config.ts`), in Chromium and WebKit, after the deploy; the local e2e stays the gate before it, and Lighthouse stays local.
+   - [ ] Me: update the README (the flow diagram, and "There are no secrets" under Security) and CLAUDE.md.
+3. **GitHub:**
+   - [ ] Me: set the `homepage` repo's website to `https://szymonrojek.com` and replace its outdated description ("…Redux & Saga…").
+   - [ ] Me: link the site from the profile README and the talent-outreach README footer (separate repos: a commit and push each, with the user's yes).
+   - [ ] The user: the profile's Website field (GitHub settings).
+4. **LinkedIn (the user):**
+   - [ ] Refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/) (the share card was redrawn on 2026-10-17).
+   - [ ] Add the site to the profile's Website field and Featured section, if not done yet.
+5. **Search engines (the user), after the SEO release (PR #15, live on 2026-10-13):**
+   - [ ] **Bing Webmaster Tools:** URL Inspection failed with "We were not able to connect to the DNS" because the domain is new (registered 2026-10-13). The DNS was checked and resolves correctly on public resolvers, so nothing needs fixing. Try URL Inspection again (due since 2026-10-15); if it still fails, contact Bing Webmaster support with those two facts. The site is imported, and the sitemap stays submitted.
+   - [ ] **Google Search Console:** on or after 2026-10-20, check that the home page is indexed and that Enhancements → Profile page shows no errors.
+6. **Accessibility,** from a review on 2026-10-14 (the automated checks pass):
+   - [ ] Me: run axe once with every impact level and list the moderate and minor findings for the user to decide on. `e2e/accessibility.spec.ts` fails only on serious and critical violations; the CI gate stays as it is unless the user asks.
+   - [ ] The user: 10 minutes with VoiceOver (Cmd+F5) and the keyboard alone (Tab, Enter, Escape), 200% and 400% zoom, and Windows high contrast (forced colours) if a Windows machine is at hand.
+   - [ ] To decide: external links open a new tab without saying so. Consider visually hidden "(opens in a new tab)" text for screen readers; best practice, not a WCAG failure.
+7. **Waiting on the user** (from the recruiter review):
+   - [ ] The 2012–2022 career years ("Earlier career"), the ISTQB exam date and the exact Microsoft AI course names in `experienceData.ts`.
 
 ## Roadmap
 
@@ -193,7 +216,7 @@ e2e/
   - Curated projects.
   - Playwright + axe tests and the CI pipeline shown in the homepage case study.
   - SEO/Open Graph tags, icons and README.
-  - Optional, not done: PL/EN i18n.
+  - Not now: PL/EN i18n. The site is English only for the moment (the user, 2026-10-18); see the to-do list.
 
 Do these phases one at a time, in separate commits or PRs. Do not mix tooling changes with feature work.
 
