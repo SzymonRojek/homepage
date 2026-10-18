@@ -10,12 +10,18 @@ on:
         required: false
         default: ""
 
+# Read-only, with no token left in Git: Stryker never needs to write.
+permissions:
+  contents: read
+
 jobs:
   stryker:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: 24

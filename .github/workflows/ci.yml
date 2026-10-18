@@ -7,11 +7,20 @@ on:
   pull_request:
     branches: [main, dev]
 
+# The token only reads. The deploy job alone gets more: what publishing to
+# GitHub Pages needs, and nothing else.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Leaves no token in Git for the steps that run other people's code
+          # (npm ci, the build, the tests), so none of them can push.
+          persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: 24
@@ -43,12 +52,19 @@ jobs:
           name: dist
           path: dist
 
+  # GitHub's own Pages actions publish the build this run tested. The site
+  # comes from here alone, not from a branch, so nothing reaches it without a
+  # pull request into main and every check above.
   deploy:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     concurrency:
       group: pages
       cancel-in-progress: false
@@ -57,7 +73,8 @@ jobs:
         with:
           name: dist
           path: dist
-      - uses: peaceiris/actions-gh-pages@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v5
