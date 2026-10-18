@@ -56,6 +56,8 @@ export const Bug = styled(BugSvg)`
 
 // My story opens the block: the title on the left, the story on the right.
 export const Story = styled.article`
+  /* The title's size on phones follows the column's width (cqi). */
+  container-type: inline-size;
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   gap: 56px;
@@ -94,8 +96,15 @@ export const StoryTitle = styled.h3`
     font-size: 40px;
   }
 
+  /* On phones always one line, with about 3% to spare: it is 11.84em wide,
+     so at most a 12.2th of the column, and 32px from about 423px up. A
+     fixed 32px fitted at 412px by 1px: on Linux, as in PageSpeed, the real
+     font then broke it onto two lines after the fallback had set one, and
+     the page moved (2026-10-18). The window's width first, for Safari
+     before 16 (no container queries); the gutters are 16px a side. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
-    font-size: 32px;
+    font-size: min(32px, calc((100vw - 32px) / 12.2));
+    font-size: min(32px, calc(100cqi / 12.2));
   }
 `;
 
