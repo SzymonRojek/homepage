@@ -40,7 +40,8 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
   - `.github/workflows/safari.yml` runs the e2e suite in WebKit, Safari's engine, on `macos-latest` (`SAFARI=1`: Desktop Safari, iPad Pro 11 upright and landscape, iPhone 17, iPhone SE; tablets run only the untagged tests): by itself at 07:00 UTC on the 1st of every other month, and from "Run workflow" whenever a change might need it (the user's choice on 2026-10-17: a one-page site doesn't need Safari on every push; the scheduled run is the reminder, and GitHub emails when it fails). Not part of the deploy gate. GitHub turns scheduled workflows off after 60 days without a commit in a public repo, and emails before it does; re-enable it from the Actions tab.
   - `.github/workflows/mutation.yml`: manual "Run workflow" (optional `mutate` glob) runs Stryker with 4 workers, writes the score per file to the run summary and uploads `reports/mutation` as the `mutation-report` artifact. Not part of the deploy gate.
   - `.github/dependabot.yml` opens weekly npm and GitHub Actions updates against `dev`. Major updates of `eslint`, `@eslint/js` and `typescript` are ignored: `eslint-plugin-react` supports ESLint 9 only and `typescript-eslint` supports TypeScript below 6.1. Merge a Dependabot PR only when its CI is green, and run `npm ci` locally after pulling dependency changes.
-  - Only pushes to `main` (merged PRs) deploy `dist/` to the `gh-pages` branch.
+  - Only pushes to `main` (merged PRs) deploy: the `deploy` job publishes the `dist/` its run built and tested with GitHub's own Pages actions (`upload-pages-artifact`, `deploy-pages`), through the `github-pages` environment. Pages' source is GitHub Actions, not a branch, so nothing else can publish the site, and there is no manual deploy command.
+  - Every workflow's token only reads (`permissions: contents: read`); the deploy job alone gets `pages: write` and `id-token: write`. Checkouts keep no credentials (`persist-credentials: false`), so the steps that run other people's code (`npm ci`, the build, the tests) can't push. Every action used is GitHub's own (`actions/*`).
 
 ## Git workflow (mandatory)
 
@@ -51,11 +52,12 @@ The site itself is a showcase: it is built in React + TypeScript and tested with
 3. Changes reach `main` only through a **Pull Request `dev → main`** that **the user merges** on GitHub. Open the PR only when the user asks; never merge it yourself.
 4. `main` always comes last: local checks → push to `dev` (CI runs lint, typecheck and tests, no deploy) → user reviews → PR → user merges → deploy.
 
-This is enforced in three places:
+This is enforced in four places:
 
 - **GitHub ruleset on `main`:** no direct pushes, PR required, CI must pass, no bypass (not even for the admin account the agent uses).
 - **`.claude/settings.json`:** `deny` blocks `git push` to `main` and `gh pr merge`; `ask` requires approval for every other `git push`.
 - **CI:** `.github/workflows/ci.yml` deploys only from `main`.
+- **GitHub Pages:** the site is published only by that deploy job (Pages' source is GitHub Actions, and the `github-pages` environment is limited to `main`), so there is no branch to push to and no manual deploy.
 
 ## Commands
 
@@ -71,7 +73,6 @@ npm run test:mutation    # Stryker mutation testing; manual, about an hour local
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
-npm run deploy     # manual deploy: build, then gh-pages publishes dist/ (CI does this on push to main)
 ```
 
 > Stryker note: `@stryker-mutator/vitest-runner` does not activate mutants with Vitest 5 (0 tests ran per mutant, giving a false 13.6% score), so `stryker.config.json` uses the command runner with `coverageAnalysis: "off"` and long timeouts. Check `testsCompleted` in `reports/mutation/mutation.json` before trusting a low score.
@@ -175,10 +176,12 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
 1. **English only (the user, 2026-10-18):** the website is written in English only at the moment, British English as in Conventions; no Polish and no PL/EN switch until the user asks.
    - [ ] Me: check every word a visitor, a search engine or a sharer sees (the page, the build's HTML, the head and JSON-LD, the share card, `manifest.json`, the README) for anything that isn't English, and list it for the user. People's names keep their own spelling (Dawid Kwaśnik) unless the user decides otherwise.
 2. **CI security, then a staging site (2026-10-18):** first tighten the pipeline, in a commit of its own, then deploy every tested `dev` build to a staging site, so changes are checked on real devices (an iPhone too) before they reach `main`.
-   - [ ] Me: the workflow's token only reads (`permissions: contents: read`), with write access in the deploy job alone, and the build job's checkout keeps no credentials (`persist-credentials: false`).
-   - [ ] Me: pin the actions from outside GitHub (`peaceiris/actions-gh-pages`, later `cloudflare/wrangler-action`) to a full commit SHA; Dependabot keeps them up to date.
+   - [x] Me: the workflows' token only reads (`permissions: contents: read`), with write access in the deploy job alone, and every checkout keeps no credentials (`persist-credentials: false`).
+   - [x] Me: no route to the live site skips the gates. `npm run deploy` and the `gh-pages` package are gone, and production deploys with GitHub's own Pages actions from the build CI tested, not from a branch.
+   - [ ] Me: pin any action from outside GitHub (`cloudflare/wrangler-action`, when staging comes) to a full commit SHA; Dependabot keeps them up to date. There are none now: `peaceiris/actions-gh-pages` went with the branch deploy.
    - [ ] Me: a Dependabot `cooldown` of about 7 days for npm, so a new package version is taken only once it has been public for a while.
    - [ ] The user, or me through `gh` with a yes: in the repo settings, turn on secret scanning and push protection, make the default workflow token read-only and stop Actions approving PRs, and require approval for workflow runs from all outside contributors.
+   - [ ] The user: when merging the PR with the new deploy job, set Pages' source to GitHub Actions (Settings → Pages; if the deploy job ran before the switch and failed, re-run it), then check that szymonrojek.com and "Enforce HTTPS" are still set there. Limit the `github-pages` environment to `main` (Settings → Environments → `github-pages` → Deployment branches and tags). Once a deploy from Actions has worked, the `gh-pages` branch can be deleted.
    - [ ] To decide (the user): a separate free Cloudflare account for staging alone (on `*.pages.dev`), or a token on the account that holds the domain; and whether each staging deploy waits for the user's approval (a required reviewer on the `staging` environment).
    - [ ] Me: the staging site on Cloudflare Pages. On a push to `dev`, once every check has passed, a separate job takes the built `dist/` and deploys it with a pinned `wrangler`; only that job gets the token, through a `staging` environment limited to `dev`. The token can edit Cloudflare Pages and nothing else, has an expiry date, and the user puts it into GitHub's secrets (never into a file or a chat). No `pull_request_target` or `workflow_run` triggers, and no Cloudflare Access (its token would end up in the Playwright traces, which are public in this repo).
    - [ ] Me: `noindex` on staging only, as a header the staging deploy adds, never in the page's code, with a `seo` test that the production build has none. The staging URL comes from the deploy step's output and is never written into the repo.
