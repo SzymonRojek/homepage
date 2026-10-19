@@ -22,7 +22,7 @@
     "@reduxjs/toolkit": "^2.13.0",
     "color-alpha": "^2.1.1",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react-dom": "^19.3.1",
     "react-redux": "^9.3.0",
     "styled-components": "^6.5.3",
     "styled-normalize": "^8.1.1"
