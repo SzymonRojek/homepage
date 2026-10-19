@@ -13,7 +13,7 @@ export const profile = {
   taglineHighlight: "green.",
   // Under the bio: the roles I want lead, so HR sees them first.
   lookingFor: {
-    label: "Looking for",
+    label: "Open to",
     // Two parts of phrases: one line where it fits, else each part on a line
     // of its own, and only where a part can't fit does it break between its
     // phrases. A non-breaking space and hyphen keep "AI Testing" and

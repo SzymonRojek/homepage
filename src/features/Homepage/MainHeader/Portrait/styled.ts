@@ -20,7 +20,7 @@ export const Frame = styled.div`
   height: ${inWindowWidth(photoHeight)};
   height: ${photoHeight};
 
-  /* On phones, beside "Looking for": its top level with the label (the
+  /* On phones, beside "Open to": its top level with the label (the
      list's margin), at most 200px wide, so the text keeps room. Just under
      768px it is as tall as just above, so the head keeps its size where the
      layout changes, and it shrinks with the screen from about 680px down. */

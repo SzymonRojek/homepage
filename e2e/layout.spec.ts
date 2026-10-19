@@ -116,7 +116,7 @@ test.describe("Layout", () => {
 
     for (const width of [1440, 1200, 1024, 900, 800, 768]) {
       await page.setViewportSize({ width, height: 900 });
-      // From the job title over the headline to the end of "Looking for".
+      // From the job title over the headline to the end of "Open to".
       const top = (await box(hero.getByText("Test Engineer", { exact: true })))
         .y;
       const end = await box(hero.getByRole("definition"));

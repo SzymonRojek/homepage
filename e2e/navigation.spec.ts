@@ -55,7 +55,7 @@ test.describe("Navigation", () => {
   });
 
   test("the contact button scrolls to the contact card", async ({ page }) => {
-    await (await sectionLink(page, "Hire me")).click();
+    await (await sectionLink(page, "Email me")).click();
 
     await expect(page).toHaveURL(/#contact$/);
     await expect(
@@ -221,12 +221,12 @@ test.describe("Navigation", () => {
       expect(overflow).toBeLessThanOrEqual(0);
     });
 
-    await test.step("Hire me is hidden until it opens", async () => {
+    await test.step("Email me is hidden until it opens", async () => {
       const nav = page.getByRole("navigation", { name: "Sections" });
-      await expect(nav.getByRole("link", { name: "Hire me" })).toBeHidden();
+      await expect(nav.getByRole("link", { name: "Email me" })).toBeHidden();
 
       await menu.click();
-      await expect(nav.getByRole("link", { name: "Hire me" })).toBeVisible();
+      await expect(nav.getByRole("link", { name: "Email me" })).toBeVisible();
       // The theme switch is in the footer, not the menu.
       await expect(nav.getByRole("button", { name: "Dark mode" })).toHaveCount(
         0,
