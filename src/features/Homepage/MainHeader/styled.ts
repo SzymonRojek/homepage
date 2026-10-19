@@ -75,7 +75,7 @@ export const BandInner = styled.div`
   }
 
   /* On phones the text runs full width, and the photo stands beside
-     "Looking for", its top level with the label, on the band's edge. */
+     "Open to", its top level with the label, on the band's edge. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 16px;
@@ -92,7 +92,7 @@ export const Details = styled.div`
   padding-bottom: ${({ theme }) => theme.layout.section.desktop}px;
 
   /* On phones its lines become the hero grid's own rows (see BandInner),
-     all full width but "Looking for", which shares a row with the photo. */
+     all full width but "Open to", which shares a row with the photo. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     display: contents;
 
@@ -122,9 +122,9 @@ export const NameAndTitle = styled.span`
   border: 0;
 `;
 
-// The job title and where I live, in small yellow capitals over the headline,
-// like the "Looking for" label. The text stays in normal case for screen
-// readers; CSS sets the capitals.
+// The job title, in small yellow capitals over the headline, like the
+// "Open to" label. The text stays in normal case for screen readers; CSS sets
+// the capitals.
 export const Eyebrow = styled.p`
   margin: 24px 0 0;
   font-size: 13px;
@@ -188,8 +188,8 @@ export const Summary = styled.p`
   }
 `;
 
-// What I'm looking for, under the bio: the roles lead, in the display face,
-// with a yellow label like the job title in the top bar.
+// The roles I'm open to, under the bio: they lead, in the display face, with
+// a yellow label like the job title over the headline.
 export const NextRole = styled.dl`
   margin: 28px 0 0;
 

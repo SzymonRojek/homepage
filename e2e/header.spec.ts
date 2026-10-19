@@ -27,12 +27,12 @@ test.describe("Header and footer", () => {
     await expect(eyebrow).toHaveCSS("text-transform", "uppercase");
   });
 
-  test("tells recruiters at a glance what I'm looking for", async ({
+  test("tells recruiters at a glance which roles I'm open to", async ({
     page,
   }) => {
     const header = page.getByRole("banner");
 
-    await expect(header.getByRole("term")).toHaveText("Looking for");
+    await expect(header.getByRole("term")).toHaveText("Open to");
     await expect(header.getByRole("definition")).toHaveText(
       "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
     );
@@ -49,12 +49,12 @@ test.describe("Header and footer", () => {
   test("has contact links in the top bar and the footer", async ({ page }) => {
     // The hero has no links: contact lives in the top bar and the footer.
     await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
-    // Up to 991px (phones, an upright tablet) "Hire me" sits in the menu.
+    // Up to 991px (phones, an upright tablet) "Email me" sits in the menu.
     if (page.viewportSize()!.width <= 991) {
       await page.getByRole("button", { name: "Menu" }).click();
     }
     await expect(
-      page.getByRole("link", { name: "Hire me", exact: true }),
+      page.getByRole("link", { name: "Email me", exact: true }),
     ).toHaveAttribute("href", "#contact");
     await expect(
       page

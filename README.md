@@ -7,7 +7,7 @@
 ## Why this site exists (30-second summary)
 
 - **Who:** Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
-- **Looking for:** QA, Test Automation, AI Testing and Front-End roles. Based in Hove, UK, with full right to work in the UK, and open to relocation.
+- **Open to:** QA, Test Automation, AI Testing and Front-End roles, and to relocation. Based in Hove, UK, with full right to work in the UK.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                                                                                            |

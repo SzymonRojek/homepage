@@ -24,9 +24,9 @@ const navLinks = [
   { href: "#recommendations", label: "References" },
 ];
 
-// A floating pill: on wide screens the links and "Hire me" sit in it; on
+// A floating pill: on wide screens the links and "Email me" sit in it; on
 // phones and tablets they move into a rounded panel under it, behind a
-// button: the links, then "Hire me". The theme switch is in the footer.
+// button: the links, then "Email me". The theme switch is in the footer.
 export const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { state: scrollState, smooth, filled: scrollFilled } = useBarState();
@@ -82,7 +82,7 @@ export const TopBar = () => {
           </NavList>
           <MenuFooter>
             <ContactLink href="#contact" onClick={() => setMenuOpen(false)}>
-              Hire me
+              Email me
             </ContactLink>
           </MenuFooter>
         </Nav>
