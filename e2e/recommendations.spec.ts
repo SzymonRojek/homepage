@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures";
 
 test.describe("Recommendations", () => {
-  test("quotes five colleagues in the last section, before the footer", async ({
+  test("quotes six colleagues in the last section, before the footer", async ({
     page,
   }) => {
     await page.goto("./");
@@ -17,9 +17,13 @@ test.describe("Recommendations", () => {
     const quotes = page
       .getByRole("list", { name: "Recommendations from LinkedIn" })
       .getByRole("listitem");
-    await expect(quotes).toHaveCount(5);
-    // The newest first, and Karthikeyan's (the second) beside it at the top.
-    await expect(quotes.first()).toContainText("Venkat Nagadasari");
+    await expect(quotes).toHaveCount(6);
+    // The newest first, and Venkat's (the second) beside it at the top.
+    await expect(quotes.first()).toContainText("John Burrows");
+    // John's is the only one that backs up the AI section above.
+    await expect(
+      quotes.filter({ hasText: "John Burrows" }).locator("mark"),
+    ).toHaveText("a great understanding of the latest AI technologies");
     const karthikeyan = quotes.filter({ hasText: "Karthikeyan Palanivel" });
     await expect(karthikeyan.locator("mark")).toHaveText(
       "highly skilled professional",

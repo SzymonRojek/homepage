@@ -3,6 +3,7 @@ import { profile } from "./profile";
 import {
   automationSkills,
   programmingSkills,
+  testTypes,
   testingSkills,
 } from "./skillsData";
 
@@ -31,6 +32,10 @@ export const structuredData = () =>
             ...testingSkills,
             ...automationSkills,
             ...programmingSkills,
+            // The test types read as one word each on the page ("Functional
+            // · Regression · …"), under a "Test types:" label. Here each has
+            // to stand alone, so it carries the noun with it.
+            ...testTypes.map((type) => `${type} testing`),
           ],
           sameAs: [profile.linkedinUrl, githubProfileUrl],
         },

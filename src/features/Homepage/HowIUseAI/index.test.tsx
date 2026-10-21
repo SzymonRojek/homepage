@@ -28,7 +28,7 @@ describe("HowIUseAI", () => {
   it("opens on the line that holds the section together", () => {
     renderHowIUseAI();
 
-    expect(section()).toHaveTextContent("The questions are mine.");
+    expect(section()).toHaveTextContent("The judgement is mine.");
     expect(within(section()).getByText("mine").tagName).toBe("EM");
   });
 

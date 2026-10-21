@@ -34,7 +34,7 @@ test.describe("Header and footer", () => {
 
     await expect(header.getByRole("term")).toHaveText("Open to");
     await expect(header.getByRole("definition")).toHaveText(
-      "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
+      "QA, Test Automation, Front\u2011End roles",
     );
     // No location or right-to-work line in the hero.
     await expect(header.getByText(/Hove|relocation/)).toHaveCount(0);

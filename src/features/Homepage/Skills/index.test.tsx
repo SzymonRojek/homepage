@@ -20,6 +20,7 @@ vi.mock("../skillsData", () => ({
   testingSkills: ["SQL"],
   automationSkills: ["Playwright"],
   programmingSkills: ["React"],
+  testTypes: ["Functional", "Regression"],
   tools: ["Git", "VS Code"],
   languages: [
     { name: "Polish", level: "Native" },

@@ -6,6 +6,7 @@ import themeReducer from "../../../common/themeSlice";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import { profile } from "../profile";
+import { email } from "../email";
 import { Footer } from ".";
 
 const renderFooter = () =>
@@ -38,7 +39,10 @@ describe("Footer", () => {
       "href",
       profile.linkedinUrl,
     );
-    expect(screen.queryByText(/@/)).not.toBeInTheDocument();
+    // The address is shown on purpose since 2026-10-21: it was in the
+    // page's HTML inside the old mailto: anyway, so hiding it only stopped
+    // people copying it when the mail app never opened.
+    expect(screen.getByText(email)).toBeVisible();
   });
 
   it("reads like a letter: a question, then my note and one invite", () => {

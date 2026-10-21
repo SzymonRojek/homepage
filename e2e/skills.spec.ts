@@ -59,7 +59,7 @@ test.describe("Skills & learning", () => {
       .getByRole("list", { name: "Testing skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(4);
+    await expect(skills).toHaveCount(5);
     await expect(skills.first()).toHaveText("Data migration & ETL");
     await expect(skills.nth(1)).toHaveText(
       "SQL reconciliation (T-SQL, SQL Server)",
@@ -72,7 +72,7 @@ test.describe("Skills & learning", () => {
       .getByRole("list", { name: "Automation skills" })
       .getByRole("listitem");
 
-    await expect(skills).toHaveCount(5);
+    await expect(skills).toHaveCount(6);
     await expect(skills.first()).toHaveText("Playwright & TypeScript");
   });
 

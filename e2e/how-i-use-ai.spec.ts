@@ -8,7 +8,7 @@ test.describe("How I use AI", () => {
     await expect(headings.first()).toHaveText("How I use AI");
 
     const section = page.getByRole("region", { name: "How I use AI" });
-    await expect(section).toContainText("The questions are mine.");
+    await expect(section).toContainText("The judgement is mine.");
     // The two columns, as a table, not the ticked stages of How I test.
     const table = section.getByRole("table", {
       name: "What the agent does, and what I do",
@@ -52,10 +52,10 @@ test.describe("How I use AI", () => {
         .getByRole("region", { name })
         .evaluate((section) => getComputedStyle(section).backgroundColor);
 
-    // Light: the near-black hero lifts into the raised green, which then
-    // steps up into the white How I test band, so the page keeps one big
-    // step in and one out.
-    expect(await bandOf("How I use AI")).toBe("rgb(28, 77, 70)");
+    // Light: the page's own sand, so a light theme looks light and the
+    // bands alternate perfectly from here down (sand, white, sand, white,
+    // sand, white), every inner seam 1.19:1.
+    expect(await bandOf("How I use AI")).toBe("rgb(244, 234, 214)");
     expect(await bandOf("How I test")).toBe("rgb(255, 255, 255)");
 
     await page.getByRole("button", { name: "Dark mode" }).click();
