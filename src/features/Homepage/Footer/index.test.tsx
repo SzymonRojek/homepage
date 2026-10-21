@@ -23,12 +23,17 @@ const renderFooter = () =>
   );
 
 describe("Footer", () => {
-  it("offers email in the letter and LinkedIn below, without the address", () => {
+  it("offers the address to copy in the letter and LinkedIn below", () => {
     renderFooter();
 
+    // A mailto: "Email me" button stood here until 2026-10-20: it did
+    // nothing at all for a visitor with no mail app registered, and said so
+    // to nobody. The address is now the button, and clicking it copies.
     expect(
-      screen.getByRole("link", { name: "Send me an email" }),
-    ).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
+      screen.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
+    ).toBeVisible();
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       profile.linkedinUrl,

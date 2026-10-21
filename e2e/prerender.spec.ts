@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
 
 const sections = [
-  "How I test at work",
+  "How I test",
   "Projects",
   "Experience",
   "Skills & learning",
@@ -111,7 +111,9 @@ test.describe("the app takes over the static copy", () => {
     expect(await removedImages(page)).toEqual([]);
     // Styled by the app's own CSS now, so its class names match the copy's.
     await expect(
-      page.getByRole("link", { name: "Send me an email" }),
+      page.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
     ).toHaveCSS("background-color", "rgb(255, 201, 77)");
     expect(errors).toEqual([]);
   });

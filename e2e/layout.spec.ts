@@ -177,11 +177,13 @@ test.describe("Layout", () => {
     }
   });
 
-  test("the Email me button sits on the right below desktops, under the note on desktops @desktop", async ({
+  test("the copy-address button sits on the right below desktops, under the note on desktops @desktop", async ({
     page,
   }) => {
     await page.goto("./");
-    const button = page.getByRole("link", { name: "Send me an email" });
+    const button = page.getByRole("button", {
+      name: "Copy my email address, sz.rojek@proton.me",
+    });
 
     for (const { width, gutter } of [
       { width: 1024, gutter: 32 },
@@ -200,13 +202,15 @@ test.describe("Layout", () => {
     expect(Math.round((await box(button)).x)).toBe(Math.round(note.x));
   });
 
-  test("on a phone the Email me button sits on the right @mobile", async ({
+  test("on a phone the copy-address button sits on the right @mobile", async ({
     page,
   }) => {
     await page.goto("./");
     const width = page.viewportSize()!.width;
     const found = await box(
-      page.getByRole("link", { name: "Send me an email" }),
+      page.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
     );
     expect(Math.round(width - (found.x + found.width))).toBe(16);
   });

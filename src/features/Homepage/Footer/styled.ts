@@ -123,6 +123,139 @@ export const ContactButton = styled(ButtonLink)`
   }
 `;
 
+// The footer's one action: the address itself, as the button. The yellow
+// "Email me" mailto: that used to sit here was dropped on 2026-10-20 — it
+// did nothing at all for a visitor whose machine has no mail app registered,
+// and failed silently. This says what it is and what it does: click it and
+// the address is on the clipboard. It keeps the old button's weight and
+// place, so the footer still closes on one yellow block.
+export const CopyAction = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  /* 12 + 20 + 12 = a 44px target, the enhanced size in WCAG 2.5.5. */
+  padding: 12px 18px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.brand.onAccent};
+  background: ${({ theme }) => theme.colors.brand.accent};
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.brand.accentHover};
+  }
+
+  svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+  }
+`;
+
+// The address, in the mono face the page uses for small plain facts.
+export const AddressText = styled.span`
+  font-family: ${({ theme }) => theme.fontMono};
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  /* Text in a button cannot be selected by default, and selecting it by
+     hand is the only way left when the clipboard is unavailable. */
+  user-select: text;
+`;
+
+// "Copied" as a small pill above the button, the pattern GitHub, Stripe and
+// Linear all use for a copy control: the confirmation sits next to the
+// action, and because it is positioned out of the flow nothing on the page
+// moves. Mint with near-black text (10.2:1), the colour of "green." in the
+// hero: on a tester's page, green means passing, so a copy that worked wears
+// the site's own colour for success. Kept mounted and toggled, so it fades
+// both ways; hidden it is out of the way of the keyboard and screen readers,
+// which hear the live region instead.
+export const CopiedNote = styled.span<{ $shown: boolean; $failed?: boolean }>`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  padding: 5px 10px;
+  font-family: ${({ theme }) => theme.fontMono};
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  /* Mint for a copy that worked; a copy that did not must not wear the
+     colour this site uses for passing, so it goes cream instead. */
+  color: ${({ theme }) => theme.colors.brand.dark};
+  background: ${({ theme, $failed }) =>
+    $failed ? theme.colors.brand.text : theme.colors.brand.highlight};
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+  opacity: ${({ $shown }) => ($shown ? 1 : 0)};
+  visibility: ${({ $shown }) => ($shown ? "visible" : "hidden")};
+  transform: translate(-50%, ${({ $shown }) => ($shown ? "0" : "4px")});
+  transition:
+    opacity 0.15s ease-out,
+    transform 0.15s ease-out,
+    visibility 0.15s;
+
+  /* The little tail pointing down at the button. */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-top-color: ${({ theme, $failed }) =>
+      $failed ? theme.colors.brand.text : theme.colors.brand.highlight};
+    transform: translateX(-50%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: translate(-50%, 0);
+  }
+`;
+
+// The button and its tooltip: the note is positioned against this.
+export const ActionRow = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tabletHorizontalMax}px) {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+  }
+`;
+
+// Tells a screen reader the copy worked; sighted visitors see the button's
+// own label change instead, so this stays off screen.
+export const CopyStatus = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+`;
+
 // The last line: copyright on the left, GitHub, LinkedIn and the theme
 // switch on the right.
 export const Bottom = styled.div`

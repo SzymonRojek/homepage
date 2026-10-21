@@ -49,18 +49,20 @@ test.describe("Header and footer", () => {
   test("has contact links in the top bar and the footer", async ({ page }) => {
     // The hero has no links: contact lives in the top bar and the footer.
     await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
-    // Up to 991px (phones, an upright tablet) "Email me" sits in the menu.
+    // Up to 991px (phones, an upright tablet) "Contact" sits in the menu.
     if (page.viewportSize()!.width <= 991) {
       await page.getByRole("button", { name: "Menu" }).click();
     }
+    // The bar's button is a way to the contact card, not the contact
+    // itself; the footer holds the address.
     await expect(
-      page.getByRole("link", { name: "Email me", exact: true }),
+      page.getByRole("link", { name: "Contact", exact: true }),
     ).toHaveAttribute("href", "#contact");
     await expect(
-      page
-        .getByRole("contentinfo")
-        .getByRole("link", { name: "Send me an email" }),
-    ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
+      page.getByRole("contentinfo").getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
+    ).toBeVisible();
     await expect(
       page
         .getByRole("contentinfo")
@@ -72,7 +74,8 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "How I test at work",
+      "How I use AI",
+      "How I test",
       "Projects",
       "Experience",
       "Skills & learning",
@@ -86,7 +89,7 @@ test.describe("Header and footer", () => {
         .evaluateAll((headings) =>
           headings.map((heading) => heading.getAttribute("data-number")),
         ),
-    ).toEqual(["01", "02", "03", "04", "05"]);
+    ).toEqual(["01", "02", "03", "04", "05", "06"]);
   });
 
   test("the photo is one still duotone image, with no slider or captions", async ({
@@ -164,12 +167,19 @@ test.describe("Header and footer", () => {
     const footer = page.getByRole("contentinfo");
 
     await expect(
-      footer.getByRole("link", { name: "Send me an email" }),
-    ).toHaveAttribute("href", "mailto:sz.rojek@gmail.com");
+      footer.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
+    ).toBeVisible();
     await expect(
       footer.getByRole("link", { name: "LinkedIn", exact: true }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
-    await expect(page.getByText("sz.rojek@gmail.com")).toHaveCount(0);
+    // The address is shown in the footer now, beside a button that copies
+    // it: the mailto: does nothing for a visitor with no mail app, and the
+    // address was in the page's HTML either way.
+    await expect(
+      page.getByRole("contentinfo").getByText("sz.rojek@proton.me"),
+    ).toBeVisible();
     await expect(footer).toContainText(
       "Communication matters most to me in a team",
     );
