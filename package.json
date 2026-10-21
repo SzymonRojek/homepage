@@ -16,7 +16,8 @@
     "test:mutation": "stryker run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",

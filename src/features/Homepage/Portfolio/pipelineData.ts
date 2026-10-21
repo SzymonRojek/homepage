@@ -6,9 +6,9 @@ const repositoryURL = "https://github.com/SzymonRojek/homepage";
 export const sitePipeline: Pipeline = {
   name: ".github/workflows/ci.yml",
   checks: [
-    "ESLint and a strict TypeScript type check",
+    "ESLint, Prettier and a strict TypeScript type check",
     "Vitest unit and component tests with a 90% coverage gate",
-    "40+ Playwright tests on desktop and mobile, with axe scans of both themes",
+    "90+ Playwright tests on desktop and mobile, with axe scans of both themes",
     "Lighthouse budgets on the median of three runs",
     "npm audit on every push and weekly Dependabot updates",
     "A fixture that fails any test calling the GitHub API",
@@ -25,7 +25,7 @@ export const sitePipeline: Pipeline = {
 export const siteGates: Gates = {
   checks: [
     "npm audit",
-    "ESLint + TypeScript",
+    "ESLint + Prettier + TypeScript",
     "Vitest · 90% coverage gate",
     "Production build",
     "Playwright + axe · desktop & mobile",
