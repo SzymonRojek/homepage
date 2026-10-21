@@ -33,3 +33,6 @@ yarn-error.log*
 # mutation testing
 /.stryker-tmp
 /reports
+
+# private notes kept in the working tree, never published
+/site-review.md
