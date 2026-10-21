@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   automationSkills,
   programmingSkills,
+  testTypes,
   testingSkills,
 } from "./skillsData";
 import { structuredData, structuredDataJson } from "./structuredData";
@@ -38,12 +39,20 @@ describe("structuredData", () => {
   it("lists the skills shown on the page, testing first", () => {
     const { knowsAbout } = page.mainEntity;
 
-    // Every skill in the three lists on the page, none more.
+    // Every skill in the three lists on the page, then the test types,
+    // and none more.
     expect(knowsAbout).toHaveLength(
-      testingSkills.length + automationSkills.length + programmingSkills.length,
+      testingSkills.length +
+        automationSkills.length +
+        programmingSkills.length +
+        testTypes.length,
     );
     expect(knowsAbout[0]).toBe("Data migration & ETL");
     expect(knowsAbout).toContain("Playwright & TypeScript");
+    // A test type reads as one word on the page, under a "Test types:"
+    // label; here each has to carry the noun to stand on its own.
+    expect(knowsAbout).toContain("End-to-end testing");
+    expect(knowsAbout).not.toContain("End-to-end");
   });
 });
 
