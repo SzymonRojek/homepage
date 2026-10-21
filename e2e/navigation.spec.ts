@@ -37,7 +37,7 @@ test.describe("Navigation", () => {
       ["Projects", "Projects"],
       ["Experience", "Experience"],
       ["References", "References"],
-      ["How I test", "How I test at work"],
+      ["How I test", "How I test"],
     ]) {
       await test.step(link, async () => {
         await (await sectionLink(page, link)).click();
@@ -55,16 +55,27 @@ test.describe("Navigation", () => {
   });
 
   test("the contact button scrolls to the contact card", async ({ page }) => {
-    await (await sectionLink(page, "Email me")).click();
+    await (await sectionLink(page, "Contact")).click();
 
     await expect(page).toHaveURL(/#contact$/);
     await expect(
-      page.getByRole("link", { name: "Send me an email" }),
+      page.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
     ).toBeInViewport();
-    // At the end of the page the jump must not scroll the footer itself,
-    // which would cut off the space above its heading (24px on a phone,
-    // 40px on a desktop; it was 0 when the footer scrolled).
+  });
+
+  test("an old #contact link lands above the footer's heading", async ({
+    page,
+  }) => {
+    // Nothing on the page links to #contact any more, but a shared link
+    // still can. The jump must not scroll the footer itself, which would cut
+    // off the space above its heading (24px on a phone, 40px on a desktop;
+    // it was 0 when the footer scrolled).
+    await page.goto("./#contact");
+
     const footer = page.getByRole("contentinfo");
+    await expect(footer).toBeVisible();
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", {
       name: "Let’s ship something that doesn’t break.",
@@ -221,12 +232,12 @@ test.describe("Navigation", () => {
       expect(overflow).toBeLessThanOrEqual(0);
     });
 
-    await test.step("Email me is hidden until it opens", async () => {
+    await test.step("Contact is hidden until it opens", async () => {
       const nav = page.getByRole("navigation", { name: "Sections" });
-      await expect(nav.getByRole("link", { name: "Email me" })).toBeHidden();
+      await expect(nav.getByRole("link", { name: "Contact" })).toBeHidden();
 
       await menu.click();
-      await expect(nav.getByRole("link", { name: "Email me" })).toBeVisible();
+      await expect(nav.getByRole("link", { name: "Contact" })).toBeVisible();
       // The theme switch is in the footer, not the menu.
       await expect(nav.getByRole("button", { name: "Dark mode" })).toHaveCount(
         0,
@@ -473,8 +484,9 @@ test.describe("Navigation in the dark theme", () => {
     // Both are greens: the bar a step lighter (#1C4D46) than the band
     // (#123C37), which is the deep green in the dark theme.
     await expect(pill).toHaveCSS("background-color", "rgba(28, 77, 70, 0.94)");
-    await expect(
-      page.getByRole("region", { name: "How I test at work" }),
-    ).toHaveCSS("background-color", "rgb(18, 60, 55)");
+    await expect(page.getByRole("region", { name: "How I test" })).toHaveCSS(
+      "background-color",
+      "rgb(18, 60, 55)",
+    );
   });
 });

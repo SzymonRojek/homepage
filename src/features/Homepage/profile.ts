@@ -16,12 +16,13 @@ export const profile = {
     label: "Open to",
     // Two parts of phrases: one line where it fits, else each part on a line
     // of its own, and only where a part can't fit does it break between its
-    // phrases. A non-breaking space and hyphen keep "AI Testing" and
-    // "Front-End" whole.
-    lines: [
-      ["QA,", "Test Automation,"],
-      ["AI\u00a0Testing,", "Front\u2011End roles"],
-    ],
+    // phrases. A non-breaking hyphen keeps "Front-End" whole.
+    // "AI Testing" was removed on 2026-10-20: ISTQB certifies that term for
+    // testing AI-based systems (CT-AI), which is not this work; using AI to
+    // support testing is CT-GenAI. These are the roles, and "01 / How I use
+    // AI at work", right below the hero, shows the AI side far better than a
+    // label in a list would.
+    lines: [["QA,", "Test Automation,"], ["Front\u2011End roles"]],
   },
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.

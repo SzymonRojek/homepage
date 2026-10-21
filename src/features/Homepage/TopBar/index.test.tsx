@@ -24,20 +24,22 @@ const renderTopBar = () =>
 // The menu button is hidden on wide screens, which is all jsdom can see, and
 // a hidden element has no accessible name; it is found by its aria-label.
 describe("TopBar", () => {
-  it("links to every main section in page order, then Email me", () => {
+  it("links to every main section in page order, then Contact", () => {
     renderTopBar();
 
     const links = within(
       screen.getByRole("navigation", { name: "Sections" }),
     ).getAllByRole("link");
     expect(links.map(({ textContent }) => textContent)).toEqual([
+      "AI",
       "How I test",
       "Projects",
       "Experience",
       "References",
-      "Email me",
+      "Contact",
     ]);
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "#how-i-use-ai",
       "#how-i-test",
       "#projects",
       "#experience",
@@ -46,7 +48,7 @@ describe("TopBar", () => {
     ]);
   });
 
-  it("has a way back to the top and Email me, no theme switch", () => {
+  it("has a way back to the top and Contact, no theme switch", () => {
     renderTopBar();
 
     // My name alone as the wordmark, linking back to the top: the job title
@@ -54,7 +56,7 @@ describe("TopBar", () => {
     const brand = screen.getByRole("link", { name: /^Szymon Rojek/ });
     expect(brand).toHaveAttribute("href", "#top");
     expect(brand).toHaveTextContent(/^Szymon Rojek$/);
-    expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
       "href",
       "#contact",
     );
@@ -62,12 +64,12 @@ describe("TopBar", () => {
     expect(screen.queryByRole("button", { name: "Dark mode" })).toBeNull();
   });
 
-  it("keeps Email me in the menu, after the links", () => {
+  it("keeps Contact in the menu, after the links", () => {
     renderTopBar();
 
     const nav = screen.getByRole("navigation", { name: "Sections" });
     expect(nav).toHaveAttribute("id", "site-menu");
-    const contact = within(nav).getByRole("link", { name: "Email me" });
+    const contact = within(nav).getByRole("link", { name: "Contact" });
     const lastSection = within(nav).getByRole("link", { name: "References" });
     expect(
       lastSection.compareDocumentPosition(contact) &
@@ -75,12 +77,12 @@ describe("TopBar", () => {
     ).toBeTruthy();
   });
 
-  it("closes the menu when Email me is chosen", () => {
+  it("closes the menu when Contact is chosen", () => {
     renderTopBar();
     const button = screen.getByLabelText("Menu");
     fireEvent.click(button);
 
-    fireEvent.click(screen.getByRole("link", { name: "Email me" }));
+    fireEvent.click(screen.getByRole("link", { name: "Contact" }));
 
     expect(button).toHaveAttribute("aria-expanded", "false");
   });

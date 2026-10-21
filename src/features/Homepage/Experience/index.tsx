@@ -3,7 +3,7 @@ import { sectionNumber } from "../sections";
 import { jobs } from "../experienceData";
 import { Job, Meta, Period, Company, Details, Role, Points } from "./styled";
 
-// The job, right after "How I test at work": only what that section doesn't
+// The job, right after "How I test": only what that section doesn't
 // already say.
 export const Experience = () => (
   // On a white band (one step up in the dark theme), after Projects on the

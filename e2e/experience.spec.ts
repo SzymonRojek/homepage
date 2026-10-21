@@ -15,9 +15,7 @@ test.describe("Experience", () => {
     await expect(experience.getByRole("listitem")).toHaveCount(4);
   });
 
-  test("doesn't repeat what How I test at work already says", async ({
-    page,
-  }) => {
+  test("doesn't repeat what How I test already says", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
 
     await expect(

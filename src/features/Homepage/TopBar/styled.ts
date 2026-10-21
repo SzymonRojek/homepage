@@ -240,7 +240,7 @@ export const NavLink = styled.a`
   }
 `;
 
-// Email me: at the pill's end on wide screens; on phones and tablets under
+// Contact: at the pill's end on wide screens; on phones and tablets under
 // the menu links, its words on theirs.
 export const MenuFooter = styled.div`
   display: flex;
@@ -263,7 +263,7 @@ export const ContactLink = styled(ButtonLink)`
   /* The arrow nudges forward under the pointer or keyboard focus, pointing
      on to the contact; still with reduced motion. */
   &::after {
-    /* Decorative: the link's name stays "Email me". */
+    /* Decorative: the link's name stays "Contact". */
     content: "→";
     content: "→" / "";
     display: inline-block;

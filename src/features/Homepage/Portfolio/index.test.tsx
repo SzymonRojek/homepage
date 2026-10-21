@@ -65,7 +65,7 @@ describe("Portfolio", () => {
     renderPortfolio();
 
     const heading = screen.getByRole("heading", { level: 2, name: "Projects" });
-    expect(heading).toHaveAttribute("data-number", "02");
+    expect(heading).toHaveAttribute("data-number", "03");
     const line = heading.nextElementSibling;
     expect(line).toHaveTextContent(
       /^Built in my own time\. Tested like production\.$/,

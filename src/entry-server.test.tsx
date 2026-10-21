@@ -20,7 +20,7 @@ describe("render", () => {
   it("writes the whole page as HTML", () => {
     expect(page.html).toContain("Szymon Rojek");
     expect(page.html).toContain("I don’t stop at ");
-    expect(page.html).toContain("How I test at work");
+    expect(page.html).toContain("How I test");
     expect(page.html).toContain("ISTQB Certified Tester");
   });
 

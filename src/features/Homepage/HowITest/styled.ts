@@ -11,9 +11,8 @@ import BugSvg from "./bug.svg?react";
 // bug at the band's edges without making the band a scroll container;
 // "isolate" keeps the bug above the band's background and below its text.
 export const Block = styled(BandSection)`
-  /* The first section, right under the hero, with no page colour between
-     the near-black and its band. */
-  margin-top: 0;
+  /* It follows the AI band, so ".section-band + &" already closes the gap;
+     the two bands meet edge to edge. */
   position: relative;
   isolation: isolate;
   overflow: clip;
@@ -28,7 +27,7 @@ export const Block = styled(BandSection)`
 // A faint outline of a bug in the top-right corner of the content column,
 // cut by the band's right edge up to the column's full width, a motif behind
 // the story, not an illustration. Its top is level with
-// the section's label ("01 / How I test at work"): the band's padding and the
+// the section's label ("01 / How I test"): the band's padding and the
 // label's opening, less the empty space above the drawing in the rotated SVG
 // (22px, 13px on phones).
 export const Bug = styled(BugSvg)`

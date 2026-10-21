@@ -19,6 +19,18 @@ export interface Recommendation {
 export const recommendations: Recommendation[] = [
   {
     quote:
+      "I have had the pleasure of working with Szymon for over three years and in that time, he has proved that he is very passionate in his work, his thirst for knowledge and the constant desire to improve himself. As a tester, he is very thorough  and meticulous in his approach which enables him to create clear an concise test cases. This results in excellent test coverage and the exposure of a high percentage of defects, and he is not afraid to question anything he does not understand or thinks may  be incorrect.\n\n" +
+      "He has a very friendly, helpful and approachable personality and is always willing to provide help, advice and assistance to others on the team and always contributes in team discussions/meetings.\n\n" +
+      "He is always keen to learn and expand and broaden his knowledge and skills and has developed a great understanding of the latest AI technologies and incorporates this to assist in his testing. In his spare time, he has also developed his  own personal website which not only promotes his skills and ability but is an excellent demonstration in his ownership of his own personal development.\n\n" +
+      "I wish him well in his future endeavours and would relish the opportunity to work alongside him in the future.",
+    highlight: "a great understanding of the latest AI technologies",
+    name: "John Burrows",
+    role: "Senior Test Engineer at Equiniti",
+    relation: "was senior to me, but did not manage me directly",
+    date: "Oct 2026",
+  },
+  {
+    quote:
       "I had the pleasure of working with Szymon on Data Migration projects, and he was a real asset to the team. He is strong in both deconversion and conversion work and has valuable experience on AST projects. He has solid hands-on skills in SQL and a clear understanding of the data migration flow, and he was always ready to help colleagues whenever they needed guidance.\n\n" +
       "Szymon is very proactive. He takes ownership across projects and doesn’t wait to be asked, which made a real difference to the team.\n\n" +
       "What made working with him even better was his personality. He is kind, friendly and genuinely caring. He always took the time to ask how you were doing, both at work and outside it, and that made him a pleasure to work with every day.\n\n" +

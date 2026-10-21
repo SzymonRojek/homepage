@@ -1,12 +1,12 @@
 import { test, expect } from "./fixtures";
 
-test.describe("How I test at work", () => {
+test.describe("How I test", () => {
   test("shows the migration testing approach before the job", async ({
     page,
   }) => {
     await page.goto("./");
 
-    const section = page.getByRole("region", { name: "How I test at work" });
+    const section = page.getByRole("region", { name: "How I test" });
     // My story opens the section, before the method.
     const story = section.getByRole("article", {
       name: "Beyond the obvious bugs",
@@ -29,17 +29,17 @@ test.describe("How I test at work", () => {
       section.getByRole("article", { name: "Beyond the obvious bugs" }),
     ).toContainText("walked through tricky cases with the developer");
 
-    // The first section, right under the hero.
+    // The second section, under How I use AI, which opens the page.
     await expect(
-      page.getByRole("main").getByRole("heading", { level: 2 }).first(),
-    ).toHaveText("How I test at work");
+      page.getByRole("main").getByRole("heading", { level: 2 }).nth(1),
+    ).toHaveText("How I test");
   });
 
   test("starts the bug level with the section's label", async ({ page }) => {
     await page.goto("./");
 
     const { label, bug } = await page
-      .getByRole("region", { name: "How I test at work" })
+      .getByRole("region", { name: "How I test" })
       .evaluate((section) => {
         // The label's line, not its padding.
         const range = document.createRange();

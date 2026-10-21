@@ -6,10 +6,10 @@ export interface TestingStep {
   points: string[];
 }
 
-// How I test at work, from the experience section and my own description.
+// How I test, from the experience section and my own description.
 // Clients, systems and figures are confidential: describe the approach only.
 export const howITest = {
-  title: "How I test at work",
+  title: "How I test",
   // In my own words: what I enjoy most about testing. It opens the section,
   // before the method. No systems, no figures.
   story: {
@@ -33,6 +33,7 @@ export const howITest = {
       points: [
         "Positive and negative cases",
         "Each traced back to the rule it checks",
+        "One test per logical branch, not several outcomes joined by OR in one test",
         "Peer-reviewed before anything is run",
       ],
     },
@@ -44,6 +45,7 @@ export const howITest = {
         "Empty values, duplicates and relationships between tables",
         "Results checked against the business rules",
         "The stored procedures that transform the data",
+        "A report that was produced is not a report that is right: record counts, column names and false matches",
       ],
     },
     {
@@ -54,6 +56,7 @@ export const howITest = {
         "Logged in Azure DevOps",
         "Reproduction steps and evidence attached",
         "The fix retested with the developers",
+        "Once: a report missing accounts, traced to one misspelt word in a WHERE clause",
       ],
     },
   ] satisfies TestingStep[],

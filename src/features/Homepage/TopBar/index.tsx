@@ -18,15 +18,20 @@ import {
 
 // Each href points to the id of a section heading.
 const navLinks = [
+  { href: "#how-i-use-ai", label: "AI" },
   { href: "#how-i-test", label: "How I test" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
   { href: "#recommendations", label: "References" },
 ];
 
-// A floating pill: on wide screens the links and "Email me" sit in it; on
+// A floating pill: on wide screens the links and "Contact" sit in it; on
 // phones and tablets they move into a rounded panel under it, behind a
-// button: the links, then "Email me". The theme switch is in the footer.
+// button: the links, then "Contact". It scrolls to the contact card at the
+// end of the page, like the section links: it is a way to the contact, not
+// the contact itself (it was briefly a mailto: on 2026-10-19; the user asked
+// on 2026-10-20 for it to scroll, and for the label to read "Contact"). The
+// footer's own "Email me" is the mailto:. The theme switch is in the footer.
 export const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { state: scrollState, smooth, filled: scrollFilled } = useBarState();
@@ -82,7 +87,7 @@ export const TopBar = () => {
           </NavList>
           <MenuFooter>
             <ContactLink href="#contact" onClick={() => setMenuOpen(false)}>
-              Email me
+              Contact
             </ContactLink>
           </MenuFooter>
         </Nav>

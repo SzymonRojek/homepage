@@ -73,7 +73,11 @@ test.describe("with a light OS theme", () => {
     const dark = await backgrounds();
 
     // How I test included: it was the deep green in both themes once.
-    expect(light.map(({ name }) => name)).toContain("How I test at work");
+    expect(light.map(({ name }) => name)).toContain("How I test");
+    // The AI band too: the deep green in the light theme, a step lighter in
+    // the dark one, so the sixth section still alternates with its
+    // neighbours.
+    expect(light.map(({ name }) => name)).toContain("How I use AI");
     light.forEach(({ name, color }, index) => {
       expect(dark[index].color, `${name}`).not.toBe(color);
     });

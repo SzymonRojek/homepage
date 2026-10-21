@@ -6,6 +6,7 @@ import themeReducer from "../../../common/themeSlice";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import { profile } from "../profile";
+import { email } from "../email";
 import { Footer } from ".";
 
 const renderFooter = () =>
@@ -23,17 +24,25 @@ const renderFooter = () =>
   );
 
 describe("Footer", () => {
-  it("offers email in the letter and LinkedIn below, without the address", () => {
+  it("offers the address to copy in the letter and LinkedIn below", () => {
     renderFooter();
 
+    // A mailto: "Email me" button stood here until 2026-10-20: it did
+    // nothing at all for a visitor with no mail app registered, and said so
+    // to nobody. The address is now the button, and clicking it copies.
     expect(
-      screen.getByRole("link", { name: "Send me an email" }),
-    ).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
+      screen.getByRole("button", {
+        name: "Copy my email address, sz.rojek@proton.me",
+      }),
+    ).toBeVisible();
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       profile.linkedinUrl,
     );
-    expect(screen.queryByText(/@/)).not.toBeInTheDocument();
+    // The address is shown on purpose since 2026-10-21: it was in the
+    // page's HTML inside the old mailto: anyway, so hiding it only stopped
+    // people copying it when the mail app never opened.
+    expect(screen.getByText(email)).toBeVisible();
   });
 
   it("reads like a letter: a question, then my note and one invite", () => {

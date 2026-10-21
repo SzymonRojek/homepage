@@ -12,13 +12,14 @@ const bands = {
   card: "cardBand",
   quote: "quoteBand",
   story: "storyBand",
+  ai: "aiBand",
 } as const;
 
 // A section on a full-width band of its own colour, so each section reads as
 // its own block instead of one long cream scroll. It breaks out of the
 // content column, and its content keeps the page's edge. "card" is white (the
 // card colour in the dark theme); "quote" is the band under the hero (see
-// quoteBand); "story" is "How I test at work": white in the light theme, the
+// quoteBand); "story" is "How I test": white in the light theme, the
 // deep brand green in the dark one (see storyBand). Bands that follow one
 // another meet edge to edge, with no page colour between them.
 export const BandSection = styled(Section).attrs({
@@ -56,7 +57,7 @@ export const sectionOpening = css`
 `;
 
 // A section's heading: its name, small, in monospace, after its number in
-// the page ("01 / How I test at work"), above the section's big line or its
+// the page ("01 / How I test"), above the section's big line or its
 // content. The number comes from data-number (sectionNumber) through CSS,
 // so screen readers and the page's text get the name alone. The button
 // colour (deep green in the light theme, yellow in the dark one).

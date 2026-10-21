@@ -26,7 +26,7 @@ describe("MainHeader", () => {
     expect(screen.getByRole("term")).toHaveTextContent("Open to");
     // The exact text: a non-breaking space and hyphen keep its phrases whole.
     expect(screen.getByRole("definition").textContent).toBe(
-      "QA, Test Automation, AI\u00a0Testing, Front\u2011End roles",
+      "QA, Test Automation, Front\u2011End roles",
     );
     expect(
       screen.queryByRole("list", { name: "Right to work and relocation" }),

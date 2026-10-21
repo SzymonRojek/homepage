@@ -15,7 +15,7 @@ describe("HowITest", () => {
   it("is a named section with the steps of a migration test in order", () => {
     renderHowITest();
 
-    const section = screen.getByRole("region", { name: "How I test at work" });
+    const section = screen.getByRole("region", { name: "How I test" });
     const steps = within(section).getByRole("list", {
       name: "How I test a data migration",
     });
@@ -33,7 +33,7 @@ describe("HowITest", () => {
   it("draws a bug behind the story, hidden from screen readers", () => {
     renderHowITest();
 
-    const section = screen.getByRole("region", { name: "How I test at work" });
+    const section = screen.getByRole("region", { name: "How I test" });
     const bug = section.querySelector(":scope > svg");
     expect(bug).toHaveAttribute("aria-hidden", "true");
     expect(bug).toHaveAttribute("focusable", "false");
@@ -42,7 +42,7 @@ describe("HowITest", () => {
   it("opens with my story, then the method", () => {
     renderHowITest();
 
-    const section = screen.getByRole("region", { name: "How I test at work" });
+    const section = screen.getByRole("region", { name: "How I test" });
     const story = within(section).getByRole("article", {
       name: "Beyond the obvious bugs",
     });
@@ -80,7 +80,7 @@ describe("HowITest", () => {
     ) as HTMLElement[];
     expect(
       steps.map((step) => within(step).getAllByRole("listitem").length),
-    ).toEqual([3, 4, 3]);
+    ).toEqual([4, 5, 4]);
     expect(
       within(steps[1]).getByText("A number can match and still be wrong."),
     ).toBeVisible();
