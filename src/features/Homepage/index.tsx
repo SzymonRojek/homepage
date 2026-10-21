@@ -4,6 +4,7 @@ import { TopBar } from "./TopBar";
 import { MainHeader } from "./MainHeader";
 import { Recommendations } from "./Recommendations";
 import { HowITest } from "./HowITest";
+import { HowIUseAI } from "./HowIUseAI";
 import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
@@ -19,6 +20,8 @@ export const Homepage = () => {
       <MainHeader />
       <Container>
         <main id="main" tabIndex={-1}>
+          <HowIUseAI />
+
           <HowITest />
 
           <Portfolio />

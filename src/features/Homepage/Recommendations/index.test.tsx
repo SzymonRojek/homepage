@@ -48,8 +48,8 @@ describe("Recommendations", () => {
     expect(screen.getByRole("region", { name: "Recommendations" })).toBe(
       heading.closest("section"),
     );
-    // The last section: "05 / …" in front of its name.
-    expect(heading).toHaveAttribute("data-number", "05");
+    // The last section: "06 / …" in front of its name.
+    expect(heading).toHaveAttribute("data-number", "06");
     // "Peer-reviewed by others" was removed on purpose.
     expect(screen.queryByText(/Peer-reviewed/)).toBeNull();
   });

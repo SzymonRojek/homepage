@@ -1,7 +1,8 @@
 // The page's sections in order, by the id of their heading. Each heading
-// shows its number in front of its name ("01 / How I test at work"), as in
+// shows its number in front of its name ("01 / How I test"), as in
 // the top bar's order; keep this list in step with the page (index.tsx).
 export const sectionOrder = [
+  "how-i-use-ai",
   "how-i-test",
   "projects",
   "experience",
