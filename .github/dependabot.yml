@@ -18,6 +18,10 @@ updates:
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
     groups:
+      # react and react-dom have to move together: React refuses to start if
+      # the two versions differ, so a PR that bumps one alone fails every test.
+      react:
+        patterns: ["react", "react-dom"]
       dev-dependencies:
         dependency-type: development
         update-types: [minor, patch]
