@@ -5,6 +5,7 @@ import {
   languages,
   programmingSkills,
   testingSkills,
+  testTypes,
   tools,
 } from "../skillsData";
 import { education } from "../experienceData";
@@ -17,6 +18,7 @@ import {
   Skill,
   Course,
   NextTag,
+  TestTypes,
   Tools,
   Languages,
 } from "./styled";
@@ -60,6 +62,9 @@ export const Skills = () => (
         </SkillList>
       </LearningGroup>
     </Grid>
+    <TestTypes>
+      <strong>Test types:</strong> {testTypes.join(" · ")}
+    </TestTypes>
     <Tools>
       <strong>Tools:</strong> {tools.join(" · ")}
     </Tools>

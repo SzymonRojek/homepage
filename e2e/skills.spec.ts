@@ -12,12 +12,7 @@ test.describe("Skills & learning", () => {
       page
         .getByRole("region", { name: "Skills & learning" })
         .getByRole("heading", { level: 3 }),
-    ).toHaveText([
-      "Testing",
-      "Automation",
-      "Programming",
-      "Learning",
-    ]);
+    ).toHaveText(["Testing", "Automation", "Programming", "Learning"]);
   });
 
   test("comes right after Experience, with ISTQB next and the courses newest first", async ({
@@ -88,7 +83,9 @@ test.describe("Skills & learning", () => {
       .getByRole("listitem");
 
     await expect(skills).toHaveCount(3);
-    await expect(skills.first()).toHaveText("JavaScript, React, Redux, TypeScript");
+    await expect(skills.first()).toHaveText(
+      "JavaScript, React, Redux, TypeScript",
+    );
   });
 
   test("lists the languages under the tools", async ({ page }) => {

@@ -3,8 +3,9 @@ export interface Job {
   company: string;
   details: string;
   period: string;
-  // Only what "How I test at work" doesn't already say: mapping, SQL and root
-  // cause live there.
+  // Only what "How I test" and "How I use AI" don't already
+  // say: mapping, SQL and root cause live in the first, every AI claim in the
+  // second.
   points: string[];
 }
 
@@ -16,9 +17,9 @@ export const jobs: Job[] = [
     period: "Sep 2022 – now",
     points: [
       "Validate financial and shareholder data across migration and ETL projects, including conversion and deconversion.",
+      "Work across share dealing, dividends, corporate actions, tax, payments and reconciliation in the registry's data.",
       "Estimate effort and work in an Agile team with developers, architects and stakeholders.",
-      "Use GitHub Copilot agents and write agentic testing procedures for the test team, with validation steps and human oversight.",
-      "Pilot in-house AI agents that write tests from user stories and mapping documents: find the gaps in their output and review them with the senior engineers who build them.",
+      "Review colleagues' test cases, SQL and mapping logic, and help new joiners with migration setup and mapping rules.",
     ],
   },
 ];

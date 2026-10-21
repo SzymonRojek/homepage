@@ -3,7 +3,8 @@
 export const testingSkills = [
   "Data migration & ETL",
   "SQL reconciliation (T-SQL, SQL Server)",
-  "Defect root-cause analysis",
+  "Test design & test data preparation",
+  "Exploratory testing & root-cause analysis",
   "AI-assisted testing",
 ];
 
@@ -11,6 +12,7 @@ export const automationSkills = [
   "Playwright & TypeScript",
   "API tests: Postman, Newman, supertest",
   "Vitest, Jest, Testing Library",
+  "Mutation testing with Stryker",
   "Axe & Lighthouse",
   "Quality gates in GitHub Actions",
 ];
@@ -20,6 +22,17 @@ export const programmingSkills = [
   "JavaScript, React, Redux, TypeScript",
   "Node.js & Express",
   "REST APIs",
+];
+
+// The kinds of testing I do, as one line under the four groups: the terms a
+// recruiter and their filter search for, which the groups above never named.
+export const testTypes = [
+  "Functional",
+  "Regression",
+  "Database",
+  "API",
+  "End-to-end",
+  "Accessibility",
 ];
 
 export const tools = [

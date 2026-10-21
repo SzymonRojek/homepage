@@ -5,19 +5,17 @@ test.describe("Experience", () => {
     await page.goto("./");
   });
 
-  test("shows the current job in four points", async ({ page }) => {
+  test("shows the current job in three points", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
     await expect(
       experience.getByRole("heading", { name: "Test Engineer" }),
     ).toBeVisible();
     await expect(experience.getByText("Sep 2022 – now")).toBeVisible();
     await expect(experience.getByText("Equiniti, Worthing")).toBeVisible();
-    await expect(experience.getByRole("listitem")).toHaveCount(4);
+    await expect(experience.getByRole("listitem")).toHaveCount(3);
   });
 
-  test("doesn't repeat what How I test at work already says", async ({
-    page,
-  }) => {
+  test("doesn't repeat what How I test already says", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
 
     await expect(

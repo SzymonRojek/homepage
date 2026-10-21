@@ -114,6 +114,10 @@ export const Tools = styled.p`
   }
 `;
 
+// The test types and the languages sit under the tools line, in the same
+// quiet style, so the three read as one block of plain facts.
 export const Languages = styled(Tools)`
   margin-top: 6px;
 `;
+
+export const TestTypes = styled(Tools)``;
