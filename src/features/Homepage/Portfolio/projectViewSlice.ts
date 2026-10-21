@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { decodeHash } from "../../../common/decodeHash";
 import { projects } from "./projectsData";
 
 export type Side = "developer" | "tester";
@@ -19,7 +20,7 @@ const caseStudyRepos = projects
 // role: /#case-study-talent-outreach-developer
 export const parseCaseStudyHash = (hash = window.location.hash) => {
   const match = /^#case-study-(.+?)(?:-(developer|tester))?$/.exec(
-    decodeURIComponent(hash),
+    decodeHash(hash),
   );
   const repo = match?.[1];
 

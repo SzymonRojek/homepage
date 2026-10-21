@@ -16,9 +16,17 @@ const mockColorScheme = (isDark: boolean) =>
     })),
   );
 
+// Safari's private windows, "block all cookies" and some embedded pages make
+// every storage read throw rather than return nothing.
+const blockStorage = () =>
+  vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+    throw new DOMException("The operation is insecure.", "SecurityError");
+  });
+
 describe("themeSlice", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it("follows the OS dark preference when nothing is saved", () => {
@@ -47,6 +55,19 @@ describe("themeSlice", () => {
     localStorage.setItem("dark", "true");
 
     expect(getInitialDarkTheme()).toBe(true);
+  });
+
+  // This read is the app's first act (index.tsx), so a throw here used to
+  // leave the visitor with a page that never came alive.
+  it("follows the OS theme when storage is blocked", () => {
+    mockColorScheme(true);
+    blockStorage();
+
+    expect(getInitialDarkTheme()).toBe(true);
+    expect(loadThemeState()).toEqual({
+      isDarkTheme: true,
+      hasUserChoice: false,
+    });
   });
 
   it("falls back to light theme when matchMedia is unavailable", () => {

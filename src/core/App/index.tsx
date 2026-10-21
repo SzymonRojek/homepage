@@ -8,6 +8,7 @@ import { selectDarkTheme } from "../../common/themeSlice";
 import { useSystemTheme } from "../../common/useSystemTheme";
 import { useDocumentTheme } from "../../common/useDocumentTheme";
 import { usePrerenderCleanup } from "../../common/usePrerenderCleanup";
+import { ErrorBoundary } from "../ErrorBoundary";
 
 export const App = () => {
   const isDarkTheme = useAppSelector(selectDarkTheme);
@@ -19,7 +20,9 @@ export const App = () => {
     <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
       <Normalize />
       <GlobalStyle />
-      <Homepage />
+      <ErrorBoundary>
+        <Homepage />
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };

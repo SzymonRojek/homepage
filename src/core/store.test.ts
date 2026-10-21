@@ -86,6 +86,28 @@ describe("saveThemeChoice", () => {
     expect(removeItem).toHaveBeenCalledWith("dark");
   });
 
+  // Private windows refuse the write, and a full quota throws as well: the
+  // theme still has to change, since the page is what the visitor asked for.
+  it("changes the theme even when storage refuses the write", () => {
+    const { store, setItem } = createSavingStore();
+    const refuse = () => {
+      throw new DOMException("The quota has been exceeded.", "QuotaExceeded");
+    };
+    setItem.mockImplementation(refuse);
+    const removeItem = vi
+      .spyOn(Storage.prototype, "removeItem")
+      .mockImplementation(refuse);
+
+    store.dispatch(toggleTheme(false));
+    expect(selectDarkTheme(store.getState())).toBe(true);
+
+    // And back on the OS theme, where it forgets the choice instead.
+    store.dispatch(toggleTheme(false));
+    expect(selectDarkTheme(store.getState())).toBe(false);
+    expect(setItem).toHaveBeenCalledOnce();
+    expect(removeItem).toHaveBeenCalledOnce();
+  });
+
   it("stops saving when asked", () => {
     const { store, stopSaving, setItem } = createSavingStore();
 
