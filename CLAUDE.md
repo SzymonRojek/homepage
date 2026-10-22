@@ -188,9 +188,10 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
    - [x] Me: the workflows' token only reads (`permissions: contents: read`), with write access in the deploy job alone, and every checkout keeps no credentials (`persist-credentials: false`).
    - [x] Me: no route to the live site skips the gates. `npm run deploy` and the `gh-pages` package are gone, and production deploys with GitHub's own Pages actions from the build CI tested, not from a branch.
    - [ ] Me: pin any action from outside GitHub (`cloudflare/wrangler-action`, when staging comes) to a full commit SHA; Dependabot keeps them up to date. There are none now: `peaceiris/actions-gh-pages` went with the branch deploy.
-   - [ ] Me: a Dependabot `cooldown` of about 7 days for npm, so a new package version is taken only once it has been public for a while.
-   - [ ] The user, or me through `gh` with a yes: in the repo settings, turn on secret scanning and push protection, make the default workflow token read-only and stop Actions approving PRs, and require approval for workflow runs from all outside contributors.
-   - [ ] The user: when merging the PR with the new deploy job, set Pages' source to GitHub Actions (Settings → Pages; if the deploy job ran before the switch and failed, re-run it), then check that szymonrojek.com and "Enforce HTTPS" are still set there. Limit the `github-pages` environment to `main` (Settings → Environments → `github-pages` → Deployment branches and tags). Once a deploy from Actions has worked, the `gh-pages` branch can be deleted.
+   - [x] Me: a Dependabot `cooldown` of about 7 days for npm, so a new package version is taken only once it has been public for a while.
+   - [x] Me, through `gh` (2026-10-22): secret scanning and push protection are on, Dependabot alerts and security updates with them (both had been off, so no advisory reached the repo), the default workflow token only reads, Actions cannot approve pull requests, and a workflow run from any outside contributor waits for approval.
+   - [x] The user: Pages is published by GitHub Actions, szymonrojek.com and "Enforce HTTPS" are set, and the `github-pages` environment allows `main` alone (all checked on 2026-10-22).
+   - [ ] Me, with a yes: delete the `gh-pages` branch. Deploys from Actions have worked since 2026-10-18, so nothing reads it; six `dependabot/*` branches left by closed and merged PRs can go with it.
    - [ ] To decide (the user): a separate free Cloudflare account for staging alone (on `*.pages.dev`), or a token on the account that holds the domain; and whether each staging deploy waits for the user's approval (a required reviewer on the `staging` environment).
    - [ ] Me: the staging site on Cloudflare Pages. On a push to `dev`, once every check has passed, a separate job takes the built `dist/` and deploys it with a pinned `wrangler`; only that job gets the token, through a `staging` environment limited to `dev`. The token can edit Cloudflare Pages and nothing else, has an expiry date, and the user puts it into GitHub's secrets (never into a file or a chat). No `pull_request_target` or `workflow_run` triggers, and no Cloudflare Access (its token would end up in the Playwright traces, which are public in this repo).
    - [ ] Me: `noindex` on staging only, as a header the staging deploy adds, never in the page's code, with a `seo` test that the production build has none. The staging URL comes from the deploy step's output and is never written into the repo.
@@ -199,7 +200,7 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
 3. **GitHub:**
    - [ ] Me: set the `homepage` repo's website to `https://szymonrojek.com` and replace its outdated description ("…Redux & Saga…").
    - [ ] Me: link the site from the profile README and the talent-outreach README footer (separate repos: a commit and push each, with the user's yes).
-   - [ ] The user: the profile's Website field (GitHub settings).
+   - [x] The user: the profile's Website field is set to https://szymonrojek.com (checked 2026-10-22).
 4. **LinkedIn (the user):**
    - [ ] Refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/) (the share card was redrawn on 2026-10-17).
    - [ ] Add the site to the profile's Website field and Featured section, if not done yet.
