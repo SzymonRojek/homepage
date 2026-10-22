@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { decodeHash } from "./decodeHash";
 
 // The same key and mark as the scripts in index.html, which jump back before
 // the page first paints.
@@ -98,7 +99,7 @@ export const useInitialScroll = () => {
         }
       });
     } else {
-      const id = decodeURIComponent(window.location.hash.slice(1));
+      const id = decodeHash(window.location.hash.slice(1));
       if (id) {
         document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
       }

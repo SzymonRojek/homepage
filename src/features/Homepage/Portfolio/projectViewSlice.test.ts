@@ -67,4 +67,12 @@ describe("parseCaseStudyHash", () => {
     expect(parseCaseStudyHash("#case-study-unknown")).toEqual(closed);
     expect(parseCaseStudyHash("#case-study-unknown-tester")).toEqual(closed);
   });
+
+  // An address bar takes anything, and this is read as the page starts
+  // (index.tsx): decoding "#%" throws, which used to stop the app loading.
+  it("keeps everything closed for an address it cannot decode", () => {
+    const closed = { openRepo: null, side: null };
+    expect(parseCaseStudyHash("#%")).toEqual(closed);
+    expect(parseCaseStudyHash("#case-study-%E0%A4")).toEqual(closed);
+  });
 });

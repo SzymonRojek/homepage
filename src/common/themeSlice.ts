@@ -8,8 +8,22 @@ interface ThemeState {
 
 export const darkSchemeQuery = "(prefers-color-scheme: dark)";
 
+// Reading storage throws, rather than returning nothing, when the browser
+// blocks it: Safari's private windows, a "block all cookies" setting, an
+// embedded page. This read is the app's first act (index.tsx), so a throw
+// here used to stop the page loading altogether. The same read in index.html
+// is guarded the same way.
+const savedChoice = (): string | null => {
+  try {
+    return localStorage.getItem("dark");
+  } catch {
+    // Storage blocked: no choice to honour, so the OS theme decides.
+    return null;
+  }
+};
+
 export const getInitialDarkTheme = (): boolean => {
-  const savedTheme = localStorage.getItem("dark");
+  const savedTheme = savedChoice();
 
   if (savedTheme !== null) {
     return savedTheme === "true";
@@ -21,7 +35,7 @@ export const getInitialDarkTheme = (): boolean => {
 // The theme a page load starts from, read in the browser (index.tsx).
 export const loadThemeState = (): ThemeState => ({
   isDarkTheme: getInitialDarkTheme(),
-  hasUserChoice: localStorage.getItem("dark") !== null,
+  hasUserChoice: savedChoice() !== null,
 });
 
 // Light, the theme of the static copy of the page the build writes out

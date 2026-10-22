@@ -121,9 +121,15 @@ test.describe("Header and footer", () => {
 
     const png = (await photo.screenshot()).toString("base64");
     const litShare = await page.evaluate(async (data) => {
-      const image = new Image();
-      image.src = `data:image/png;base64,${data}`;
-      await image.decode();
+      // Decoded from the bytes themselves, never from a data: address: the
+      // built page allows no data: images (the policy in prerender.ts), and
+      // a test must not be the reason to widen it.
+      const bytes = Uint8Array.from(atob(data), (character) =>
+        character.charCodeAt(0),
+      );
+      const image = await createImageBitmap(
+        new Blob([bytes], { type: "image/png" }),
+      );
       const canvas = document.createElement("canvas");
       canvas.width = image.width;
       canvas.height = image.height;

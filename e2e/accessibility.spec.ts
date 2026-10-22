@@ -30,7 +30,16 @@ for (const colorScheme of ["light", "dark"] as const) {
               .map((animation) => animation.finished.catch(() => undefined)),
           ),
         );
-        const { violations } = await new AxeBuilder({ page }).analyze();
+        const { violations } = await new AxeBuilder({ page })
+          // Label in Name (WCAG 2.5.3): a control's accessible name has to
+          // contain the words on it, so a visitor who says "Contact" reaches
+          // the right one. axe calls the rule experimental and leaves it off
+          // unless asked for, and it is the rule that would have caught the
+          // footer button named "Email me" over an address.
+          .options({
+            rules: { "label-content-name-mismatch": { enabled: true } },
+          })
+          .analyze();
         return violations
           .filter(({ impact }) => impact === "serious" || impact === "critical")
           .map(({ id, help, nodes }) => ({

@@ -24,6 +24,10 @@
           "error",
           { "minScore": 0.95, "aggregationMethod": "median-run" }
         ],
+        "label-content-name-mismatch": [
+          "error",
+          { "minScore": 1, "aggregationMethod": "pessimistic" }
+        ],
         "largest-contentful-paint": [
           "warn",
           { "maxNumericValue": 2500, "aggregationMethod": "median-run" }

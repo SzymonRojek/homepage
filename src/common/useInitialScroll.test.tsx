@@ -56,6 +56,18 @@ describe("useInitialScroll", () => {
     expect(scrollIntoView.mock.contexts[0]).toBe(getByRole("heading"));
   });
 
+  // The hash is read as the page starts, and decoding "#%" throws: inside an
+  // effect that takes the whole page down with it.
+  it("ignores an address it cannot decode", () => {
+    navigateAs("navigate");
+    window.history.replaceState(null, "", "/#%");
+
+    expect(() => render(<Page />)).not.toThrow();
+
+    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(scrollTo).not.toHaveBeenCalled();
+  });
+
   it("does nothing without a hash or without a matching section", () => {
     navigateAs("navigate");
     render(<Page />);

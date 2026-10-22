@@ -274,7 +274,7 @@ const homepageCaseStudy: CaseStudy = {
     },
     {
       area: "Security",
-      text: "No secrets and no runtime API calls. npm audit fails CI on high-severity advisories in the code shipped to visitors, and Dependabot proposes updates every week. External links use rel=“noreferrer”. Development-only tools still carry some advisories, but they never reach the browser.",
+      text: "No secrets and no runtime API calls. The built page carries its own content security policy, with a hash for every inline script, since GitHub Pages cannot send headers, and an end-to-end test fails on any refusal the browser reports. npm audit fails CI on high-severity advisories in the code shipped to visitors, and Dependabot proposes updates every week. External links use rel=“noreferrer”. Development-only tools still carry some advisories, but they never reach the browser.",
     },
   ],
 };

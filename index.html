@@ -4,6 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--
+      The content security policy is written into the built page instead, with
+      a hash for every inline script (scripts/prerender.ts): GitHub Pages
+      can't send headers, and the dev server needs its own inline scripts.
+      Referrer-Policy has no header here either, so it travels as a meta;
+      external links carry rel="noreferrer" of their own as well.
+    -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!--
       The fonts of the first screen load straight away, in parallel with the
       app, so the page is drawn once in its real fonts: no text reflow, and the
       photo doesn't jump when the fonts arrive. The @font-face rules are below.
@@ -273,6 +281,22 @@
         }
         document.documentElement.dataset.restoringScroll = "";
       }
+    </script>
+    <script>
+      // If the app never runs — a bundle stopped by a network, a proxy or an
+      // extension, or one that throws — the rule in the head would leave a
+      // dark-theme visitor with a page hidden for good. Once everything else
+      // has settled, show the build's copy instead: it is drawn in the light
+      // colours, which reads far better than a blank screen. The app takes
+      // this mark off itself long before here (usePrerenderCleanup).
+      addEventListener("load", () => {
+        setTimeout(() => {
+          // Gone already: the app has the page, and the theme is its business.
+          if (document.body.dataset.prerendered === undefined) return;
+          delete document.body.dataset.prerendered;
+          delete document.documentElement.dataset.theme;
+        }, 1200);
+      });
     </script>
     <script type="module" src="/src/index.tsx"></script>
   </body>

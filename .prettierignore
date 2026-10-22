@@ -3,3 +3,9 @@ package-lock.json
 test-results
 playwright-report
 blob-report
+# Build and report output, as in eslint.config.js: CI checks the formatting
+# before it builds, but a local run must not read what a previous one wrote.
+coverage
+reports
+.lighthouseci
+.stryker-tmp

@@ -30,10 +30,15 @@ export const saveThemeChoice = (store: AppStore) => {
     if (nextIsDarkTheme !== isDarkTheme) {
       isDarkTheme = nextIsDarkTheme;
 
-      if (hasUserChoice) {
-        localStorage.setItem("dark", String(isDarkTheme));
-      } else {
-        localStorage.removeItem("dark");
+      try {
+        if (hasUserChoice) {
+          localStorage.setItem("dark", String(isDarkTheme));
+        } else {
+          localStorage.removeItem("dark");
+        }
+      } catch {
+        // Storage blocked or full: the page still changes theme, it just
+        // can't remember the choice for the next visit.
       }
     }
   });
