@@ -9,7 +9,15 @@ const box = async (locator: Locator) => {
 
 // The top bar, the hero and the sections share one content column, so their
 // left edges line up at the expected gutter and nothing scrolls sideways.
-const expectOneEdge = async (page: Page, gutter: number) => {
+// The column is centred in the page's own width, which is the window less the
+// scrollbar, so everything here is measured from that and not from the
+// viewport: the themed scrollbar stays in sight on a desktop and takes 10px.
+const expectOneEdge = async (page: Page, smallestGutter: number) => {
+  const content = await page.evaluate(
+    () => document.documentElement.clientWidth,
+  );
+  // At most 1160px of content, centred, never closer than the size's gutter.
+  const gutter = Math.max(smallestGutter, Math.round((content - 1160) / 2));
   const edges = {
     // The floating pill around the wordmark starts on the edge.
     topBar: (
@@ -36,15 +44,18 @@ const expectOneEdge = async (page: Page, gutter: number) => {
   }
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth - window.innerWidth,
+      () =>
+        document.documentElement.scrollWidth -
+        document.documentElement.clientWidth,
     ),
   ).toBe(0);
+  return { content, gutter };
 };
 
 test.describe("Layout", () => {
   for (const { width, gutter, why } of [
-    { width: 1600, gutter: 220, why: "the content stops at 1160px, centred" },
-    { width: 1280, gutter: 60, why: "48px gutters around the centred column" },
+    { width: 1600, gutter: 48, why: "the content stops at 1160px, centred" },
+    { width: 1280, gutter: 48, why: "48px gutters around the centred column" },
     { width: 1024, gutter: 32, why: "32px gutters on a tablet" },
   ]) {
     test(`at ${width}px everything starts on one edge: ${why} @desktop`, async ({
@@ -53,10 +64,10 @@ test.describe("Layout", () => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("./");
 
-      await expectOneEdge(page, gutter);
+      const { content, gutter: edge } = await expectOneEdge(page, gutter);
       // The photo ends on the right edge of the same column.
       const photo = await box(page.getByRole("img", { name: "Szymon Rojek" }));
-      expect(Math.round(width - (photo.x + photo.width))).toBe(gutter);
+      expect(Math.round(content - (photo.x + photo.width))).toBe(edge);
     });
   }
 
@@ -65,11 +76,10 @@ test.describe("Layout", () => {
   }) => {
     await page.goto("./");
 
-    await expectOneEdge(page, 16);
+    const { content, gutter } = await expectOneEdge(page, 16);
     // The text starts on the left edge and the photo ends on the right one.
-    const width = page.viewportSize()!.width;
     const photo = await box(page.getByRole("img", { name: "Szymon Rojek" }));
-    expect(Math.round(width - (photo.x + photo.width))).toBe(16);
+    expect(Math.round(content - (photo.x + photo.width))).toBe(gutter);
   });
 
   test("the headline and the photo only shrink as the window narrows @desktop", async ({
@@ -190,8 +200,11 @@ test.describe("Layout", () => {
       { width: 800, gutter: 32 },
     ]) {
       await page.setViewportSize({ width, height: 900 });
+      const content = await page.evaluate(
+        () => document.documentElement.clientWidth,
+      );
       const found = await box(button);
-      expect(Math.round(width - (found.x + found.width)), `${width}px`).toBe(
+      expect(Math.round(content - (found.x + found.width)), `${width}px`).toBe(
         gutter,
       );
     }
@@ -206,12 +219,14 @@ test.describe("Layout", () => {
     page,
   }) => {
     await page.goto("./");
-    const width = page.viewportSize()!.width;
+    const content = await page.evaluate(
+      () => document.documentElement.clientWidth,
+    );
     const found = await box(
       page.getByRole("button", {
         name: "Copy my email address, sz.rojek@proton.me",
       }),
     );
-    expect(Math.round(width - (found.x + found.width))).toBe(16);
+    expect(Math.round(content - (found.x + found.width))).toBe(16);
   });
 });
