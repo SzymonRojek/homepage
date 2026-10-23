@@ -1,12 +1,18 @@
-# Weekly dependency updates. PRs target dev, so they go through the same
-# checks and the user-merged dev -> main flow as any other change.
+# Monthly dependency updates (weekly until 2026-10-23: a one-page site does
+# not change fast enough to need four times the pull requests to review).
+# PRs target dev, so they go through the same checks and the user-merged
+# dev -> main flow as any other change. Dependabot's alerts stay on, so an
+# advisory is still reported; its automatic security pull requests are off,
+# since the only ones it could raise were dev-only transitives with no fix
+# path, and CI's `npm audit --omit=dev --audit-level=high` already stops a
+# shipped advisory from reaching the site.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     target-branch: dev
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
     # A version is only taken once it has been public for a week, so a package
     # published and pulled in the same day never reaches the site.
@@ -33,4 +39,4 @@ updates:
     directory: /
     target-branch: dev
     schedule:
-      interval: weekly
+      interval: monthly
