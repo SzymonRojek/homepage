@@ -133,19 +133,18 @@ const homepageCaseStudy: CaseStudy = {
       {
         market:
           "Google Fonts blocked rendering, and the photo was three times larger than displayed.",
-        mine: "A self-hosted font and a right-sized photo raised mobile performance from 0.84 to about 0.9.",
+        mine: "A self-hosted font and a right-sized photo took mobile performance from 0.84 to 0.96.",
       },
     ],
     solution: [
-      "Content in typed data files and a static build: no server, no runtime API calls.",
+      "Content in typed data files, built into static HTML at release time.",
       "A test pyramid: unit tests for logic, Playwright for what visitors see, axe for accessibility.",
-      "Every push passes audit, lint, type check, tests and Lighthouse budgets before it can deploy.",
       "A protected main branch: changes reach the live site only through a pull request I review, so an AI coding assistant can't ship on its own.",
     ],
     value: [
       "Free hosting on GitHub Pages.",
       "Nothing can fail for a visitor: no API calls, no loading or error states.",
-      "Every change is verified before release, and anyone can check it through the public tests and CI badge.",
+      "Anyone can check the work themselves, through the public tests and the CI badge.",
     ],
   },
   developer: {
@@ -154,7 +153,7 @@ const homepageCaseStudy: CaseStudy = {
       "React 19 with strict TypeScript, Redux Toolkit for the theme and styled-components with typed light and dark themes.",
       "Content lives in typed data files, so there are no runtime API calls and no loading or error states.",
       "The theme follows the OS live, a saved choice wins, and it's painted before JavaScript loads, so a dark reload never flashes light.",
-      "A self-hosted font and a right-sized photo raised mobile Lighthouse performance from 0.84 to about 0.9.",
+      "Fallback fonts are size-matched to the real ones, so the swap when they arrive moves nothing on the page.",
     ],
     stack: [
       "React 19",

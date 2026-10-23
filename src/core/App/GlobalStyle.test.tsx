@@ -1,30 +1,42 @@
-import { render } from "@testing-library/react";
-import { ThemeProvider } from "styled-components";
+import { renderToStaticMarkup } from "react-dom/server";
+import type { DefaultTheme } from "styled-components";
+import { ServerStyleSheet, ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { GlobalStyle } from "./GlobalStyle";
 import { themeDark, themeLight } from "./theme";
 
-const css = () =>
-  Array.from(document.querySelectorAll("style"))
-    .map((tag) => tag.textContent ?? "")
-    .join("")
-    .toLowerCase();
+// styled-components writes its rules into the document's own stylesheet rather
+// than into the text of a <style> tag, so reading that text back gives nothing.
+// The CSS is collected as text instead, the way the build does it for the
+// static page (src/entry-server.tsx).
+const css = (theme: DefaultTheme) => {
+  const sheet = new ServerStyleSheet();
+
+  try {
+    renderToStaticMarkup(
+      sheet.collectStyles(
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+        </ThemeProvider>,
+      ),
+    );
+
+    return sheet.getStyleTags().toLowerCase();
+  } finally {
+    sheet.seal();
+  }
+};
 
 const rule = (selector: string, declaration: string) =>
   new RegExp(`${selector}\\s*\\{[^}]*${declaration}`);
 
 describe("the window's scrollbar", () => {
-  it.each([
+  it.each<[string, DefaultTheme]>([
     ["light", themeLight],
     ["dark", themeDark],
   ])("takes the %s theme's interactive colour", (_name, theme) => {
-    render(
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-      </ThemeProvider>,
-    );
+    const styles = css(theme);
 
-    const styles = css();
     expect(styles).toMatch(
       rule(
         "::-webkit-scrollbar-thumb",
@@ -48,13 +60,7 @@ describe("the window's scrollbar", () => {
   });
 
   it("leaves the lane the page's colour, so no stripe runs beside the dark bands", () => {
-    render(
-      <ThemeProvider theme={themeLight}>
-        <GlobalStyle />
-      </ThemeProvider>,
-    );
-
-    expect(css()).toMatch(
+    expect(css(themeLight)).toMatch(
       rule("::-webkit-scrollbar-track", "background:\\s*transparent"),
     );
   });
@@ -62,13 +68,7 @@ describe("the window's scrollbar", () => {
   // A width on ::-webkit-scrollbar turns the system's overlay bar into a
   // classic one that never leaves: right on a desktop, clutter on a phone.
   it("only keeps the bar in sight where a pointer can grab it", () => {
-    render(
-      <ThemeProvider theme={themeLight}>
-        <GlobalStyle />
-      </ThemeProvider>,
-    );
-
-    expect(css()).toMatch(
+    expect(css(themeLight)).toMatch(
       /@media\s*\(hover:\s*hover\)\s+and\s+\(pointer:\s*fine\)\s*\{[^@]*::-webkit-scrollbar\s*\{/,
     );
   });
