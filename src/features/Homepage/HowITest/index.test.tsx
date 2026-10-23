@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
+import { howITest } from "../howITestData";
 import { HowITest } from ".";
 
 const renderHowITest = () =>
@@ -78,9 +79,18 @@ describe("HowITest", () => {
       screen.getByRole("list", { name: "How I test a data migration" })
         .children,
     ) as HTMLElement[];
+    // Counted from the data, not written in here: the points move between the
+    // stages and the story (the root-cause example went up into the story on
+    // 2026-10-23), and a hard-coded list of lengths only goes stale.
     expect(
       steps.map((step) => within(step).getAllByRole("listitem").length),
-    ).toEqual([4, 5, 4]);
+    ).toEqual(howITest.steps.map((step) => step.points.length));
+    // Every stage still carries enough to skim.
+    steps.forEach((step) =>
+      expect(
+        within(step).getAllByRole("listitem").length,
+      ).toBeGreaterThanOrEqual(3),
+    );
     expect(
       within(steps[1]).getByText("A number can match and still be wrong."),
     ).toBeVisible();
