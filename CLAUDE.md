@@ -198,8 +198,9 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
    - [ ] Me: the e2e suite against staging (a `BASE_URL` in `playwright.config.ts`), in Chromium and WebKit, after the deploy; the local e2e stays the gate before it, and Lighthouse stays local.
    - [ ] Me: update the README (the flow diagram, and "There are no secrets" under Security) and CLAUDE.md.
 3. **GitHub:**
-   - [ ] Me: set the `homepage` repo's website to `https://szymonrojek.com` and replace its outdated description ("…Redux & Saga…").
+   - [x] Me: the `homepage` repo's website is `https://szymonrojek.com` and its description now names what the site actually is (2026-10-23; it had said "…Redux & Saga…").
    - [ ] Me: link the site from the profile README and the talent-outreach README footer (separate repos: a commit and push each, with the user's yes).
+   - [ ] Me, next time Talent Outreach facts are read: pull `~/email-campaign-react-airtable` first. On 2026-10-23 the local branch sat a merge behind `origin/main` (PR #57), so the figures were taken off `origin/main` instead. `df-automation-tests` has no description at all, and nothing from it is on the site.
    - [x] The user: the profile's Website field is set to https://szymonrojek.com (checked 2026-10-22).
 4. **LinkedIn (the user):**
    - [ ] Refresh the preview of `https://szymonrojek.com/` with the [Post Inspector](https://www.linkedin.com/post-inspector/) (the share card was redrawn on 2026-10-17).
@@ -213,6 +214,7 @@ A to-do list in priority order (updated 2026-10-18). Performance is done: PageSp
    - [ ] To decide: external links open a new tab without saying so. Consider visually hidden "(opens in a new tab)" text for screen readers; best practice, not a WCAG failure.
 7. **Waiting on the user** (from the recruiter review):
    - [ ] The 2012–2022 career years ("Earlier career"), the ISTQB exam date and the exact Microsoft AI course names in `experienceData.ts`.
+   - [ ] To decide: the Talent Outreach demo answered in 32 s on 2026-10-23, since Render's free tier sleeps. It works, but a recruiter who clicks "Demo" waits half a minute at a blank page with no explanation; the site says the hosting sleeps only in `constraints`, inside the collapsed technical details. Either a few words where the button is, or hosting that doesn't sleep.
 
 ## Roadmap
 
