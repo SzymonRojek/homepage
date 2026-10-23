@@ -502,3 +502,31 @@ test.describe("Navigation in the dark theme", () => {
     );
   });
 });
+
+// Windows high contrast (and any other forced-colours mode) replaces the
+// page's colours with the system palette: an author's colour is overridden,
+// so the three lines drawn with currentColor went the colour of the pill
+// behind them and the menu button looked empty.
+test.describe("Navigation in forced colours", () => {
+  test.use({ forcedColors: "active" });
+
+  test("the menu button's lines stay visible @mobile", async ({ page }) => {
+    await page.goto("./");
+    const menu = page.getByRole("button", { name: "Menu" });
+
+    const colours = await menu.evaluate((button) => {
+      const line = button.querySelector("span > span");
+
+      return {
+        line: getComputedStyle(line!).backgroundColor,
+        text: getComputedStyle(button).color,
+        behind: getComputedStyle(button).backgroundColor,
+      };
+    });
+
+    // The system's own text colour, whichever palette the visitor has, and
+    // never the colour it sits on.
+    expect(colours.line).toBe(colours.text);
+    expect(colours.line).not.toBe(colours.behind);
+  });
+});

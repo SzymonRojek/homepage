@@ -348,6 +348,17 @@ export const MenuIcon = styled.span<{ $open: boolean }>`
       opacity 0.2s;
   }
 
+  /* Windows high contrast, and any other forced-colours mode, replaces the
+     page's colours with the system palette: a background of currentColor is
+     overridden with the colour behind it, which left the three lines the
+     colour of the pill and the button looking empty. A system colour is
+     honoured there, so the lines take the one the button's own text uses. */
+  @media (forced-colors: active) {
+    span {
+      background: ButtonText;
+    }
+  }
+
   ${({ $open }) =>
     $open &&
     css`
