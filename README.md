@@ -177,7 +177,7 @@ flowchart LR
 - The Airtable token leaked in error responses.
 - Unchecking every recipient sent the email to **all** of them: an empty selection was treated as "no filter".
 - Lists silently stopped at 100 records, because Airtable pages its results.
-- Polish names such as Łukasz sorted after "z" until sorting used a Polish locale.
+- Polish names with accented letters sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
 
 ## For developers
