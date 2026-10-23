@@ -19,8 +19,13 @@ export const howITest = {
     // Shortened on 2026-10-17 from two paragraphs, keeping all three points:
     // bugs in the stored procedures, reading them against the requirements
     // and mapping documents, and going through cases with the developers.
+    // The case now leads it (2026-10-23): the hero promises "I don't stop at
+    // green", and one report that ran and was still wrong proves it better
+    // than the approach does. It moved up from the last point of the third
+    // stage, so each fact still lives in one place. No client, no system, no
+    // figures.
     paragraphs: [
-      "I've found bugs not only in the migrated data, but in the stored procedures that move it. When there was no data to test yet, I read the procedures against the requirements and mapping documents, questioned the solution designers, and walked through tricky cases with the developer who wrote them.",
+      "A report that ran and produced its numbers was still missing accounts: one misspelt word in a WHERE clause. I've found bugs not only in the migrated data but in the stored procedures that move it. When there was no data to test yet, I read them against the requirements and mapping documents, questioned the solution designers, and walked through tricky cases with the developer who wrote them.",
     ],
   },
   // Shortened on 2026-10-17 from a paragraph each into a line and a few
@@ -56,7 +61,6 @@ export const howITest = {
         "Logged in Azure DevOps",
         "Reproduction steps and evidence attached",
         "The fix retested with the developers",
-        "Once: a report missing accounts, traced to one misspelt word in a WHERE clause",
       ],
     },
   ] satisfies TestingStep[],
