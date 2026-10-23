@@ -77,7 +77,7 @@ const isRestoringScroll = () =>
 // changed it (Lighthouse's "Forced reflow", about 200 ms on a slow phone).
 // "smooth" says whether a change of fill may fade (fadesOverHero). "filled"
 // is the look the bar last showed: a hidden bar keeps it while it slides
-// away, so leaving the top it goes as the outline, never flashing green.
+// away, so leaving the top it goes bare, never flashing green.
 export const useBarState = () => {
   const [state, setState] = useState<BarState>("top");
   const [smooth, setSmooth] = useState(true);

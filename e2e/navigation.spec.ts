@@ -191,7 +191,7 @@ test.describe("Navigation", () => {
       .locator("..");
 
     // Watch every frame from the click: the first colour after the
-    // see-through outline must already be the final green. A fade would show
+    // bare bar must already be the final green. A fade would show
     // a paler green first, leaving the cream links on the light page.
     const firstChange = pill.evaluate(
       (el) =>
