@@ -8,8 +8,10 @@ import type { BarState } from "./useBarState";
 const pillGap = { desktop: 12, mobile: 8 };
 
 // A floating pill on the content column, 12px under the top of the window
-// (8px on phones). At the top of the page it is only an outline over the
-// hero; once the page scrolls it fills with the deep green (a little
+// (8px on phones). At the top of the page it shows nothing of itself over
+// the hero: no fill, no edge, no shadow, only its contents (the user asked
+// for the outline to go on 2026-10-23). Once the page scrolls it fills with
+// the deep green (a little
 // see-through, the page blurred under it) and lifts off with a layered
 // shadow; past the hero it slides away while the page scrolls down and comes
 // back when it scrolls up (useBarState), or when a key moves focus into it.
@@ -59,10 +61,10 @@ export const Bar = styled.div<{ $state: BarState }>`
 
 // The raised look: deep green (a step lighter in the dark theme, where How I
 // test is the deep green), a little see-through, with the page blurred under
-// it, and the layered shadow.
+// it, and the layered shadow. No edge of its own: the fill and the shadow
+// carry it (the user, 2026-10-23).
 const raised = css`
   background: ${({ theme }) => a(theme.colors.topBar, 0.94)};
-  border-color: ${({ theme }) => theme.colors.topBarEdge};
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: ${({ theme }) => theme.colors.brand.pillShadow};
@@ -81,16 +83,15 @@ export const Inner = styled.div<{
   padding: 0 8px 0 20px;
   color: ${({ theme }) => theme.colors.brand.text};
   background: transparent;
-  border: 1px solid ${({ theme }) => a(theme.colors.brand.text, 0.18)};
   border-radius: 999px;
   pointer-events: auto;
   /* It fills smoothly while it is over the dark hero ($smooth), and at once
      after a jump: a jump lands over the light sections, where a fading bar
      would leave its cream links unreadable for a moment (axe caught it
-     mid-fade). Back to the outline it always fades, over the hero. */
+     mid-fade). Back to bare it always fades, over the hero. */
   transition: ${({ $state, $smooth }) =>
     $state === "top" || $smooth
-      ? "background-color 0.25s, border-color 0.25s, box-shadow 0.25s"
+      ? "background-color 0.25s, box-shadow 0.25s"
       : "none"};
 
   ${({ $filled }) => $filled && raised}
@@ -345,6 +346,17 @@ export const MenuIcon = styled.span<{ $open: boolean }>`
     transition:
       transform 0.2s,
       opacity 0.2s;
+  }
+
+  /* Windows high contrast, and any other forced-colours mode, replaces the
+     page's colours with the system palette: a background of currentColor is
+     overridden with the colour behind it, which left the three lines the
+     colour of the pill and the button looking empty. A system colour is
+     honoured there, so the lines take the one the button's own text uses. */
+  @media (forced-colors: active) {
+    span {
+      background: ButtonText;
+    }
   }
 
   ${({ $open }) =>

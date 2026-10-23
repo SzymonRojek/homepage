@@ -1,6 +1,7 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  clearNear,
   fadesOverHero,
   nextBarState,
   revealAfter,
@@ -11,7 +12,7 @@ import {
 const viewport = 900;
 
 describe("nextBarState", () => {
-  it("is only an outline while the page is at the top", () => {
+  it("stays bare while the page is at the top", () => {
     expect(nextBarState("raised", 0, 40, viewport)).toBe("top");
   });
 
@@ -21,17 +22,41 @@ describe("nextBarState", () => {
     expect(nextBarState("raised", 1000, 900, viewport)).toBe("hidden");
   });
 
-  it("never lifts off on the way down: a step too small to count keeps the outline", () => {
+  it("never lifts off on the way down: a step too small to count keeps it bare", () => {
     expect(nextBarState("top", 3, 0, viewport)).toBe("top");
   });
 
-  it("comes back, raised, once the page has scrolled up 48px since it turned", () => {
-    expect(revealAfter).toBe(48);
-    // Turned at 1600: 40px up is not enough yet, 48px is.
-    expect(nextBarState("hidden", 1560, 1600, viewport, 1600)).toBe("hidden");
-    expect(nextBarState("hidden", 1552, 1560, viewport, 1600)).toBe("raised");
+  it("comes back, raised, once the page has scrolled up 16px since it turned", () => {
+    expect(revealAfter).toBe(16);
+    // Turned at 1600: 10px up is not enough yet, 16px is.
+    expect(nextBarState("hidden", 1590, 1600, viewport, 1600)).toBe("hidden");
+    expect(nextBarState("hidden", 1584, 1590, viewport, 1600)).toBe("raised");
     expect(nextBarState("hidden", 1500, 1600, viewport, 1600)).toBe("raised");
     expect(nextBarState("hidden", 200, 300, viewport, 300)).toBe("raised");
+  });
+
+  // The fill has to go while the page is still moving: at y = 0 alone it
+  // vanished just as the scroll stopped, which read as a jolt.
+  describe("nearing the top on the way up", () => {
+    it("gives up the fill before the page gets there", () => {
+      expect(clearNear).toBe(120);
+      expect(nextBarState("raised", 120, 300, viewport, 300)).toBe("top");
+      expect(nextBarState("hidden", 60, 200, viewport, 200)).toBe("top");
+    });
+
+    it("keeps the fill while the top is still further off", () => {
+      expect(nextBarState("raised", 121, 300, viewport, 300)).toBe("raised");
+    });
+
+    it("lands bare after a jump to the top of the page", () => {
+      expect(nextBarState("hidden", 40, 2000, viewport, 2000)).toBe("top");
+    });
+
+    // Going down is untouched: the bar leaves from the first step, bare.
+    it("still hides from the first step down, near the top too", () => {
+      expect(nextBarState("top", 60, 20, viewport)).toBe("hidden");
+      expect(nextBarState("raised", 119, 100, viewport)).toBe("hidden");
+    });
   });
 
   it("stays raised while the page keeps scrolling up", () => {
@@ -108,7 +133,7 @@ describe("useBarState", () => {
     expect(result.current.state).toBe("raised");
   });
 
-  it("is only an outline on a page that opens at the top", () => {
+  it("stays bare on a page that opens at the top", () => {
     const { result } = renderHook(() => useBarState());
     nextFrame();
 
@@ -141,16 +166,15 @@ describe("useBarState", () => {
     scrollTo(300);
     scrollTo(600);
     expect(result.current.state).toBe("hidden");
-    // 40px up: still hidden.
-    scrollTo(580);
-    scrollTo(560);
-    expect(result.current.state).toBe("hidden");
-    // Down again: the count starts over from here (590).
+    // 10px up: still hidden, short of the 16px.
     scrollTo(590);
-    scrollTo(550);
     expect(result.current.state).toBe("hidden");
-    // 50px up from the turn: back, raised.
-    scrollTo(540);
+    // Down again: the count starts over from here (610).
+    scrollTo(610);
+    scrollTo(600);
+    expect(result.current.state).toBe("hidden");
+    // 16px up from that turn: back, raised.
+    scrollTo(594);
     expect(result.current.state).toBe("raised");
   });
 

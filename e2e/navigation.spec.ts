@@ -85,7 +85,7 @@ test.describe("Navigation", () => {
     );
   });
 
-  test("the top bar is an outline at the top, goes with scrolling down and returns raised on scroll up", async ({
+  test("the top bar shows nothing at the top, goes with scrolling down and returns raised on scroll up", async ({
     page,
   }) => {
     // The pill is the wordmark's parent.
@@ -94,7 +94,7 @@ test.describe("Navigation", () => {
       .locator("..");
     const gap = page.viewportSize()!.width <= 767 ? 8 : 12;
 
-    await test.step("at the top: a rounded outline over the hero", async () => {
+    await test.step("at the top: nothing of itself over the hero", async () => {
       expect(
         parseFloat(
           await pill.evaluate((el) => getComputedStyle(el).borderTopLeftRadius),
@@ -109,7 +109,7 @@ test.describe("Navigation", () => {
     await test.step("scrolling down, still over the hero: out of sight, never filled", async () => {
       await scrollBy(page, 200);
       await expect(pill).not.toBeInViewport();
-      // It left as the outline it was.
+      // It left bare, as it was.
       await expect(pill).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
     });
 
@@ -119,7 +119,7 @@ test.describe("Navigation", () => {
     });
 
     await test.step("a slight move up: still out of sight", async () => {
-      await scrollBy(page, -30);
+      await scrollBy(page, -10);
       // Longer than the bar's slide, so it would have come back by now.
       await page.waitForTimeout(500);
       await expect(pill).not.toBeInViewport();
@@ -132,6 +132,18 @@ test.describe("Navigation", () => {
         .poll(async () => Math.round((await pill.boundingBox())!.y))
         .toBe(gap);
       await expect(pill).not.toHaveCSS("box-shadow", "none");
+    });
+
+    await test.step("nearing the top: the fill goes before the page stops", async () => {
+      await page.evaluate(() =>
+        window.scrollTo({ top: 60, behavior: "instant" }),
+      );
+
+      await expect(pill).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+      await expect(pill).toHaveCSS("box-shadow", "none");
+      // Still short of the top: the bar gave up its green on the way, not
+      // at the moment the scroll ended.
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
     });
   });
 
@@ -488,5 +500,33 @@ test.describe("Navigation in the dark theme", () => {
       "background-color",
       "rgb(18, 60, 55)",
     );
+  });
+});
+
+// Windows high contrast (and any other forced-colours mode) replaces the
+// page's colours with the system palette: an author's colour is overridden,
+// so the three lines drawn with currentColor went the colour of the pill
+// behind them and the menu button looked empty.
+test.describe("Navigation in forced colours", () => {
+  test.use({ forcedColors: "active" });
+
+  test("the menu button's lines stay visible @mobile", async ({ page }) => {
+    await page.goto("./");
+    const menu = page.getByRole("button", { name: "Menu" });
+
+    const colours = await menu.evaluate((button) => {
+      const line = button.querySelector("span > span");
+
+      return {
+        line: getComputedStyle(line!).backgroundColor,
+        text: getComputedStyle(button).color,
+        behind: getComputedStyle(button).backgroundColor,
+      };
+    });
+
+    // The system's own text colour, whichever palette the visitor has, and
+    // never the colour it sits on.
+    expect(colours.line).toBe(colours.text);
+    expect(colours.line).not.toBe(colours.behind);
   });
 });

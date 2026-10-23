@@ -8,6 +8,10 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # A version is only taken once it has been public for a week, so a package
+    # published and pulled in the same day never reaches the site.
+    cooldown:
+      default-days: 7
     ignore:
       # eslint-plugin-react supports ESLint up to 9 only; ESLint 10 breaks npm ci.
       - dependency-name: "eslint"
