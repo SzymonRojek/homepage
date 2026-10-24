@@ -35,7 +35,21 @@ jobs:
       - run: npm run typecheck
       - run: npm run test:coverage
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+      # The browser download and its apt step have spiked to ten minutes on a
+      # bad run. Cache it by the Playwright version, since that is what decides
+      # which browser build the suite needs.
+      - id: playwright-version
+        run: echo "version=$(node -p 'require("@playwright/test/package.json").version')" >> "$GITHUB_OUTPUT"
+      - id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+      - if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+      # The browser is cached; the system libraries it needs are not.
+      - if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
       - run: npm run test:e2e
       - run: npm run test:lighthouse
       - uses: actions/upload-artifact@v7
