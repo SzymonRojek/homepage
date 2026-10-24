@@ -57,7 +57,7 @@ npm run test:e2e:report    # open the last run's HTML report in a browser (nothi
 npm run test:e2e:serve     # build once and serve :4173, so repeated runs don't rebuild
 npm run test:e2e:changed   # only the specs changed since HEAD (npx playwright test --only-changed origin/main for the whole branch); it fails rather than pass quietly when nothing matches
 npm run test:lighthouse  # Lighthouse CI budgets against dist/ (run npm run build first)
-npm run test:mutation    # Stryker mutation testing; manual, about an hour locally (use --mutate <file> for one file)
+npm run test:mutation -- --mutate src/x.ts   # Stryker on one file, minutes; the whole project belongs in the Mutation workflow (monthly, or "Run workflow" with a since ref), not on your machine
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
