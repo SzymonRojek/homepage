@@ -12,6 +12,11 @@ export default defineConfig({
     // The first test in a file renders styled-components cold; under coverage on
     // a slow machine that alone can pass the 5 s default.
     testTimeout: 15000,
+    // One jsdom per worker instead of one per file: creating it 40 times was
+    // 60% of a local run's tracked time. Tests must leave no global state
+    // behind for the next file in the worker; if one starts failing here, that
+    // coupling is the bug.
+    isolate: false,
     exclude: [...configDefaults.exclude, "e2e/**", ".stryker-tmp/**"],
     coverage: {
       provider: "v8",
