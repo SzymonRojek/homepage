@@ -68,65 +68,54 @@ npm run format:check   # Prettier --check, as CI runs it
 
 ## Architecture
 
+What each part of the page is and why, is in `.claude/rules/page-design.md`. This is only the map.
+
 ```
 src/
-  index.tsx                   # reads the theme and the #case-study address into createAppStore; hydrates the static copy when the visit looks like it (light, no case study open), else renders <App/> anew at once (flushSync)
-  entry-server.tsx            # render(): the page as HTML + CSS, plus the image preloads and JSON-LD for the head, in Node, light with case studies closed, for scripts/prerender.ts (its test runs without a browser)
+  index.tsx                   # hydrates the build's copy on a light visit with no case study open, else renders anew (flushSync)
+  entry-server.tsx            # render(): the page as HTML + CSS, with the head's preloads and JSON-LD, in Node (its test needs no browser)
   styled.d.ts                 # DefaultTheme = typeof themeLight
   core/
-    store.ts                  # createAppStore(preloadedState) (theme, projectView); RootState, AppStore, AppDispatch; saveThemeChoice saves the theme only when the visitor chose it
+    store.ts                  # createAppStore(preloadedState) (theme, projectView); saveThemeChoice saves only a theme the visitor chose
     hooks.ts                  # useAppDispatch, useAppSelector (use these, not the plain hooks)
-    App/                      # ThemeProvider, Normalize, GlobalStyle, theme.ts (palette + themes), contentColumn.ts (shared page width and gutters)
-    ErrorBoundary/            # around the Homepage: if a render throws, the email address and the links stay on screen instead of a blank page
+    App/                      # ThemeProvider, Normalize, GlobalStyle, theme.ts (palette + themes), contentColumn.ts (width and gutters)
+    ErrorBoundary/            # keeps the email address and the links on screen if a render throws
   common/
-    themeSlice.ts             # starts light; loadThemeState (read on load: getInitialDarkTheme = saved choice, else OS; hasUserChoice), toggleTheme(osIsDark) (back on the OS theme drops the choice), systemThemeChanged
+    themeSlice.ts             # starts light; loadThemeState (the saved choice, else the OS); toggleTheme(osIsDark) drops the choice when back on the OS theme; systemThemeChanged
     useSystemTheme.ts         # listens to prefers-color-scheme changes (used in App)
     usePrerenderCleanup.ts    # after the first render: removes the static copy's styles and its dark-theme mark
-    decodeHash.ts             # decodeURIComponent for a #hash from the address bar, which throws on "#%": both readers run before React draws
-    useInitialScroll.ts       # saves the position while scrolling (not only on pagehide, which an iPhone may skip: issue #26); a reload returns to it (index.html before the first paint, again here once the fonts are in), a link visit jumps to its #section; both instant, never smooth
+    decodeHash.ts             # a #hash read that survives "#%"; both readers run before React draws
+    useInitialScroll.ts       # saves the position while scrolling (not only on pagehide, which an iPhone may skip: issue #26); a reload returns to it, a link visit jumps to its #section, both instant
     ThemeSwitch/              # square icon button "Dark mode" (aria-pressed): a moon in light, a sun in dark
   features/Homepage/
     index.tsx                 # page composition
-    profile.ts                # name, title, eyebrow, tagline, contactHeading, teamNote, taglineHighlight, lookingFor, basedIn, facts, bio, LinkedIn (CONTENT)
-    structuredData.ts         # JSON-LD for search engines (WebSite + ProfilePage/Person), built from profile, skills and githubUserName
-    howITestData.ts           # "How I test": intro, highlight, steps, why it matters (CONTENT)
-    howIUseAIData.ts          # "How I use AI": the big line and the four parts (CONTENT)
-    skillsData.ts             # testingSkills, automationSkills, programmingSkills, tools, languages (CONTENT)
-    experienceData.ts         # jobs, education (the "Learning" column in Skills, next first, then newest first) (CONTENT)
-    email.ts                  # contact email (CONTENT)
-    TopBar/                   # sticky bar: logo, section links (a menu on phones and tablets), Contact
-    recommendationsData.ts    # LinkedIn recommendations, word for word (CONTENT)
-    Recommendations/          # Recommendations: the numbered label, the big line, the six recommendations as byline-first cards in two balanced columns
-    MainHeader/Portrait/      # the still duotone photo in the hero
-    MainHeader/sizes.ts       # the headline's size, its one-line width and the photo's height, as CSS expressions from the band's width, shared so they stay in balance
-    HowITest/                 # the "How I test" section (reuses the Story timeline styles)
-    HowIUseAI/                # the "How I use AI" section (reuses HowITest's styles, its own band)
-    MainHeader/, Skills/ (incl. Learning), Experience/, Footer/
-    Portfolio/
-      githubUserName.ts       # GitHub user and profile URL (CONTENT)
-      projectsData.ts         # projects: title, repo, language, description, category, optional demoUrl and caseStudy with developer/tester lenses (CONTENT)
-      pipelineData.ts         # this site's CI checks and links, shown in the homepage tester view (CONTENT)
-      Story/                  # Brief / Research / Solution / Value timeline of a case study
-      Pipeline/               # CI terminal: checks, result line, CI badge, link to the e2e tests
-      projectViewSlice.ts     # the open case study and the side to scroll to, both read from #case-study-<repo>[-tester|-developer] (on load by index.tsx); set by the cards and by address changes
-      Projects/               # case-study cards, the one open case study with its view switch, test project tiles + "Other projects" list
-      ProjectCard/            # one card: name, sentence, facts, open/close button (aria-expanded), demo and code links
-      CaseStudy/              # one case study: story (or summary), developer/tester columns, full write-up in <details>; takes focus when opened (tabIndex -1)
-      FlowDiagram/            # data-driven step diagram (ordered list, decorative CSS arrows)
-    Footer/SocialIcons/social.ts  # GitHub + LinkedIn links (CONTENT)
-    Section/, ButtonLink/   # shared styled primitives (Section also has BandSection, SectionLabel, sectionOpening, BigLine, Card, Chip, Chips, SectionIntro)
     sections.ts               # the sections in page order, for the numbers in their headings
+    profile.ts                # CONTENT: name, title, eyebrow, tagline, bio, lookingFor, contactHeading, teamNote, LinkedIn
+    howITestData.ts           # CONTENT: the "How I test" intro and its stages
+    howIUseAIData.ts          # CONTENT: the "How I use AI" big line and its pairs
+    skillsData.ts             # CONTENT: testing, automation and programming skills, tools, languages
+    experienceData.ts         # CONTENT: jobs, education (the "Learning" column in Skills)
+    recommendationsData.ts    # CONTENT: the LinkedIn recommendations, word for word
+    email.ts                  # CONTENT: the contact address
+    structuredData.ts         # JSON-LD (WebSite + ProfilePage/Person) from profile, skills and githubUserName
+    MainHeader/sizes.ts       # the headline's size, its one-line width and the photo's height, as CSS expressions from the band's width, so they stay in balance
+    TopBar/, MainHeader/ (incl. Portrait/), Experience/, Skills/, Recommendations/, Footer/
+    HowITest/, HowIUseAI/     # HowIUseAI reuses HowITest's styles, and HowITest the Story timeline's
+    Section/, ButtonLink/     # shared primitives (Section also has BandSection, SectionLabel, sectionOpening, BigLine, Card, Chip, Chips, SectionIntro)
+    Footer/SocialIcons/social.ts  # CONTENT: the GitHub and LinkedIn links
+    Portfolio/
+      githubUserName.ts       # CONTENT: the GitHub user and profile URL
+      projectsData.ts         # CONTENT: the projects, each case study's story and its developer and tester lenses
+      pipelineData.ts         # CONTENT: this site's CI checks, shown in its own tester lens
+      projectViewSlice.ts     # the open case study and the side to scroll to, read from #case-study-<repo>[-tester|-developer]
+      Projects/, ProjectCard/, CaseStudy/, Story/, Pipeline/, FlowDiagram/
 scripts/
-  prerender.ts                # after vite build: renders entry-server in Node, writes the page, its CSS, the JSON-LD and the content security policy (a hash per inline script) into dist/index.html
-  e2e-summary.ts              # a Playwright JSON report in a few lines: counts, each failure's first line, the slowest tests; exits 1 if anything failed
+  prerender.ts                # after vite build: writes the page, its CSS, the JSON-LD and the content security policy into dist/index.html
+  e2e-summary.ts              # a Playwright JSON report in a few lines; exits 1 if anything failed
 e2e/
-  fixtures.ts                 # `test` that fails if the page calls api.github.com (projects must stay static)
-  *.spec.ts                   # header (incl. the still portrait), navigation, layout (one content edge at several widths), recommendations, how-i-test, how-i-use-ai, experience, projects (incl. case study and CI pipeline), skills, theme, fonts (the fallback faces hold the layout while the real ones load), accessibility (details expanded, Label in Name on), seo (head, share card, structured data, sitemap), prerender (the page without JavaScript), startup (storage blocked, an address that can't be decoded, the script blocked), security (the policy, and no refusal while the page is used)
+  fixtures.ts                 # `test` that fails if the page calls api.github.com (the projects must stay static)
+  *.spec.ts                   # one per part of the page, plus layout, theme, fonts, accessibility, seo, prerender, startup and security
 ```
-
-**Case studies:** the README case studies mirror `homepageCaseStudy` and `talentOutreachCaseStudy` in `projectsData.ts`; update both together. The `story`, `developer` and `tester` fields exist only on the site. Stories follow the advice employers gave: show HOW a problem was solved, not which tools were used. The Talent Outreach brief (a small recruitment agency) is self-set, not a paid client: never invent a client, savings or market research that didn't happen, and date competitor facts (prices change). The homepage's tester lens shows `sitePipeline` (`Portfolio/pipelineData.ts`) as a dark CI terminal with the live badge instead of bullet points; there is no separate "How this site is tested" section any more. Talent Outreach (formerly "Email Campaign Dashboard", GitHub repo `talent-outreach`, demo https://talent-outreach.onrender.com/) is checked out at `~/email-campaign-react-airtable`; verify its facts on `origin/main` there, since the local branch can lag. Only write facts checked in the project's repo (code, tests, commits), never guessed outcomes. Numbers on the site should be thresholds CI enforces (for example the 90% coverage gate), so they stay true.
-
-**Projects:** `Portfolio` renders `Projects` straight from `projectsData.ts`. Repo links are built with `repoUrl()` from `githubUserName`. The site used to fetch repos from the GitHub API, which is rate-limited to 60 unauthenticated calls per hour per IP and showed an error box to recruiters on shared office networks. Do not reintroduce a runtime API call; the e2e fixture fails if one appears.
 
 ## Conventions (follow these)
 
@@ -143,6 +132,7 @@ e2e/
 - **SVGs** that need colouring are imported as components with `import XIcon from "./x.svg?react"` and styled through `currentColor`. Decorative images use a plain URL import with `<img src>`.
 - **styled-components props** that only drive styling must be transient (`$moveToRight`).
 - **Content changes** (profile, skills, experience, projects, quality, email, socials) go into the data files marked CONTENT above, not into JSX.
+- **No request at runtime:** the projects are static data; the site used to call the GitHub API and showed recruiters an error box. Don't reintroduce one — the e2e fixture fails if the page calls `api.github.com`.
 - **British English** for every word a visitor or README reader sees: "personalised", "colour", "behaviour", "practise" (verb) / "practice" (noun), "organisation". Code identifiers and CSS stay as they are (`color`, `behavior: "instant"`).
 - External links: `target="_blank" rel="noreferrer"`. Decorative images: `alt=""`.
 - **Privacy:** never put a phone number on the site.
