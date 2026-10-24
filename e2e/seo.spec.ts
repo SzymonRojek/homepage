@@ -13,7 +13,9 @@ test.describe("search engines and link previews @desktop", () => {
     await page.goto("./");
   });
 
-  test("the head describes the page in British English", async ({ page }) => {
+  test("the head describes the page in British English @smoke", async ({
+    page,
+  }) => {
     await expect(page).toHaveTitle("Szymon Rojek | Test Engineer");
     await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(

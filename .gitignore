@@ -36,3 +36,9 @@ yarn-error.log*
 
 # private notes kept in the working tree, never published
 /site-review.md
+
+# e2e test audit: runs, reports and sabotage patches, kept in the working tree, never published
+/audit/**
+!/audit/.gitkeep
+!/audit/sabotage-patches/
+!/audit/sabotage-patches/.gitkeep

@@ -129,7 +129,9 @@ test.describe("Projects", () => {
     );
   });
 
-  test("opens one case study at a time and closes it", async ({ page }) => {
+  test("opens one case study at a time and closes it @smoke", async ({
+    page,
+  }) => {
     const talent = await openCaseStudy(page, TALENT);
 
     await test.step("opens below the cards and takes focus", async () => {

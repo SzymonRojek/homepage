@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import playwright from "eslint-plugin-playwright";
 import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
@@ -46,6 +47,39 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+    },
+  },
+  // The e2e suite: the plugin enforces the rules CLAUDE.md states (no skipped,
+  // focused or conditional tests, no fixed sleeps, web-first assertions), and
+  // the two type-aware rules catch an action or an expect left unawaited,
+  // which would pass silently and assert nothing.
+  {
+    ...playwright.configs["flat/recommended"],
+    files: ["e2e/**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      ...playwright.configs["flat/recommended"].rules,
+      // What CLAUDE.md forbids, as a gate rather than a request: the plugin
+      // reports these as warnings, and `eslint .` exits 0 on a warning.
+      "playwright/no-skipped-test": "error",
+      "playwright/no-focused-test": "error",
+      "playwright/no-force-option": "error",
+      "playwright/no-wait-for-timeout": "error",
+      "playwright/no-conditional-expect": "error",
+      "playwright/expect-expect": "error",
+      "playwright/missing-playwright-await": "error",
+      "playwright/prefer-web-first-assertions": "error",
+      "playwright/valid-expect": "error",
+      // A branch on the viewport width is how one test covers both projects,
+      // so this one stays a warning: it asks the question without failing CI.
+      "playwright/no-conditional-in-test": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
     },
   },
   prettier,

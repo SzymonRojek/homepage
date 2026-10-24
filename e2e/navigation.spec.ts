@@ -23,6 +23,7 @@ const scrollBy = async (page: Page, distance: number) => {
       (dy) => window.scrollBy({ top: dy, behavior: "instant" }),
       distance / steps,
     );
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- paces the simulated scroll, so the page sees separate steps as a finger would send them
     await page.waitForTimeout(30);
   }
 };
@@ -32,7 +33,7 @@ test.describe("Navigation", () => {
     await page.goto("./");
   });
 
-  test("the top bar links to each section", async ({ page }) => {
+  test("the top bar links to each section @smoke", async ({ page }) => {
     for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
@@ -121,6 +122,7 @@ test.describe("Navigation", () => {
     await test.step("a slight move up: still out of sight", async () => {
       await scrollBy(page, -10);
       // Longer than the bar's slide, so it would have come back by now.
+      // eslint-disable-next-line playwright/no-wait-for-timeout -- a dwell longer than the bar's 0.3s slide: the assertion is that it has not come back
       await page.waitForTimeout(500);
       await expect(pill).not.toBeInViewport();
     });
@@ -164,6 +166,7 @@ test.describe("Navigation", () => {
           `#${name === "References" ? "recommendations" : name.toLowerCase()}$`,
         ),
       );
+      // eslint-disable-next-line playwright/no-wait-for-timeout -- waits for the link's smooth scroll to settle; replace with a poll on scrollY (audit step 5)
       await page.waitForTimeout(800);
       await expect(pill).toBeInViewport();
     }
@@ -172,12 +175,14 @@ test.describe("Navigation", () => {
     await expect
       .poll(async () => {
         const before = await page.evaluate(() => window.scrollY);
+        // eslint-disable-next-line playwright/no-wait-for-timeout -- measures scrollY over a window, to prove the scroll has stopped
         await page.waitForTimeout(500);
         return (await page.evaluate(() => window.scrollY)) - before;
       })
       .toBe(0);
     for (let step = 0; step < 6; step++) {
       await page.mouse.wheel(0, 100);
+      // eslint-disable-next-line playwright/no-wait-for-timeout -- paces the wheel steps, as a real wheel sends them
       await page.waitForTimeout(40);
     }
     await expect(pill).not.toBeInViewport();
@@ -338,6 +343,7 @@ test.describe("Navigation", () => {
     await expect
       .poll(async () => {
         const first = await page.evaluate(() => window.scrollY);
+        // eslint-disable-next-line playwright/no-wait-for-timeout -- measures scrollY over a window, to prove the scroll has stopped
         await page.waitForTimeout(200);
         return (await page.evaluate(() => window.scrollY)) - first;
       })
@@ -358,6 +364,7 @@ test.describe("Navigation", () => {
     await expect(
       page.getByRole("region", { name: "Projects" }).getByRole("article"),
     ).toBeVisible();
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- collects the page's scroll frames over a window, to prove nothing jumped after the reload
     await page.waitForTimeout(500);
 
     const frames = await page.evaluate(
@@ -410,6 +417,7 @@ test.describe("Navigation", () => {
     await expect
       .poll(() => page.evaluate(() => Math.round(window.scrollY)))
       .toBeGreaterThan(place - 200);
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- collects the page's scroll frames over a window, to prove nothing jumped after the reload
     await page.waitForTimeout(500);
 
     const frames = await page.evaluate(
@@ -449,8 +457,10 @@ test.describe("Navigation", () => {
     });
     await scrollBy(page, -2000);
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- lets the scroll position be saved before the reload
     await page.waitForTimeout(300);
     await page.reload();
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- lets the restore run; replace with a poll on the bar's state (audit step 5)
     await page.waitForTimeout(800);
 
     expect(await page.evaluate(() => window.scrollY)).toBe(0);

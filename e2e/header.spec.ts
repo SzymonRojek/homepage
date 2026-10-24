@@ -5,7 +5,7 @@ test.describe("Header and footer", () => {
     await page.goto("./");
   });
 
-  test("shows name, title and page title", async ({ page }) => {
+  test("shows name, title and page title @smoke", async ({ page }) => {
     await expect(page).toHaveTitle(/Szymon Rojek/);
     // The tagline is the h1. It starts with the name and title for screen
     // readers and search engines; on screen the top bar shows the name and
@@ -162,6 +162,7 @@ test.describe("Header and footer", () => {
 
     await page.mouse.move(hero.x + 20, hero.y + hero.height / 2);
     await page.mouse.move(hero.x + 10, hero.y + 20);
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- a dwell after the mouse moves: the assertion is that the photo has not moved
     await page.waitForTimeout(400);
     expect(await photo.boundingBox()).toEqual(before);
     await expect(photo).toHaveCSS("transform", "none");

@@ -34,7 +34,9 @@ const expectAliveAndWell = async (page: import("@playwright/test").Page) => {
   );
 };
 
-test("works with storage blocked, as in a private window", async ({ page }) => {
+test("works with storage blocked, as in a private window @smoke", async ({
+  page,
+}) => {
   // Safari's private windows and "block all cookies" make every read throw,
   // rather than return nothing.
   await page.addInitScript(() => {

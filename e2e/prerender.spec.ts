@@ -13,7 +13,9 @@ const sections = [
 // server sends it; the build writes the whole page into it
 // (scripts/prerender.ts).
 test.describe("the page without JavaScript", () => {
-  test("the HTML from the server holds the content", async ({ request }) => {
+  test("the HTML from the server holds the content @smoke", async ({
+    request,
+  }) => {
     const html = await (await request.get("/")).text();
 
     expect(html).toContain("Szymon Rojek");
