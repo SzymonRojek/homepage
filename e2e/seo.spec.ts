@@ -27,6 +27,18 @@ test.describe("search engines and link previews @desktop", () => {
     // Google cuts longer descriptions off in its results.
     expect(description?.length).toBeLessThanOrEqual(160);
     expect(await meta(page, 'property="og:description"')).toBe(description);
+    // The card's title is the only one a preview reads: there is no
+    // twitter:title, so X and LinkedIn both fall back to og:title. Tie it to
+    // the page's own title, as og:description is tied to the description.
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      "content",
+      await page.title(),
+    );
+    // And the card's alt text names the same job the page does.
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+      "content",
+      /Szymon Rojek, Test Engineer/,
+    );
     expect(await meta(page, 'property="og:locale"')).toBe("en_GB");
     expect(await meta(page, 'property="og:site_name"')).toBe("Szymon Rojek");
     // LinkedIn's Post Inspector reads the author from here.
