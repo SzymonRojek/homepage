@@ -11,7 +11,9 @@ const clickThemeSwitch = async (page: import("@playwright/test").Page) => {
 test.describe("with a light OS theme", () => {
   test.use({ colorScheme: "light" });
 
-  test("starts light, toggles and remembers the choice", async ({ page }) => {
+  test("starts light, toggles and remembers the choice @smoke", async ({
+    page,
+  }) => {
     const lightBackground = await test.step("starts light", async () => {
       await page.goto("./");
       await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "false");
@@ -135,6 +137,7 @@ test.describe("on reload with a saved dark choice", () => {
 
     await page.goto("./");
     await expect(themeSwitch(page)).toHaveAttribute("aria-pressed", "true");
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- collects the paint frames over a window, to prove no light flash
     await page.waitForTimeout(500);
 
     const frames = await page.evaluate(

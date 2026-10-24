@@ -78,7 +78,7 @@ export const recommendations: Recommendation[] = [
     quote:
       "Szymon is committed to his tasks and always tries to get to the bottom of the issues. He is persistent in striving to expand his knowledge. His positive disposition makes him easy to work with and constitutes his high value in the team.",
     highlight: "easy to work with",
-    name: "Dawid Kwaśnik",
+    name: "Dawid Kwasnik",
     role: "Database Consultant (data migration) at Endava",
     relation: "worked with me on a different team",
     date: "Feb 2024",

@@ -95,6 +95,7 @@ for (const { screen, viewport } of [
           ),
         )
         .toBe(true);
+      // eslint-disable-next-line playwright/no-wait-for-timeout -- lets any shift after the font swap accumulate before it is measured
       await page.waitForTimeout(500);
 
       const { shifts, looks, fallbacks } = await page.evaluate(() => ({
