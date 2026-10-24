@@ -1,6 +1,9 @@
 ---
 description: "Audit step 4: find out why each surviving bug was missed, file by file, and write the fix plan"
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Read only. Change no file but `audit/04-review.md`.
 

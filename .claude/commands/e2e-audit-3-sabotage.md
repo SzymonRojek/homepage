@@ -1,6 +1,9 @@
 ---
 description: "Audit step 3: inject realistic bugs into the page and record which tests catch them"
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Fault injection: does this suite catch bugs that could really land here?
 

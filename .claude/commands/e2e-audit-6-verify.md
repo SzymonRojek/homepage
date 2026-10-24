@@ -1,6 +1,9 @@
 ---
 description: "Audit step 6: replay every sabotage patch against the fixed suite and compare with step 3"
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Verification after the fixes. Change no file but `audit/05-final.md`.
 
