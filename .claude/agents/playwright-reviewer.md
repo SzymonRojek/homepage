@@ -23,7 +23,7 @@ pass while the page is broken.
 
 ## Step 0: audit before judging
 
-1. Read CLAUDE.md (the "E2E tests (Playwright)" section and Conventions), `playwright.config.ts`
+1. Read `.claude/rules/e2e-tests.md` and CLAUDE.md ("Running the e2e tests", Conventions), `playwright.config.ts`
    and `e2e/fixtures.ts`. This project has no page objects; the specs use the page directly.
 2. Find the scope: the files you were given; if none, `git diff --name-only main...HEAD -- e2e/`.
 3. For each test in scope, read the application code it exercises (`src/`), so you know what

@@ -6,7 +6,7 @@ Diagnosis only. Change no file but `audit/01-baseline.md`. Install nothing.
 
 Step 0, structure:
 
-1. Read `CLAUDE.md` (the "E2E tests (Playwright)" section and Conventions), `playwright.config.ts`, `package.json`.
+1. Read `.claude/rules/e2e-tests.md`, `CLAUDE.md` ("Running the e2e tests" and Conventions), `playwright.config.ts` and `package.json`.
 2. Find the specs, the fixture (`e2e/fixtures.ts`) and any helpers. There is no auth, no API and no page objects here; say so rather than hunting for them.
 3. Count files and tests: `npx playwright test --list --reporter=line` (summary only).
 4. Check for `eslint-plugin-playwright`, `@typescript-eslint/no-floating-promises` (is `eslint.config.js` using the type-checked config?) and TypeScript coverage of `e2e/` in `tsconfig.json`.

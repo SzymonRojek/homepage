@@ -1,0 +1,13 @@
+---
+paths:
+  - "scripts/**"
+  - "src/entry-server.tsx"
+  - "index.html"
+---
+
+# The build's own copy of the page
+
+The page is rendered in Node at build time, so search engines and AI tools that don't run JavaScript read it, and the browser takes that copy over. See also "Render without a browser" and "A browser that refuses" in CLAUDE.md.
+
+- **Search and sharing:** the build prerenders the whole page into `dist/index.html` (light theme, case studies closed), so search engines and AI tools that don't run JavaScript read it; on a light visit without a case-study address React takes that copy over as it is (`hydrateRoot`), so the photo is drawn once; a dark theme or a case-study address draws the page anew (`createRoot`), and a dark theme keeps the copy hidden until then (`body[data-prerendered]` in `index.html`), and if the app never arrives at all a script there shows the copy 1.2 s after `load`, in its light colours, rather than leave a blank page. The head has `lang="en-GB"`, a description of at most 160 characters, canonical, Open Graph and X tags, and JSON-LD (`WebSite` + `ProfilePage` with a `Person`, built from the content files by `structuredData.ts` and written into the head by the prerender, so it is in the build only). `public/og-image.jpg` is a 1200×630 share card in the page's look (on the hero's near-black: the title in yellow mono capitals, the name, the tagline with "green." on the tilted mint block, the URL, and the cut-out photo in the brand duotone standing on the bottom edge and melting into the dark under the soft green light, as in the hero; redrawn; drawn from HTML in Chrome with the site's own fonts): redraw it when those change, then refresh LinkedIn's cached preview with the [Post Inspector](https://www.linkedin.com/post-inspector/). `public/szymon-rojek.jpg` is the photo in the structured data. `public/sitemap.xml` lists the page and `robots.txt` points to it.
+- **The content security policy** is built in `scripts/prerender.ts` and written into the built page only: GitHub Pages can't send headers, and the dev server needs its own inline scripts. Scripts are allowed by a hash each, taken off the page as it is written, so adding an inline script needs no hand-kept list; styles are `'unsafe-inline'`, since styled-components writes them into the document. External images are read off the page as well (the live CI badge, by its own directory), but anything else the page starts loading from somewhere else — a font, a request, a frame — has to be added to the policy by hand, and `e2e/security.spec.ts` fails on any refusal the browser reports. HSTS, `frame-ancestors` and `nosniff` cannot travel in a meta tag; they wait for a proxy in front of the site.
