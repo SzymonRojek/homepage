@@ -1,0 +1,43 @@
+name: Flaky
+
+# The e2e suite three times over, with no retries, to find the tests that pass
+# only sometimes. CI itself retries once, so a flaky test there is reported as
+# a pass and nobody sees it; this job is the only place a flake shows up. It
+# runs by itself on the 8th of every month (GitHub emails if it fails) and from
+# the Actions tab ("Run workflow") after a change to anything timing-sensitive:
+# the top bar's states, scrolling, the fonts, the theme's first paint.
+# Not part of the deploy gate.
+on:
+  schedule:
+    - cron: "0 7 8 * *"
+  workflow_dispatch:
+    inputs:
+      repeat:
+        description: How many times to run each test
+        required: false
+        default: "3"
+
+# Read-only, with no token left in Git: the tests never need to write.
+permissions:
+  contents: read
+
+jobs:
+  flaky:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # --retries=0 is the point: a retry would hide what this job looks for.
+      - run: npm run test:e2e -- --repeat-each=${{ inputs.repeat || 3 }} --retries=0
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-flaky
+          path: playwright-report
