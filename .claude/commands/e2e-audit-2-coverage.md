@@ -1,6 +1,9 @@
 ---
 description: "Audit step 2: map what a visitor does against what the tests cover, and rate each journey"
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Read only. Change no file but `audit/02-coverage.md`. Write no tests.
 

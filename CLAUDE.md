@@ -48,14 +48,16 @@ npm run build      # production build into dist/, then the prerender writes the 
 npm run preview    # serve dist/ locally
 npm test           # Vitest in watch mode (npx vitest run for a single run)
 npm run test:coverage  # single Vitest run with v8 coverage and thresholds (CI runs this)
+npm run test:changed   # only the unit tests affected by the uncommitted changes (npx vitest run --changed origin/main for the whole branch)
 npm run test:e2e   # Playwright: builds, serves on :4173, runs desktop + mobile projects (SAFARI=1: the five Safari projects instead, macOS 14+ only)
 npm run test:e2e:agent -- e2e/x.spec.ts   # one spec (or the suite): JSON into audit/run.json, a few lines from scripts/e2e-summary.ts, an HTML report left behind
 npm run test:e2e:smoke     # the @smoke tests alone, as a quick check that the page still works
 npm run test:e2e:flaky -- e2e/x.spec.ts   # the same spec five times over, to catch a flake
 npm run test:e2e:report    # open the last run's HTML report in a browser (nothing to read into context)
 npm run test:e2e:serve     # build once and serve :4173, so repeated runs don't rebuild
+npm run test:e2e:changed   # only the specs changed since HEAD (npx playwright test --only-changed origin/main for the whole branch); it fails rather than pass quietly when nothing matches
 npm run test:lighthouse  # Lighthouse CI budgets against dist/ (run npm run build first)
-npm run test:mutation    # Stryker mutation testing; manual, about an hour locally (use --mutate <file> for one file)
+npm run test:mutation -- --mutate src/x.ts   # Stryker on one file, minutes; the whole project belongs in the Mutation workflow (monthly, or "Run workflow" with a since ref), not on your machine
 npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write

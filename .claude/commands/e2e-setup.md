@@ -1,6 +1,9 @@
 ---
 description: Check the Playwright audit setup is in place (rules, reviewer agent, scripts, audit directory) and bring it up to date
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Run once; it was first run on 2026-10-24. Running it again checks the setup rather than redoing it. Change nothing outside the list below, and report what is missing instead of guessing.
 

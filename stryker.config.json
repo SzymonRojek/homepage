@@ -1,11 +1,12 @@
 {
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-  "_comment": "The vitest runner does not activate mutants with Vitest 5 (0 tests ran per mutant), so each mutant runs the whole suite through the command runner. Slow (about an hour locally) but correct; run it manually.",
+  "_comment": "The vitest runner does not activate mutants with Vitest 5 (0 tests ran per mutant), so each mutant runs the whole suite through the command runner: correct but slow. The suite itself went from 65.7s to 28.5s when per-file isolation came off, and this run costs roughly mutants x suite, so it followed. Run it from the Mutation workflow, not on your own machine; locally, use --mutate <file> for one file. Incremental mode is on, which only helps a repeated run on the same machine (reports/ is gitignored, and a fresh CI runner has no file to reuse); --force rebuilds it.",
   "testRunner": "command",
   "commandRunner": {
     "command": "npx vitest run --reporter=dot"
   },
   "coverageAnalysis": "off",
+  "incremental": true,
   "mutate": [
     "src/**/*.{ts,tsx}",
     "!src/**/*.test.{ts,tsx}",

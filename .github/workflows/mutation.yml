@@ -1,12 +1,24 @@
 name: Mutation testing
 
-# Started by hand from the Actions tab ("Run workflow"). Stryker runs the whole
-# unit test suite once per mutant, so it is too slow for every push.
+# Stryker runs the whole unit test suite once per mutant, so it is far too slow
+# for every push. It runs by itself on the 15th of each month, which is the only
+# way the score gets measured without someone remembering to, and from the
+# Actions tab whenever you want it. Not part of the deploy gate.
+#
+# A scheduled run mutates everything: it runs on the default branch, where there
+# is nothing to compare against. On a branch, "since" cuts the hour to minutes by
+# mutating only what changed, at the cost of a partial score.
 on:
+  schedule:
+    - cron: "0 7 15 * *"
   workflow_dispatch:
     inputs:
       mutate:
         description: "Only mutate these files (glob, e.g. src/common/themeSlice.ts). Empty = whole project."
+        required: false
+        default: ""
+      since:
+        description: "Only mutate what changed since this ref (e.g. main). Ignored when 'mutate' is set."
         required: false
         default: ""
 
@@ -22,6 +34,8 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          # "since" needs the history to diff against, and it is not there by default.
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: 24
@@ -30,9 +44,21 @@ jobs:
       - name: Run Stryker
         env:
           MUTATE: ${{ inputs.mutate }}
+          SINCE: ${{ inputs.since }}
         run: |
           if [ -n "$MUTATE" ]; then
             npx stryker run --concurrency 4 --mutate "$MUTATE"
+          elif [ -n "$SINCE" ]; then
+            # The script filters by stryker.config.json's own mutate list, since
+            # --mutate replaces that list rather than narrowing it.
+            CHANGED=$(node scripts/changed-mutants.ts "origin/$SINCE")
+            if [ -z "$CHANGED" ]; then
+              echo "No source file changed since $SINCE, so there is nothing to mutate." \
+                >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "Mutating only what changed since $SINCE: $CHANGED"
+            npx stryker run --concurrency 4 --mutate "$CHANGED"
           else
             npx stryker run --concurrency 4
           fi

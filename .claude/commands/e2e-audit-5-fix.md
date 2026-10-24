@@ -1,7 +1,10 @@
 ---
 description: "Audit step 5: fix one spec file from the review's plan, proving each test fails against its bug"
 argument-hint: e2e/<name>.spec.ts
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Fixing tests from `audit/04-review.md`. This session covers only: $ARGUMENTS
 

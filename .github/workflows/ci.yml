@@ -3,9 +3,13 @@ name: CI
 on:
   push:
     branches: [main, dev]
-  # PRs into dev are checked too, so Dependabot updates are tested before merge.
+  # Only PRs into dev, which in practice means Dependabot's: its branches are
+  # not in the push list above, so a PR is their only run. A PR from dev needs
+  # no run of its own, because GitHub attaches a check to the commit rather
+  # than to the event, so the push that created the commit already reports the
+  # build check on the PR. Running it again tests the same commit twice.
   pull_request:
-    branches: [main, dev]
+    branches: [dev]
 
 # The token only reads. The deploy job alone gets more: what publishing to
 # GitHub Pages needs, and nothing else.

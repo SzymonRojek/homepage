@@ -1,6 +1,9 @@
 ---
 description: "Audit step 1: baseline of the Playwright suite (structure, one full run, types, lint, risky patterns)"
+disable-model-invocation: true
 ---
+
+Driven by the user, step by step: step 3 changes the page's code and step 5 changes tests, so no step starts on an agent's own judgement. Type it to run it.
 
 Diagnosis only. Change no file but `audit/01-baseline.md`. Install nothing.
 
