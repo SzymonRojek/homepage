@@ -56,6 +56,9 @@ export default tseslint.config(
   {
     ...playwright.configs["flat/recommended"],
     files: ["e2e/**/*.ts"],
+    // A sleep's exception carries the reason it is there. Once the sleep goes,
+    // the comment must go with it rather than stand as a false justification.
+    linterOptions: { reportUnusedDisableDirectives: "error" },
     languageOptions: {
       parserOptions: {
         projectService: true,
