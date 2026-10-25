@@ -8,6 +8,7 @@ import {
   Name,
   Teaser,
   Facts,
+  DemoNote,
   Actions,
   ToggleButton,
   SmallLink,
@@ -34,6 +35,7 @@ export const ProjectCard = ({
     repo,
     description,
     demoUrl,
+    demoNote,
     teaser,
     cardTitle,
     facts,
@@ -68,6 +70,9 @@ export const ProjectCard = ({
             <li key={fact}>{fact}</li>
           ))}
         </Facts>
+      )}
+      {demoUrl && demoNote && (
+        <DemoNote $featured={$featured}>{demoNote}</DemoNote>
       )}
       <Actions>
         <ToggleButton

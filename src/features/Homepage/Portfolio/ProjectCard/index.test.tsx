@@ -121,11 +121,34 @@ describe("ProjectCard", () => {
       screen.getByRole("button", { name: "Case study: Talent Outreach" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Demo: Talent Outreach" }),
+      screen.getByRole("link", {
+        name: "Demo: Talent Outreach (opens in a new tab)",
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Code: Talent Outreach" }),
+      screen.getByRole("link", {
+        name: "Code: Talent Outreach (opens in a new tab)",
+      }),
     ).toBeInTheDocument();
+  });
+
+  it("warns above the buttons where the hosting makes a visitor wait", () => {
+    renderCard({
+      demoUrl: "https://demo.example",
+      demoNote: "Hosted free, so the first load wakes the server.",
+    });
+
+    expect(
+      screen.getByText("Hosted free, so the first load wakes the server."),
+    ).toBeVisible();
+  });
+
+  it("keeps that warning out of a card with no demo to wait for", () => {
+    renderCard({
+      demoNote: "Hosted free, so the first load wakes the server.",
+    });
+
+    expect(screen.queryByText(/first load/)).toBeNull();
   });
 
   it("links to the code, and to a demo only when there is one", () => {

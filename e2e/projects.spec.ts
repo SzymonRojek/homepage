@@ -127,6 +127,10 @@ test.describe("Projects", () => {
       "href",
       "https://talent-outreach.onrender.com/?utm_source=portfolio",
     );
+    // The free host sleeps, so the card says so before anyone clicks.
+    await expect(card).toContainText(
+      "Hosted free, so the first load wakes the server: about 30 seconds.",
+    );
   });
 
   test("opens one case study at a time and closes it @smoke", async ({
