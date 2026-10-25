@@ -66,9 +66,10 @@ test.describe("Header and footer", () => {
       }),
     ).toBeVisible();
     await expect(
-      page
-        .getByRole("contentinfo")
-        .getByRole("link", { name: "LinkedIn", exact: true }),
+      page.getByRole("contentinfo").getByRole("link", {
+        name: "LinkedIn (opens in a new tab)",
+        exact: true,
+      }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 
@@ -181,7 +182,10 @@ test.describe("Header and footer", () => {
       }),
     ).toBeVisible();
     await expect(
-      footer.getByRole("link", { name: "LinkedIn", exact: true }),
+      footer.getByRole("link", {
+        name: "LinkedIn (opens in a new tab)",
+        exact: true,
+      }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
     // The address is shown in the footer now, beside a button that copies
     // it: the mailto: does nothing for a visitor with no mail app, and the

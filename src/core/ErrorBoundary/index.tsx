@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { withNewTab } from "../../common/newTab";
 import { email } from "../../features/Homepage/email";
 import { profile } from "../../features/Homepage/profile";
 import { githubProfileUrl } from "../../features/Homepage/Portfolio/githubUserName";
@@ -46,10 +47,20 @@ export class ErrorBoundary extends Component<
         </Note>
         <Address>{email}</Address>
         <Links>
-          <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
+          <a
+            href={profile.linkedinUrl}
+            aria-label={withNewTab("LinkedIn")}
+            target="_blank"
+            rel="noreferrer"
+          >
             LinkedIn
           </a>
-          <a href={githubProfileUrl} target="_blank" rel="noreferrer">
+          <a
+            href={githubProfileUrl}
+            aria-label={withNewTab("GitHub")}
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
         </Links>

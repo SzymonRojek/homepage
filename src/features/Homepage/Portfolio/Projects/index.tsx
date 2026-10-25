@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../core/hooks";
+import { withNewTab } from "../../../../common/newTab";
 import {
   OtherProjects,
   OtherIntro,
@@ -70,6 +71,11 @@ const useRevealCaseStudy = (openRepo: string | null, side: Side | null) => {
 
 const otherIntro =
   "A front-end background helps me understand what I test and write maintainable UI automation.";
+
+// A tile's link words live once, as in Pipeline: in the link and in the
+// aria-label that adds the new-tab warning.
+const tileDemoLabel = "Open the demo";
+const tileCodeLabel = "GitHub Repository";
 
 export const Projects = ({ projects }: ProjectsProps) => {
   const openRepo = useAppSelector(selectOpenRepo);
@@ -152,8 +158,13 @@ export const Projects = ({ projects }: ProjectsProps) => {
                     <LinksRow>
                       <dt>Demo:</dt>
                       <LinksValue>
-                        <Link target="_blank" rel="noreferrer" href={demoUrl}>
-                          Open the demo
+                        <Link
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={withNewTab(tileDemoLabel)}
+                          href={demoUrl}
+                        >
+                          {tileDemoLabel}
                         </Link>
                       </LinksValue>
                     </LinksRow>
@@ -164,9 +175,10 @@ export const Projects = ({ projects }: ProjectsProps) => {
                       <Link
                         target="_blank"
                         rel="noreferrer"
+                        aria-label={withNewTab(tileCodeLabel)}
                         href={repoUrl(repo)}
                       >
-                        GitHub Repository
+                        {tileCodeLabel}
                       </Link>
                     </LinksValue>
                   </LinksRow>
@@ -188,12 +200,22 @@ export const Projects = ({ projects }: ProjectsProps) => {
                 <span> · {description}</span>{" "}
                 {demoUrl && (
                   <>
-                    <Link target="_blank" rel="noreferrer" href={demoUrl}>
+                    <Link
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={withNewTab("Demo")}
+                      href={demoUrl}
+                    >
                       Demo
                     </Link>{" "}
                   </>
                 )}
-                <Link target="_blank" rel="noreferrer" href={repoUrl(repo)}>
+                <Link
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={withNewTab("Code")}
+                  href={repoUrl(repo)}
+                >
                   Code
                 </Link>
               </OtherItem>
