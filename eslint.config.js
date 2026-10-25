@@ -79,8 +79,11 @@ export default tseslint.config(
       "playwright/prefer-web-first-assertions": "error",
       "playwright/valid-expect": "error",
       // A branch on the viewport width is how one test covers both projects,
-      // so this one stays a warning: it asks the question without failing CI.
-      "playwright/no-conditional-in-test": "warn",
+      // so the two that do it carry an exception naming the width they split
+      // on. Every other conditional in a test fails, as the rest do here:
+      // `reportUnusedDisableDirectives` then drops the exception with the
+      // branch, so it can never stand as a false justification.
+      "playwright/no-conditional-in-test": "error",
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-misused-promises": "error",
     },

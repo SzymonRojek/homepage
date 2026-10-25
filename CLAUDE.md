@@ -62,6 +62,7 @@ npm run typecheck  # tsc --noEmit
 npm run lint       # ESLint
 npm run format     # Prettier --write
 npm run format:check   # Prettier --check, as CI runs it
+npm run skills:refresh # re-copy the three Playwright agent skills into ~/.claude/skills (after a @playwright/cli bump)
 ```
 
 > Stryker note: `@stryker-mutator/vitest-runner` does not activate mutants with Vitest 5 (0 tests ran per mutant, giving a false 13.6% score), so `stryker.config.json` uses the command runner with `coverageAnalysis: "off"` and long timeouts. Check `testsCompleted` in `reports/mutation/mutation.json` before trusting a low score.
@@ -166,7 +167,7 @@ What is forbidden in a test, the conventions and the audit are in `.claude/rules
 - `webServer` runs `npm run build` on every invocation, so for several runs in a row leave `npm run test:e2e:serve` going in another terminal: `reuseExistingServer` picks it up locally.
 - **If the suite fails here in ways CI doesn't, suspect the server before the code.** `reuseExistingServer` is true locally, so a `vite preview` left running from an earlier session is trusted and nothing is rebuilt: the tests then judge a stale `dist/`. Check `lsof -i :4173` and the age of `dist/index.html` first. On 2026-10-25 this cost an hour and six failures that were a day-old build carrying an injected bug, not a regression.
 - Never read a JSON report, a trace or `playwright-report/` into context: `node scripts/e2e-summary.ts <report.json>` turns a report into a few lines, and `npm run test:e2e:report` is for a person with a browser.
-- To look at the page, use `playwright-cli` (`npm install -D @playwright/cli@latest`), not Playwright MCP.
+- To look at the page, use `playwright-cli` (installed as a devDependency), not Playwright MCP. Pass `--browser chrome`: this Mac is macOS 12, where Playwright cannot install its own Chromium. Its agent skill, and the `playwright-trace` one for reading a trace without a browser, live in `~/.claude/skills` — copies, so `npm run skills:refresh` after a bump.
 
 ## Where the rest lives
 

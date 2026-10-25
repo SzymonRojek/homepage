@@ -93,6 +93,7 @@ test.describe("Navigation", () => {
     const pill = page
       .getByRole("link", { name: /^Szymon Rojek/ })
       .locator("..");
+    // eslint-disable-next-line playwright/no-conditional-in-test -- the gap above the pill differs by project: 8px on mobile, 12px from mobileMax up
     const gap = page.viewportSize()!.width <= 767 ? 8 : 12;
 
     await test.step("at the top: nothing of itself over the hero", async () => {

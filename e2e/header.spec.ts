@@ -52,6 +52,7 @@ test.describe("Header and footer", () => {
     // The hero has no links: contact lives in the top bar and the footer.
     await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
     // Up to 991px (phones, an upright tablet) "Contact" sits in the menu.
+    // eslint-disable-next-line playwright/no-conditional-in-test -- one test covers both projects: up to tabletVerticalMax the link is behind the menu button
     if (page.viewportSize()!.width <= 991) {
       await page.getByRole("button", { name: "Menu" }).click();
     }
