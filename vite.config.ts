@@ -1,10 +1,42 @@
 import { configDefaults, defineConfig } from "vitest/config";
+import type { Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
+import { profile } from "./src/features/Homepage/profile.ts";
+
+// The head's text has one source. index.html hand-wrote the page title, the
+// site name, the share card's title and its alt text, which is how og:title
+// came to claim a job title the page had dropped everywhere else: the audit
+// injected exactly that and nothing noticed. The description stays written
+// once in index.html, and og:description is copied from it. This runs in dev
+// and in the build, so the dev server shows what ships.
+const headFromProfile = (): Plugin => ({
+  name: "head-from-profile",
+  transformIndexHtml: {
+    order: "pre",
+    handler: (html) => {
+      const description = /name="description"\s+content="([^"]*)"/.exec(
+        html,
+      )?.[1];
+      if (!description)
+        throw new Error("index.html has no description for og:description");
+      const values = {
+        "%PAGE_TITLE%": `${profile.name} | ${profile.title}`,
+        "%SITE_NAME%": profile.name,
+        "%PAGE_DESCRIPTION%": description,
+        "%OG_IMAGE_ALT%": `${profile.name}, ${profile.title}, beside a photo of ${profile.name.split(" ")[0]}`,
+      };
+      return Object.entries(values).reduce(
+        (out, [token, value]) => out.replaceAll(token, value),
+        html,
+      );
+    },
+  },
+});
 
 export default defineConfig({
   base: "/",
-  plugins: [react(), svgr()],
+  plugins: [react(), svgr(), headFromProfile()],
   server: { port: 3000 },
   test: {
     environment: "jsdom",
