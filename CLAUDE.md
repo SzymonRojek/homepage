@@ -164,6 +164,7 @@ What is forbidden in a test, the conventions and the audit are in `.claude/rules
 - While fixing a failure, add `--max-failures=1`.
 - The full suite only when the user asks for it; CI runs it on every push to `dev`.
 - `webServer` runs `npm run build` on every invocation, so for several runs in a row leave `npm run test:e2e:serve` going in another terminal: `reuseExistingServer` picks it up locally.
+- **If the suite fails here in ways CI doesn't, suspect the server before the code.** `reuseExistingServer` is true locally, so a `vite preview` left running from an earlier session is trusted and nothing is rebuilt: the tests then judge a stale `dist/`. Check `lsof -i :4173` and the age of `dist/index.html` first. On 2026-10-25 this cost an hour and six failures that were a day-old build carrying an injected bug, not a regression.
 - Never read a JSON report, a trace or `playwright-report/` into context: `node scripts/e2e-summary.ts <report.json>` turns a report into a few lines, and `npm run test:e2e:report` is for a person with a browser.
 - To look at the page, use `playwright-cli` (`npm install -D @playwright/cli@latest`), not Playwright MCP.
 
