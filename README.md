@@ -12,8 +12,8 @@
 
 | At a glance           |                                                                                                                                                            |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automated tests       | 218 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
-| Coverage              | about 98%, with a 90% gate that fails CI                                                                                                                   |
+| Automated tests       | 220 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
+| Coverage              | about 98%, with a 90% gate on the whole project and a floor every file must clear                                                                          |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push                                                                       |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                                                                                      |
 | Runtime API calls     | 0, so nothing can fail for a visitor                                                                                                                       |
@@ -21,13 +21,28 @@
 
 ## Links for job applications
 
-The case studies start closed. A link can open one at a chosen side, so each CV points to the part that matters for that role:
+Each CV points at the part of the page that matters for the role it answers. The case studies start closed, and a link opens one at a chosen side: see [Other work](#other-work) for the Talent Outreach links, or send [szymonrojek.com](https://szymonrojek.com/) for the whole page.
 
-| Applying for        | Link                                                          |
-| ------------------- | ------------------------------------------------------------- |
-| Test automation, QA | https://szymonrojek.com/#case-study-talent-outreach-tester    |
-| Developer           | https://szymonrojek.com/#case-study-talent-outreach-developer |
-| The whole page      | https://szymonrojek.com/                                      |
+## How it's tested
+
+**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and, every two months or by hand, again in Safari's engine (WebKit) on a desktop, an iPad held both ways and two iPhones, and also checks that the hero photo is actually drawn on screen (its pixels, not only its box), that the top bar, the hero and the sections line up at several screen widths, that the headline and photo only shrink as the window narrows and the photo stays about as tall as the text beside it, that the top bar goes with scrolling down and returns after a short scroll back up, that a reload goes back to the same place without flashing the top bar (also when the browser skips `pagehide`, as an iPhone can), that every section changes its background with the theme, that the rings and the bug stay next to the content on wide screens, and that the CI gates and the numbers on the project cards animate only once in view. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Other end-to-end tests read the page with JavaScript turned off and check what search engines and link previews get: the structured data, the share image, the sitemap and both case studies in the HTML. Three more start the page in a browser that isn't friendly, since that is what a visitor's machine can be: with storage blocked, as in a private window, with an address that can't be decoded, and with the script blocked altogether, where the page has to stay readable rather than go blank. Unit tests also check that every quoted recommendation, and the phrase marked in it, is word for word from the original. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs, and [`docs/e2e-workflow.md`](docs/e2e-workflow.md) covers how the end-to-end suite is run and audited for the same thing. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
+
+**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo took the mobile performance score from 0.84 to 0.96, with layout shift at 0.001 (PageSpeed, 2026-10-18). The photo went from 117 KB to 50 KB, and the JavaScript is about 129 KB gzipped. The build also writes the whole page into the HTML (`scripts/prerender.ts`), so it can be read without JavaScript, and in the light theme React takes it over as it is, so the photo isn't drawn twice.
+
+**Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build, including Label in Name (WCAG 2.5.3), the rule that a control's accessible name must contain the words printed on it; axe leaves it off by default, and Lighthouse asserts it too. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks (each section a numbered h2), labelled lists, a theme button with `aria-pressed`, a phone menu that is hidden from the keyboard and screen readers while closed, and decorative icons hidden from screen readers. Buttons that repeat on both project cards say which project they are for ("Case study: Talent Outreach"), and every animation stops with reduced motion. In forced-colours mode, such as Windows high contrast, the menu button's lines take a system colour, since the palette there overrides an author's and would otherwise leave the button looking empty.
+
+**Security.** There are no secrets and no runtime API calls. The built page carries its own content security policy, written in by the prerender with a hash for every inline script, because GitHub Pages serves the page as it is and cannot send headers; scripts are allowed by hash alone, with no `unsafe-inline` and no `unsafe-eval`, and an end-to-end test fails on any refusal the browser reports. A meta tag can't carry HSTS or `frame-ancestors`, and `nosniff` has no meta either, so those three wait for a proxy in front of the site; `Referrer-Policy` travels as a meta. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every month, targeted at `dev`. External links use `rel="noreferrer"`. Nothing the browser is asked for is taken on trust: the reads of storage and of the address happen behind a guard, because they run before React draws anything, and an error boundary keeps my email address and links on screen if a render throws. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
+
+## Tech stack
+
+| Area      | Tools                                                                                               |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| Front-end | React 19, TypeScript (strict), Vite                                                                 |
+| State     | Redux Toolkit (theme)                                                                               |
+| Styling   | styled-components with light and dark themes, self-hosted Bricolage Grotesque, Geist and Geist Mono |
+| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker                               |
+| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot                                             |
+| Hosting   | GitHub Pages, deployed automatically from `main`                                                    |
 
 ## Case study: this website, built and tested like a real product
 
@@ -87,16 +102,6 @@ flowchart LR
 | Lighthouse judged on the median of three runs                                                                                                                                                                                                                       | The default (best run) could let a budget pass by luck                                                                                                                                                                                                                                                  | Slower CI, and a stricter budget                                                                                                                                                                                                                                   |
 | Protected `main`, dev-first workflow, PRs I merge myself                                                                                                                                                                                                            | Every push to `main` deploys. The rule also stops an AI coding assistant shipping on its own                                                                                                                                                                                                            | Even a one-line fix needs a PR and a green pipeline                                                                                                                                                                                                                |
 
-### Testing, performance, accessibility and security
-
-**Testing.** Vitest and Testing Library cover logic and components: theme state and persistence, the OS theme listener, the first-paint theme colours, the top bar menu, project cards, case studies and the links that open them, and the scroll position after a reload. Playwright runs against the production build in desktop and mobile Chrome, and, every two months or by hand, again in Safari's engine (WebKit) on a desktop, an iPad held both ways and two iPhones, and also checks that the hero photo is actually drawn on screen (its pixels, not only its box), that the top bar, the hero and the sections line up at several screen widths, that the headline and photo only shrink as the window narrows and the photo stays about as tall as the text beside it, that the top bar goes with scrolling down and returns after a short scroll back up, that a reload goes back to the same place without flashing the top bar (also when the browser skips `pagehide`, as an iPhone can), that every section changes its background with the theme, that the rings and the bug stay next to the content on wide screens, and that the CI gates and the numbers on the project cards animate only once in view. Tests are grouped by page section, use named steps for longer scenarios, and are tagged `@desktop` or `@mobile` when they apply to one viewport only. Role-based locators also check that every control has an accessible name. Other end-to-end tests read the page with JavaScript turned off and check what search engines and link previews get: the structured data, the share image, the sitemap and both case studies in the HTML. Three more start the page in a browser that isn't friendly, since that is what a visitor's machine can be: with storage blocked, as in a private window, with an address that can't be decoded, and with the script blocked altogether, where the page has to stay readable rather than go blank. Unit tests also check that every quoted recommendation, and the phrase marked in it, is word for word from the original. Every test fails if the page calls the GitHub API. Stryker mutation testing (`npm run test:mutation`, or the manual GitHub workflow) checks that the unit tests actually catch bugs, and [`docs/e2e-workflow.md`](docs/e2e-workflow.md) covers how the end-to-end suite is run and audited for the same thing. Style-only files are left out, as they are from coverage. After targeted tests, every mutant in the files that had gaps was caught (102 killed, 8 timed out).
-
-**Performance.** Lighthouse runs three times on every push. CI fails if the median performance score drops below 0.85 or layout shift goes above 0.1, and warns when the largest paint is slower than 2.5 s. Self-hosting the font and resizing the photo took the mobile performance score from 0.84 to 0.96, with layout shift at 0.001 (PageSpeed, 2026-10-18). The photo went from 117 KB to 50 KB, and the JavaScript is about 129 KB gzipped. The build also writes the whole page into the HTML (`scripts/prerender.ts`), so it can be read without JavaScript, and in the light theme React takes it over as it is, so the photo isn't drawn twice.
-
-**Accessibility.** axe scans the page in the light and the dark theme with every case study expanded, and any serious or critical violation fails the build, including Label in Name (WCAG 2.5.3), the rule that a control's accessible name must contain the words printed on it; axe leaves it off by default, and Lighthouse asserts it too. Lighthouse accessibility must stay at 95 or above (it is 100 today). The page uses semantic headings and landmarks (each section a numbered h2), labelled lists, a theme button with `aria-pressed`, a phone menu that is hidden from the keyboard and screen readers while closed, and decorative icons hidden from screen readers. Buttons that repeat on both project cards say which project they are for ("Case study: Talent Outreach"), and every animation stops with reduced motion. In forced-colours mode, such as Windows high contrast, the menu button's lines take a system colour, since the palette there overrides an author's and would otherwise leave the button looking empty.
-
-**Security.** There are no secrets and no runtime API calls. The built page carries its own content security policy, written in by the prerender with a hash for every inline script, because GitHub Pages serves the page as it is and cannot send headers; scripts are allowed by hash alone, with no `unsafe-inline` and no `unsafe-eval`, and an end-to-end test fails on any refusal the browser reports. A meta tag can't carry HSTS or `frame-ancestors`, and `nosniff` has no meta either, so those three wait for a proxy in front of the site; `Referrer-Policy` travels as a meta. `npm audit` fails CI on high-severity advisories in the dependencies shipped to visitors, and Dependabot proposes npm and GitHub Actions updates every month, targeted at `dev`. External links use `rel="noreferrer"`. Nothing the browser is asked for is taken on trust: the reads of storage and of the address happen behind a guard, because they run before React draws anything, and an error boundary keeps my email address and links on screen if a render throws. Development-only tools such as Lighthouse CI still carry some advisories. They never reach the browser, which is why the audit gate covers only shipped dependencies.
-
 ### Outcomes
 
 - Projects render instantly and can't fail for a visitor: the section no longer depends on GitHub's API.
@@ -105,74 +110,16 @@ flowchart LR
 - Lighthouse accessibility, best practices and SEO all score 100; performance is held by a CI budget.
 - Every deploy has passed the full pipeline, because `main` accepts nothing else.
 
-## Case study: Talent Outreach, job offers to the right candidates
+## Other work
 
-**[Code](https://github.com/SzymonRojek/talent-outreach)** · **[Live demo](https://talent-outreach.onrender.com/?utm_source=github)** (one click on "Try the demo", no password; the free server sleeps, so the first load takes about 30 seconds, and the demo data resets every night)
+**[Talent Outreach](https://github.com/SzymonRojek/talent-outreach)** — a full-stack app that sends job offers to the right candidates: React and TypeScript on the front, an Express API behind it, Airtable as the store. 200+ unit tests, 63 Playwright flows and 56 API checks, with the end-to-end, API and Lighthouse runs against a fake Airtable so they never touch real data. The write-up lives in that repository, and the case study on the site opens at the side a role cares about:
 
-A full-stack React, Express and TypeScript recruitment tool, with data in Airtable. It started in 2021 as an email CRUD app ("Email Campaign Dashboard"); I reviewed it like a tester, rebuilt it to production standard and then narrowed it to one recruiter's problem: the right job offer to the right candidates, and not to anyone contacted in the last 14 days.
+| Applying for        | Link                                                          |
+| ------------------- | ------------------------------------------------------------- |
+| Test automation, QA | https://szymonrojek.com/#case-study-talent-outreach-tester    |
+| Developer           | https://szymonrojek.com/#case-study-talent-outreach-developer |
 
-| At a glance        |                                                                                                             |
-| ------------------ | ----------------------------------------------------------------------------------------------------------- |
-| Secrets in browser | 0: only the Express server talks to Airtable                                                                |
-| Automated tests    | 200+ server and client unit tests, 63 Playwright end-to-end tests, a Postman collection (Newman)            |
-| Accessibility      | Lighthouse on 7 screens in CI: accessibility, best practices and SEO must stay at 100                       |
-| Test data          | end-to-end, API and Lighthouse runs use a fake Airtable, so they never touch real data                      |
-| Bugs fixed         | 11 found and fixed in the first review                                                                      |
-| Delivery           | pull request checks, then staging, then production, all automatic                                           |
-| Live demo          | one-click login, outbox instead of real sending, nightly reset and live check, Sentry without personal data |
-
-### The brief
-
-A small recruitment agency keeps its candidates in a spreadsheet. Every new job offer means filtering by hand, pasting addresses into Gmail and writing "Dear candidate", with the risk of leaking addresses or contacting the same people too often.
-
-| Spreadsheet and Gmail                                   | Talent Outreach                                                                                     |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Filter the sheet by hand and copy the addresses         | Pick a role and a budget, and the matching candidates are found                                     |
-| "Dear candidate" for everyone                           | Every email uses the candidate's name and the role; a mistyped placeholder is caught before sending |
-| Nobody remembers who got which offer                    | Candidates contacted in the last 14 days are skipped by default                                     |
-| Consent is a column nobody updates                      | Only candidates open to offers get emails; the opt-out link updates the status by itself            |
-| One address in CC instead of BCC leaks everyone's email | One email per candidate, so nobody sees the others                                                  |
-| What was sent is buried in the Sent folder              | An outbox for each job offer shows every email exactly as it was sent                               |
-
-Not built yet: real delivery. Every email is built, checked and saved to the outbox; sending it through an email service is one more transport in one file.
-
-### Problem
-
-The 2021 app sent emails through EmailJS straight from the browser. The Airtable key sat behind an Express proxy, but the login ran only in the browser, so anyone who called the API directly could read, change or delete every record. The API had been tested by hand in Postman, there were no automated tests or CI, and the free Heroku hosting had ended.
-
-### Architecture
-
-```mermaid
-flowchart LR
-  react["React app"] --> api["Express API /api<br/>signed login token"]
-  api --> mail["Server checks consent,<br/>escapes text, signs<br/>opt-out links"]
-  mail --> airtable[("Airtable<br/>candidates, job offers,<br/>outbox, feedback")]
-```
-
-```mermaid
-flowchart LR
-  branch["Feature branch"] --> pr["PR to dev<br/>type check, lint,<br/>unit tests, build"]
-  pr --> e2e["Playwright e2e,<br/>Postman API tests,<br/>Lighthouse<br/>fake Airtable"]
-  e2e --> staging["Merge, deploy<br/>to staging"]
-  staging --> main["Release PR<br/>dev → main, CI again"]
-  main --> prod["Deploy to<br/>production"]
-```
-
-### Key decisions and trade-offs
-
-| Decision                                                          | Why                                                                          | Trade-off                                                                                                                   |
-| ----------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Server-side login, signed tokens, lockout after 5 wrong passwords | A browser-only login didn't protect the API at all                           | The lockout lives in memory and resets when the free server restarts; it counts the real address behind Cloudflare          |
-| A one-click demo login, only where the demo is switched on        | A reviewer should try the app without a password                             | Any server without the setting has no passwordless door; API clients still use the password                                 |
-| The browser suggests recipients, the server has the last word     | Filtering by role, budget and last contact needs a fast, interactive list    | The server re-checks consent on every send, so an outdated list can't reach someone who opted out                           |
-| An outbox instead of real sending in the demo                     | Anyone can enter the public demo, and the free host blocks SMTP              | Nobody gets the emails; each one is saved and can be opened. Real delivery is one more transport in one file, not built yet |
-| End-to-end, API and Lighthouse runs against a fake Airtable       | Tests must never touch real data, and CI shouldn't need secrets              | The fake can drift from the real API, so it copies Airtable's records and errors                                            |
-| Nightly reset, then a read-only check of the live app             | Visitors change the data, and the next reviewer should see a working example | New examples are created before old ones are deleted; the reset is skipped when nothing changed                             |
-| One recruiter problem instead of a generic newsletter tool        | A problem solved end to end is easier to explain, to use and to test         | Fewer features: the app only sends job offers to candidates                                                                 |
-| Error monitoring without personal data                            | I need to see failures on the live demo without collecting data I don't need | Sentry gets no IPs, headers or request bodies, so some errors are harder to reproduce                                       |
-| Staging before production, with a hotfix path                     | Changes are checked on a live copy before users see them                     | Two environments to keep in sync; a hotfix must be merged back into `dev`                                                   |
-
-### What the first review found
+**What the first review of it found**, before any of the tests above existed:
 
 - The Airtable token leaked in error responses.
 - Unchecking every recipient sent the email to **all** of them: an empty selection was treated as "no filter".
@@ -180,18 +127,9 @@ flowchart LR
 - Polish names with accented letters sorted after "z" until sorting used a Polish locale.
 - Deleting a record didn't wait for Airtable, so a failure could crash the server.
 
+Each one is now covered by a test. This list belongs in that repository's own README and is kept here until it moves.
+
 ## For developers
-
-### Tech stack
-
-| Area      | Tools                                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------- |
-| Front-end | React 19, TypeScript (strict), Vite                                                                 |
-| State     | Redux Toolkit (theme)                                                                               |
-| Styling   | styled-components with light and dark themes, self-hosted Bricolage Grotesque, Geist and Geist Mono |
-| Testing   | Vitest, Testing Library, Playwright, axe-core, Lighthouse CI, Stryker                               |
-| Quality   | ESLint, Prettier, GitHub Actions, npm audit, Dependabot                                             |
-| Hosting   | GitHub Pages, deployed automatically from `main`                                                    |
 
 ### Getting started
 
