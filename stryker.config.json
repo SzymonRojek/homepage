@@ -18,15 +18,13 @@
     "!src/features/Homepage/email.ts",
     "!src/features/Homepage/skillsData.ts",
     "!src/features/Homepage/experienceData.ts",
-    "!src/features/Homepage/qualityData.ts",
     "!src/features/Homepage/Portfolio/projectsData.ts",
     "!src/features/Homepage/Portfolio/githubUserName.ts",
     "!src/features/Homepage/Footer/SocialIcons/social.ts",
     "!src/core/App/theme.ts",
     "!src/core/App/GlobalStyle.ts",
     "!src/features/Homepage/ButtonLink/index.ts",
-    "!src/features/Homepage/Section/index.ts",
-    "!src/features/Homepage/SubHeader/index.ts"
+    "!src/features/Homepage/Section/index.ts"
   ],
   "reporters": ["clear-text", "progress", "html", "json"],
   "htmlReporter": {

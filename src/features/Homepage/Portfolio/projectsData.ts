@@ -81,6 +81,9 @@ export interface Project {
   description: string;
   category: ProjectCategory;
   demoUrl?: string;
+  // A word of warning beside the demo link, where the hosting makes a
+  // visitor wait: a recruiter who is told waits, one who isn't leaves.
+  demoNote?: string;
   // Card: one sentence and three short facts in the same pattern on every
   // card: what it is, how it's tested, how quality is guarded. The full story
   // opens on click.
@@ -499,6 +502,11 @@ export const projects: Project[] = [
     description:
       "Full-stack recruitment tool: job offers to candidates by role and budget, personalised, only with consent and not to anyone contacted in the last 14 days, with unit, API, end-to-end and Lighthouse tests and CI/CD through staging to production.",
     demoUrl: "https://talent-outreach.onrender.com/?utm_source=portfolio",
+    // Render's free tier sleeps: the demo answered in 32 s on 2026-10-23.
+    // The case study says so in its constraints, but that is inside the
+    // collapsed technical details, too late for someone at a blank page.
+    demoNote:
+      "Hosted free, so the first load wakes the server: about 30 seconds.",
     tag: "Full-stack app",
     featured: true,
     teaser:

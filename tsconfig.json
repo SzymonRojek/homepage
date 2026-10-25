@@ -7,6 +7,9 @@
     "jsx": "react-jsx",
     "strict": true,
     "noEmit": true,
+    // vite.config.ts imports src/features/Homepage/profile.ts for the head's
+    // text, and Vite's native config loader needs the extension on it.
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,

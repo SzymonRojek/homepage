@@ -35,10 +35,9 @@ describe("Footer", () => {
         name: "Copy my email address, sz.rojek@proton.me",
       }),
     ).toBeVisible();
-    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
-      "href",
-      profile.linkedinUrl,
-    );
+    expect(
+      screen.getByRole("link", { name: "LinkedIn (opens in a new tab)" }),
+    ).toHaveAttribute("href", profile.linkedinUrl);
     // The address is shown on purpose since 2026-10-21: it was in the
     // page's HTML inside the old mailto: anyway, so hiding it only stopped
     // people copying it when the mail app never opened.

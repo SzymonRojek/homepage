@@ -132,6 +132,17 @@ export const Facts = styled.ul<Featured>`
 // fit. With three of them, a narrow card gives the case study the first row
 // and puts the demo and the code side by side under it, all to the left; two
 // stay side by side until the card has no room left for both.
+// Above the buttons, not below them: Actions keeps "margin-top: auto" so
+// both cards end their buttons level, and anything after it would break that.
+export const DemoNote = styled.p<Featured>`
+  margin: 0;
+  padding-top: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: ${({ theme, $featured }) =>
+    $featured ? theme.colors.brand.muted : theme.colors.muted};
+`;
+
 export const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;

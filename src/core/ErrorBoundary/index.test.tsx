@@ -40,11 +40,12 @@ describe("ErrorBoundary", () => {
       "didn’t load properly",
     );
     expect(screen.getByText(email)).toBeVisible();
-    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
-      "href",
-      profile.linkedinUrl,
-    );
-    expect(screen.getByRole("link", { name: "GitHub" })).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: "LinkedIn (opens in a new tab)" }),
+    ).toHaveAttribute("href", profile.linkedinUrl);
+    expect(
+      screen.getByRole("link", { name: "GitHub (opens in a new tab)" }),
+    ).toBeVisible();
     expect(reported).toHaveBeenCalled();
   });
 });

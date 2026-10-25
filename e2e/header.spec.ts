@@ -1,5 +1,7 @@
 import { test, expect } from "./fixtures";
 
+const address = "sz.rojek@proton.me";
+
 test.describe("Header and footer", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("./");
@@ -60,13 +62,14 @@ test.describe("Header and footer", () => {
     ).toHaveAttribute("href", "#contact");
     await expect(
       page.getByRole("contentinfo").getByRole("button", {
-        name: "Copy my email address, sz.rojek@proton.me",
+        name: `Copy my email address, ${address}`,
       }),
     ).toBeVisible();
     await expect(
-      page
-        .getByRole("contentinfo")
-        .getByRole("link", { name: "LinkedIn", exact: true }),
+      page.getByRole("contentinfo").getByRole("link", {
+        name: "LinkedIn (opens in a new tab)",
+        exact: true,
+      }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
   });
 
@@ -175,11 +178,14 @@ test.describe("Header and footer", () => {
 
     await expect(
       footer.getByRole("button", {
-        name: "Copy my email address, sz.rojek@proton.me",
+        name: `Copy my email address, ${address}`,
       }),
     ).toBeVisible();
     await expect(
-      footer.getByRole("link", { name: "LinkedIn", exact: true }),
+      footer.getByRole("link", {
+        name: "LinkedIn (opens in a new tab)",
+        exact: true,
+      }),
     ).toHaveAttribute("href", /linkedin\.com\/in\//);
     // The address is shown in the footer now, beside a button that copies
     // it: the mailto: does nothing for a visitor with no mail app, and the
@@ -195,6 +201,32 @@ test.describe("Header and footer", () => {
         name: "Let’s ship something that doesn’t break.",
       }),
     ).toBeVisible();
+  });
+
+  // Chromium only: WebKit cannot be granted clipboard-read, and reading the
+  // clipboard back is the whole point. Both the mint pill and the live region
+  // can announce a copy that never happened, which is the bug this catches.
+  test("the footer's button really copies the address @chromium", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("./");
+    const footer = page.getByRole("contentinfo");
+
+    await footer
+      .getByRole("button", { name: `Copy my email address, ${address}` })
+      .click();
+
+    // What a screen reader hears; the pill beside it is decorative.
+    await expect(footer.getByRole("status")).toHaveText(
+      "Email address copied.",
+    );
+    // The effect itself. Without this the test passes on a handler that
+    // reports success and copies nothing.
+    await expect
+      .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+      .toBe(address);
   });
 });
 

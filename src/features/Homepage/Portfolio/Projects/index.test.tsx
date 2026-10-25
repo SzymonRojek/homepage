@@ -71,7 +71,9 @@ describe("Projects", () => {
   it("links each tile to its repository in a new tab", () => {
     renderProjects([createProject({ repo: "first" })]);
 
-    const link = screen.getByRole("link", { name: "GitHub Repository" });
+    const link = screen.getByRole("link", {
+      name: "GitHub Repository (opens in a new tab)",
+    });
     expect(link).toHaveAttribute(
       "href",
       "https://github.com/SzymonRojek/first",
@@ -86,9 +88,11 @@ describe("Projects", () => {
       createProject({ repo: "without-demo" }),
     ]);
 
-    expect(screen.getAllByRole("link", { name: "Open the demo" })).toHaveLength(
-      1,
-    );
+    expect(
+      screen.getAllByRole("link", {
+        name: "Open the demo (opens in a new tab)",
+      }),
+    ).toHaveLength(1);
   });
 
   it("lists non-testing work under Other projects", () => {
@@ -123,12 +127,14 @@ describe("Projects", () => {
 
     const other = screen.getByRole("region", { name: "Other projects" });
     expect(other).toHaveTextContent(/front-end background/i);
-    const demos = within(other).getAllByRole("link", { name: "Demo" });
+    const demos = within(other).getAllByRole("link", {
+      name: "Demo (opens in a new tab)",
+    });
     expect(demos).toHaveLength(1);
     expect(demos[0]).toHaveAttribute("href", "https://example.com/music");
-    expect(within(other).getAllByRole("link", { name: "Code" })).toHaveLength(
-      2,
-    );
+    expect(
+      within(other).getAllByRole("link", { name: "Code (opens in a new tab)" }),
+    ).toHaveLength(2);
   });
 
   it("shows no empty tile list when every testing project is a case study", () => {

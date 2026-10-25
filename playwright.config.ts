@@ -17,36 +17,38 @@ export default defineConfig({
     baseURL: "http://localhost:4173/",
     trace: "on-first-retry",
   },
-  // Tests tagged @desktop or @mobile run only in the matching project; tablets run the untagged ones.
+  // Tests tagged @desktop or @mobile run only in the matching project; tablets
+  // run the untagged ones. @chromium marks a test the WebKit projects cannot
+  // run, such as one that reads the clipboard: only Chromium can be granted it.
   projects: safari
     ? [
         {
           name: "safari-desktop",
           use: { ...devices["Desktop Safari"] },
-          grepInvert: /@mobile/,
+          grepInvert: /@mobile|@chromium/,
         },
         {
           // 834px: the menu and the two-column hero.
           name: "safari-ipad",
           use: { ...devices["iPad Pro 11"] },
-          grepInvert: /@mobile|@desktop/,
+          grepInvert: /@mobile|@desktop|@chromium/,
         },
         {
           // 1194px: the links in the bar, below the desktop gutters.
           name: "safari-ipad-landscape",
           use: { ...devices["iPad Pro 11 landscape"] },
-          grepInvert: /@mobile|@desktop/,
+          grepInvert: /@mobile|@desktop|@chromium/,
         },
         {
           name: "safari-iphone",
           use: { ...devices["iPhone 17"] },
-          grepInvert: /@desktop/,
+          grepInvert: /@desktop|@chromium/,
         },
         {
           // 375px, a narrow phone.
           name: "safari-iphone-se",
           use: { ...devices["iPhone SE (3rd gen)"] },
-          grepInvert: /@desktop/,
+          grepInvert: /@desktop|@chromium/,
         },
       ]
     : [

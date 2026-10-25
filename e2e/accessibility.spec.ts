@@ -72,3 +72,50 @@ for (const colorScheme of ["light", "dark"] as const) {
     });
   });
 }
+
+// target="_blank" is silent, so a screen reader gives no warning that a link
+// leaves the page for a new tab. Every external link has to say so itself,
+// in its aria-label (src/common/newTab.ts).
+test("every external link says that it opens a new tab", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.getByRole("list", { name: "Case studies" })).toBeVisible();
+
+  // Every link that leaves the page, with the name a screen reader reads: the
+  // label where there is one, else the link's own words, hidden ones included.
+  const external = () =>
+    page.getByRole("link").evaluateAll((links) =>
+      links
+        .filter((link) => link.getAttribute("target") === "_blank")
+        .map((link) => ({
+          href: link.getAttribute("href"),
+          name: link.getAttribute("aria-label") ?? link.textContent ?? "",
+        })),
+    );
+
+  // The hrefs of the ones that don't say it, so a failure names them.
+  const unannounced = async () => {
+    const links = await external();
+    expect(links.length).toBeGreaterThan(0);
+    return links
+      .filter(({ name }) => !name.includes("opens in a new tab"))
+      .map(({ href }) => href);
+  };
+
+  // The cards and the footer first, then the links inside each case study:
+  // only one is open at a time, so each is checked as it opens.
+  expect(await unannounced()).toEqual([]);
+
+  const cards = page
+    .getByRole("list", { name: "Case studies" })
+    .getByRole("button", { name: "Case study" });
+
+  for (let index = 0; index < (await cards.count()); index++) {
+    await cards.nth(index).click();
+    await page
+      .locator("details")
+      .evaluateAll((elements) =>
+        elements.forEach((element) => element.setAttribute("open", "")),
+      );
+    expect(await unannounced()).toEqual([]);
+  }
+});

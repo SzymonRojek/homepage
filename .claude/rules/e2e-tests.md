@@ -29,3 +29,5 @@ The rules for `e2e/`. The commands for running it are in CLAUDE.md; `eslint-plug
 ## The audit
 
 The suite is audited periodically for whether it really catches bugs: `/e2e-setup` once, then `/e2e-audit-1-baseline`, `-2-coverage`, `-3-sabotage`, `-4-review`, `-5-fix <spec>` and `-6-verify`, in that order, each in a fresh session. Every step writes a report into `audit/` and stops, so the user reads it before the next one runs; the reports and the bug patches stay out of the repository. `.claude/agents/playwright-reviewer.md` is the read-only second opinion on a spec, and `docs/e2e-workflow.md` explains the whole arrangement for a reader who is new to it.
+
+Two things an audit must do with the build, learned the hard way: **rebuild after the last restore**, because a loop that injects a bug, builds, then restores the source leaves `dist/` carrying that bug; and **stop the preview server it started**, since `vite preview` survives a terminated parent and the next local run will reuse it. A stale server plus a sabotaged build looks exactly like a regression in the page.

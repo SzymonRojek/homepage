@@ -1,3 +1,4 @@
+import { withNewTab } from "../../../../common/newTab";
 import { repoUrl, type Project } from "../projectsData";
 import { Gates } from "../Gates";
 import { Stats } from "../Stats";
@@ -7,6 +8,7 @@ import {
   Name,
   Teaser,
   Facts,
+  DemoNote,
   Actions,
   ToggleButton,
   SmallLink,
@@ -26,13 +28,14 @@ interface ProjectCardProps {
 // deep green, the other one white beside it. The full case study opens below
 // the cards: its button keeps one label, and the chevron (with aria-expanded)
 // shows whether it is open. The two links leave the site, marked with an
-// arrow and the GitHub mark.
+// arrow and the GitHub mark, and their names say they open a new tab.
 export const ProjectCard = ({
   project: {
     title,
     repo,
     description,
     demoUrl,
+    demoNote,
     teaser,
     cardTitle,
     facts,
@@ -68,6 +71,9 @@ export const ProjectCard = ({
           ))}
         </Facts>
       )}
+      {demoUrl && demoNote && (
+        <DemoNote $featured={$featured}>{demoNote}</DemoNote>
+      )}
       <Actions>
         <ToggleButton
           type="button"
@@ -83,7 +89,7 @@ export const ProjectCard = ({
         {demoUrl && (
           <SmallLink
             href={demoUrl}
-            aria-label={forProject("Demo")}
+            aria-label={withNewTab(forProject("Demo"))}
             target="_blank"
             rel="noreferrer"
             $featured={$featured}
@@ -94,7 +100,7 @@ export const ProjectCard = ({
         )}
         <SmallLink
           href={repoUrl(repo)}
-          aria-label={forProject("Code")}
+          aria-label={withNewTab(forProject("Code"))}
           target="_blank"
           rel="noreferrer"
           $featured={$featured}

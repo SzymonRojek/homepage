@@ -192,12 +192,13 @@ describe("CaseStudy", () => {
     const checks = screen.getByRole("list", { name: "CI checks" });
     expect(within(checks).getAllByRole("listitem")).toHaveLength(2);
     expect(screen.getByText("Every check passes")).toBeVisible();
-    expect(screen.getByRole("link", { name: "CI status" })).toHaveAttribute(
-      "href",
-      "https://example.com/ci",
-    );
     expect(
-      screen.getByRole("link", { name: "See the end-to-end tests" }),
+      screen.getByRole("link", { name: "CI status (opens in a new tab)" }),
+    ).toHaveAttribute("href", "https://example.com/ci");
+    expect(
+      screen.getByRole("link", {
+        name: "See the end-to-end tests (opens in a new tab)",
+      }),
     ).toHaveAttribute("href", "https://example.com/e2e");
     // The tester lens shows the pipeline, not the points of the default fixture.
     expect(screen.queryByText("Playwright on every push.")).toBeNull();
