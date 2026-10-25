@@ -19,7 +19,7 @@
     "test:e2e:report": "playwright show-report",
     "test:e2e:serve": "npm run build && npm run preview -- --port 4173 --strictPort",
     "test:e2e:changed": "playwright test --only-changed --reporter=line --retries=0",
-    "test:lighthouse": "lhci autorun",
+    "test:lighthouse": "lhci collect && lhci assert && lhci upload",
     "test:mutation": "stryker run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
