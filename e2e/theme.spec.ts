@@ -1,8 +1,4 @@
-import { test, expect } from "./fixtures";
-
-// The switch is in the footer's last line; a click scrolls to it.
-const themeSwitch = (page: import("@playwright/test").Page) =>
-  page.getByRole("contentinfo").getByRole("button", { name: "Dark mode" });
+import { test, expect, themeSwitch } from "./fixtures";
 
 const clickThemeSwitch = async (page: import("@playwright/test").Page) => {
   await themeSwitch(page).click();

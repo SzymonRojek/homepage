@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, test } from "./fixtures";
+import { expect, pageErrors, test } from "./fixtures";
 
 const sections = [
   "How I test",
@@ -63,13 +63,12 @@ test.describe("the page without JavaScript", () => {
 
 // Collects console errors, and every image the page removes while it loads.
 const watchLoad = async (page: Page) => {
-  const errors: string[] = [];
+  const errors = pageErrors(page);
   page.on("console", (message) => {
     if (message.type() === "error") {
       errors.push(message.text());
     }
   });
-  page.on("pageerror", (error) => errors.push(error.message));
   await page.addInitScript(() => {
     const removedImages: string[] = [];
     new MutationObserver((records) => {
