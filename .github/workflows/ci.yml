@@ -95,8 +95,38 @@ jobs:
         with:
           name: dist
           path: dist
+      # Whether the page a visitor sees really changed, asked before this run
+      # publishes: the whole page is in index.html and Vite writes the hashed
+      # asset names into it, so a difference there is a real change, while a
+      # commit that only touches CI or tooling leaves it identical. A failed
+      # fetch, or a copy still held in the ten-minute Pages cache, counts as
+      # changed: one ping too many beats a change nobody is told about.
+      - id: page
+        run: |
+          curl -sS -o live.html --max-time 20 https://szymonrojek.com/ || true
+          if [ -s live.html ] && cmp -s live.html dist/index.html; then
+            echo "changed=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=yes" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
       - id: deployment
         uses: actions/deploy-pages@v5
+      # Bing's crawler reached the site once, on 2026-10-14, and the fetch
+      # failed while the DNS and the certificate were still settling. IndexNow
+      # tells it a page changed instead of waiting for it to come back, and it
+      # asks to hear about real changes only, which is what the step above
+      # decides. The key is public by design: it only proves the domain is
+      # mine, and the worst it allows is a recrawl of this site.
+      # 202 is the protocol's success, 200 Bing's own; a failed ping leaves the
+      # deploy green, since the site is published by the time it runs.
+      - name: Tell IndexNow the page changed
+        if: steps.page.outputs.changed == 'yes'
+        continue-on-error: true
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 \
+            "https://api.indexnow.org/indexnow?url=https://szymonrojek.com/&key=57e9c3c3c9e7413dadd6c79df1368733")
+          echo "IndexNow answered $code"
+          case "$code" in 200 | 202) ;; *) exit 1 ;; esac
