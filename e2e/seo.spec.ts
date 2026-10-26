@@ -109,4 +109,18 @@ test.describe("search engines and link previews @desktop", () => {
       "<loc>https://szymonrojek.com/</loc>",
     );
   });
+
+  // IndexNow tells Bing a page changed instead of waiting for its crawler,
+  // which last reached the site on 2026-10-14. The key is public by design:
+  // it only proves the domain is mine, and the file's name has to be the key.
+  test("the IndexNow key file is served under its own key", async ({
+    request,
+  }) => {
+    const key = "57e9c3c3c9e7413dadd6c79df1368733";
+
+    const keyFile = await request.get(`/${key}.txt`);
+    expect(keyFile.ok()).toBe(true);
+    expect(keyFile.headers()["content-type"]).toContain("text/plain");
+    expect((await keyFile.text()).trim()).toBe(key);
+  });
 });
