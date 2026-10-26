@@ -1,6 +1,6 @@
 ---
 name: playwright-reviewer
-description: Adversarial reviewer for Playwright E2E tests. Use after tests are added or changed, before merging. Read-only: reports problems, never edits files.
+description: "Adversarial reviewer for Playwright E2E tests. Use after tests are added or changed, before merging. Read-only: reports problems, never edits files."
 tools: Read, Grep, Glob, Bash
 model: opus
 ---
