@@ -39,6 +39,7 @@ test.describe("Navigation", () => {
       ["Experience", "Experience"],
       ["References", "References"],
       ["How I test", "How I test"],
+      ["AI", "How I use AI"],
     ]) {
       await test.step(link, async () => {
         await (await sectionLink(page, link)).click();
