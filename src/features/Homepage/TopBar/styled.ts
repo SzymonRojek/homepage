@@ -325,6 +325,25 @@ export const MenuButton = styled.button`
     &:focus-visible {
       outline-offset: -4px;
     }
+
+    /* Forced colours: the button states both of its own colours, as a pair
+       from the system palette, instead of trusting the engine to repaint it.
+       Chromium replaces the author's colours with the palette, so the lines
+       came out right on their own; WebKit matches the media query and keeps
+       them, which left ButtonText lines on the page's own near-black hero at
+       about 1.1:1, the empty button the rule in MenuIcon was written to
+       prevent, arriving by another route (the Safari workflow, 2026-11-01).
+       ButtonFace under ButtonText holds in either engine, since the palette
+       defines them as a pair. Hover is pinned for the same reason: it is a
+       plain author colour otherwise, and only there would it win. */
+    @media (forced-colors: active) {
+      color: ButtonText;
+      background: ButtonFace;
+
+      &:hover {
+        color: ButtonText;
+      }
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -352,7 +371,9 @@ export const MenuIcon = styled.span<{ $open: boolean }>`
      page's colours with the system palette: a background of currentColor is
      overridden with the colour behind it, which left the three lines the
      colour of the pill and the button looking empty. A system colour is
-     honoured there, so the lines take the one the button's own text uses. */
+     honoured there, so the lines take the one the button's own text uses,
+     which MenuButton sets to that same keyword rather than leaving it to
+     the engine. */
   @media (forced-colors: active) {
     span {
       background: ButtonText;
