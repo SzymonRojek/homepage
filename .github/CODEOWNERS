@@ -1,0 +1,9 @@
+# Paths whose contents run code: the agent's configuration and rules, the CI
+# workflows, the npm scripts and the build scripts. GitHub marks a pull request
+# that touches them as owned, so a change here cannot reach main unnoticed.
+
+/.claude/           @SzymonRojek
+/.github/           @SzymonRojek
+/scripts/           @SzymonRojek
+/package.json       @SzymonRojek
+/package-lock.json  @SzymonRojek
