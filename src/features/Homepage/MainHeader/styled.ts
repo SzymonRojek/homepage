@@ -141,7 +141,7 @@ export const Eyebrow = styled.p`
 
 // The tagline as the headline and the h1 of the page, on one line. Its size
 // follows the band's width, so it only ever shrinks as the window narrows,
-// with no jump where the layout changes. "I don’t stop at green." is about
+// with no jump where the layout changes. "I don’t stop at green" is about
 // 9.4 times its font size wide, and the tightest fit is the narrowest
 // two-column hero (768px, the photo beside it), so the size falls gently on
 // phones (the first line: 32px at 360px, 47px at 768px) and faster above

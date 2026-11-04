@@ -49,7 +49,7 @@ describe("Footer", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Let’s ship something that doesn’t break.",
+        name: "Let’s ship something that doesn’t break",
       }),
     ).toBeInTheDocument();
     // The invite ends the note, in the same paragraph.

@@ -181,7 +181,7 @@ export const AddressText = styled.span`
 // "Copied" as a small pill above the button, the pattern GitHub, Stripe and
 // Linear all use for a copy control: the confirmation sits next to the
 // action, and because it is positioned out of the flow nothing on the page
-// moves. Mint with near-black text (10.2:1), the colour of "green." in the
+// moves. Mint with near-black text (10.2:1), the colour of "green" in the
 // hero: on a tester's page, green means passing, so a copy that worked wears
 // the site's own colour for success. Kept mounted and toggled, so it fades
 // both ways; hidden it is out of the way of the keyboard and screen readers,

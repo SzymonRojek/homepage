@@ -21,7 +21,7 @@ export const howIUseAI = {
   // The section's big line: the point of the whole section. It covers all
   // four rows, the first one included, where "The questions are mine."
   // only really covered the second (the user's call, 2026-10-20).
-  heading: "The judgement is mine.",
+  heading: "The judgement is mine",
   // The word in the line on the yellow marker.
   headingHighlight: "mine",
   // The two column headings, above the rows.

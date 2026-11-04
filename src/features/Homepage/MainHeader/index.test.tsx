@@ -34,13 +34,13 @@ describe("MainHeader", () => {
     expect(screen.queryByText(/Hove|right to work|relocation/i)).toBeNull();
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
     // The tagline is the h1, led by my name and title for screen readers and
-    // search engines; "green." sits on its tilted block.
+    // search engines; "green" sits on its tilted block.
     const headline = screen.getByRole("heading", {
       level: 1,
-      name: "Szymon Rojek, Test Engineer: I don’t stop at green.",
+      name: "Szymon Rojek, Test Engineer: I don’t stop at green",
     });
     expect(headline.querySelector("svg")).toBeNull();
-    expect(screen.getByText("green.").parentElement).toBe(headline);
+    expect(screen.getByText("green").parentElement).toBe(headline);
     // Over it, the title, as a plain line, not a heading.
     const eyebrow = screen.getByText("Test Engineer", {
       selector: "p",

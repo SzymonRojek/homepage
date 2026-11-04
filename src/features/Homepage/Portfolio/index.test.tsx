@@ -68,12 +68,12 @@ describe("Portfolio", () => {
     expect(heading).toHaveAttribute("data-number", "03");
     const line = heading.nextElementSibling;
     expect(line).toHaveTextContent(
-      /^Built in my own time\. Tested like production\.$/,
+      /^Built in my own time Tested like production$/,
     );
-    // Two sentences, each on a line of its own.
+    // Two lines, one under the other.
     expect(
       Array.from(line?.children ?? [], ({ textContent }) => textContent),
-    ).toEqual(["Built in my own time.", "Tested like production."]);
+    ).toEqual(["Built in my own time", "Tested like production"]);
     expect(line?.nextElementSibling).toHaveTextContent(
       /^Two apps I built to practise development, then tested the way I test at work\./,
     );
