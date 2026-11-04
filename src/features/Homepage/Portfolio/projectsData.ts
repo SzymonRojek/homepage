@@ -482,12 +482,12 @@ const talentOutreachCaseStudy: CaseStudy = {
   ],
 };
 
-// The section's title on screen, two sentences on two lines in the colours
-// of the CODE / TEST portrait: building in the code colour, testing in the
-// testing colour. Then the intro.
+// The section's title on screen, two lines in the colours of the CODE / TEST
+// portrait: building in the code colour, testing in the testing colour. No
+// full stops, as every big heading on the page. Then the intro.
 export const projectsHeadline: { text: string; side: "code" | "test" }[] = [
-  { text: "Built in my own time.", side: "code" },
-  { text: "Tested like production.", side: "test" },
+  { text: "Built in my own time", side: "code" },
+  { text: "Tested like production", side: "test" },
 ];
 
 export const projectsIntro =

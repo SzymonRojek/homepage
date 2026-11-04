@@ -31,9 +31,9 @@ test.describe("Projects", () => {
 
   test("opens with the big line and the intro", async ({ page }) => {
     const section = page.getByRole("region", { name: "Projects" });
-    // Two sentences, each on a line of its own.
-    const first = section.getByText("Built in my own time.", { exact: true });
-    const second = section.getByText("Tested like production.", {
+    // Two lines, one under the other.
+    const first = section.getByText("Built in my own time", { exact: true });
+    const second = section.getByText("Tested like production", {
       exact: true,
     });
     await expect(first).toBeVisible();

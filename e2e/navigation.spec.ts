@@ -79,7 +79,7 @@ test.describe("Navigation", () => {
     await expect(footer).toBeVisible();
     expect(await footer.evaluate((element) => element.scrollTop)).toBe(0);
     const heading = page.getByRole("heading", {
-      name: "Let’s ship something that doesn’t break.",
+      name: "Let’s ship something that doesn’t break",
     });
     expect((await heading.boundingBox())!.y).toBeGreaterThan(
       (await footer.boundingBox())!.y + 20,
@@ -272,7 +272,7 @@ test.describe("Navigation", () => {
       await expect(projects).toBeHidden();
       // The section's small heading, then its big line under it.
       await expect(
-        page.getByText("Built in my own time.", { exact: true }),
+        page.getByText("Built in my own time", { exact: true }),
       ).toBeInViewport();
     });
 

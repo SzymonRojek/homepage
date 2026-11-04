@@ -6,9 +6,12 @@
 // 1256px (see Headline).
 export const headlineSize = "clamp(32px, max(19px + 3.6cqi, 7cqi - 8px), 80px)";
 
-// "I don’t stop at green." on one line is 9.76 times its font size wide (the
+// "I don’t stop at green" on one line is 9.76 times its font size wide (the
 // tilted block included); the text column never gets narrower than that, so
-// the photo can't push the headline onto two lines.
+// the photo can't push the headline onto two lines. The figure was measured
+// while the line still ended in a full stop (dropped on 2026-11-04 with the
+// page's other headings), so the reserve is now a touch generous, which only
+// ever keeps the headline on one line; measure it again if the words change.
 export const headlineWidth = `calc(9.76 * ${headlineSize})`;
 
 // The photo's height: 375px beside the 80px headline, shrinking at under half

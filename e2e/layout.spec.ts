@@ -27,7 +27,7 @@ const expectOneEdge = async (page: Page, smallestGutter: number) => {
     footer: (
       await box(
         page.getByRole("heading", {
-          name: "Let’s ship something that doesn’t break.",
+          name: "Let’s ship something that doesn’t break",
         }),
       )
     ).x,

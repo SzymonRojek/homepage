@@ -14,7 +14,7 @@ test.describe("Header and footer", () => {
     // the line over the headline the title.
     const headline = page.getByRole("heading", { level: 1 });
     await expect(headline).toHaveAccessibleName(
-      "Szymon Rojek, Test Engineer: I don’t stop at green.",
+      "Szymon Rojek, Test Engineer: I don’t stop at green",
     );
     const brand = page.getByRole("link", { name: /^Szymon Rojek/ });
     await expect(brand).toBeVisible();
@@ -199,7 +199,7 @@ test.describe("Header and footer", () => {
     );
     await expect(
       footer.getByRole("heading", {
-        name: "Let’s ship something that doesn’t break.",
+        name: "Let’s ship something that doesn’t break",
       }),
     ).toBeVisible();
   });

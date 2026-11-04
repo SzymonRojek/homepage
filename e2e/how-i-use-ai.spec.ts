@@ -8,7 +8,7 @@ test.describe("How I use AI", () => {
     await expect(headings.first()).toHaveText("How I use AI");
 
     const section = page.getByRole("region", { name: "How I use AI" });
-    await expect(section).toContainText("The judgement is mine.");
+    await expect(section).toContainText("The judgement is mine");
     // The two columns, as a table, not the ticked stages of How I test.
     const table = section.getByRole("table", {
       name: "What the agent does, and what I do",

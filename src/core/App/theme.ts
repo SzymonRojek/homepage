@@ -107,10 +107,10 @@ const brand = {
   background: colorNames.deep,
   // The hero and the footer: near-black with a green undertone, so the page
   // opens and closes on the same dark and the deep green stands out in it
-  // (the tilted "green." in the headline, the top bar, the How I test band).
+  // (the tilted "green" in the headline, the top bar, the How I test band).
   // Cream text on it 17.1:1, muted cream 11.4:1, yellow 12.1:1.
   dark: colorNames.night,
-  // "green." in the hero's headline: the green of a passing test, a block
+  // "green" in the hero's headline: the green of a passing test, a block
   // that stands out on the dark (10.3:1) with near-black letters (10.2:1),
   // leaving the yellow to the buttons.
   highlight: colorNames.mint,
