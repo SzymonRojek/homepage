@@ -31,6 +31,13 @@ export const profile = {
     // label in a list would.
     lines: [["QA,", "Test Automation,"], ["Front\u2011End roles"]],
   },
+  // Under the roles: where I am, and that I would move for the right one.
+  // This was taken off the hero once, as "Full right to work in the UK ·
+  // Open to relocation", and came back on 2026-11-10 at the user's word,
+  // trimmed to these two facts: the right-to-work claim stays in the README
+  // and is not on the page. The place comes from basedIn, so the hero and
+  // the structured data cannot drift apart.
+  locationLine: `Based in ${basedIn} \u00b7 Open to relocation`,
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
   bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",

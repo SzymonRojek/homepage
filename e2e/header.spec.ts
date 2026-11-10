@@ -38,8 +38,13 @@ test.describe("Header and footer", () => {
     await expect(header.getByRole("definition")).toHaveText(
       "QA, Test Automation, Front\u2011End roles",
     );
-    // No location or right-to-work line in the hero.
-    await expect(header.getByText(/Hove|relocation/)).toHaveCount(0);
+    // Where I am and that I would move, back in the hero on 2026-11-10 after
+    // a review found the page said it nowhere a reader could see.
+    await expect(
+      header.getByText("Based in Hove, UK · Open to relocation"),
+    ).toBeVisible();
+    // Trimmed to those two facts: no right-to-work claim on the page.
+    await expect(header.getByText(/right to work/i)).toHaveCount(0);
     await expect(
       header.getByText(/^Four years testing financial data/),
     ).toBeVisible();

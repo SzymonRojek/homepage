@@ -14,6 +14,7 @@ import {
   Highlight,
   Summary,
   NextRole,
+  Location,
 } from "./styled";
 
 // The tagline is the big headline, its last words on a tilted green block.
@@ -58,6 +59,7 @@ export const MainHeader = () => (
               ))}
             </dd>
           </NextRole>
+          <Location>{profile.locationLine}</Location>
         </Details>
         <Portrait
           src={szymonRojekCutout}
