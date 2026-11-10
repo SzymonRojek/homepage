@@ -12,11 +12,41 @@ export interface Recommendation {
   relation: string;
   // Short month and year, shown after the role; the list is newest first.
   date: string;
+  // Where the words came from, drawn as the card's watermark. Most are
+  // LinkedIn recommendations; David sent his by email.
+  source: "linkedin" | "email";
 }
 
 // From my LinkedIn recommendations (public to all LinkedIn members), the
 // newest first.
 export const recommendations: Recommendation[] = [
+  {
+    quote:
+      "Szymon has boundless enthusiasm and persistence for both learning and problem solving. He’s proved his ability to get to the root of complex issues. He has demonstrated abundant willingness to engage and support other members of the functional test team and has also fostered strong links within the development team during his employment.\n\n" +
+      "The rapid progression in his technical abilities over the past three years has been testament to the amount of effort and energy he has invested. More recently he has been focussing on harnessing AI to try to solve real work issues such as aligning previously AI generated test cases to the latest version of the functional requirements documentation.\n\n" +
+      "I hope he finds a challenge in the future suitably worthy of his level of effort and commitment.",
+    // The one card that marks how far he has come, and the second after
+    // John's to corroborate the AI section above.
+    highlight: "rapid progression in his technical abilities",
+    name: "David Puttock",
+    role: "Staff Test Engineer at Equiniti",
+    relation: "sent this to me by email, not through LinkedIn",
+    date: "Nov 2026",
+    source: "email",
+  },
+  {
+    quote:
+      "I have had the opportunity to work with Szymon and found him to be a reliable and knowledgeable team member. He has a good understanding of the testing process and approaches his tasks in a structured manner.\n\n" +
+      "He pays attention to detail and ensures that test scenarios are properly covered. He is good at identifying issues, analysing defects and following them through to resolution. He is open to learning new technologies and improving his skills. He has a practical approach to problem-solving and handles his responsibilities well.\n\n" +
+      "He is approachable and always willing to share his knowledge when needed. His commitment and understanding of the work contribute positively to the project. It has been a good experience working with him. I wish him all the best in his future career.",
+    // The defect's whole life, which no other card names.
+    highlight: "analysing defects and following them through to resolution",
+    name: "Meena Yuvaraj",
+    role: "Senior Test Engineer at Equiniti",
+    relation: "was senior to me, but did not manage me directly",
+    date: "Nov 2026",
+    source: "linkedin",
+  },
   {
     quote:
       "I have had the pleasure of working with Szymon for over three years and in that time, he has proved that he is very passionate in his work, his thirst for knowledge and the constant desire to improve himself. As a tester, he is very thorough  and meticulous in his approach which enables him to create clear an concise test cases. This results in excellent test coverage and the exposure of a high percentage of defects, and he is not afraid to question anything he does not understand or thinks may  be incorrect.\n\n" +
@@ -28,6 +58,7 @@ export const recommendations: Recommendation[] = [
     role: "Senior Test Engineer at Equiniti",
     relation: "was senior to me, but did not manage me directly",
     date: "Oct 2026",
+    source: "linkedin",
   },
   {
     quote:
@@ -40,6 +71,7 @@ export const recommendations: Recommendation[] = [
     role: "Senior Test Engineer at Equiniti",
     relation: "worked with me on the same team",
     date: "Oct 2026",
+    source: "linkedin",
   },
   {
     quote:
@@ -50,6 +82,7 @@ export const recommendations: Recommendation[] = [
     role: "Senior Test Engineer at Equiniti",
     relation: "worked with me on the same team",
     date: "Oct 2026",
+    source: "linkedin",
   },
   {
     quote:
@@ -61,6 +94,7 @@ export const recommendations: Recommendation[] = [
     role: "SQL Developer at EQTek",
     relation: "worked with me on the same team",
     date: "May 2025",
+    source: "linkedin",
   },
   {
     quote:
@@ -73,6 +107,7 @@ export const recommendations: Recommendation[] = [
     role: "Senior Database Engineer at Equiniti",
     relation: "worked with me on a different team",
     date: "Jan 2025",
+    source: "linkedin",
   },
   {
     quote:
@@ -82,6 +117,7 @@ export const recommendations: Recommendation[] = [
     role: "Database Consultant (data migration) at Endava",
     relation: "worked with me on a different team",
     date: "Feb 2024",
+    source: "linkedin",
   },
 ];
 

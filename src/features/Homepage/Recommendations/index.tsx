@@ -21,6 +21,7 @@ import {
   RoleLine,
   Highlight,
   Watermark,
+  EmailWatermark,
 } from "./styled";
 
 const months = [
@@ -99,11 +100,14 @@ export const Recommendations = () => (
     {/* A <ul> can hold only <li>, and the two columns need a wrapper each,
         so the list is built from roles; the columns are invisible to screen
         readers, which hear one list of all the recommendations. */}
-    <List role="list" aria-label="Recommendations from LinkedIn">
+    <List role="list" aria-label="Recommendations from colleagues">
       {columns.map((column, side) => (
         <Column key={side} role="none">
           {column.map(
-            ({ item: { quote, highlight, name, role, date }, order }) => (
+            ({
+              item: { quote, highlight, name, role, date, source },
+              order,
+            }) => (
               <Item key={name} role="listitem" $order={order}>
                 <Quote>
                   {/* The byline first, so screen readers also hear who
@@ -125,9 +129,22 @@ export const Recommendations = () => (
                     ))}
                   </blockquote>
                 </Quote>
-                {/* Decorative: the list's name says LinkedIn for screen
-                    readers. Not a link: the originals aren't linked. */}
-                <Watermark aria-hidden="true" focusable="false" />
+                {/* Where the words came from, decorative and not a link:
+                    the originals aren't linked. The at-sign marks the one
+                    that arrived by email rather than through LinkedIn. */}
+                {source === "email" ? (
+                  <EmailWatermark
+                    aria-hidden="true"
+                    focusable="false"
+                    data-source="email"
+                  />
+                ) : (
+                  <Watermark
+                    aria-hidden="true"
+                    focusable="false"
+                    data-source="linkedin"
+                  />
+                )}
               </Item>
             ),
           )}

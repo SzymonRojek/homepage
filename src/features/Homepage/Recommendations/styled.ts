@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import EmailMark from "./email.svg?react";
 import LinkedInMark from "./linkedin.svg?react";
 
 // The full recommendations as cards in two columns that fill like a wall of
@@ -112,12 +113,12 @@ export const RoleLine = styled.span`
   }
 `;
 
-// A faint LinkedIn mark in the card's top-right corner, like a watermark,
-// cut by the card's edge: it says where the words come from without pulling
-// the eye from them. The text's own colour at low opacity, so it suits both
+// A faint mark in the card's top-right corner, like a watermark cut by the
+// card's edge: it says where the words came from without pulling the eye
+// from them. The text's own colour at low opacity, so it suits both
 // themes; it sits behind the text (which keeps its contrast) and lets clicks
 // through.
-export const Watermark = styled(LinkedInMark)`
+const watermark = css`
   position: absolute;
   z-index: 0;
   top: -10px;
@@ -132,6 +133,19 @@ export const Watermark = styled(LinkedInMark)`
     width: 64px;
     height: 64px;
   }
+`;
+
+export const Watermark = styled(LinkedInMark)`
+  ${watermark}
+`;
+
+// The same mark for a recommendation that arrived by email instead: an
+// at-sign on the LinkedIn glyph's own 24×24 tile, the same rounded square
+// at the same size, with the "@" cut out of the fill exactly as the "in"
+// is, so the two read as one family. The glyph comes from the page's mono
+// face through a mask, so it needs no hand-drawn path.
+export const EmailWatermark = styled(EmailMark)`
+  ${watermark}
 `;
 
 // The key words of a recommendation on a soft yellow marker, so a skim of
