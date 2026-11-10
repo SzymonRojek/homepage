@@ -176,6 +176,18 @@ export const Highlight = styled.span`
 `;
 
 // About 70 characters a line, a comfortable reading width.
+// Under the roles, and quieter than them: where I am and that I would move.
+export const Location = styled.p`
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.brand.muted};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 13px;
+  }
+`;
+
 export const Summary = styled.p`
   max-width: 34em;
   margin: 26px 0 0;

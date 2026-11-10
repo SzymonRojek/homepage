@@ -1,10 +1,17 @@
 // Where I live: in the page's structured data only, not on screen.
 const basedIn = "Hove, UK";
 const title = "Test Engineer";
+// What the title alone never says: the work itself. It goes into the page's
+// <title> and into the structured data, the two places a search engine and an
+// AI tool weigh hardest, and deliberately not into the hero: the eyebrow is
+// 13px uppercase and a line this long would wrap on a phone, while the bio
+// right under it already names the work. Keep it in step with the bio.
+const specialism = "Data Migration, SQL & Test Automation";
 
 export const profile = {
   name: "Szymon Rojek",
   title,
+  specialism,
   // The small line over the headline, shown in capitals: the title alone.
   eyebrow: title,
   // My own words: passing checks are where I start, not where I stop.
@@ -24,6 +31,13 @@ export const profile = {
     // label in a list would.
     lines: [["QA,", "Test Automation,"], ["Front\u2011End roles"]],
   },
+  // Under the roles: where I am, and that I would move for the right one.
+  // This was taken off the hero once, as "Full right to work in the UK ·
+  // Open to relocation", and came back on 2026-11-10 at the user's word,
+  // trimmed to these two facts: the right-to-work claim stays in the README
+  // and is not on the page. The place comes from basedIn, so the hero and
+  // the structured data cannot drift apart.
+  locationLine: `Based in ${basedIn} \u00b7 Open to relocation`,
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
   bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",

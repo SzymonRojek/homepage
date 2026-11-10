@@ -19,19 +19,24 @@ const renderHeader = () =>
   );
 
 describe("MainHeader", () => {
-  it("shows who I am and the roles I want, without where I live", () => {
+  it("shows who I am, the roles I want and where I am", () => {
     renderHeader();
 
-    // The roles close the text: no location or right-to-work line.
     expect(screen.getByRole("term")).toHaveTextContent("Open to");
     // The exact text: a non-breaking space and hyphen keep its phrases whole.
     expect(screen.getByRole("definition").textContent).toBe(
       "QA, Test Automation, Front\u2011End roles",
     );
+    // Closing the hero since 2026-11-10: where I am, and that I would move.
+    expect(
+      screen.getByText("Based in Hove, UK · Open to relocation"),
+    ).toBeInTheDocument();
+    // Trimmed to those two facts: the right-to-work claim stays in the
+    // README and is not on the page.
+    expect(screen.queryByText(/right to work/i)).toBeNull();
     expect(
       screen.queryByRole("list", { name: "Right to work and relocation" }),
     ).toBeNull();
-    expect(screen.queryByText(/Hove|right to work|relocation/i)).toBeNull();
     expect(screen.queryByRole("list", { name: "Key facts" })).toBeNull();
     // The tagline is the h1, led by my name and title for screen readers and
     // search engines; "green" sits on its tilted block.
