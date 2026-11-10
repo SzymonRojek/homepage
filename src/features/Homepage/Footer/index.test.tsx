@@ -65,12 +65,12 @@ describe("Footer", () => {
     const { container } = renderFooter();
 
     expect(container.querySelector("img")).toBeNull();
-    // The full name stays in the © line only, and that line is just the
-    // name and the year: no "All rights reserved".
-    expect(screen.getAllByText(/Szymon Rojek/)).toHaveLength(1);
-    expect(screen.getByText(/Szymon Rojek/)).toHaveTextContent(
-      /^Szymon Rojek © \d{4}$/,
+    // The notice is the year and the reservation, nothing else: the name
+    // is already on the page, in the top bar and the hero.
+    expect(screen.getByText(/All rights reserved/)).toHaveTextContent(
+      /^© \d{4}\. All rights reserved\.$/,
     );
+    expect(screen.queryAllByText(/Szymon Rojek/)).toHaveLength(0);
   });
 
   it("has a personal note about teamwork", () => {

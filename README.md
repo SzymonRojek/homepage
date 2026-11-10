@@ -179,6 +179,6 @@ All text lives in data files, not in components:
 | `src/features/Homepage/Portfolio/projectsData.ts` | Projects (the featured one, tags and the numbers or CI gates on the cards, the section's two-line title), `caseStudy` write-ups, their brief/research/solution/value stories and developer/tester views |
 | `src/features/Homepage/Portfolio/pipelineData.ts` | The CI checks shown in the homepage case study's tester view, and the gates on this site's card                                                                                                         |
 
-Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image.jpg`, shows the name, title and headline as an image, so redraw it when they change.
+Search engines get the same facts as structured data, built from these files (`structuredData.ts`). The share card for link previews, `public/og-image-2026-11.jpg`, shows the name, title and headline as an image, so redraw it when they change, under a new name: LinkedIn keeps its own copy of whatever it has already fetched from that address.
 
 To add a case study, fill in the `caseStudy` field of a project in `projectsData.ts`. The project then shows as a card whose "Case study" button opens the full write-up. Keep this README's case study in step with the homepage one.

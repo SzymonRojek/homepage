@@ -18,14 +18,16 @@ vi.mock("../recommendationsData", () => ({
       role: "Developer at Acme",
       relation: "worked with me on the same team",
       date: "May 2025",
+      source: "linkedin",
     },
     {
       quote: "Clear bug reports.\n\nA great tester to work with.",
       highlight: "Clear bug reports",
       name: "Bob Jones",
       role: "Engineer at Acme",
-      relation: "worked with me on a different team",
+      relation: "sent this to me by email, not through LinkedIn",
       date: "Jan 2025",
+      source: "email",
     },
   ],
 }));
@@ -54,24 +56,34 @@ describe("Recommendations", () => {
     expect(screen.queryByText(/Peer-reviewed/)).toBeNull();
   });
 
-  it("marks each card as a LinkedIn recommendation, quietly", () => {
+  it("marks where each card's words came from, quietly", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      screen.getByRole("list", { name: "Recommendations from colleagues" }),
     ).getAllByRole("listitem");
     // A decorative mark per card, not a link: the originals aren't linked.
     for (const item of items) {
       expect(item.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
       expect(within(item).queryByRole("link")).toBeNull();
     }
+    // The at-sign stands for the one that arrived by email, so no card
+    // claims LinkedIn for words that never appeared there.
+    expect(items[0].querySelector("svg")).toHaveAttribute(
+      "data-source",
+      "linkedin",
+    );
+    expect(items[1].querySelector("svg")).toHaveAttribute(
+      "data-source",
+      "email",
+    );
   });
 
   it("quotes each colleague word for word, the byline first", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      screen.getByRole("list", { name: "Recommendations from colleagues" }),
     ).getAllByRole("listitem");
     expect(items).toHaveLength(2);
     expect(within(items[0]).getByRole("blockquote")).toHaveTextContent(
@@ -88,7 +100,7 @@ describe("Recommendations", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      screen.getByRole("list", { name: "Recommendations from colleagues" }),
     ).getAllByRole("listitem");
     const paragraphs = within(items[1])
       .getByRole("blockquote")
@@ -103,7 +115,7 @@ describe("Recommendations", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      screen.getByRole("list", { name: "Recommendations from colleagues" }),
     ).getAllByRole("listitem");
     expect(items[0].querySelector("time")).toHaveAttribute(
       "datetime",
@@ -120,7 +132,7 @@ describe("Recommendations", () => {
     renderRecommendations();
 
     const items = within(
-      screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+      screen.getByRole("list", { name: "Recommendations from colleagues" }),
     ).getAllByRole("listitem");
     expect(items[0].querySelector("mark")).toHaveTextContent(/^root cause$/);
     expect(items[1].querySelector("mark")).toHaveTextContent(
@@ -144,7 +156,7 @@ describe("Recommendations", () => {
     ]);
     expect(
       line.compareDocumentPosition(
-        screen.getByRole("list", { name: "Recommendations from LinkedIn" }),
+        screen.getByRole("list", { name: "Recommendations from colleagues" }),
       ),
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     // Jim's sentence shown large as a quote was replaced on purpose.

@@ -33,7 +33,7 @@ export const Footer = () => (
             visit fall in a new year before the next deploy, React keeps that
             year instead of failing to take the copy over. */}
         <p suppressHydrationWarning>
-          {profile.name} © {new Date().getFullYear()}
+          © {new Date().getFullYear()}. All rights reserved.
         </p>
         <Tools>
           <SocialIcons />
