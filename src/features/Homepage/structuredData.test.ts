@@ -36,6 +36,19 @@ describe("structuredData", () => {
     });
   });
 
+  it("describes me in the words the page itself shows", () => {
+    const { description } = page.mainEntity;
+
+    // The hero's bio, so a reader that never runs the page's JavaScript
+    // still gets the sentences a visitor reads.
+    expect(description).toContain("financial data migrations with SQL");
+    expect(description).toContain("Playwright");
+    // Written with an ordinary hyphen: the non-breaking one that keeps the
+    // word whole on a phone would not match a search for it.
+    expect(description).toContain("full-stack");
+    expect(description).not.toContain("\u2011");
+  });
+
   it("lists the skills shown on the page, testing first", () => {
     const { knowsAbout } = page.mainEntity;
 

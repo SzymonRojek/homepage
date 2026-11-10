@@ -16,7 +16,9 @@ test.describe("search engines and link previews @desktop", () => {
   test("the head describes the page in British English @smoke", async ({
     page,
   }) => {
-    await expect(page).toHaveTitle("Szymon Rojek | Test Engineer");
+    await expect(page).toHaveTitle(
+      "Szymon Rojek | Test Engineer — Data Migration, SQL & Test Automation",
+    );
     await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
@@ -89,6 +91,10 @@ test.describe("search engines and link previews @desktop", () => {
         "https://github.com/SzymonRojek",
       ],
     });
+
+    // A skills array alone says what he knows, never what he does; the
+    // sentence is what an AI tool quotes back.
+    expect(person.description).toContain("financial data migrations with SQL");
 
     const photo = await request.get(localPath(person.image as string));
     expect(photo.ok()).toBe(true);

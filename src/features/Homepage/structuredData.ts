@@ -25,6 +25,12 @@ export const structuredData = () =>
           "@type": "Person",
           name: profile.name,
           jobTitle: profile.title,
+          // The bio word for word as the hero shows it, so the structured
+          // data never claims anything a visitor can't read on the page.
+          // The non-breaking hyphen that keeps "full-stack" whole on a
+          // phone becomes a plain one here: a reader matching the ordinary
+          // spelling should find it.
+          description: profile.bio.replace(/\u2011/g, "-"),
           url: siteUrl,
           image: `${siteUrl}szymon-rojek.jpg`,
           homeLocation: { "@type": "Place", name: profile.basedIn },

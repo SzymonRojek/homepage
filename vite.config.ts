@@ -21,7 +21,7 @@ const headFromProfile = (): Plugin => ({
       if (!description)
         throw new Error("index.html has no description for og:description");
       const values = {
-        "%PAGE_TITLE%": `${profile.name} | ${profile.title}`,
+        "%PAGE_TITLE%": `${profile.name} | ${profile.title} — ${profile.specialism}`,
         "%SITE_NAME%": profile.name,
         "%PAGE_DESCRIPTION%": description,
         "%OG_IMAGE_ALT%": `${profile.name}, ${profile.title}, beside a photo of ${profile.name.split(" ")[0]}`,
