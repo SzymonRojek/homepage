@@ -12,7 +12,7 @@
 
 | At a glance           |                                                                                                                                                            |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automated tests       | 223 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
+| Automated tests       | 225 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
 | Coverage              | about 98%, with a 90% gate on the whole project and a floor every file must clear                                                                          |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push                                                                       |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                                                                                      |
@@ -171,7 +171,7 @@ All text lives in data files, not in components:
 | File                                              | Content                                                                                                                                                                                                 |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/features/Homepage/profile.ts`                | Name, job title, the line over the headline, headline, target roles, location (search data only), bio, the footer's heading and note, LinkedIn                                                          |
-| `src/features/Homepage/recommendationsData.ts`    | LinkedIn recommendations, quoted word for word, the phrase marked in each, and the section's big line                                                                                                   |
+| `src/features/Homepage/recommendationsData.ts`    | Recommendations, quoted word for word, where each came from (LinkedIn or email), the phrase marked in each, and the section's big line                                                                  |
 | `src/features/Homepage/howITestData.ts`           | The "How I test" section: my story and the three steps                                                                                                                                                  |
 | `src/features/Homepage/howIUseAIData.ts`          | The "How I use AI" section: the loop's labels and the four agent/me pairs                                                                                                                               |
 | `src/features/Homepage/skillsData.ts`             | Testing, automation and programming skills, tools and languages for "Skills & learning"                                                                                                                 |

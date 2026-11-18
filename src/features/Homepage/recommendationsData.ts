@@ -13,13 +13,31 @@ export interface Recommendation {
   // Short month and year, shown after the role; the list is newest first.
   date: string;
   // Where the words came from, drawn as the card's watermark. Most are
-  // LinkedIn recommendations; David sent his by email.
+  // LinkedIn recommendations; Sushant and David sent theirs by email.
   source: "linkedin" | "email";
 }
 
-// From my LinkedIn recommendations (public to all LinkedIn members), the
-// newest first.
+// My recommendations, the newest first: those from LinkedIn are public to
+// all LinkedIn members, and the two marked `source: "email"` were sent to
+// me by email instead and appear nowhere else.
 export const recommendations: Recommendation[] = [
+  {
+    quote:
+      "I am pleased to recommend Szymon Rojek, whom I have worked with for approximately three and a half years.\n\n" +
+      "During this time, he consistently proved to be one of the most effective members of the test team. He demonstrated a strong ability to understand solution designs, low-level technical specifications, use cases, and user stories, and translate them into well-structured and thorough test cases.\n\n" +
+      "What stood out most was his analytical approach and attention to detail. He regularly identified complex defects and edge-case scenarios that others overlooked, helping to improve solution quality and reduce delivery risk. His ability to investigate issues, challenge assumptions, and quickly understand complex functionality made him a highly valuable contributor to every project he supported.\n\n" +
+      "In addition to his technical skills, he was reliable, professional, and collaborative, working effectively with architects, developers, and fellow testers.\n\n" +
+      "I would have no hesitation in recommending him for Software Test Engineer or Quality Assurance roles. I am confident he would be a valuable asset to any organisation seeking a skilled and dedicated testing professional.",
+    // The only card written from outside the test team, and the only one
+    // that says the defects were ones other people had missed: a solution
+    // architect's view of the same work.
+    highlight: "edge-case scenarios that others overlooked",
+    name: "Sushant Gupta",
+    role: "Staff Solution Architect at Equiniti",
+    relation: "sent this to me by email, not through LinkedIn",
+    date: "Nov 2026",
+    source: "email",
+  },
   {
     quote:
       "Szymon has boundless enthusiasm and persistence for both learning and problem solving. He’s proved his ability to get to the root of complex issues. He has demonstrated abundant willingness to engage and support other members of the functional test team and has also fostered strong links within the development team during his employment.\n\n" +

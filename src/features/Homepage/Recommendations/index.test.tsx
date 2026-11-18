@@ -29,6 +29,16 @@ vi.mock("../recommendationsData", () => ({
       date: "Jan 2025",
       source: "email",
     },
+    // A second one by email, so the at-sign marks are drawn twice.
+    {
+      quote: "Caught the cases nobody else thought of.",
+      highlight: "the cases nobody else thought of",
+      name: "Cara Novak",
+      role: "Architect at Acme",
+      relation: "sent this to me by email, not through LinkedIn",
+      date: "Dec 2024",
+      source: "email",
+    },
   ],
 }));
 
@@ -38,6 +48,20 @@ const renderRecommendations = () =>
       <Recommendations />
     </ThemeProvider>,
   );
+
+// The cards in the order the page draws them, which the two columns decide,
+// so each test looks its card up by the name in its byline rather than by a
+// place in the list.
+const cards = () =>
+  within(
+    screen.getByRole("list", { name: "Recommendations from colleagues" }),
+  ).getAllByRole("listitem");
+
+const cardOf = (name: string) => {
+  const card = cards().find((item) => item.textContent?.startsWith(name));
+  if (!card) throw new Error(`No card for ${name}`);
+  return card;
+};
 
 describe("Recommendations", () => {
   it("names the section with its numbered heading", () => {
@@ -59,39 +83,56 @@ describe("Recommendations", () => {
   it("marks where each card's words came from, quietly", () => {
     renderRecommendations();
 
-    const items = within(
-      screen.getByRole("list", { name: "Recommendations from colleagues" }),
-    ).getAllByRole("listitem");
     // A decorative mark per card, not a link: the originals aren't linked.
-    for (const item of items) {
+    for (const item of cards()) {
       expect(item.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
       expect(within(item).queryByRole("link")).toBeNull();
     }
-    // The at-sign stands for the one that arrived by email, so no card
+    // The at-sign stands for the ones that arrived by email, so no card
     // claims LinkedIn for words that never appeared there.
-    expect(items[0].querySelector("svg")).toHaveAttribute(
+    expect(cardOf("Ann Smith").querySelector("svg")).toHaveAttribute(
       "data-source",
       "linkedin",
     );
-    expect(items[1].querySelector("svg")).toHaveAttribute(
+    expect(cardOf("Bob Jones").querySelector("svg")).toHaveAttribute(
+      "data-source",
+      "email",
+    );
+    expect(cardOf("Cara Novak").querySelector("svg")).toHaveAttribute(
       "data-source",
       "email",
     );
   });
 
+  it("cuts the at-sign out of each email card with a mask of its own", () => {
+    renderRecommendations();
+
+    // Two cards by email draw the same tile, so each needs its own mask id:
+    // sharing one would leave a duplicate id in the page and cut the second
+    // tile with the first card's mask.
+    const masks = [cardOf("Bob Jones"), cardOf("Cara Novak")].map((card) => {
+      const id = card.querySelector("mask")!.id;
+      expect(id).toBeTruthy();
+      // The tile is cut by this card's own mask, not by another card's.
+      expect(card.querySelector("rect[mask]")).toHaveAttribute(
+        "mask",
+        `url(#${id})`,
+      );
+      return id;
+    });
+    expect(new Set(masks).size).toBe(2);
+  });
+
   it("quotes each colleague word for word, the byline first", () => {
     renderRecommendations();
 
-    const items = within(
-      screen.getByRole("list", { name: "Recommendations from colleagues" }),
-    ).getAllByRole("listitem");
-    expect(items).toHaveLength(2);
-    expect(within(items[0]).getByRole("blockquote")).toHaveTextContent(
-      /^Finds the root cause\.$/,
-    );
+    expect(cards()).toHaveLength(3);
+    expect(
+      within(cardOf("Ann Smith")).getByRole("blockquote"),
+    ).toHaveTextContent(/^Finds the root cause\.$/);
     // Who, then what: the name, then the role with the date, come before
     // the quote.
-    expect(items[0]).toHaveTextContent(
+    expect(cardOf("Ann Smith")).toHaveTextContent(
       /^Ann SmithDeveloper at AcmeMay ’25Finds the root cause\.$/,
     );
   });
@@ -99,10 +140,7 @@ describe("Recommendations", () => {
   it("keeps a recommendation's paragraphs as they are on LinkedIn", () => {
     renderRecommendations();
 
-    const items = within(
-      screen.getByRole("list", { name: "Recommendations from colleagues" }),
-    ).getAllByRole("listitem");
-    const paragraphs = within(items[1])
+    const paragraphs = within(cardOf("Bob Jones"))
       .getByRole("blockquote")
       .querySelectorAll("p");
     expect([...paragraphs].map((p) => p.textContent)).toEqual([
@@ -114,28 +152,26 @@ describe("Recommendations", () => {
   it("dates each recommendation short, with a machine-readable month", () => {
     renderRecommendations();
 
-    const items = within(
-      screen.getByRole("list", { name: "Recommendations from colleagues" }),
-    ).getAllByRole("listitem");
-    expect(items[0].querySelector("time")).toHaveAttribute(
+    expect(cardOf("Ann Smith").querySelector("time")).toHaveAttribute(
       "datetime",
       "2025-05",
     );
-    expect(items[1].querySelector("time")).toHaveAttribute(
+    expect(cardOf("Bob Jones").querySelector("time")).toHaveAttribute(
       "datetime",
       "2025-01",
     );
-    expect(items[1].querySelector("time")).toHaveTextContent(/^Jan ’25$/);
+    expect(cardOf("Bob Jones").querySelector("time")).toHaveTextContent(
+      /^Jan ’25$/,
+    );
   });
 
   it("marks the key words of each recommendation", () => {
     renderRecommendations();
 
-    const items = within(
-      screen.getByRole("list", { name: "Recommendations from colleagues" }),
-    ).getAllByRole("listitem");
-    expect(items[0].querySelector("mark")).toHaveTextContent(/^root cause$/);
-    expect(items[1].querySelector("mark")).toHaveTextContent(
+    expect(cardOf("Ann Smith").querySelector("mark")).toHaveTextContent(
+      /^root cause$/,
+    );
+    expect(cardOf("Bob Jones").querySelector("mark")).toHaveTextContent(
       /^Clear bug reports$/,
     );
   });
