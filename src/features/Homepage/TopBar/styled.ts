@@ -213,21 +213,25 @@ export const NavList = styled.ul`
   }
 `;
 
-// Muted cream words that brighten to cream under the pointer, nothing more.
-// A soft pill behind each link read as a highlight inside the pill bar, and a
-// yellow line under the word looked wrong (both dropped on 2026-10-17).
+// Cream words that turn yellow under the pointer, nothing more. They were
+// muted cream brightening to cream until 2026-11-18, which read as faint on
+// the green (6.3:1 against the raised bar, where cream is 9.5:1), so cream
+// became the resting colour and the hover moved to the accent's yellow
+// (6.8:1). A soft pill behind each link read as a highlight inside the pill
+// bar, and a yellow line under the word looked wrong (both dropped on
+// 2026-10-17).
 export const NavLink = styled.a`
   display: block;
   padding: 8px 12px;
   font-size: 14.5px;
   font-weight: 600;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.brand.muted};
+  color: ${({ theme }) => theme.colors.brand.text};
   text-decoration: none;
   transition: color 0.2s;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.brand.text};
+    color: ${({ theme }) => theme.colors.brand.accent};
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -295,9 +299,9 @@ export const ContactLink = styled(ButtonLink)`
 
 // On phones and tablets the menu button is the three lines alone, no circle
 // behind them (dropped on 2026-10-17), at the pill's right end with a tap
-// area as tall as the pill. Muted cream that brightens to cream under the
-// pointer, like the section links (it turned yellow until 2026-10-17); its
-// focus ring stays inside the pill.
+// area as tall as the pill. Cream that turns yellow under the pointer, like
+// the section links (both were muted cream until 2026-11-18; a resting
+// yellow was dropped on 2026-10-17); its focus ring stays inside the pill.
 export const MenuButton = styled.button`
   display: none;
 
@@ -311,7 +315,7 @@ export const MenuButton = styled.button`
     align-self: stretch;
     aspect-ratio: 1;
     padding: 0;
-    color: ${({ theme }) => theme.colors.brand.muted};
+    color: ${({ theme }) => theme.colors.brand.text};
     background: none;
     border: 0;
     border-radius: 50%;
@@ -319,7 +323,7 @@ export const MenuButton = styled.button`
     transition: color 0.2s;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.brand.text};
+      color: ${({ theme }) => theme.colors.brand.accent};
     }
 
     &:focus-visible {

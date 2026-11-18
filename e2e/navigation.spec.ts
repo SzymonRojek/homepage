@@ -294,7 +294,7 @@ test.describe("Navigation", () => {
     ).toBeVisible();
   });
 
-  test("a link under the pointer only brightens, with no background or line @desktop", async ({
+  test("a link under the pointer turns yellow, with no background or line @desktop", async ({
     page,
   }) => {
     const link = page
@@ -310,11 +310,14 @@ test.describe("Navigation", () => {
         };
       });
 
+    // At rest the brand's cream (#FBF4E6), so the links carry the bar; muted
+    // cream read as faint on the green and was raised on 2026-11-18.
+    expect(await look()).toMatchObject({ color: "rgb(251, 244, 230)" });
     await link.hover();
-    // The brand's cream (#FBF4E6), once the fade ends.
+    // The accent's yellow (#FFC94D) under the pointer, once the fade ends.
     await expect
       .poll(async () => (await look()).color)
-      .toBe("rgb(251, 244, 230)");
+      .toBe("rgb(255, 201, 77)");
     // A soft pill behind the link and a yellow line under it were dropped.
     expect(await look()).toMatchObject({
       background: "rgba(0, 0, 0, 0)",
@@ -322,16 +325,17 @@ test.describe("Navigation", () => {
     });
   });
 
-  test("the menu button brightens under the pointer like the links @mobile", async ({
+  test("the menu button turns yellow under the pointer like the links @mobile", async ({
     page,
   }) => {
     const menu = page.getByRole("button", { name: "Menu" });
     const colour = () => menu.evaluate((el) => getComputedStyle(el).color);
 
-    // The links' muted cream (#B9CEC7), then their cream (#FBF4E6), not yellow.
-    expect(await colour()).toBe("rgb(185, 206, 199)");
+    // The links' cream (#FBF4E6) at rest, then their yellow (#FFC94D): the
+    // button follows them, so the pill reads as one set of controls.
+    expect(await colour()).toBe("rgb(251, 244, 230)");
     await menu.hover();
-    await expect.poll(colour).toBe("rgb(251, 244, 230)");
+    await expect.poll(colour).toBe("rgb(255, 201, 77)");
   });
 
   test("a reload keeps the place, without scrolling by itself", async ({
