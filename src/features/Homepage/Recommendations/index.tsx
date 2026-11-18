@@ -69,6 +69,12 @@ const Marked = ({ text, highlight }: { text: string; highlight: string }) => {
   );
 };
 
+// The id of a card's own at-sign mask, from the name that card carries, so
+// two recommendations that arrived by email never share one and the build's
+// copy and the browser agree on it.
+const maskId = (name: string) =>
+  `recommendation-email-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
 // Two columns of about the same height, each card keeping its place in the
 // list (newest first) for the one-column layout.
 const columns = balanceColumns(recommendations);
@@ -134,6 +140,7 @@ export const Recommendations = () => (
                     that arrived by email rather than through LinkedIn. */}
                 {source === "email" ? (
                   <EmailWatermark
+                    maskId={maskId(name)}
                     aria-hidden="true"
                     focusable="false"
                     data-source="email"
