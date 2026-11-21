@@ -9,6 +9,7 @@ import { Skills } from "./Skills";
 import { Experience } from "./Experience";
 import { Portfolio } from "./Portfolio";
 import { Footer } from "./Footer";
+import { BackToTop } from "./BackToTop";
 
 export const Homepage = () => {
   useInitialScroll();
@@ -34,6 +35,7 @@ export const Homepage = () => {
         </main>
       </Container>
       <Footer />
+      <BackToTop />
     </>
   );
 };
