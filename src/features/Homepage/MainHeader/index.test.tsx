@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { describe, expect, it } from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import projectViewReducer from "../Portfolio/projectViewSlice";
+import { recommendations } from "../recommendationsData";
 import { MainHeader } from ".";
 
 const renderHeader = () =>
@@ -23,13 +24,18 @@ describe("MainHeader", () => {
     renderHeader();
 
     expect(screen.getByRole("term")).toHaveTextContent("Open to");
-    // The exact text: a non-breaking space and hyphen keep its phrases whole.
+    // The exact text. "Front-End" left the roles on 2026-11-21, at the
+    // user's go-ahead: the CV is a tester's CV, and developer applications
+    // open the page at the developer side of the case study.
     expect(screen.getByRole("definition").textContent).toBe(
-      "QA, Test Automation, Front\u2011End roles",
+      "QA and Test Automation roles",
     );
-    // Closing the hero since 2026-11-10: where I am, and that I would move.
+    // Closing the hero since 2026-11-10: where I am, and that I would move;
+    // since 2026-11-21 also the day I can start.
     expect(
-      screen.getByText("Based in Hove, UK · Open to relocation"),
+      screen.getByText(
+        "Based in Hove, UK · Open to relocation · Available from 2 January 2027",
+      ),
     ).toBeInTheDocument();
     // Trimmed to those two facts: the right-to-work claim stays in the
     // README and is not on the page.
@@ -60,15 +66,20 @@ describe("MainHeader", () => {
     renderHeader();
 
     expect(screen.queryByRole("list", { name: "Key skills" })).toBeNull();
-    expect(
-      screen.getByText(/^Four years testing financial data/),
-    ).toBeVisible();
+    expect(screen.getByText(/^4 years testing financial data/)).toBeVisible();
   });
 
-  it("has no links: contact lives in the top bar and the footer", () => {
+  it("has one link, down to the recommendations, counted from the data", () => {
     renderHeader();
 
-    expect(screen.queryAllByRole("link")).toHaveLength(0);
+    // Contact lives in the top bar and the footer; the hero's one link says
+    // how many people wrote a recommendation and goes to them (2026-11-21).
+    const links = screen.getAllByRole("link");
+    expect(links).toHaveLength(1);
+    expect(links[0]).toHaveAccessibleName(
+      `${recommendations.length} references from people I’ve worked with`,
+    );
+    expect(links[0]).toHaveAttribute("href", "#recommendations");
     expect(
       screen.getByRole("img", { name: "Szymon Rojek" }),
     ).toBeInTheDocument();

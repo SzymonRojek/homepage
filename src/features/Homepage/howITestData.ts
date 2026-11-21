@@ -37,6 +37,9 @@ export const howITest = {
         "Requirements, mapping documents and transformation rules become test cases.",
       points: [
         "Positive and negative cases",
+        // From the CV (2026-11-21): the page named Gherkin nowhere, and it
+        // is a word recruiters search for.
+        "Written in Gherkin, in Azure DevOps",
         "Each traced back to the rule it checks",
         "One test per logical branch, not several outcomes joined by OR in one test",
         "Peer-reviewed before anything is run",

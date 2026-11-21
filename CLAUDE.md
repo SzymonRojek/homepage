@@ -103,6 +103,7 @@ src/
     structuredData.ts         # JSON-LD (WebSite + ProfilePage/Person) from profile, skills and githubUserName
     MainHeader/sizes.ts       # the headline's size, its one-line width and the photo's height, as CSS expressions from the band's width, so they stay in balance
     TopBar/, MainHeader/ (incl. Portrait/), Experience/, Skills/, Recommendations/, Footer/
+    BackToTop/                # a round link to the top, fixed on the right; its ring fills with the scroll (progress.ts holds the sums)
     HowITest/, HowIUseAI/     # HowIUseAI reuses HowITest's styles, and HowITest the Story timeline's
     Section/, ButtonLink/     # shared primitives (Section also has BandSection, SectionLabel, sectionOpening, BigLine, Card, Chip, Chips, SectionIntro)
     Footer/SocialIcons/social.ts  # CONTENT: the GitHub and LinkedIn links

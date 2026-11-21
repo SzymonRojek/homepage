@@ -5,6 +5,10 @@ import { themeLight } from "../../../core/App/theme";
 import { Experience } from ".";
 
 vi.mock("../experienceData", () => ({
+  experienceHeadline: {
+    text: "Six years in retail testing",
+    highlight: "retail testing",
+  },
   jobs: [
     {
       role: "Test Engineer",
@@ -43,6 +47,19 @@ describe("Experience", () => {
     expect(within(section).getByText("Jan 2024 – now")).toBeVisible();
     expect(within(section).getByText("2020 – 2023")).toBeVisible();
     expect(within(section).getByText("Write tests.")).toBeVisible();
+  });
+
+  it("opens on a big line that is a fact, its key words marked", () => {
+    renderExperience();
+
+    const section = screen.getByRole("region", { name: "Experience" });
+    // One line, read whole: the marked words are part of the sentence.
+    expect(section).toHaveTextContent("Six years in retail testing");
+    expect(within(section).getByText("retail testing").tagName).toBe("MARK");
+    // Not a heading: the section's h2 is its numbered label.
+    expect(
+      within(section).queryByRole("heading", { name: /Six years/ }),
+    ).toBeNull();
   });
 
   it("shows only jobs: education and languages have their own places", () => {

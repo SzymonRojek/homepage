@@ -19,6 +19,15 @@ test.describe("How I use AI", () => {
     ]);
     await expect(table.getByRole("row")).toHaveCount(5);
     await expect(section.getByRole("list")).toHaveCount(0);
+    // Each of my answers opens on a short lead, strongest claim first
+    // (2026-11-21): the check I built leads, deciding whether to use an
+    // agent at all closes.
+    await expect(table.getByRole("strong")).toHaveText([
+      "I built this one",
+      "I test what it writes",
+      "I ask the questions",
+      "I decide if it’s worth it",
+    ]);
   });
 
   test("says what I did myself, and nothing more", async ({ page }) => {

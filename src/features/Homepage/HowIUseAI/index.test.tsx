@@ -51,6 +51,29 @@ describe("HowIUseAI", () => {
     });
   });
 
+  it("leads with the check I built, each answer under a short lead", () => {
+    renderHowIUseAI();
+
+    // Strongest claim first since 2026-11-21: a visitor who skims reads the
+    // first row, so it is the one with a result in it.
+    const rows = within(section()).getAllByRole("row").slice(1);
+    expect(rows[0]).toHaveTextContent("It caught a real undeclared change");
+    expect(rows[3]).toHaveTextContent("decide whether an agent is worth it");
+    // My side of each row opens on its lead, in bold, before the answer.
+    const leads = rows.map((row) => {
+      const mine = within(row).getAllByRole("cell")[1];
+      const lead = mine.querySelector("strong");
+      expect(mine.textContent?.startsWith(`${lead?.textContent} `)).toBe(true);
+      return lead?.textContent;
+    });
+    expect(leads).toEqual([
+      "I built this one",
+      "I test what it writes",
+      "I ask the questions",
+      "I decide if it’s worth it",
+    ]);
+  });
+
   it("does not reuse the ticked stages of How I test", () => {
     renderHowIUseAI();
 

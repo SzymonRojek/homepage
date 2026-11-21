@@ -22,6 +22,9 @@ const navLinks = [
   { href: "#how-i-test", label: "How I test" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
+  // Added on 2026-11-21: "does he have X?" is answered in Skills, and it was
+  // the one section the bar could not reach.
+  { href: "#skills", label: "Skills" },
   { href: "#recommendations", label: "References" },
 ];
 

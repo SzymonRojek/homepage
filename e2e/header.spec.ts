@@ -36,17 +36,19 @@ test.describe("Header and footer", () => {
 
     await expect(header.getByRole("term")).toHaveText("Open to");
     await expect(header.getByRole("definition")).toHaveText(
-      "QA, Test Automation, Front\u2011End roles",
+      "QA and Test Automation roles",
     );
     // Where I am and that I would move, back in the hero on 2026-11-10 after
     // a review found the page said it nowhere a reader could see.
     await expect(
-      header.getByText("Based in Hove, UK · Open to relocation"),
+      header.getByText(
+        "Based in Hove, UK · Open to relocation · Available from 2 January 2027",
+      ),
     ).toBeVisible();
     // Trimmed to those two facts: no right-to-work claim on the page.
     await expect(header.getByText(/right to work/i)).toHaveCount(0);
     await expect(
-      header.getByText(/^Four years testing financial data/),
+      header.getByText(/^4 years testing financial data/),
     ).toBeVisible();
     await expect(header.getByRole("list", { name: "Key skills" })).toHaveCount(
       0,
@@ -54,8 +56,14 @@ test.describe("Header and footer", () => {
   });
 
   test("has contact links in the top bar and the footer", async ({ page }) => {
-    // The hero has no links: contact lives in the top bar and the footer.
-    await expect(page.getByRole("banner").getByRole("link")).toHaveCount(0);
+    // The hero has no contact link: that lives in the top bar and the
+    // footer. Its one link goes down to the recommendations (2026-11-21).
+    const heroLinks = page.getByRole("banner").getByRole("link");
+    await expect(heroLinks).toHaveCount(1);
+    await expect(heroLinks).toHaveAccessibleName(
+      /^\d+ references from people I’ve worked with$/,
+    );
+    await expect(heroLinks).toHaveAttribute("href", "#recommendations");
     // Up to 991px (phones, an upright tablet) "Contact" sits in the menu.
     // eslint-disable-next-line playwright/no-conditional-in-test -- one test covers both projects: up to tabletVerticalMax the link is behind the menu button
     if (page.viewportSize()!.width <= 991) {

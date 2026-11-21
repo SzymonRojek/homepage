@@ -37,6 +37,7 @@ test.describe("Navigation", () => {
     for (const [link, section] of [
       ["Projects", "Projects"],
       ["Experience", "Experience"],
+      ["Skills", "Skills & learning"],
       ["References", "References"],
       ["How I test", "How I test"],
       ["AI", "How I use AI"],

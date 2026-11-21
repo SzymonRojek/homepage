@@ -29,6 +29,7 @@ export const programmingSkills = [
 export const testTypes = [
   "Functional",
   "Regression",
+  "System integration",
   "Database",
   "API",
   "End-to-end",
@@ -38,6 +39,7 @@ export const testTypes = [
 export const tools = [
   "Azure DevOps",
   "SQL Server Management Studio",
+  "Power BI",
   "Postman",
   "Git",
   "GitHub Actions",

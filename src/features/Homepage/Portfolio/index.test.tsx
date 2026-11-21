@@ -2,7 +2,15 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { ThemeProvider } from "styled-components";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { themeLight } from "../../../core/App/theme";
 import projectViewReducer from "./projectViewSlice";
 import { Portfolio } from ".";
@@ -32,6 +40,16 @@ vi.mock("./projectsData", async (importOriginal) => {
       caseStudy,
     })),
   };
+});
+
+// The unit tests share one jsdom and one module cache a worker (isolate:
+// false in vite.config.ts), so the modules that read the two mocked projects
+// as they loaded (projectViewSlice builds its list of case studies from
+// them) would stay cached for the next file in the worker, which then saw
+// "first" and "second" in place of the real repos. Whether it failed
+// depended on the order the files ran in.
+afterAll(() => {
+  vi.resetModules();
 });
 
 const renderPortfolio = () =>

@@ -1,4 +1,14 @@
 import styled from "styled-components";
+import { BigLine } from "../Section";
+
+// The section's big line, with room under it before the job's rule.
+export const Headline = styled(BigLine)`
+  margin-bottom: 32px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    margin-bottom: 24px;
+  }
+`;
 
 // One job a row, like a CV: when and where on the left, the role and what I
 // do on the right. No card, a thin rule between jobs.

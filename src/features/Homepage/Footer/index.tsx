@@ -2,6 +2,7 @@ import { CopyEmail } from "./CopyEmail";
 import { profile } from "../profile";
 import { ThemeSwitch } from "../../../common/ThemeSwitch";
 import { SocialIcons } from "./SocialIcons";
+import { footerId, footerLinksId } from "./ids";
 import {
   Wrapper,
   Inner,
@@ -19,7 +20,7 @@ import {
 // button that copies it.
 // LinkedIn, GitHub and the theme switch sit in the line underneath.
 export const Footer = () => (
-  <Wrapper>
+  <Wrapper id={footerId}>
     <Inner>
       <Letter aria-labelledby="contact">
         <Heading id="contact">{profile.contactHeading}</Heading>
@@ -28,7 +29,7 @@ export const Footer = () => (
           <CopyEmail />
         </Message>
       </Letter>
-      <Bottom>
+      <Bottom id={footerLinksId}>
         {/* The static copy of the page carries the build's year. Should a
             visit fall in a new year before the next deploy, React keeps that
             year instead of failing to take the copy over. */}
