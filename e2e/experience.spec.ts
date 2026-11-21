@@ -5,14 +5,25 @@ test.describe("Experience", () => {
     await page.goto("./");
   });
 
-  test("shows the current job in four points", async ({ page }) => {
+  test("shows the current job in five points", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
     await expect(
       experience.getByRole("heading", { name: "Test Engineer" }),
     ).toBeVisible();
-    await expect(experience.getByText("Sep 2022 – now")).toBeVisible();
+    await expect(experience.getByText("Nov 2022 – now")).toBeVisible();
     await expect(experience.getByText("Equiniti, Worthing")).toBeVisible();
-    await expect(experience.getByRole("listitem")).toHaveCount(4);
+    // Five since 2026-11-21: the Power BI point came over from the CV.
+    await expect(experience.getByRole("listitem")).toHaveCount(5);
+    await expect(
+      experience.getByRole("listitem").filter({ hasText: "Power BI" }),
+    ).toHaveCount(1);
+    // The section opens on a fact in large type, its key words marked.
+    await expect(experience).toContainText(
+      "4 years in financial data migration",
+    );
+    await expect(
+      experience.locator("mark").filter({ hasText: "data migration" }),
+    ).toBeVisible();
   });
 
   test("doesn't repeat what How I test already says", async ({ page }) => {

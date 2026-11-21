@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import szymonRojekCutout from "./szymonRojekCutout.webp";
 import szymonRojekCutout460 from "./szymonRojekCutout460.webp";
 import { profile } from "../profile";
+import { recommendations } from "../recommendationsData";
 import { Portrait } from "./Portrait";
 import {
   Wrapper,
@@ -15,6 +16,7 @@ import {
   Summary,
   NextRole,
   Location,
+  ReferencesLink,
 } from "./styled";
 
 // The tagline is the big headline, its last words on a tilted green block.
@@ -23,9 +25,10 @@ const [before, after] = profile.tagline.split(profile.taglineHighlight);
 // The deep-green brand band: the tagline as the headline, the roles I want
 // and where I can work, and the photo rising from the band's bottom edge.
 // Contact lives in the top bar and the footer, so the hero has no button of
-// its own. The headline is the h1 and starts with my name and title, which
-// only screen readers and search engines get: on screen the top bar shows
-// my name and the line over the headline my title.
+// its own, and one link: down to the recommendations. The headline is the
+// h1 and starts with my name and title, which only screen readers and search
+// engines get: on screen the top bar shows my name and the line over the
+// headline my title.
 export const MainHeader = () => (
   <Wrapper id="top">
     <Band>
@@ -59,7 +62,15 @@ export const MainHeader = () => (
               ))}
             </dd>
           </NextRole>
-          <Location>{profile.locationLine}</Location>
+          <Location>
+            {profile.locationLine}
+            {/* Inside the same line's paragraph, so the hero's grid on phones
+                keeps its rows. The arrow is decoration. */}
+            <ReferencesLink href={profile.referencesLink.href}>
+              {`${recommendations.length} ${profile.referencesLink.label}`}
+              <span aria-hidden="true"> ↓</span>
+            </ReferencesLink>
+          </Location>
         </Details>
         <Portrait
           src={szymonRojekCutout}

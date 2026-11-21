@@ -9,6 +9,7 @@ import {
   AgentCell,
   MeCell,
   MeText,
+  MeLead,
   Caption,
 } from "./styled";
 
@@ -44,13 +45,17 @@ export const HowIUseAI = () => (
         </tr>
       </thead>
       <tbody>
-        {howIUseAI.rows.map(({ agent, me }) => (
+        {howIUseAI.rows.map(({ agent, lead, me }) => (
           <tr key={me} role="row">
             <AgentCell role="cell" data-column={columns.agent}>
               {agent}
             </AgentCell>
             <MeCell role="cell" data-column={columns.me}>
-              <MeText>{me}</MeText>
+              <MeText>
+                {/* The space is for a screen reader and the page's text: the
+                    lead is a block, so on screen it is a line of its own. */}
+                <MeLead>{lead}</MeLead> {me}
+              </MeText>
             </MeCell>
           </tr>
         ))}

@@ -1,6 +1,11 @@
 // Where I live: in the page's structured data only, not on screen.
 const basedIn = "Hove, UK";
 const title = "Test Engineer";
+// The first day I can start a new role, as the user gave it on 2026-11-21
+// ("02.01.2027"). A hard filter for a recruiter, so it closes the hero's
+// location line. Once the day has passed the line still reads true; change
+// it to "Available now" when the user says so.
+const availableFrom = "2 January 2027";
 // What the title alone never says: the work itself. It goes into the page's
 // <title> and into the structured data, the two places a search engine and an
 // AI tool weigh hardest, and deliberately not into the hero: the eyebrow is
@@ -23,24 +28,41 @@ export const profile = {
     label: "Open to",
     // Two parts of phrases: one line where it fits, else each part on a line
     // of its own, and only where a part can't fit does it break between its
-    // phrases. A non-breaking hyphen keeps "Front-End" whole.
+    // phrases.
     // "AI Testing" was removed on 2026-10-20: ISTQB certifies that term for
     // testing AI-based systems (CT-AI), which is not this work; using AI to
     // support testing is CT-GenAI. These are the roles, and "01 / How I use
     // AI at work", right below the hero, shows the AI side far better than a
     // label in a list would.
-    lines: [["QA,", "Test Automation,"], ["Front\u2011End roles"]],
+    // "Front-End" was removed on 2026-11-21: the CV is a tester's CV
+    // throughout, and a recruiter arriving from it read three directions as
+    // a mixed signal. The bio still says I build apps, and a developer
+    // application opens the page at #case-study-talent-outreach-developer.
+    lines: [["QA and"], ["Test Automation roles"]],
+  },
+  // Under the location: the number of recommendations, as a link down to
+  // them. They are the page's strongest proof and its last section, so the
+  // first screen says they exist. The number is counted from the data in
+  // MainHeader, never written here.
+  referencesLink: {
+    href: "#recommendations",
+    // After the count: "9 references from people I\u2019ve worked with".
+    label: "references from people I\u2019ve worked with",
   },
   // Under the roles: where I am, and that I would move for the right one.
   // This was taken off the hero once, as "Full right to work in the UK ·
   // Open to relocation", and came back on 2026-11-10 at the user's word,
   // trimmed to these two facts: the right-to-work claim stays in the README
   // and is not on the page. The place comes from basedIn, so the hero and
-  // the structured data cannot drift apart.
-  locationLine: `Based in ${basedIn} \u00b7 Open to relocation`,
+  // the structured data cannot drift apart. A third fact joined them on
+  // 2026-11-21, again at the user's word: the day I can start.
+  locationLine: `Based in ${basedIn} \u00b7 Open to relocation \u00b7 Available from ${availableFrom}`,
+  availableFrom,
   basedIn,
   // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
-  bio: "Four years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
+  // "4 years" as a digit since 2026-11-21: a scanning eye stops on numerals,
+  // and the hero had none. True from the job's start in November 2022.
+  bio: "4 years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
   // The footer's heading: the question a team asks, in the page's theme.
   contactHeading: "Let’s ship something that doesn’t break",
   // What matters to me in a team, in my own words, and the one invite to get

@@ -198,6 +198,22 @@ export const MeText = styled.span`
   border-left: 2px solid ${({ theme }) => theme.colors.ai.accent};
 `;
 
+// My part in a few words, on a line of its own above my answer, in the
+// display face: the four of them are what a visitor who skims takes away.
+export const MeLead = styled.strong`
+  display: block;
+  margin-bottom: 6px;
+  font-family: ${({ theme }) => theme.fontDisplay};
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
+    font-size: 19px;
+  }
+`;
+
 // The table's caption: read by screen readers, off screen for everyone else
 // (the column headings and the section's line already say it on the page).
 export const Caption = styled.caption`

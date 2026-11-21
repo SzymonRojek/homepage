@@ -7,12 +7,12 @@
 ## Why this site exists (30-second summary)
 
 - **Who:** Test Engineer with four years' experience testing financial and shareholder data migrations at Equiniti. Data migration and ETL testing, SQL reconciliation, REST API testing, growing into test automation with Playwright and TypeScript.
-- **Open to:** QA, Test Automation and Front-End roles, and to relocation. Based in Hove, UK, with full right to work in the UK.
+- **Open to:** QA and Test Automation roles, and to relocation. Available from 2 January 2027. Based in Hove, UK, with full right to work in the UK.
 - **What the site proves:** a CV can say "Playwright" and "CI/CD", but this repository shows it. The site is a small production system that ships only when unit, end-to-end, accessibility, performance and security checks all pass, and every decision behind it is written up below.
 
 | At a glance           |                                                                                                                                                            |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Automated tests       | 225 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
+| Automated tests       | 227 unit and component tests, 184 end-to-end runs in Chrome (desktop and mobile) on every push, and 430 in Safari (desktop, iPad, iPhone) every two months |
 | Coverage              | about 98%, with a 90% gate on the whole project and a floor every file must clear                                                                          |
 | Lighthouse (enforced) | accessibility, best practices and SEO 100, performance budget enforced on every push                                                                       |
 | Accessibility         | 0 serious or critical axe violations, in the light and the dark theme                                                                                      |

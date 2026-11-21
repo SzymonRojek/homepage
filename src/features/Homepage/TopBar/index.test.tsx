@@ -35,6 +35,7 @@ describe("TopBar", () => {
       "How I test",
       "Projects",
       "Experience",
+      "Skills",
       "References",
       "Contact",
     ]);
@@ -43,6 +44,7 @@ describe("TopBar", () => {
       "#how-i-test",
       "#projects",
       "#experience",
+      "#skills",
       "#recommendations",
       "#contact",
     ]);

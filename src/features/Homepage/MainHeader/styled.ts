@@ -188,6 +188,26 @@ export const Location = styled.p`
   }
 `;
 
+// Under the location, on a line of its own: how many people have written a
+// recommendation, as the hero's one link, down to them. Cream with a yellow
+// underline, so it reads as a link on the dark band; yellow on hover, like
+// the top bar's links.
+export const ReferencesLink = styled.a`
+  display: block;
+  width: fit-content;
+  margin-top: 6px;
+  color: ${({ theme }) => theme.colors.brand.text};
+  text-decoration: underline;
+  text-decoration-color: ${({ theme }) => theme.colors.brand.accent};
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  border-radius: ${({ theme }) => theme.borderRadiusSmall};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.brand.accent};
+  }
+`;
+
 export const Summary = styled.p`
   max-width: 34em;
   margin: 26px 0 0;
