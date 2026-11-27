@@ -2,13 +2,11 @@ import styled from "styled-components";
 import { BandSection, SectionLabel } from "../Section";
 import { StoryTitle } from "../HowITest/styled";
 
-// The first section, right under the hero, with no page colour between the
-// near-black and its band: the deep brand green in the light theme, so the
-// hero steps down into it, and a step lighter in the dark one, where How I
-// test below is the deep green. Its colours come from theme.colors.ai, since
-// primary is the deep green in the light theme and would vanish on the band.
+// The second section since 2026-11-27, under How I test: white in the light
+// theme, the deep brand green in the dark one. It follows a band, so
+// ".section-band + &" already closes the gap and the two meet edge to edge.
+// Its colours come from theme.colors.ai.
 export const Block = styled(BandSection)`
-  margin-top: 0;
   color: ${({ theme }) => theme.colors.ai.text};
 `;
 

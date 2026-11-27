@@ -18,8 +18,8 @@ import {
 
 // Each href points to the id of a section heading.
 const navLinks = [
-  { href: "#how-i-use-ai", label: "AI" },
   { href: "#how-i-test", label: "How I test" },
+  { href: "#how-i-use-ai", label: "AI" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
   // Added on 2026-11-21: "does he have X?" is answered in Skills, and it was

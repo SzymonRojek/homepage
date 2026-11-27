@@ -499,7 +499,7 @@ test.describe("Navigation", () => {
 test.describe("Navigation in the dark theme", () => {
   test.use({ colorScheme: "dark" });
 
-  test("the raised top bar stands out over the How I test band", async ({
+  test("the raised top bar stands out over the deep green band", async ({
     page,
   }) => {
     await page.goto("./");
@@ -513,7 +513,9 @@ test.describe("Navigation in the dark theme", () => {
     // Both are greens: the bar a step lighter (#1C4D46) than the band
     // (#123C37), which is the deep green in the dark theme.
     await expect(pill).toHaveCSS("background-color", "rgba(28, 77, 70, 0.94)");
-    await expect(page.getByRole("region", { name: "How I test" })).toHaveCSS(
+    // How I use AI since 2026-11-27, when it swapped places and bands with
+    // How I test.
+    await expect(page.getByRole("region", { name: "How I use AI" })).toHaveCSS(
       "background-color",
       "rgb(18, 60, 55)",
     );

@@ -36,7 +36,7 @@ test.describe("Header and footer", () => {
 
     await expect(header.getByRole("term")).toHaveText("Open to");
     await expect(header.getByRole("definition")).toHaveText(
-      "QA and Test Automation roles",
+      "Data QA and Test Automation roles",
     );
     // Where I am and that I would move, back in the hero on 2026-11-10 after
     // a review found the page said it nowhere a reader could see.
@@ -91,8 +91,8 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "How I use AI",
       "How I test",
+      "How I use AI",
       "Projects",
       "Experience",
       "Skills & learning",

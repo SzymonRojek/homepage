@@ -5,15 +5,21 @@ test.describe("Experience", () => {
     await page.goto("./");
   });
 
-  test("shows the current job in five points", async ({ page }) => {
+  test("shows the current job in six points", async ({ page }) => {
     const experience = page.getByRole("region", { name: "Experience" });
     await expect(
       experience.getByRole("heading", { name: "Test Engineer" }),
     ).toBeVisible();
     await expect(experience.getByText("Nov 2022 – now")).toBeVisible();
     await expect(experience.getByText("Equiniti, Worthing")).toBeVisible();
-    // Five since 2026-11-21: the Power BI point came over from the CV.
-    await expect(experience.getByRole("listitem")).toHaveCount(5);
+    // Six: the Power BI point came over from the CV on 2026-11-21, and the
+    // regulatory one from the Data QA CV on 2026-11-27.
+    await expect(experience.getByRole("listitem")).toHaveCount(6);
+    await expect(
+      experience
+        .getByRole("listitem")
+        .filter({ hasText: "data protection requirements" }),
+    ).toHaveCount(1);
     await expect(
       experience.getByRole("listitem").filter({ hasText: "Power BI" }),
     ).toHaveCount(1);

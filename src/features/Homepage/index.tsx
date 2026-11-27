@@ -21,9 +21,9 @@ export const Homepage = () => {
       <MainHeader />
       <Container>
         <main id="main" tabIndex={-1}>
-          <HowIUseAI />
-
           <HowITest />
+
+          <HowIUseAI />
 
           <Portfolio />
 

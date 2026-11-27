@@ -49,8 +49,10 @@ export const howITest = {
       title: "Reconcile with SQL and check the logic",
       summary: "A number can match and still be wrong.",
       points: [
-        "Record counts, totals and field-by-field values",
-        "Empty values, duplicates and relationships between tables",
+        // Named as recruiters search for them since 2026-11-27; the same
+        // checks as before, nothing added.
+        "Source-to-target completeness: record counts, totals and field-by-field values",
+        "Unexpected nulls, duplicates and referential integrity",
         "Results checked against the business rules",
         "The stored procedures that transform the data",
         "A report that was produced is not a report that is right: record counts, column names and false matches",

@@ -2,8 +2,8 @@
 // shows its number in front of its name ("01 / How I test"), as in
 // the top bar's order; keep this list in step with the page (index.tsx).
 export const sectionOrder = [
-  "how-i-use-ai",
   "how-i-test",
+  "how-i-use-ai",
   "projects",
   "experience",
   "skills",

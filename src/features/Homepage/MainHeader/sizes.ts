@@ -14,12 +14,16 @@ export const headlineSize = "clamp(32px, max(19px + 3.6cqi, 7cqi - 8px), 80px)";
 // ever keeps the headline on one line; measure it again if the words change.
 export const headlineWidth = `calc(9.76 * ${headlineSize})`;
 
-// The photo's height: 375px beside the 80px headline, shrinking at under half
-// the headline's rate, so it stays about as tall as the text beside it (the
-// text barely shrinks: only the headline follows the width). It used to
-// follow the band's width alone and fell to two thirds of the text's height
-// by 768px, looking small next to the headline.
-export const photoHeight = `calc(225px + 1.875 * ${headlineSize})`;
+// The photo's height: 345px beside the 80px headline, shrinking at under a
+// third of the headline's rate, so it stays about as tall as the text beside
+// it (the text barely shrinks: only the headline follows the width). It used
+// to follow the band's width alone and fell to two thirds of the text's
+// height by 768px, looking small next to the headline. Until 2026-11-27 it
+// was 225px + 1.875 times the headline (375px at the widest): the bio was
+// then shortened to two lines on a wide screen, the text block lost a line
+// and the photo stood 1.35 times as tall as the text, over the 1.3 the
+// layout spec allows, so the photo came down with it (the user's choice).
+export const photoHeight = `calc(248px + 1.21 * ${headlineSize})`;
 
 // Browsers without container queries (Safari before 16, still on Macs that
 // skipped its updates) drop every rule with cqi, and the hero fell apart:

@@ -18,10 +18,11 @@ const [headingStart, headingEnd] = howIUseAI.heading.split(
   howIUseAI.headingHighlight,
 );
 
-// How I work with AI: the first section, before the testing method and the
-// side projects. The line that holds it together, then two columns, what the
-// tool does against what I do, so the division of labour is shown instead of
-// claimed. A real table, so screen readers pair each cell with its column.
+// How I work with AI: the second section, after the testing method and
+// before the side projects. The line that holds it together, then two
+// columns, what the tool does against what I do, so the division of labour
+// is shown instead of claimed. A real table, so screen readers pair each
+// cell with its column.
 export const HowIUseAI = () => (
   <Block $band="ai" aria-labelledby="how-i-use-ai">
     <Label id="how-i-use-ai" data-number={sectionNumber("how-i-use-ai")}>

@@ -41,11 +41,13 @@ describe("structuredData", () => {
 
     // The hero's bio, so a reader that never runs the page's JavaScript
     // still gets the sentences a visitor reads.
-    expect(description).toContain("financial data migrations with SQL");
-    expect(description).toContain("Playwright");
-    // Written with an ordinary hyphen: the non-breaking one that keeps the
-    // word whole on a phone would not match a search for it.
-    expect(description).toContain("full-stack");
+    expect(description).toContain("financial data migrations and ETL with SQL");
+    // No tool in the hero since 2026-11-27, at the user's word: it says
+    // that I can automate tests, and Skills names what with.
+    expect(description).toContain("I can automate tests.");
+    expect(description).not.toContain("Playwright");
+    // Never the non-breaking hyphen a hero line may carry to stay whole on
+    // a phone: it would not match a search for the word.
     expect(description).not.toContain("\u2011");
   });
 
@@ -60,7 +62,8 @@ describe("structuredData", () => {
         programmingSkills.length +
         testTypes.length,
     );
-    expect(knowsAbout[0]).toBe("Data migration & ETL");
+    expect(knowsAbout[0]).toBe("ETL & data migration testing");
+    expect(knowsAbout).toContain("ETL testing");
     expect(knowsAbout).toContain("Playwright & TypeScript");
     // A test type reads as one word on the page, under a "Test types:"
     // label; here each has to carry the noun to stand on its own.

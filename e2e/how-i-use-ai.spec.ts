@@ -1,11 +1,12 @@
 import { test, expect } from "./fixtures";
 
 test.describe("How I use AI", () => {
-  test("is the first section, right under the hero", async ({ page }) => {
+  test("is the second section, under How I test", async ({ page }) => {
     await page.goto("./");
 
+    // Second since 2026-11-27: the testing method opens the page now.
     const headings = page.getByRole("main").getByRole("heading", { level: 2 });
-    await expect(headings.first()).toHaveText("How I use AI");
+    await expect(headings.nth(1)).toHaveText("How I use AI");
 
     const section = page.getByRole("region", { name: "How I use AI" });
     await expect(section).toContainText("The judgement is mine");
@@ -61,21 +62,22 @@ test.describe("How I use AI", () => {
         .getByRole("region", { name })
         .evaluate((section) => getComputedStyle(section).backgroundColor);
 
-    // Light: the page's own sand, so a light theme looks light and the
-    // bands alternate perfectly from here down (sand, white, sand, white,
-    // sand, white), every inner seam 1.19:1.
-    expect(await bandOf("How I use AI")).toBe("rgb(244, 234, 214)");
-    expect(await bandOf("How I test")).toBe("rgb(255, 255, 255)");
+    // Light: the first band is the page's own sand, so a light theme looks
+    // light and the bands alternate perfectly from there down (sand, white,
+    // sand, white, sand, white), every inner seam 1.19:1. The two sections
+    // swapped places on 2026-11-27 and their bands with them.
+    expect(await bandOf("How I test")).toBe("rgb(244, 234, 214)");
+    expect(await bandOf("How I use AI")).toBe("rgb(255, 255, 255)");
 
     await page.getByRole("button", { name: "Dark mode" }).click();
     await expect(page.locator("body")).toHaveCSS(
       "background-color",
       "rgb(11, 21, 19)",
     );
-    // Dark: a shade between the hero above and How I test below, which is
-    // the deep green in this theme.
-    expect(await bandOf("How I use AI")).toBe("rgb(14, 42, 38)");
-    expect(await bandOf("How I test")).toBe("rgb(18, 60, 55)");
+    // Dark: the first band is a shade between the hero above and How I use
+    // AI below, which is the deep green in this theme.
+    expect(await bandOf("How I test")).toBe("rgb(14, 42, 38)");
+    expect(await bandOf("How I use AI")).toBe("rgb(18, 60, 55)");
   });
 
   test("@mobile stacks each pair, with its column name above it", async ({

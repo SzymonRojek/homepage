@@ -14,7 +14,7 @@ const renderHowIUseAI = () =>
 const section = () => screen.getByRole("region", { name: "How I use AI" });
 
 describe("HowIUseAI", () => {
-  it("is the first section, named and numbered", () => {
+  it("is the second section, named and numbered", () => {
     renderHowIUseAI();
 
     const heading = screen.getByRole("heading", {
@@ -22,7 +22,8 @@ describe("HowIUseAI", () => {
       name: "How I use AI",
     });
     expect(section()).toBe(heading.closest("section"));
-    expect(heading).toHaveAttribute("data-number", "01");
+    // Second since 2026-11-27, when How I test took the first place.
+    expect(heading).toHaveAttribute("data-number", "02");
   });
 
   it("opens on the line that holds the section together", () => {

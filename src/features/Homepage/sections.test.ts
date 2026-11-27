@@ -11,8 +11,8 @@ describe("sectionNumber", () => {
       "05",
       "06",
     ]);
-    expect(sectionNumber("how-i-use-ai")).toBe("01");
-    expect(sectionNumber("how-i-test")).toBe("02");
+    expect(sectionNumber("how-i-test")).toBe("01");
+    expect(sectionNumber("how-i-use-ai")).toBe("02");
     expect(sectionNumber("recommendations")).toBe("06");
   });
 });

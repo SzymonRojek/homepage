@@ -28,7 +28,7 @@ describe("MainHeader", () => {
     // user's go-ahead: the CV is a tester's CV, and developer applications
     // open the page at the developer side of the case study.
     expect(screen.getByRole("definition").textContent).toBe(
-      "QA and Test Automation roles",
+      "Data QA and Test Automation roles",
     );
     // Closing the hero since 2026-11-10: where I am, and that I would move;
     // since 2026-11-21 also the day I can start.

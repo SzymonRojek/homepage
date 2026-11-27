@@ -1,8 +1,8 @@
 // Short lines a group, plain text. Testing first: the profession, data
 // and SQL lead. Only skills shown in my work or in the two case studies.
 export const testingSkills = [
-  "Data migration & ETL",
-  "SQL reconciliation (T-SQL, SQL Server)",
+  "ETL & data migration testing",
+  "Database testing & SQL reconciliation (T-SQL, SQL Server)",
   "Test design & test data preparation",
   "Exploratory testing & root-cause analysis",
   "AI-assisted testing",
@@ -26,11 +26,16 @@ export const programmingSkills = [
 
 // The kinds of testing I do, as one line under the four groups: the terms a
 // recruiter and their filter search for, which the groups above never named.
+// Data first since 2026-11-27, with the four a data tester is searched by.
 export const testTypes = [
+  "ETL",
+  "Data migration",
+  "Database",
+  "Data quality",
+  "BI report",
   "Functional",
   "Regression",
   "System integration",
-  "Database",
   "API",
   "End-to-end",
   "Accessibility",
