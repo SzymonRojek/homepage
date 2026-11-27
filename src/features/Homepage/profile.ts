@@ -78,7 +78,11 @@ export const profile = {
   // lines to the last 5px on a 360px phone, and CI's fallback font spilled
   // it onto a fourth, so the page moved when the real font arrived
   // (e2e/fonts.spec.ts, layout shift 0.024). The user chose to drop the word.
-  bio: "4 years testing financial data migrations and ETL with SQL at Equiniti. I taught myself to code, so I can automate tests too.",
+  // It ended "automate tests too." until the same day: CI's fallback font
+  // runs about 4% wider than the Mac's, and "too." still landed alone on a
+  // fourth line (CI's trace shows it). Without it the bio keeps three lines
+  // at 360, 390 and 412px with the fallback up to 7% wider.
+  bio: "4 years testing financial data migrations and ETL with SQL at Equiniti. I taught myself to code, so I can automate tests.",
   // The footer's heading: the question a team asks, in the page's theme.
   contactHeading: "Let’s ship something that doesn’t break",
   // What matters to me in a team, in my own words, and the one invite to get

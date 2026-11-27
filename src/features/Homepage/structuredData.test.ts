@@ -44,7 +44,7 @@ describe("structuredData", () => {
     expect(description).toContain("financial data migrations and ETL with SQL");
     // No tool in the hero since 2026-11-27, at the user's word: it says
     // that I can automate tests, and Skills names what with.
-    expect(description).toContain("I can automate tests too");
+    expect(description).toContain("I can automate tests.");
     expect(description).not.toContain("Playwright");
     // Never the non-breaking hyphen a hero line may carry to stay whole on
     // a phone: it would not match a search for the word.
