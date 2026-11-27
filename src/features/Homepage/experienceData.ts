@@ -25,12 +25,14 @@ export const jobs: Job[] = [
     details: "Financial services and shareholder registry",
     period: "Nov 2022 – now",
     points: [
-      "Validate financial and shareholder data across migration and ETL projects, including conversion and deconversion.",
+      "Validate financial and shareholder data across migration and ETL projects, including conversion and deconversion, from the first test load through to go-live.",
       "Work across share dealing, dividends, corporate actions, tax, payments and reconciliation in the registry's data.",
       // From the CV (2026-11-21): no section named Power BI.
       "Validate Power BI reports and dashboards against the SQL Server data behind them and the business rules.",
       "Estimate effort and work in an Agile team with developers, architects and stakeholders.",
       "Review colleagues' test cases, SQL and mapping logic, and help new joiners with migration setup and mapping rules.",
+      // From the Data QA CV (2026-11-27).
+      "Work under regulatory, security and data protection requirements for personal and financial data.",
     ],
   },
 ];

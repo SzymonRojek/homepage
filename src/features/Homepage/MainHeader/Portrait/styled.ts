@@ -12,7 +12,7 @@ export const Frame = styled.div`
   align-self: end;
   justify-self: end;
   /* About as tall as the text beside it, and shrinking slower than the
-     headline (sizes.ts): 300 x 375px beside the 80px headline, still 312px
+     headline (sizes.ts): 276 x 345px beside the 80px headline, still 304px
      tall at 768px. Its width is the hero's photo column: 4:5, or narrower
      where the one-line headline needs the room (below about 860px); then the
      photo is cropped at the shoulders and the head keeps its size. */

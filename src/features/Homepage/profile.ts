@@ -11,7 +11,11 @@ const availableFrom = "2 January 2027";
 // AI tool weigh hardest, and deliberately not into the hero: the eyebrow is
 // 13px uppercase and a line this long would wrap on a phone, while the bio
 // right under it already names the work. Keep it in step with the bio.
-const specialism = "Data Migration, SQL & Test Automation";
+// "Data QA, ETL & Data Migration Testing" since 2026-11-27, when the search
+// turned to data testing roles: these are the words recruiters type, and the
+// title is where a search engine weighs them hardest. Data QA is the
+// umbrella; ETL and migration are named for the search, not for the reader.
+const specialism = "Data QA, ETL & Data Migration Testing";
 
 export const profile = {
   name: "Szymon Rojek",
@@ -38,7 +42,11 @@ export const profile = {
     // throughout, and a recruiter arriving from it read three directions as
     // a mixed signal. The bio still says I build apps, and a developer
     // application opens the page at #case-study-talent-outreach-developer.
-    lines: [["QA and"], ["Test Automation roles"]],
+    // "Data QA" leads since 2026-11-27: the paid experience is data testing,
+    // and that is the role the search is for. One umbrella term for a
+    // reader; ETL, migration and database testing are named in Skills and
+    // in the search description, where a filter looks for them.
+    lines: [["Data QA and"], ["Test Automation roles"]],
   },
   // Under the location: the number of recommendations, as a link down to
   // them. They are the page's strongest proof and its last section, so the
@@ -59,10 +67,14 @@ export const profile = {
   locationLine: `Based in ${basedIn} \u00b7 Open to relocation \u00b7 Available from ${availableFrom}`,
   availableFrom,
   basedIn,
-  // "full\u2011stack" has a non-breaking hyphen, so a phone never splits it.
   // "4 years" as a digit since 2026-11-21: a scanning eye stops on numerals,
   // and the hero had none. True from the job's start in November 2022.
-  bio: "4 years testing financial data migrations with SQL at Equiniti. I taught myself to code, so I automate tests with Playwright and build full\u2011stack apps of my own.",
+  // Reworded on 2026-11-27 for data testing roles, in the user's words: ETL
+  // is named beside migration (a migration is a one-off move, ETL a load
+  // that runs again and again), and the second sentence says only that I
+  // can automate tests. Playwright and the apps I built are named in Skills
+  // and Projects, not here: he asked for the tool to stay out of the hero.
+  bio: "4 years testing financial data migrations and ETL processes with SQL at Equiniti. I taught myself to code, so I can automate tests too.",
   // The footer's heading: the question a team asks, in the page's theme.
   contactHeading: "Let’s ship something that doesn’t break",
   // What matters to me in a team, in my own words, and the one invite to get

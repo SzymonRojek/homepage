@@ -17,7 +17,7 @@ test.describe("search engines and link previews @desktop", () => {
     page,
   }) => {
     await expect(page).toHaveTitle(
-      "Szymon Rojek | Test Engineer — Data Migration, SQL & Test Automation",
+      "Szymon Rojek | Test Engineer — Data QA, ETL & Data Migration Testing",
     );
     await expect(page.locator("html")).toHaveAttribute("lang", "en-GB");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
@@ -94,7 +94,9 @@ test.describe("search engines and link previews @desktop", () => {
 
     // A skills array alone says what he knows, never what he does; the
     // sentence is what an AI tool quotes back.
-    expect(person.description).toContain("financial data migrations with SQL");
+    expect(person.description).toContain(
+      "financial data migrations and ETL processes with SQL",
+    );
 
     const photo = await request.get(localPath(person.image as string));
     expect(photo.ok()).toBe(true);

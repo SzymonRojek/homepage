@@ -60,9 +60,9 @@ test.describe("Skills & learning", () => {
       .getByRole("listitem");
 
     await expect(skills).toHaveCount(5);
-    await expect(skills.first()).toHaveText("Data migration & ETL");
+    await expect(skills.first()).toHaveText("ETL & data migration testing");
     await expect(skills.nth(1)).toHaveText(
-      "SQL reconciliation (T-SQL, SQL Server)",
+      "Database testing & SQL reconciliation (T-SQL, SQL Server)",
     );
   });
 

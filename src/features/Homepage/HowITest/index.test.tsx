@@ -100,7 +100,9 @@ describe("HowITest", () => {
     renderHowITest();
 
     expect(
-      screen.getByText("Record counts, totals and field-by-field values"),
+      screen.getByText(
+        "Source-to-target completeness: record counts, totals and field-by-field values",
+      ),
     ).toBeVisible();
     expect(
       screen.getByText(/The stored procedures that transform the data/),
