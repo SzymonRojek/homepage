@@ -91,8 +91,8 @@ test.describe("Header and footer", () => {
     await expect(
       page.getByRole("main").getByRole("heading", { level: 2 }),
     ).toHaveText([
-      "How I use AI",
       "How I test",
+      "How I use AI",
       "Projects",
       "Experience",
       "Skills & learning",

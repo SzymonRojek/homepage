@@ -29,9 +29,9 @@ test.describe("How I test", () => {
       section.getByRole("article", { name: "Beyond the obvious bugs" }),
     ).toContainText("walked through tricky cases with the developer");
 
-    // The second section, under How I use AI, which opens the page.
+    // The first section, right under the hero, since 2026-11-27.
     await expect(
-      page.getByRole("main").getByRole("heading", { level: 2 }).nth(1),
+      page.getByRole("main").getByRole("heading", { level: 2 }).first(),
     ).toHaveText("How I test");
   });
 

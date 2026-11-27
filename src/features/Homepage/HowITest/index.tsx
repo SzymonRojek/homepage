@@ -16,8 +16,8 @@ import {
 const { story } = howITest;
 const [titleStart, titleEnd] = story.title.split(story.highlight);
 
-// Professional evidence, before the side projects, as one block (white in
-// the light theme, deep green in the dark one): my story first, as what only I can say (the section's heading is for
+// Professional evidence, first on the page, as one block (sand in the light
+// theme, a dark green shade in the dark one): my story first, as what only I can say (the section's heading is for
 // screen readers only), then the method in three steps, each a line and a
 // few ticked points to skim.
 export const HowITest = () => (

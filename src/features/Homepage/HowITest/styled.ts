@@ -3,16 +3,18 @@ import { columnInset } from "../../../core/App/contentColumn";
 import { BandSection } from "../Section";
 import BugSvg from "./bug.svg?react";
 
-// The whole section is one block: white with the page's ink in the light
-// theme, the deep brand green with cream text in the dark one, so it changes
-// with the theme like every section between the hero and the footer. The
-// buttons' colour (primary) suits both, deep green on white and yellow on the
-// green, so the label, the arrows and the focus rings use it. "clip" cuts the
+// The whole section is one block, and the first under the hero since
+// 2026-11-27: the page's sand with its ink in the light theme, a shade
+// between the near-black and the deep green with cream text in the dark one,
+// so it changes with the theme like every section between the hero and the
+// footer. The buttons' colour (primary) suits both, deep green on sand and
+// yellow on the dark, so the label, the arrows and the focus rings use it. "clip" cuts the
 // bug at the band's edges without making the band a scroll container;
 // "isolate" keeps the bug above the band's background and below its text.
 export const Block = styled(BandSection)`
-  /* It follows the AI band, so ".section-band + &" already closes the gap;
-     the two bands meet edge to edge. */
+  /* Right under the hero, with no page colour between the near-black and
+     the band. */
+  margin-top: 0;
   position: relative;
   isolation: isolate;
   overflow: clip;

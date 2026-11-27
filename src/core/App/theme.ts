@@ -18,12 +18,12 @@ const colorNames = {
   // amber 6.0:1).
   deepHover: "#0A2622",
   // The raised top bar in the dark theme: a step lighter than the deep
-  // green (1.27:1), so it stands out over the How I test band, which is the
+  // green (1.27:1), so it stands out over the How I use AI band, which is the
   // deep green there. Cream 8.7:1, muted cream 5.8:1, yellow 6.2:1.
   deepRaised: "#1C4D46",
-  // A shade between the near-black and the deep green, for the How I use AI
+  // A shade between the near-black and the deep green, for the How I test
   // band in the dark theme: the hero deepens into it (1.22:1) and it lifts
-  // into the How I test band below (1.25:1), and the raised top bar still
+  // into the How I use AI band below (1.25:1), and the raised top bar still
   // stands out over it (1.60:1).
   deepShade: "#0E2A26",
   // Its thin edge in the dark theme, where it parts the bar from the dark
@@ -180,12 +180,16 @@ export const themeLight = {
     // References, the last section: white, after Skills on the sand, so the
     // bands alternate down to the near-black footer.
     quoteBand: colorNames.white,
-    // "How I test", after the AI band: white in the light theme,
-    // so the bands alternate (dark, green, white, sand, white, sand, white,
-    // dark),
-    // with the page's ink (headings 16.1:1, body 9.8:1), its line, green
-    // ticks (5.6:1) and a faint green bug. "obvious" takes quoteMark.
-    storyBand: colorNames.white,
+    // "How I test", the first section, right under the hero (since
+    // 2026-11-27; How I use AI opened the page before): the page's own
+    // sand, not a green block, since a light theme has to look light (the
+    // user, 2026-10-20), and with a sand band first the page alternates
+    // perfectly (sand, white, sand, white, sand, white), every inner seam
+    // 1.19:1. It also clears the sticky bar, which is the deep green here:
+    // over sand it is 10.2:1. Ink 13.6:1, body ink 8.0:1, deep green
+    // 10.2:1, its line as in Skills, green ticks and a faint green bug.
+    // "obvious" takes quoteMark.
+    storyBand: colorNames.sand,
     story: {
       text: colorNames.ink,
       body: colorNames.inkBody,
@@ -193,19 +197,10 @@ export const themeLight = {
       tick: colorNames.testGreen,
       bug: colorNames.deepFaint,
     },
-    // "How I use AI", the first section, right under the hero: the
-    // deep brand green, so the near-black steps down into it and the page
-    // keeps one big step in and one out (dark, green, white, sand, white,
-    // sand, white, dark) instead of three jumps in a row, which is what a
-    // green band in the middle of the light half gave (2026-10-19).
-    // The page's own sand, not a green block: a light theme has to look
-    // light (the user, 2026-10-20), and with this section first the page
-    // alternates perfectly (sand, white, sand, white, sand, white), every
-    // inner seam 1.19:1. It also clears the sticky bar, which is the deep
-    // green here and floated over the old green band at only 1.27:1; over
-    // sand it is 10.2:1. Ink 13.6:1, body ink 8.0:1, deep green 10.2:1.
-    // The accents are the deep green, not yellow: yellow on sand is 1.28:1.
-    aiBand: colorNames.sand,
+    // "How I use AI", the second section, between the sand of How I test
+    // and the sand of Projects: white, with the page's ink (headings
+    // 16.1:1, body 9.8:1). The accents are the deep green, not yellow.
+    aiBand: colorNames.white,
     ai: {
       text: colorNames.ink,
       body: colorNames.inkBody,
@@ -270,9 +265,11 @@ export const themeDark: typeof themeLight = {
     // One step up from the page, after Skills on it, so the bands alternate
     // down to the near-black footer.
     quoteBand: colorNames.nightBand,
-    // The deep brand green in the dark theme, the page's one strong colour
-    // block: cream text (11.1:1), muted cream (7.4:1), yellow ticks (7.9:1).
-    storyBand: colorNames.deep,
+    // Between the near-black hero (1.22:1) and the How I use AI band below,
+    // which is the deep green in this theme (1.25:1). Not the raised green:
+    // that is this theme's top bar, and the bar floats over this section, so
+    // the two would merge. Cream 13.9:1, muted cream 9.2:1, yellow 10.0:1.
+    storyBand: colorNames.deepShade,
     story: {
       text: colorNames.cream,
       body: colorNames.brandMuted,
@@ -280,11 +277,9 @@ export const themeDark: typeof themeLight = {
       tick: colorNames.sun,
       bug: colorNames.sunFaint,
     },
-    // Between the near-black hero (1.22:1) and the How I test band below,
-    // which is the deep green in this theme (1.25:1). Not the raised green:
-    // that is this theme's top bar, and the bar floats over this section, so
-    // the two would merge. Cream 13.9:1, muted cream 9.2:1, yellow 10.0:1.
-    aiBand: colorNames.deepShade,
+    // The deep brand green in the dark theme, the page's one strong colour
+    // block: cream text (11.1:1), muted cream (7.4:1), yellow (7.9:1).
+    aiBand: colorNames.deep,
     ai: {
       text: colorNames.cream,
       body: colorNames.brandMuted,
@@ -298,7 +293,7 @@ export const themeDark: typeof themeLight = {
     // The recommendation cards on the dark References band: the card colour.
     quoteCard: colorNames.nightCard,
     quoteHighlight: colorNames.sunMarkerNight,
-    // A step lighter than the How I test band, the deep green here, with a
+    // A step lighter than the How I use AI band, the deep green here, with a
     // thin even edge that parts it from the dark page.
     topBar: colorNames.deepRaised,
     topBarEdge: colorNames.creamEdge,
