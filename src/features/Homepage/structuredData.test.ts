@@ -41,9 +41,7 @@ describe("structuredData", () => {
 
     // The hero's bio, so a reader that never runs the page's JavaScript
     // still gets the sentences a visitor reads.
-    expect(description).toContain(
-      "financial data migrations and ETL processes with SQL",
-    );
+    expect(description).toContain("financial data migrations and ETL with SQL");
     // No tool in the hero since 2026-11-27, at the user's word: it says
     // that I can automate tests, and Skills names what with.
     expect(description).toContain("I can automate tests too");

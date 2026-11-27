@@ -74,7 +74,11 @@ export const profile = {
   // that runs again and again), and the second sentence says only that I
   // can automate tests. Playwright and the apps I built are named in Skills
   // and Projects, not here: he asked for the tool to stay out of the hero.
-  bio: "4 years testing financial data migrations and ETL processes with SQL at Equiniti. I taught myself to code, so I can automate tests too.",
+  // "ETL", not "ETL processes": with the extra word the bio filled three
+  // lines to the last 5px on a 360px phone, and CI's fallback font spilled
+  // it onto a fourth, so the page moved when the real font arrived
+  // (e2e/fonts.spec.ts, layout shift 0.024). The user chose to drop the word.
+  bio: "4 years testing financial data migrations and ETL with SQL at Equiniti. I taught myself to code, so I can automate tests too.",
   // The footer's heading: the question a team asks, in the page's theme.
   contactHeading: "Let’s ship something that doesn’t break",
   // What matters to me in a team, in my own words, and the one invite to get

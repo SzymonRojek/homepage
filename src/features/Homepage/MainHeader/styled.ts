@@ -249,9 +249,13 @@ export const NextRole = styled.dl`
     display: inline-block;
   }
 
+  /* 16px on phones, not 17px: "Test Automation roles" was 182px in a 180px
+     column beside the photo at 360px, so it broke in one font and not in the
+     other, and the page moved when the real font arrived (e2e/fonts.spec.ts).
+     At 16px it is 171px, with room either way. */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobileMax}px) {
     dd {
-      font-size: 17px;
+      font-size: 16px;
     }
   }
 `;

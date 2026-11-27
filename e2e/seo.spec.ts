@@ -95,7 +95,7 @@ test.describe("search engines and link previews @desktop", () => {
     // A skills array alone says what he knows, never what he does; the
     // sentence is what an AI tool quotes back.
     expect(person.description).toContain(
-      "financial data migrations and ETL processes with SQL",
+      "financial data migrations and ETL with SQL",
     );
 
     const photo = await request.get(localPath(person.image as string));
